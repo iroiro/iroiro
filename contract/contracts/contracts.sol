@@ -16,8 +16,8 @@ interface TokenFactoryInterface {
     // Create new creator token, and then transfer tokens to owner and vesting contract
     function createToken(
         address creator,
-        string name,
-        string symbol,
+        string memory name,
+        string memory symbol,
         uint256 totalSupply,
         uint8 decimals,
         uint8 ratio,
@@ -31,19 +31,19 @@ interface TokenFactoryInterface {
 
 interface PoolInterface {
     // Get available token amount
-    function earned() external returns(uint256);
+    function earned(address account, address token) external returns(uint256);
 
     // stake user tokens
-    function stake(uint256 amount) external returns();
+    function stake(uint256 amount, address token) external;
 
     // withdraw user tokens
-    function withdraw(uint256 amount) external returns();
+    function withdraw(uint256 amount, address token) external;
 
     // claim new tokens
-    function claim() external;
+    function claim(address token) external;
 }
 
 interface Vesting {
     // transfer available tokens to creator
-    function claim() external returns();
+    function claim() external;
 }
