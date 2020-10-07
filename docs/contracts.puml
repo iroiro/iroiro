@@ -18,21 +18,21 @@ class "TokenFactory" as factory {
 }
 
 class "ABCToken" as abc {
-inherit:
-- ERC20
---
-Sample creator token created by FanStockManager.
-Multiple creator tokens are created actually.
---
-name
-Token name
---
-symbol
-Token symbol
---
-int8 decimals
---
-totalSupply()
+    inherit:
+    - ERC20
+    --
+    Sample creator token created by FanStockManager.
+    Multiple creator tokens are created actually.
+    --
+    name
+    Token name
+    --
+    symbol
+    Token symbol
+    --
+    int8 decimals
+    --
+    totalSupply()
 }
 
 class "TokenPool" as pool {
