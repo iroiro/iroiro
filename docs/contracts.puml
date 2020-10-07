@@ -56,10 +56,9 @@ class "Vesting" as vest {
     redeem()
     Redeem available tokens for recipient
 }
-note left: Tokens are redeemed by creator
 
 factory -down-> abc
-abc -down-> pool: Stake tokens
+abc -down-> pool: Stake tokens by user
 abc -down-> vest: Transferred by platform to vest tokens for creator
 
 @enduml
