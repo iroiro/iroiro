@@ -13,7 +13,7 @@ class "TokenFactory" as factory {
     creatorTokenOf(creator, id)
     get a creator token of specific id
     --
-    createToken(creator, name, symbol, totalSupply, decimals, ratio, isMintable, lockupPeriod, enableStakeToToken)
+    createToken(creator, name, symbol, totalSupply, decimals, ratio, isTotalSupplyFixed, lockupPeriod, enableStakeToToken)
     Create new creator token, and then transfer tokens to owner and vesting contract
 }
 

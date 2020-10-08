@@ -21,7 +21,7 @@ interface TokenFactoryInterface {
         uint256 totalSupply,
         uint8 decimals,
         uint8 ratio,
-        bool isMintable,
+        bool isTotalSupplyFixed,
         uint8 lockupPeriod, // years
         bool enableStakeToToken
     ) external returns(address);
