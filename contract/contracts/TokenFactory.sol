@@ -6,7 +6,9 @@ import "./FanToken.sol";
 contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
 
-    mapping(uint256 => address) public tokens;
+    mapping(uint256 => address) private tokens;
+    mapping(address => uint256) private tokenAmountOfCreators;
+    mapping(address => mapping(uint256 => address)) private tokensOfCreators;
 
     uint256 private totalCount = 0;
 
@@ -19,7 +21,7 @@ contract TokenFactory is TokenFactoryInterface {
     }
 
     function tokenAmountOf(address creator) public view override returns (uint256) {
-        return 0;
+        return tokenAmountOfCreators[creator];
     }
 
     function creatorTokenOf(address creator, uint256 id) public view override returns (address) {
@@ -37,11 +39,22 @@ contract TokenFactory is TokenFactoryInterface {
         uint8 lockupPeriod, // years
         bool enableStakeToToken
     ) public override returns (address) {
-        FanToken newToken = new FanToken(name, symbol, totalSupply, creator, decimals);
-        address tokenAddress = address(newToken);
-        uint256 nextTokenId = totalCount.add(1);
-        totalCount = nextTokenId;
-        tokens[nextTokenId] = tokenAddress;
+        address tokenAddress;
+        {
+            FanToken newToken = new FanToken(name, symbol, totalSupply, creator, decimals);
+            tokenAddress = address(newToken);
+        }
+        {
+            uint256 nextTokenId = totalCount.add(1);
+            totalCount = nextTokenId;
+            tokens[nextTokenId] = tokenAddress;
+        }
+        {
+            uint256 nextCreatorTokenId = tokenAmountOfCreators[creator].add(1);
+            tokenAmountOfCreators[creator] = nextCreatorTokenId;
+            tokensOfCreators[creator][nextCreatorTokenId] = tokenAddress;
+        }
+
         return tokenAddress;
     }
 }
