@@ -7,8 +7,10 @@ contract FanToken is ERC20 {
         string memory name,
         string memory symbol,
         uint256 totalSupply,
-        address owner
+        address owner,
+        uint8 decimals
     ) public ERC20(name, symbol) {
         _mint(owner, totalSupply);
+        _setupDecimals(decimals);
     }
 }

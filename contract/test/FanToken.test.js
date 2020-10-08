@@ -8,10 +8,10 @@ describe("FanToken", () => {
 
   beforeEach(async () => {
     this.fanStockToken = await FanToken.new(
-      "FanStock", "FST", 1000000000, owner, {from: owner}
+      "FanStock", "FST", 1000000000, owner, 10, {from: owner}
       )
     this.aliceToken = await FanToken.new(
-      "AliceToken", "ALC", 2000000000, alice, {from: owner}
+      "AliceToken", "ALC", 2000000000, alice, 15, {from: owner}
       )
   })
 
@@ -33,5 +33,10 @@ describe("FanToken", () => {
   it("transferred a token to creator", async() => {
     expect((await this.fanStockToken.balanceOf(owner)).toString()).to.equal("1000000000")
     expect((await this.aliceToken.balanceOf(alice)).toString()).to.equal("2000000000")
+  })
+
+  it("set decimals given as argument", async() => {
+    expect((await this.fanStockToken.decimals()).toString()).to.equal("10")
+    expect((await this.aliceToken.decimals()).toString()).to.equal("15")
   })
 })
