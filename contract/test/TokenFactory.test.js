@@ -37,11 +37,16 @@ describe("TokenFactory", () => {
       }
     })
 
-    it("increment totalTokenAmount", async function () {
+    it("increment totalTokenCount", async function () {
       expect((await this.contract.totalTokenCount()).toString()).to.equal("0")
 
       await this.contract.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
       expect((await this.contract.totalTokenCount()).toString()).to.equal("1")
+    })
+
+    it("add token address", async function () {
+      await this.contract.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
+      expect((await this.contract.tokenOf(1)).toString()).to.not.equal(constants.ZERO_ADDRESS)
     })
   })
 })

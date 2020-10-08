@@ -6,10 +6,16 @@ import "./FanToken.sol";
 contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
 
-    uint256 public override totalTokenCount = 0;
+    mapping(uint256 => address) public tokens;
+
+    uint256 private totalCount = 0;
+
+    function totalTokenCount() public view override returns (uint256) {
+        return totalCount;
+    }
 
     function tokenOf(uint256 id) public view override returns (address) {
-        return address(0);
+        return tokens[id];
     }
 
     function tokenAmountOf(address creator) public view override returns (uint256) {
@@ -30,10 +36,12 @@ contract TokenFactory is TokenFactoryInterface {
         bool isTotalSupplyFixed,
         uint8 lockupPeriod, // years
         bool enableStakeToToken
-    ) public override returns(address) {
+    ) public override returns (address) {
         FanToken newToken = new FanToken(name, symbol, totalSupply, creator, decimals);
         address tokenAddress = address(newToken);
-        totalTokenCount = totalTokenCount.add(1);
+        uint256 nextTokenId = totalCount.add(1);
+        totalCount = nextTokenId;
+        tokens[nextTokenId] = tokenAddress;
         return tokenAddress;
     }
 }
