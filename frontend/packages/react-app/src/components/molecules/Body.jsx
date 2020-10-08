@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Body, Image} from "../index";
-import Links from "../molecules/Links";
-import logo from "./../../ethereumLogo.png";
+import Links from "./Links";
+import logo from "../../ethereumLogo.png";
 
 const TopPageBody = ({ readOnChainData}) => (
   <Body>

@@ -1,7 +1,7 @@
 import React from "react";
 import AppHeader from "../molecules/AppHeader";
 import logo from "../../ethereumLogo.png";
-import TopPageBody from "../organisms/Body";
+import TopPageBody from "../molecules/Body";
 
 const TopPageTemplate = ({ provider, loadWeb3Modal, readOnChainData}) => (
   <div>
