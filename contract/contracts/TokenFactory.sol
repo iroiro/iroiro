@@ -40,7 +40,7 @@ contract TokenFactory is TokenFactoryInterface {
         bool enableStakeToToken
     ) public override returns (address) {
         address tokenAddress;
-        {
+        { // To avoid stack too deep
             FanToken newToken = new FanToken(name, symbol, totalSupply, creator, decimals);
             tokenAddress = address(newToken);
         }

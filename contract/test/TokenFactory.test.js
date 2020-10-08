@@ -53,5 +53,17 @@ describe("TokenFactory", () => {
       await this.contract.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
       expect((await this.contract.tokenAmountOf(alice)).toString()).to.equal("1")
     })
+
+    it("add creator token address", async function() {
+      await this.contract.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
+      expect((await this.contract.tokenAmountOf(alice)).toString()).to.not.equal(constants.ZERO_ADDRESS)
+    })
+
+    it("both of token and creator token address newly added is same", async function() {
+      await this.contract.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
+      const newTokenAddress = await this.contract.tokenOf(1).toString()
+      const newCreatorTokenAddress = await this.contract.creatorTokenOf(alice, 1).toString()
+      expect(newTokenAddress).to.equal(newCreatorTokenAddress)
+    })
   })
 })
