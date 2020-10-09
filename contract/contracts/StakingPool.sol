@@ -9,8 +9,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract StakingPool is PoolInterface, Ownable {
     using SafeMath for uint256;
 
-    mapping(address => mapping(address => uint256)) creatorsTokenBalances;
+    mapping(address => mapping(address => uint256)) private creatorsTokenBalances;
     mapping(address => bool) public registeredTokens;
+
+    function balanceOf(address account, address token) public view returns(uint256){
+        return creatorsTokenBalances[account][token];
+    }
 
     function addTokenToStakingList(address token) public onlyOwner {
         registeredTokens[token] = true;
@@ -25,6 +29,7 @@ contract StakingPool is PoolInterface, Ownable {
         FanToken fanToken = FanToken(token);
         require(fanToken.balanceOf(msg.sender) >= amount, "Token insufficient");
         fanToken.transferFrom(msg.sender, address(this), amount);
+        creatorsTokenBalances[msg.sender][token] = creatorsTokenBalances[msg.sender][token].add(amount);
     }
 
     function withdraw(uint256 amount, address token) public override {

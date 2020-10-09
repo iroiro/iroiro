@@ -79,9 +79,16 @@ describe("StakingPool", () => {
     it("staked given amount token from message sender", async () => {
       await this.abctoken.transfer(alice, 100, {from: owner})
       expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("100")
-      await this.abctoken.approve(this.pool.address, 100, { from:alice})
-      await this.pool.stake(100, this.abctoken.address, {from: alice})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+
+      await this.pool.stake(50, this.abctoken.address, {from: alice})
+      expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("50")
+      expect((await this.pool.balanceOf(alice, this.abctoken.address)).toString()).to.equal("50")
+
+      await this.pool.stake(50, this.abctoken.address, {from: alice})
       expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("0")
+      expect((await this.pool.balanceOf(alice, this.abctoken.address)).toString()).to.equal("100")
     })
   })
 })
+
