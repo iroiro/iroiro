@@ -27,7 +27,6 @@ contract StakingPool is PoolInterface, Ownable {
     function stake(uint256 amount, address token) public override {
         require(registeredTokens[token], "Token is not registered to staking list");
         FanToken fanToken = FanToken(token);
-        require(fanToken.balanceOf(msg.sender) >= amount, "Token insufficient");
         fanToken.transferFrom(msg.sender, address(this), amount);
         creatorsTokenBalances[msg.sender][token] = creatorsTokenBalances[msg.sender][token].add(amount);
     }
