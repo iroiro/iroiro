@@ -41,7 +41,7 @@ contract TokenFactory is TokenFactoryInterface {
     ) public override returns (address) {
         address tokenAddress;
         { // To avoid stack too deep
-            FanToken newToken = new FanToken(name, symbol, totalSupply, creator, decimals);
+            FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals);
             tokenAddress = address(newToken);
         }
         {
