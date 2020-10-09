@@ -1,15 +1,11 @@
 import React from "react";
 import AppHeader from "../molecules/AppHeader";
-import logo from "../../ethereumLogo.png";
-import TopPageBody from "../molecules/Body";
+import TopPageBody from "../molecules/TopBody";
 
-const TopPageTemplate = ({ provider, loadWeb3Modal, readOnChainData}) => (
+const TopPageTemplate = ({ provider, loadWeb3Modal　}) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <TopPageBody
-      logo={logo}
-      readOnChainData={readOnChainData}
-    />
+    <TopPageBody/>
   </div>
 )
 

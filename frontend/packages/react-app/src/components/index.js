@@ -6,19 +6,8 @@ export const Header = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   color: white;
-`;
-
-export const Body = styled.body`
-  align-items: center;
-  background-color: #282c34;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  font-size: calc(10px + 2vmin);
-  justify-content: center;
-  min-height: calc(100vh - 70px);
 `;
 
 export const Image = styled.img`
