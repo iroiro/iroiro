@@ -2,16 +2,16 @@ pragma solidity ^0.6.0;
 
 interface TokenFactoryInterface {
     // Get created token count
-    function totalTokenCount() external returns(uint256);
+    function totalTokenCount() external view returns(uint256);
 
     // Get token address by index
-    function tokenOf(uint256 id) external returns(address);
+    function tokenOf(uint256 id) external view returns(address);
 
     // get token amount of creator
-    function tokenAmountOf(address creator) external returns(uint256);
+    function tokenAmountOf(address creator) external view returns(uint256);
 
     // get a creator token of specific id
-    function creatorTokenOf(address creator, uint256 id) external returns(address);
+    function creatorTokenOf(address creator, uint256 id) external view returns(address);
 
     // Create new creator token, and then transfer tokens to owner and vesting contract
     function createToken(
