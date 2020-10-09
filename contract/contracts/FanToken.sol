@@ -10,7 +10,6 @@ contract FanToken is ERC20 {
         address owner,
         uint8 decimals
     ) public ERC20(name, symbol) {
-        // mint for creator and fans separately.
         _mint(owner, totalSupply);
         _setupDecimals(decimals);
     }
