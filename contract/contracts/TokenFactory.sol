@@ -43,6 +43,8 @@ contract TokenFactory is TokenFactoryInterface {
         { // To avoid stack too deep
             FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals);
             tokenAddress = address(newToken);
+            // TODO: Send token to vesting contract(for creator) and creator(for distribution to fans) depend on ratio
+            newToken.transfer(creator, totalSupply);
         }
         {
             uint256 nextTokenId = totalCount.add(1);

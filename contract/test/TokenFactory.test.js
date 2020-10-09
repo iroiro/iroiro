@@ -66,5 +66,26 @@ describe("TokenFactory", () => {
       const newCreatorTokenAddress = await this.factory.creatorTokenOf(alice, 1).toString()
       expect(newTokenAddress).to.equal(newCreatorTokenAddress)
     })
+
+    it("mint token with given supply", async function() {
+      const totalSupply = 100000000000
+      await this.factory.createToken(alice, "AliceToken", "ALC", totalSupply, 10, 50, true, 5, false, {from: owner})
+      const newTokenAddress = await this.factory.tokenOf(1)
+      const fanToken = await FanToken.at(newTokenAddress)
+      expect((await fanToken.totalSupply()).toString()).to.equal(totalSupply.toString())
+    })
+
+    it("transfer token to creator", async function() {
+      const totalSupply = 100000000000
+      await this.factory.createToken(alice, "AliceToken", "ALC", totalSupply, 10, 50, true, 5, false, {from: owner})
+      const newTokenAddress = await this.factory.tokenOf(1)
+      const fanToken = await FanToken.at(newTokenAddress)
+      // TODO Update amount depend on ratio
+      expect((await fanToken.balanceOf(alice)).toString()).to.equal(totalSupply.toString())
+    })
+
+    xit("transfer token to vesting contract", async function() {
+      // TODO
+    })
   })
 })
