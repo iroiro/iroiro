@@ -4,17 +4,16 @@ import {
   Field,
 } from "rimble-ui";
 
-const NumberInput = ({label, handleInput, inputValue, max, placeholder}) => (
+const NumberInput = ({label, value, placeholder}) => (
   <div>
     <Field label={label} width={1}>
       <Input
         type="number"
         required
-        onChange={(event)=>handleInput(event.target.value)}
-        value={inputValue}
+        value={value}
         width={1}
-        max={max}
         placeholder={placeholder}
+        readOnly
       />
     </Field>
   </div>

@@ -8,6 +8,7 @@ import {
 } from "rimble-ui";
 import TextInput from "../molecules/TextInput"
 import NumberInput from "../molecules/NumberInput"
+import NumberInputReadOnly from "../molecules/NumberInputReadOnly"
 import CheckBox from "../molecules/CheckBox"
 
 const CreateTokenForm = ({
@@ -81,12 +82,12 @@ const CreateTokenForm = ({
               label="Team"
               handleInput={teamInput}
               inputValue={teamValue}
+              max={100}
               placeholder="30%"
             />
-            <NumberInput
+            <NumberInputReadOnly
               label="Community"
-              handleInput={communityInput}
-              inputValue={communityValue}
+              value={100 - teamValue}
               placeholder="70%"
             />
           </Flex>
