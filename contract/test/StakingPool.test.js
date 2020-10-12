@@ -90,5 +90,40 @@ describe("StakingPool", () => {
       expect((await this.pool.balanceOf(alice, this.abctoken.address)).toString()).to.equal("100")
     })
   })
-})
 
+  describe("withdraw", () => {
+    beforeEach(async () => {
+      await this.pool.addTokenToStakingList(this.abctoken.address, {from: owner})
+    })
+
+    it("throw an error when balance is less than withdraw amount", async () => {
+      try {
+        await this.pool.withdraw(1, this.abctoken.address, {from: alice})
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+      }
+
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+      try {
+        await this.pool.withdraw(101, this.abctoken.address, {from: alice})
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+        expect((await this.pool.balanceOf(alice, this.abctoken.address)).toString()).to.equal("100")
+      }
+    })
+
+    it("transfer from pool to message sender", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+
+      await this.pool.withdraw(100, this.abctoken.address, {from: alice})
+      expect((await this.pool.balanceOf(alice, this.abctoken.address)).toString()).to.equal("0")
+      expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("100")
+    })
+  })
+})
