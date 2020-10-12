@@ -34,11 +34,12 @@ contract TokenFactory is TokenFactoryInterface {
         string memory symbol,
         uint256 totalSupply,
         uint8 decimals,
-        uint8 ratio,
+        uint8 ratio, // TODO update name more explicitly
         bool isTotalSupplyFixed,
         uint8 lockupPeriod, // years
         bool enableStakeToToken
     ) public override returns (address) {
+        // TODO Validate ratio is between 0 and 100
         address tokenAddress;
         { // To avoid stack too deep
             FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals);
