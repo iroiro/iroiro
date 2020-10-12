@@ -19,16 +19,13 @@ contract StakingPool is PoolInterface, Ownable {
         return creatorsTokenBalances[account][token];
     }
 
-    function totalSupplyOf(address token) public view returns(uint256) {
-        return tokensTotalSupply[token];
-    }
-
     function addTokenToStakingList(address token) public onlyOwner {
         registeredTokens[token] = true;
     }
 
-    function earned(address account, address token) public override view returns(uint256) {
-        return 0;
+    function earned(address account, address token, uint256 totalSupply, uint8 decimals) public override view returns(uint256) {
+        // TODO: claim amount is currently simplest mock. It will be replaced with formula
+        return balanceOf(account, token).mul(10 ** uint256(decimals)).div(totalSupply);
     }
 
     function stake(uint256 amount, address token) public override {
@@ -48,7 +45,8 @@ contract StakingPool is PoolInterface, Ownable {
 
     function claim(address token) public override {
         FanToken fanToken = FanToken(token);
-        // TODO: claim amount is currently simplest mock. It will be replaced with formula
-//        fanToken.mint()
+        uint256 totalSupply = fanToken.totalSupply();
+        uint8 decimals = fanToken.decimals();
+        fanToken.mint(msg.sender, earned(msg.sender, token, totalSupply, decimals));
     }
 }

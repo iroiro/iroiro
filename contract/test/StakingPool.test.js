@@ -77,7 +77,14 @@ describe("StakingPool", () => {
 
   describe("earned", () => {
     it("return earned amount", async () => {
-      expect((await this.pool.earned(alice, constants.ZERO_ADDRESS)).toString()).to.equal("0")
+      await this.pool.addTokenToStakingList(this.abctoken.address, {from: owner})
+      await this.abctoken.transfer(alice, 100000, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100000, {from: alice})
+      await this.pool.stake(100000, this.abctoken.address, {from: alice})
+      const totalSupply = (await this.abctoken.totalSupply()).toString()
+      console.debug(totalSupply)
+      const decimals = await this.abctoken.decimals();
+      expect((await this.pool.earned(alice, this.abctoken.address, totalSupply, decimals)).toString()).to.equal("10")
     })
   })
 
