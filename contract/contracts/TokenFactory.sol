@@ -7,13 +7,17 @@ contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
 
     // TODO define event
-    // TODO: Add staking pool address
 
     mapping(uint256 => address) private tokens;
     mapping(address => uint256) private tokenAmountOfCreators;
     mapping(address => mapping(uint256 => address)) private tokensOfCreators;
 
     uint256 private totalCount = 0;
+    address private stakingPool;
+
+    constructor(address _stakingPool) public {
+        stakingPool = _stakingPool;
+    }
 
     function totalTokenCount() public view override returns (uint256) {
         return totalCount;
@@ -46,7 +50,7 @@ contract TokenFactory is TokenFactoryInterface {
         // TODO register token to staking token list
         address tokenAddress;
         { // To avoid stack too deep
-            FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals);
+            FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, stakingPool);
             tokenAddress = address(newToken);
             // TODO: Send token to vesting contract(for creator) and creator(for distribution to fans) depend on ratio
             newToken.transfer(creator, totalSupply);

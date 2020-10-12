@@ -47,6 +47,8 @@ contract StakingPool is PoolInterface, Ownable {
     }
 
     function claim(address token) public override {
-
+        FanToken fanToken = FanToken(token);
+        // TODO: claim amount is currently simplest mock. It will be replaced with formula
+//        fanToken.mint()
     }
 }

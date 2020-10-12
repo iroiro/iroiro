@@ -11,10 +11,10 @@ describe("StakingPool", () => {
   beforeEach(async () => {
     this.pool = await StakingPool.new({from: owner})
     this.abctoken = await FanToken.new(
-      "ABCToken", "ABC", 1000000000, owner, 5, {from: owner}
+      "ABCToken", "ABC", 1000000000, owner, 5, this.pool.address, {from: owner}
     )
     this.xyztoken = await FanToken.new(
-      "XYZToken", "XYZ", 1000000000, owner, 5, {from: owner}
+      "XYZToken", "XYZ", 1000000000, owner, 5, this.pool.address, {from: owner}
     )
   })
 
