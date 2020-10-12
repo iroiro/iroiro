@@ -6,6 +6,8 @@ import "./FanToken.sol";
 contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
 
+    // TODO: Add staking pool address
+
     mapping(uint256 => address) private tokens;
     mapping(address => uint256) private tokenAmountOfCreators;
     mapping(address => mapping(uint256 => address)) private tokensOfCreators;
@@ -40,6 +42,7 @@ contract TokenFactory is TokenFactoryInterface {
         bool enableStakeToToken
     ) public override returns (address) {
         // TODO Validate ratio is between 0 and 100
+        // TODO register token to staking token list
         address tokenAddress;
         { // To avoid stack too deep
             FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals);
