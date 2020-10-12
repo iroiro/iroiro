@@ -18,6 +18,46 @@ describe("StakingPool", () => {
     )
   })
 
+  describe("tokensTotalSupply", () => {
+    beforeEach(async () => {
+      await this.pool.addTokenToStakingList(this.abctoken.address, {from: owner})
+    })
+
+    it("returns 0 when token is not registered", async () => {
+      expect((await this.pool.tokensTotalSupply(this.xyztoken.address)).toString()).to.equal("0")
+    })
+
+    it("incremented by staking", async () => {
+      expect((await this.pool.tokensTotalSupply(this.abctoken.address)).toString()).to.equal("0")
+
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+      expect((await this.pool.tokensTotalSupply(this.abctoken.address)).toString()).to.equal("100")
+
+      await this.abctoken.transfer(bob, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: bob})
+      await this.pool.stake(100, this.abctoken.address, {from: bob})
+      expect((await this.pool.tokensTotalSupply(this.abctoken.address)).toString()).to.equal("200")
+    })
+
+    it("decremented by staking", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+      await this.abctoken.transfer(bob, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: bob})
+      await this.pool.stake(100, this.abctoken.address, {from: bob})
+      expect((await this.pool.tokensTotalSupply(this.abctoken.address)).toString()).to.equal("200")
+
+      await this.pool.withdraw(50, this.abctoken.address, {from: alice})
+      expect((await this.pool.tokensTotalSupply(this.abctoken.address)).toString()).to.equal("150")
+      await this.pool.withdraw(50, this.abctoken.address, {from: bob})
+      expect((await this.pool.tokensTotalSupply(this.abctoken.address)).toString()).to.equal("100")
+    })
+  })
+
+
   describe("addTokenToStakingList", () => {
     it("add token as staking token", async () => {
       expect(await this.pool.registeredTokens(this.abctoken.address)).to.equal(false)
