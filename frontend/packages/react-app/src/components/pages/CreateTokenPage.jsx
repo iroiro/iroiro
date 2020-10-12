@@ -1,19 +1,22 @@
 import React, {useCallback, useEffect, useState} from "react";
+import {ethers} from "ethers"
 import {web3Modal} from "../../utils/web3Modal";
-import {Web3Provider} from "@ethersproject/providers";
+import {Contract} from "@ethersproject/contracts";
+import {abis, addresses} from "@project/contracts";
+import {getDefaultProvider, Web3Provider} from "@ethersproject/providers";
 import CreateTokenPageTemplate from "../templates/CreateTokenPageTemplate";
 
 const CreateTokenPage = () => {
   const [provider, setProvider] = useState();
-  const [nameValue , nameInput] = useState("");
-  const [symbolValue , symbolInput] = useState("");
-  const [numberValue , numberInput] = useState("");
-  const [decimalsValue , decimalsInput] = useState("");
+  const [nameValue , nameInput] = useState("Sample Token");
+  const [symbolValue , symbolInput] = useState("SMT");
+  const [numberValue , numberInput] = useState(10000000000);
+  const [decimalsValue , decimalsInput] = useState(18);
   const [limitCheckboxValue, handleLimitCheckbox] = useState(false);
-  const [teamValue, teamInput] = useState("");
-  const [communityValue, communityInput] = useState("");
-  const [lockupValue, lockupInput] = useState("");
-  const [stakingCheckboxValue, handleStakingCheckbox] = useState("");
+  const [teamValue, teamInput] = useState(30);
+  const [communityValue, communityInput] = useState(70);
+  const [lockupValue, lockupInput] = useState(2);
+  const [stakingCheckboxValue, handleStakingCheckbox] = useState(true);
 
   /* Open wallet selection modal. */
   const loadWeb3Modal = useCallback(async () => {
@@ -28,19 +31,25 @@ const CreateTokenPage = () => {
     }
   }, [loadWeb3Modal]);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log("Submitted valid form");
-    console.log({
+    const signer = await provider.getSigner();
+    const walletAddress = await signer.getAddress()
+    const tokenFactory = new Contract(addresses.TokenFactory, abis.tokenFactory, signer);
+    const tx = await tokenFactory.createToken(
+      walletAddress,
+      nameValue,
       symbolValue,
       numberValue,
       decimalsValue,
-      limitCheckboxValue,
       teamValue,
-      communityValue,
+      limitCheckboxValue,
       lockupValue,
       stakingCheckboxValue
-    });
+    )
+
+    const receipt = await tx.wait()
+    console.log(receipt)
   }
   
   return (
