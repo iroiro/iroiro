@@ -134,4 +134,4 @@ Replace `paulrberg/create-eth-app` in the package.json script with your subgraph
 
 You may also want to [read more about the hosted service](https://thegraph.com/docs/quick-start#hosted-service).
 
-test 
+hoge
