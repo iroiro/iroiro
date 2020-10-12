@@ -45,5 +45,5 @@ interface PoolInterface {
 
 interface Vesting {
     // transfer available tokens to creator
-    function claim() external;
+    function redeem() external;
 }
