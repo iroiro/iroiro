@@ -23,7 +23,12 @@ contract StakingPool is PoolInterface, Ownable {
         registeredTokens[token] = true;
     }
 
-    function earned(address account, address token, uint256 totalSupply, uint8 decimals) public override view returns(uint256) {
+    function earned(
+        address account,
+        address token,
+        uint256 totalSupply,
+        uint8 decimals
+    ) public override view returns(uint256) {
         // TODO: claim amount is currently simplest mock. It will be replaced with formula
         return balanceOf(account, token).mul(10 ** uint256(decimals)).div(totalSupply);
     }
