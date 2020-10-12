@@ -6,6 +6,7 @@ import "./FanToken.sol";
 contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
 
+    // TODO define event
     // TODO: Add staking pool address
 
     mapping(uint256 => address) private tokens;
