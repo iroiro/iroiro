@@ -3,7 +3,11 @@ import ExplorePageTemplate from "../templates/ExplorePageTemplate";
 
 const ExplorePage = () => {
   return (
-    <ExplorePageTemplate/>
+    <ExplorePageTemplate
+      name={"TOKENNAME ABC"}
+      balance={"123"}
+      symbol={"ABC"}
+    />
   );
 }
 
