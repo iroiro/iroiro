@@ -6,7 +6,17 @@ import "./FanToken.sol";
 contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
 
-    // TODO define event
+    event CreateToken (
+        address indexed creator,
+        string name,
+        string symbol,
+        uint256 totalSupply,
+        uint8 decimals,
+        uint8 creatorTokenRatio,
+        bool isTotalSupplyFixed,
+        uint8 lockupPeriod,
+        bool enableStakeToToken
+    );
 
     mapping(uint256 => address) private tokens;
     mapping(address => uint256) private tokenAmountOfCreators;
@@ -43,19 +53,19 @@ contract TokenFactory is TokenFactoryInterface {
         string memory symbol,
         uint256 totalSupply,
         uint8 decimals,
-        uint8 ratio, // TODO update name more explicitly
+        uint8 creatorTokenRatio,
         bool isTotalSupplyFixed,
         uint8 lockupPeriod, // years
         bool enableStakeToToken
     ) external override returns (address) {
-        require(ratio <= 100, "Ratio must be a number between 0 and 100");
+        require(creatorTokenRatio <= 100, "Ratio must be a number between 0 and 100");
         require(totalSupply > 10, "Total supply is too small");
         // TODO register token to staking token list
         FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, stakingPool);
         {// To avoid stack too deep
-            newToken.transfer(address(vesting), totalSupply.mul(ratio).div(100));
+            newToken.transfer(address(vesting), totalSupply.mul(creatorTokenRatio).div(100));
             // Tokens for fans is currently transferred to creator. Distributed by other ways in the future
-            newToken.transfer(creator, totalSupply.sub(totalSupply.mul(ratio).div(100)));
+            newToken.transfer(creator, totalSupply.sub(totalSupply.mul(creatorTokenRatio).div(100)));
             vesting.addVesting(
                 address(newToken),
                 creator,
@@ -74,6 +84,17 @@ contract TokenFactory is TokenFactoryInterface {
             tokensOfCreators[creator][nextCreatorTokenId] = address(newToken);
         }
 
+        emit CreateToken(
+            creator,
+            name,
+            symbol,
+            totalSupply,
+            decimals,
+            creatorTokenRatio,
+            isTotalSupplyFixed,
+            lockupPeriod,
+            enableStakeToToken
+        );
         return address(newToken);
     }
 }
