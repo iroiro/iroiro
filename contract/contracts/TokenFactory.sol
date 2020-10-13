@@ -49,6 +49,7 @@ contract TokenFactory is TokenFactoryInterface {
         bool enableStakeToToken
     ) external override returns (address) {
         require(ratio <= 100, "Ratio must be a number between 0 and 100");
+        require(totalSupply > 10, "Total supply is too small");
         // TODO register token to staking token list
         FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, stakingPool);
         {// To avoid stack too deep

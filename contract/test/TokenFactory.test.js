@@ -57,6 +57,15 @@ describe("TokenFactory", () => {
       }
     })
 
+    it("throw an error if token amount is too small", async function() {
+      try {
+        await this.factory.createToken(alice, "AliceToken", "ALC", 10, 0, 100, true, 5, false, {from: owner})
+        assert.fail("should throw error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
     it("increment totalTokenCount", async function () {
       expect((await this.factory.totalTokenCount()).toString()).to.equal("0")
 
