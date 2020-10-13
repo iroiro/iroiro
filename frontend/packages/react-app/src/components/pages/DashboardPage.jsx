@@ -33,16 +33,30 @@ const DashboardPage = () => {
   async function getTokenList() {
     const signer = await provider.getSigner()
     const walletAddress = await signer.getAddress()
-    console.log(walletAddress)
     const tokenFactory = new Contract(addresses.TokenFactory, abis.tokenFactory, signer)
     const tokenAmount = await tokenFactory.tokenAmountOf(walletAddress)
     console.log(tokenAmount.toNumber())
 
-    for (let i = 0; i < tokenAmount; i++) {
+    const tokenArray = []
+
+    for (let i = 1; i < tokenAmount; i++) {
       const tokenAddress = await tokenFactory.creatorTokenOf(walletAddress, i)
-      tokens.push(tokenAddress)
-      setTokensAddress(tokens)
+      const fanToken = new Contract(tokenAddress, abis.fanToken, signer)
+      const name = await fanToken.name()
+      const symbol = await fanToken.symbol()
+      const tokenInfo = {
+        address: tokenAddress,
+        name: name,
+        symbol: symbol,
+        vestingAmount: 8888888
+      }
+      tokenArray.push(tokenInfo)
     }
+    setTokensAddress(tokenArray)
+  }
+
+  const withdrawToken = () => {
+    console.log("Withdraw Token!!")
   }
 
   return (
@@ -53,6 +67,8 @@ const DashboardPage = () => {
         path={path}
         name={name}
         vestingAmount={vestingAmount}
+        tokens={tokens}
+        withdrawToken={withdrawToken}
       />
     </div>
   );

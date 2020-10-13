@@ -1,13 +1,16 @@
 import React from "react";
-import { Link, Card, Text } from "rimble-ui";
+import { Card, Text, Button } from "rimble-ui";
+import { Link } from 'react-router-dom'
 
-const CreatedTokenInfo = ({path, name, vestingAmount}) => (
-  <Link to={path} style={{textDecoration: 'none'}}>
+const CreatedTokenInfo = ({token, withdrawToken}) => (
     <Card color="black" p="1">
-      <Text>{name}</Text>
-      <Text>{vestingAmount}</Text>
+      <Link to={`token/${token.address}`} style={{textDecoration: 'none'}}>
+        <Text fontWeight={"bold"}>{token.name}</Text>
+      </Link>
+      <Text>{token.address}</Text>
+      <Text>{token.vestingAmount} {token.symbol}</Text>
+      <Button onClick={withdrawToken}>Withdraw</Button>
     </Card>
-  </Link>
 )
 
 export default CreatedTokenInfo
