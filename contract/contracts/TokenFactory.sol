@@ -6,11 +6,18 @@ import "./FanToken.sol";
 contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
 
+    // TODO define event
+
     mapping(uint256 => address) private tokens;
     mapping(address => uint256) private tokenAmountOfCreators;
     mapping(address => mapping(uint256 => address)) private tokensOfCreators;
 
     uint256 private totalCount = 0;
+    address private stakingPool;
+
+    constructor(address _stakingPool) public {
+        stakingPool = _stakingPool;
+    }
 
     function totalTokenCount() public view override returns (uint256) {
         return totalCount;
@@ -34,14 +41,16 @@ contract TokenFactory is TokenFactoryInterface {
         string memory symbol,
         uint256 totalSupply,
         uint8 decimals,
-        uint8 ratio,
+        uint8 ratio, // TODO update name more explicitly
         bool isTotalSupplyFixed,
         uint8 lockupPeriod, // years
         bool enableStakeToToken
     ) public override returns (address) {
+        // TODO Validate ratio is between 0 and 100
+        // TODO register token to staking token list
         address tokenAddress;
         { // To avoid stack too deep
-            FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals);
+            FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, stakingPool);
             tokenAddress = address(newToken);
             // TODO: Send token to vesting contract(for creator) and creator(for distribution to fans) depend on ratio
             newToken.transfer(creator, totalSupply);
