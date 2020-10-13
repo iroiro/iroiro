@@ -1,4 +1,5 @@
 const {accounts, contract} = require("@openzeppelin/test-environment")
+const { time } = require("@openzeppelin/test-helpers")
 const {assert, expect} = require("chai")
 
 const FanToken = contract.fromArtifact("FanToken")

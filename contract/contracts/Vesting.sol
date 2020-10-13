@@ -16,7 +16,7 @@ contract Vesting is Ownable {
         uint256 vestingAmount,
         uint256 vestingStart,
         uint256 vestingEnd
-    ) public onlyOwner {
+    ) external onlyOwner {
         require(!vestingTokens[token], "Token is already registered");
         vestingTokens[token] = true;
         tokensVestingAmount[token] = vestingAmount;
@@ -25,7 +25,6 @@ contract Vesting is Ownable {
         tokensVestingEnd[token] = vestingEnd;
     }
 
-    function redeem(address token) public {
-
+    function redeem(address token) external {
     }
 }
