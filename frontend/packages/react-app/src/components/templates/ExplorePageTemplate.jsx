@@ -3,13 +3,11 @@ import AppHeader from "../molecules/AppHeader";
 import { Body } from "../index";
 import TokenList from "../organisms/TokenList";
 
-const ExplorePageTemplate = ({ provider, loadWeb3Modal, readOnChainData, name, balance, symbol}) => (
+const ExplorePageTemplate = ({ provider, loadWeb3Modal, tokens}) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
     <TokenList
-      name={name}
-      balance={balance}
-      symbol={symbol}
+      tokens={tokens}
     />
   </div>
 )

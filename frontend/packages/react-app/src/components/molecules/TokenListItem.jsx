@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, Card, Flex, Text , Link} from "rimble-ui";
+import { Link } from "react-router-dom";
+import { Box, Card, Flex, Text } from "rimble-ui";
 
-const TokenListItem = ({ path, name, balance, symbol }) => (
-  <Link to={path} style={{textDecoration: 'none'}}>
+const TokenListItem = ({ name, balance, symbol, address }) => (
+  <Link to={`/token/${address}`} style={{textDecoration: 'none'}}>
     <Card color="black" p="1">
       <Flex style={{justifyContent: "space-between", alignItems: "center"}}>
         <Text>{name}</Text>

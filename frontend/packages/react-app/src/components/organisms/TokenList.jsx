@@ -1,15 +1,22 @@
 import React from "react";
-import { Heading } from "rimble-ui";
+import { Heading, Loader } from "rimble-ui";
 import TokenListItem from "../molecules/TokenListItem";
 
-const TokenList = ({ name, balance, symbol }) => (
+const TokenList = ({ tokens }) => (
   <div>
     <Heading as={"h2"}>Token List</Heading>
-    <TokenListItem
-      name={name}
-      balance={balance}
-      symbol={symbol}
-    />
+    {tokens.length == 0 &&
+      <Loader size="80px" m="auto" />
+    }
+    {tokens.map(token => 
+      <TokenListItem
+        key={token.address}
+        name={token.name}
+        balance={token.balance}
+        symbol={token.symbol}
+        address={token.address}
+      />
+    )}
   </div>
 )
 
