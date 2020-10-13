@@ -7,7 +7,7 @@ const TokenFactory = contract.fromArtifact("TokenFactory")
 const Vesting = contract.fromArtifact("Vesting")
 
 describe("Vesting", () => {
-  const [owner, alice] = accounts
+  const [owner, alice, minter] = accounts
   const totalSupply = 1000000000
   const startTime = 1577836800 // Jan 1st 2020
   const endTime = 1609459200 // Jan 1st 2021
@@ -17,7 +17,7 @@ describe("Vesting", () => {
   beforeEach(async () => {
     this.vesting = await Vesting.new({from: owner})
     this.abctoken = await FanToken.new(
-      "ABCToken", "ABC", totalSupply, owner, 5, {from: owner}
+      "ABCToken", "ABC", totalSupply, owner, 5, minter, {from: owner}
     )
     await this.abctoken.transfer(this.vesting.address, totalSupply * 50 / 100, {from: owner})
     assert((await this.abctoken.balanceOf(this.vesting.address)).toString() === "500000000")

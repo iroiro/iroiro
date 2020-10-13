@@ -134,10 +134,9 @@ describe("TokenFactory", () => {
     it("pool contract can mint a created token", async function () {
       await this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
       const newTokenAddress = await this.factory.tokenOf(1)
-      console.debug(newTokenAddress)
       const aliceToken = await FanToken.at(newTokenAddress)
       await aliceToken.mint(alice, 100, {from: stakingPool})
-      expect((await aliceToken.balanceOf(alice)).toString()).to.equal("100000000100")
+      expect((await aliceToken.balanceOf(alice)).toString()).to.equal("50000000100")
     })
   })
 })
