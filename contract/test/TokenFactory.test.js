@@ -113,6 +113,19 @@ describe("TokenFactory", () => {
       expect(balanceForFans).to.equal("60000000000")
     })
 
+    it("add vesting", async function () {
+      const totalSupply = 100000000000
+      await this.factory.createToken(alice, "AliceToken", "ALC", totalSupply, 10, 40, true, 5, false, {from: owner})
+      const newTokenAddress = await this.factory.tokenOf(1)
+      expect(await this.vesting.vestingTokens(newTokenAddress)).to.equal(true)
+      expect((await this.vesting.tokensVestingAmount(newTokenAddress)).toString()).to.equal("40000000000")
+      expect(await this.vesting.tokensRecipient(newTokenAddress)).to.equal(alice)
+      const start = (await this.vesting.tokensVestingStart(newTokenAddress)).toNumber()
+      const end = (await this.vesting.tokensVestingEnd(newTokenAddress)).toNumber()
+      expect(end).to.equal(start + 5 * 365 * 24 * 60 * 60)
+      expect((await this.vesting.tokensLastUpdate(newTokenAddress)).toNumber()).to.equal(start)
+    })
+
     it("factory contract nor user can not mint a created token", async function () {
       await this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
       const newTokenAddress = await this.factory.tokenOf(1)
