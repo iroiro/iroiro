@@ -43,7 +43,7 @@ contract TokenFactory is TokenFactoryInterface {
         bool isTotalSupplyFixed,
         uint8 lockupPeriod, // years
         bool enableStakeToToken
-    ) public override returns (address) {
+    ) external override returns (address) {
         require(ratio <= 100, "Ratio must be a number between 0 and 100");
         address tokenAddress;
         { // To avoid stack too deep
