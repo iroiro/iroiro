@@ -45,6 +45,14 @@ interface PoolInterface {
 }
 
 interface Vesting {
+
+    function addVesting(
+        address token,
+        address recipient,
+        uint256 vestingStart,
+        uint256 vestingEnd
+    ) external;
+
     // transfer available tokens to creator
-    function claim() external;
+    function redeem() external;
 }

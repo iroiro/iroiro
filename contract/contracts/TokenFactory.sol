@@ -13,9 +13,11 @@ contract TokenFactory is TokenFactoryInterface {
     mapping(address => mapping(uint256 => address)) private tokensOfCreators;
 
     uint256 private totalCount = 0;
+    Vesting private vesting;
     address private stakingPool;
 
-    constructor(address _stakingPool) public {
+    constructor(address _vesting, address _stakingPool) public {
+        vesting = Vesting(_vesting);
         stakingPool = _stakingPool;
     }
 
@@ -32,7 +34,7 @@ contract TokenFactory is TokenFactoryInterface {
     }
 
     function creatorTokenOf(address creator, uint256 id) public view override returns (address) {
-        return address(0);
+        return tokensOfCreators[creator][id];
     }
 
     function createToken(
@@ -45,27 +47,33 @@ contract TokenFactory is TokenFactoryInterface {
         bool isTotalSupplyFixed,
         uint8 lockupPeriod, // years
         bool enableStakeToToken
-    ) public override returns (address) {
-        // TODO Validate ratio is between 0 and 100
+    ) external override returns (address) {
+        require(ratio <= 100, "Ratio must be a number between 0 and 100");
+        require(totalSupply > 10, "Total supply is too small");
         // TODO register token to staking token list
-        address tokenAddress;
-        { // To avoid stack too deep
-            FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, stakingPool);
-            tokenAddress = address(newToken);
-            // TODO: Send token to vesting contract(for creator) and creator(for distribution to fans) depend on ratio
-            newToken.transfer(creator, totalSupply);
+        FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, stakingPool);
+        {// To avoid stack too deep
+            newToken.transfer(address(vesting), totalSupply.mul(ratio).div(100));
+            // Tokens for fans is currently transferred to creator. Distributed by other ways in the future
+            newToken.transfer(creator, totalSupply.sub(totalSupply.mul(ratio).div(100)));
+            vesting.addVesting(
+                address(newToken),
+                creator,
+                block.timestamp,
+                block.timestamp.add(uint256(lockupPeriod).mul(365 days))
+            );
         }
         {
             uint256 nextTokenId = totalCount.add(1);
             totalCount = nextTokenId;
-            tokens[nextTokenId] = tokenAddress;
+            tokens[nextTokenId] = address(newToken);
         }
         {
             uint256 nextCreatorTokenId = tokenAmountOfCreators[creator].add(1);
             tokenAmountOfCreators[creator] = nextCreatorTokenId;
-            tokensOfCreators[creator][nextCreatorTokenId] = tokenAddress;
+            tokensOfCreators[creator][nextCreatorTokenId] = address(newToken);
         }
 
-        return tokenAddress;
+        return address(newToken);
     }
 }
