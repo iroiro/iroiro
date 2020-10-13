@@ -11,6 +11,11 @@ contract TokenFactory is TokenFactoryInterface {
     mapping(address => mapping(uint256 => address)) private tokensOfCreators;
 
     uint256 private totalCount = 0;
+    address private vesting;
+
+    constructor(address _vesting) public {
+        vesting = _vesting;
+    }
 
     function totalTokenCount() public view override returns (uint256) {
         return totalCount;
@@ -39,12 +44,14 @@ contract TokenFactory is TokenFactoryInterface {
         uint8 lockupPeriod, // years
         bool enableStakeToToken
     ) public override returns (address) {
+        require(ratio <= 100, "Ratio must be a number between 0 and 100");
         address tokenAddress;
         { // To avoid stack too deep
             FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals);
             tokenAddress = address(newToken);
-            // TODO: Send token to vesting contract(for creator) and creator(for distribution to fans) depend on ratio
-            newToken.transfer(creator, totalSupply);
+            newToken.transfer(vesting, totalSupply.mul(ratio).div(100));
+            // Tokens for fans is currently transferred to creator. Distributed by other ways in the future
+            newToken.transfer(creator, totalSupply.mul(uint256(100).sub(ratio)).div(100));
         }
         {
             uint256 nextTokenId = totalCount.add(1);
