@@ -11,6 +11,8 @@ describe("Vesting", () => {
   const totalSupply = 1000000000
   const startTime = 1577836800 // Jan 1st 2020
   const endTime = 1609459200 // Jan 1st 2021
+  const futureStartTime = 1735689600 // Jan 1st 2025
+  const futureEndTime = 1767225600 // Jan 1st 2026
 
   beforeEach(async () => {
     this.vesting = await Vesting.new({from: owner})
@@ -78,13 +80,52 @@ describe("Vesting", () => {
   })
 
   describe("redeem", () => {
-    it("does not throw error", async () => {
+    it("throw an error when token is not registered", async () => {
       try {
-        await this.vesting.redeem(this.abctoken.address)
-        assert(true)
+        await this.vesting.redeem(this.xyztoken.address)
+        assert.fail("should throw an error")
       } catch (error) {
-        assert.fail("should not throw an error")
+        assert(true)
       }
+    })
+
+    it("throw an error when token vesting is not started", async () => {
+      await this.vesting.addVesting(
+        this.abctoken.address, alice, totalSupply * 50 / 100, futureStartTime, futureEndTime, {from: owner}
+      )
+      try {
+        await this.vesting.redeem(this.xyztoken.address)
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
+    it("redeem partial token", async() => {
+      await this.vesting.addVesting(
+        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+      )
+      const oneMonth = 60 * 60 * 24 * 30
+      await time.increase(oneMonth)
+      await this.vesting.redeem(this.abctoken.address)
+      const recipient = await this.vesting.tokensRecipient(this.abctoken.address) // alice
+
+      const recipientBalance = (await this.abctoken.balanceOf(recipient)).toNumber()
+      expect(recipientBalance).to.below(totalSupply * 50 / 100)
+      expect(recipientBalance).to.above(0)
+    })
+
+    it("redeem all token", async() => {
+      await this.vesting.addVesting(
+        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+      )
+      const oneYear = endTime - startTime
+      await time.increase(oneYear)
+      await this.vesting.redeem(this.abctoken.address)
+      const recipient = await this.vesting.tokensRecipient(this.abctoken.address) // alice
+
+      const recipientBalance = (await this.abctoken.balanceOf(recipient)).toString()
+      expect(recipientBalance).to.equal((totalSupply * 50 / 100).toString())
     })
   })
 })
