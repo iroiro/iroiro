@@ -39,8 +39,8 @@ const DashboardPage = () => {
 
     const tokenArray = []
 
-    for (let i = 1; i < tokenAmount; i++) {
-      const tokenAddress = await tokenFactory.creatorTokenOf(walletAddress, i)
+    for (let i = 0; i < tokenAmount; i++) {
+      const tokenAddress = await tokenFactory.creatorTokenOf(walletAddress, i+1)
       const fanToken = new Contract(tokenAddress, abis.fanToken, signer)
       const name = await fanToken.name()
       const symbol = await fanToken.symbol()
