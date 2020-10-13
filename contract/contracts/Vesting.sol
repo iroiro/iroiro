@@ -13,6 +13,11 @@ contract Vesting is Ownable {
     mapping(address => uint256) public tokensVestingEnd;
     mapping(address => uint256) public tokensLastUpdate;
 
+    function remainingAmount(address token) external view returns(uint256) {
+        FanToken fanToken = FanToken(token);
+        return fanToken.balanceOf(address(this));
+    }
+
     function addVesting(
         address token,
         address recipient,

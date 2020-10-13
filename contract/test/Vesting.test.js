@@ -1,5 +1,5 @@
 const {accounts, contract} = require("@openzeppelin/test-environment")
-const { time } = require("@openzeppelin/test-helpers")
+const {time} = require("@openzeppelin/test-helpers")
 const {assert, expect} = require("chai")
 
 const FanToken = contract.fromArtifact("FanToken")
@@ -21,6 +21,16 @@ describe("Vesting", () => {
     )
     await this.abctoken.transfer(this.vesting.address, totalSupply * 50 / 100, {from: owner})
     assert((await this.abctoken.balanceOf(this.vesting.address)).toString() === "500000000")
+  })
+
+  describe("remainingAmount", () => {
+    it("returns current balance", async () => {
+      await this.vesting.addVesting(
+        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+      )
+      expect((await this.vesting.remainingAmount(this.abctoken.address)).toString()).to.equal("500000000")
+      // TODO Add testing after redeem. Currently conflicts with another test case
+    })
   })
 
   describe("addVesting", () => {
@@ -101,7 +111,7 @@ describe("Vesting", () => {
       }
     })
 
-    it("redeem partial token", async() => {
+    it("redeem partial token", async () => {
       await this.vesting.addVesting(
         this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
       )
@@ -115,7 +125,7 @@ describe("Vesting", () => {
       expect(recipientBalance).to.above(0)
     })
 
-    it("redeem all token", async() => {
+    it("redeem all token", async () => {
       await this.vesting.addVesting(
         this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
       )
