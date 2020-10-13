@@ -31,7 +31,8 @@ interface TokenFactoryInterface {
 
 interface PoolInterface {
     // Get available token amount
-    function earned(address account, address token) external returns(uint256);
+    // totalSupply and decimals are possibly removed
+    function earned(address account, address token, uint256 totalSupply, uint8 decimals) external view returns(uint256);
 
     // stake user tokens
     function stake(uint256 amount, address token) external;

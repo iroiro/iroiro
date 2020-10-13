@@ -7,11 +7,11 @@ const FanToken = contract.fromArtifact("FanToken");
 const Vesting = contract.fromArtifact("Vesting");
 
 describe("TokenFactory", () => {
-  const [owner, alice, bob] = accounts;
+  const [owner, alice, stakingPool] = accounts;
 
   beforeEach(async function () {
     this.vesting = await Vesting.new({from: owner})
-    this.factory = await TokenFactory.new(this.vesting.address, {from: owner})
+    this.factory = await TokenFactory.new(this.vesting.address, stakingPool, {from: owner})
     await this.vesting.transferOwnership(this.factory.address, {from: owner})
   })
 
@@ -34,7 +34,7 @@ describe("TokenFactory", () => {
   describe("createToken", function () {
     it("create a new token", async function () {
       try {
-        await this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
+        this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
         assert(true)
       } catch (error) {
         assert.fail("should not throw error")
@@ -94,6 +94,7 @@ describe("TokenFactory", () => {
       expect((await fanToken.totalSupply()).toString()).to.equal(totalSupply.toString())
     })
 
+
     it("transfer token to vesting", async function () {
       const totalSupply = 100000000000
       await this.factory.createToken(alice, "AliceToken", "ALC", totalSupply, 10, 40, true, 5, false, {from: owner})
@@ -110,6 +111,33 @@ describe("TokenFactory", () => {
       const fanToken = await FanToken.at(newTokenAddress)
       const balanceForFans = (await fanToken.balanceOf(alice)).toString() // Balance creator holds is for fans
       expect(balanceForFans).to.equal("60000000000")
+    })
+
+    it("factory contract nor user can not mint a created token", async function () {
+      await this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
+      const newTokenAddress = await this.factory.tokenOf(1)
+      const aliceToken = await FanToken.at(newTokenAddress)
+      try {
+        await aliceToken.mint(alice, 100, {from: alice})
+        assert.fail("should not throw error")
+      } catch (error) {
+        assert(true)
+      }
+      try {
+        await aliceToken.mint(alice, 100, {from: owner})
+        assert.fail("should not throw error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
+    it("pool contract can mint a created token", async function () {
+      await this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
+      const newTokenAddress = await this.factory.tokenOf(1)
+      console.debug(newTokenAddress)
+      const aliceToken = await FanToken.at(newTokenAddress)
+      await aliceToken.mint(alice, 100, {from: stakingPool})
+      expect((await aliceToken.balanceOf(alice)).toString()).to.equal("100000000100")
     })
   })
 })

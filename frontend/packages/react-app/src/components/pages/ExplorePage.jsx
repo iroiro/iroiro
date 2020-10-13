@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react"
-import { ethers } from "ethers"
+import {ethers} from "ethers"
 import {getDefaultProvider, Web3Provider} from "@ethersproject/providers";
 import {web3Modal} from "../../utils/web3Modal";
 import {Contract} from "@ethersproject/contracts";
