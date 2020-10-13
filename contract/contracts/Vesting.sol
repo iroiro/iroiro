@@ -13,7 +13,7 @@ contract Vesting is Ownable {
     mapping(address => uint256) public tokensVestingEnd;
     mapping(address => uint256) public tokensLastUpdate;
 
-    function remainingAmount(address token) external view returns(uint256) {
+    function remainingAmount(address token) public view returns(uint256) {
         FanToken fanToken = FanToken(token);
         return fanToken.balanceOf(address(this));
     }
@@ -21,13 +21,12 @@ contract Vesting is Ownable {
     function addVesting(
         address token,
         address recipient,
-        uint256 vestingAmount,
         uint256 vestingStart,
         uint256 vestingEnd
     ) external onlyOwner {
         require(!vestingTokens[token], "Token is already registered");
         vestingTokens[token] = true;
-        tokensVestingAmount[token] = vestingAmount;
+        tokensVestingAmount[token] = remainingAmount(token);
         tokensRecipient[token] = recipient;
         tokensVestingStart[token] = vestingStart;
         tokensVestingEnd[token] = vestingEnd;

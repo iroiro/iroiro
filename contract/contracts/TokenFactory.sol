@@ -58,7 +58,6 @@ contract TokenFactory is TokenFactoryInterface {
             vesting.addVesting(
                 address(newToken),
                 creator,
-                totalSupply.mul(ratio).div(100),
                 block.timestamp,
                 block.timestamp.add(uint256(lockupPeriod).mul(365 days))
             );

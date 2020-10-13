@@ -49,7 +49,6 @@ interface Vesting {
     function addVesting(
         address token,
         address recipient,
-        uint256 vestingAmount,
         uint256 vestingStart,
         uint256 vestingEnd
     ) external;

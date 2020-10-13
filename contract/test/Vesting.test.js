@@ -26,7 +26,7 @@ describe("Vesting", () => {
   describe("remainingAmount", () => {
     it("returns current balance", async () => {
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+        this.abctoken.address, alice, startTime, endTime, {from: owner}
       )
       expect((await this.vesting.remainingAmount(this.abctoken.address)).toString()).to.equal("500000000")
       // TODO Add testing after redeem. Currently conflicts with another test case
@@ -37,7 +37,7 @@ describe("Vesting", () => {
     it("register token as vesting", async () => {
       expect(await this.vesting.vestingTokens(this.abctoken.address)).to.equal(false)
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+        this.abctoken.address, alice, startTime, endTime, {from: owner}
       )
       expect(await this.vesting.vestingTokens(this.abctoken.address)).to.equal(true)
     })
@@ -45,7 +45,7 @@ describe("Vesting", () => {
     it("throw error when sender is not a owner", async () => {
       try {
         await this.vesting.addVesting(
-          this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: alice}
+          this.abctoken.address, alice, startTime, endTime, {from: alice}
         )
         assert.fail()
       } catch (error) {
@@ -55,11 +55,11 @@ describe("Vesting", () => {
 
     it("throw error when trying add token already registered", async () => {
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+        this.abctoken.address, alice, startTime, endTime, {from: owner}
       )
       try {
         await this.vesting.addVesting(
-          this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+          this.abctoken.address, alice, startTime, endTime, {from: owner}
         )
         assert.fail()
       } catch (error) {
@@ -69,21 +69,21 @@ describe("Vesting", () => {
 
     it("increment token amount", async () => {
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+        this.abctoken.address, alice, startTime, endTime, {from: owner}
       )
       expect((await this.vesting.tokensVestingAmount(this.abctoken.address)).toString()).to.equal("500000000")
     })
 
     it("register account as recipient", async () => {
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+        this.abctoken.address, alice, startTime, endTime, {from: owner}
       )
       expect(await this.vesting.tokensRecipient(this.abctoken.address)).to.equal(alice)
     })
 
     it("register account as recipient", async () => {
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+        this.abctoken.address, alice, startTime, endTime, {from: owner}
       )
       expect(await this.vesting.tokensRecipient(this.abctoken.address)).to.equal(alice)
     })
@@ -101,7 +101,7 @@ describe("Vesting", () => {
 
     it("throw an error when token vesting is not started", async () => {
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, futureStartTime, futureEndTime, {from: owner}
+        this.abctoken.address, alice, futureStartTime, futureEndTime, {from: owner}
       )
       try {
         await this.vesting.redeem(this.xyztoken.address)
@@ -113,7 +113,7 @@ describe("Vesting", () => {
 
     it("redeem partial token", async () => {
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+        this.abctoken.address, alice, startTime, endTime, {from: owner}
       )
       const oneMonth = 60 * 60 * 24 * 30
       await time.increase(oneMonth)
@@ -127,7 +127,7 @@ describe("Vesting", () => {
 
     it("redeem all token", async () => {
       await this.vesting.addVesting(
-        this.abctoken.address, alice, totalSupply * 50 / 100, startTime, endTime, {from: owner}
+        this.abctoken.address, alice, startTime, endTime, {from: owner}
       )
       const oneYear = endTime - startTime
       await time.increase(oneYear)
