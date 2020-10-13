@@ -30,7 +30,7 @@ contract TokenFactory is TokenFactoryInterface {
     }
 
     function creatorTokenOf(address creator, uint256 id) public view override returns (address) {
-        return address(0);
+        return tokensOfCreators[creator][id];
     }
 
     function createToken(

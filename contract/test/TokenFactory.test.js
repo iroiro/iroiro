@@ -81,8 +81,8 @@ describe("TokenFactory", () => {
 
     it("both of token and creator token address newly added is same", async function () {
       await this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
-      const newTokenAddress = await this.factory.tokenOf(1).toString()
-      const newCreatorTokenAddress = await this.factory.creatorTokenOf(alice, 1).toString()
+      const newTokenAddress = (await this.factory.tokenOf(1)).toString()
+      const newCreatorTokenAddress = (await this.factory.creatorTokenOf(alice, 1)).toString()
       expect(newTokenAddress).to.equal(newCreatorTokenAddress)
     })
 
