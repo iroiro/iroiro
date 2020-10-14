@@ -2,6 +2,7 @@ pragma solidity ^0.6.0;
 
 import "./interfaces.sol";
 import "./FanToken.sol";
+import "./StakingPool.sol";
 
 contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
@@ -24,11 +25,11 @@ contract TokenFactory is TokenFactoryInterface {
 
     uint256 private totalCount = 0;
     Vesting private vesting;
-    address private stakingPool;
+    StakingPool private stakingPool;
 
     constructor(address _vesting, address _stakingPool) public {
         vesting = Vesting(_vesting);
-        stakingPool = _stakingPool;
+        stakingPool = StakingPool(_stakingPool);
     }
 
     function totalTokenCount() public view override returns (uint256) {
@@ -62,7 +63,14 @@ contract TokenFactory is TokenFactoryInterface {
         require(totalSupply > 10, "Total supply is too small");
         // TODO register token to staking token list
         FanToken newToken = new FanToken(
-            name, symbol, totalSupply, payable(address(this)), decimals, stakingPool, creatorTokenRatio, lockupPeriod
+            name,
+            symbol,
+            totalSupply,
+            payable(address(this)),
+            decimals,
+            address(stakingPool),
+            creatorTokenRatio,
+            lockupPeriod
         );
         {// To avoid stack too deep
             newToken.transfer(address(vesting), totalSupply.mul(creatorTokenRatio).div(100));
@@ -74,6 +82,7 @@ contract TokenFactory is TokenFactoryInterface {
                 block.timestamp,
                 block.timestamp.add(uint256(lockupPeriod).mul(365 days))
             );
+            stakingPool.addStakingList(creator, address(newToken), !enableStakeToToken);
         }
         {
             uint256 nextTokenId = totalCount.add(1);
