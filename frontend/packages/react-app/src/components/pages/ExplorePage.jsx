@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react"
-import {ethers} from "ethers"
-import {getDefaultProvider, Web3Provider} from "@ethersproject/providers";
+import { Web3Provider} from "@ethersproject/providers";
 import {web3Modal} from "../../utils/web3Modal";
 import {Contract} from "@ethersproject/contracts";
 import {abis, addresses} from "@project/contracts";
@@ -9,10 +8,7 @@ import ExplorePageTemplate from "../templates/ExplorePageTemplate";
 const ExplorePage = () => {
   const [provider, setProvider] = useState()
   const [tokens, setTokens] = useState([])
-  const [name, setName] = useState()
-  const [symbol, setSymbol] = useState()
-  const [balanceToEther, setBalance] = useState()
- 
+
   /* Open wallet selection modal. */
   const loadWeb3Modal = useCallback(async () => {
     const newProvider = await web3Modal.connect();

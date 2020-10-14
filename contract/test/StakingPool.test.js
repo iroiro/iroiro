@@ -18,9 +18,57 @@ describe("StakingPool", () => {
     )
   })
 
+  describe("pauseStakingOf", () => {
+    it("throw an error if sender is not a creator", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
+      try {
+        await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
+    it("does modify if already paused", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, true, {from: owner})
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+      expect(await this.pool.tokensStakingPaused(this.abctoken.address)).to.equal(true)
+    })
+
+    it("pause staking", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+      expect(await this.pool.tokensStakingPaused(this.abctoken.address)).to.equal(true)
+    })
+  })
+
+  describe("resumeStakingOf", () => {
+    it("throw an error if sender is not a creator", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
+      try {
+        await this.pool.resumeStakingOf(this.abctoken.address, {from: alice})
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
+    it("does modify if already resumed", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
+      await this.pool.resumeStakingOf(this.abctoken.address, {from: alice})
+      expect(await this.pool.tokensStakingPaused(this.abctoken.address)).to.equal(false)
+    })
+
+    it("pause staking", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, true, {from: owner})
+      await this.pool.resumeStakingOf(this.abctoken.address, {from: alice})
+      expect(await this.pool.tokensStakingPaused(this.abctoken.address)).to.equal(false)
+    })
+  })
+
   describe("tokensTotalSupply", () => {
     beforeEach(async () => {
-      await this.pool.addTokenToStakingList(this.abctoken.address, {from: owner})
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
     })
 
     it("returns 0 when token is not registered", async () => {
@@ -57,17 +105,26 @@ describe("StakingPool", () => {
     })
   })
 
+  describe("addStakingList", () => {
+    beforeEach(async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, true, {from: owner})
+    })
 
-  describe("addTokenToStakingList", () => {
-    it("add token as staking token", async () => {
-      expect(await this.pool.registeredTokens(this.abctoken.address)).to.equal(false)
-      await this.pool.addTokenToStakingList(this.abctoken.address, {from: owner})
+    it("register token", async () => {
       expect(await this.pool.registeredTokens(this.abctoken.address)).to.equal(true)
+    })
+
+    it("register creator", async () => {
+      expect(await this.pool.tokensCreator(this.abctoken.address)).to.equal(alice)
+    })
+
+    it("register pause status", async () => {
+      expect(await this.pool.tokensStakingPaused(this.abctoken.address)).to.equal(true)
     })
 
     it("can not add token from non owner", async () => {
       try {
-        await this.pool.addTokenToStakingList(this.abctoken.address, {from: alice})
+        await this.pool.addStakingList(bob, this.abctoken.address, {from: alice})
         assert.fail()
       } catch (error) {
         assert(true)
@@ -77,20 +134,44 @@ describe("StakingPool", () => {
 
   describe("earned", () => {
     it("return earned amount", async () => {
-      await this.pool.addTokenToStakingList(this.abctoken.address, {from: owner})
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
       await this.abctoken.transfer(alice, 100000, {from: owner})
       await this.abctoken.approve(this.pool.address, 100000, {from: alice})
       await this.pool.stake(100000, this.abctoken.address, {from: alice})
       const totalSupply = (await this.abctoken.totalSupply()).toString()
-      console.debug(totalSupply)
       const decimals = await this.abctoken.decimals();
       expect((await this.pool.earned(alice, this.abctoken.address, totalSupply, decimals)).toString()).to.equal("10")
+    })
+
+    it("throw an error if staking paused", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, true, {from: owner})
+      try {
+        await this.pool.earned(alice, this.abctoken.address, totalSupply, decimals)
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
+    it("throw an error if staking paused", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+
+      try {
+        await this.pool.earned(alice, this.abctoken.address, totalSupply, decimals)
+        assert.fail("should not throw an error")
+      } catch (error) {
+        assert(true)
+      }
     })
   })
 
   describe("stake", () => {
     beforeEach(async () => {
-      await this.pool.addTokenToStakingList(this.abctoken.address, {from: owner})
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
     })
 
     it("cannot stake token not registered", async () => {
@@ -117,6 +198,20 @@ describe("StakingPool", () => {
         expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("100")
         await this.pool.stake(100, this.abctoken.address, {from: alice})
         expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("0")
+        assert.fail()
+      } catch (error) {
+        assert(true)
+      }
+    })
+
+    it("throw an error if staking is paused", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("100")
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+
+      try {
+        await this.pool.stake(50, this.abctoken.address, {from: alice})
         assert.fail()
       } catch (error) {
         assert(true)
@@ -151,7 +246,7 @@ describe("StakingPool", () => {
 
   describe("withdraw", () => {
     beforeEach(async () => {
-      await this.pool.addTokenToStakingList(this.abctoken.address, {from: owner})
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
     })
 
     it("throw an error when balance is less than withdraw amount", async () => {
@@ -184,6 +279,16 @@ describe("StakingPool", () => {
       expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("100")
     })
 
+    it("throw an error if staking paused", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, true, {from: owner})
+      try {
+        await this.pool.withdraw(alice, this.abctoken.address, totalSupply, decimals)
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
     it("emit an event", async () => {
       await this.abctoken.transfer(alice, 100, {from: owner})
       await this.abctoken.approve(this.pool.address, 100, {from: alice})
@@ -195,6 +300,45 @@ describe("StakingPool", () => {
         token: this.abctoken.address,
         amount: "100"
       })
+    })
+  })
+
+  describe("claim", () => {
+    beforeEach(async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
+    })
+
+    it("throw an error if staking paused", async () => {
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+
+      try {
+        await this.pool.claim(this.abctoken.address, {from: alice})
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
+    it("throw an nothing if staking paused after staking", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+
+      try {
+        await this.pool.claim(this.abctoken.address, {from: alice})
+        assert(true)
+      } catch (error) {
+        assert.fail("should now throw an error")
+      }
+    })
+
+    it("mint a new token", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+
+      await this.pool.claim(this.abctoken.address, {from: alice})
     })
   })
 })
