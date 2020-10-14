@@ -1,5 +1,5 @@
 const {accounts, contract} = require("@openzeppelin/test-environment")
-const {constants} = require("@openzeppelin/test-helpers")
+const {constants, expectEvent} = require("@openzeppelin/test-helpers")
 const {assert, expect} = require('chai');
 
 const TokenFactory = contract.fromArtifact("TokenFactory");
@@ -57,7 +57,7 @@ describe("TokenFactory", () => {
       }
     })
 
-    it("throw an error if token amount is too small", async function() {
+    it("throw an error if token amount is too small", async function () {
       try {
         await this.factory.createToken(alice, "AliceToken", "ALC", 10, 0, 100, true, 5, false, {from: owner})
         assert.fail("should throw error")
@@ -159,6 +159,21 @@ describe("TokenFactory", () => {
       const aliceToken = await FanToken.at(newTokenAddress)
       await aliceToken.mint(alice, 100, {from: stakingPool})
       expect((await aliceToken.balanceOf(alice)).toString()).to.equal("50000000100")
+    })
+
+    it("emit an event", async function () {
+      const receipt = await this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
+      expectEvent(receipt, "CreateToken", {
+        creator: alice,
+        name: "AliceToken",
+        symbol: "ALC",
+        totalSupply: "100000000000",
+        decimals: "10",
+        creatorTokenRatio: "50",
+        isTotalSupplyFixed: true,
+        lockupPeriod: "5",
+        enableStakeToToken: false
+      })
     })
   })
 })

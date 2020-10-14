@@ -1,5 +1,5 @@
 const {accounts, contract} = require("@openzeppelin/test-environment")
-const {constants} = require("@openzeppelin/test-helpers")
+const {constants, expectEvent} = require("@openzeppelin/test-helpers")
 const {assert, expect} = require("chai")
 
 const StakingPool = contract.fromArtifact("StakingPool")
@@ -136,6 +136,17 @@ describe("StakingPool", () => {
       expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("0")
       expect((await this.pool.balanceOf(alice, this.abctoken.address)).toString()).to.equal("100")
     })
+
+    it("emit an event", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      const receipt = await this.pool.stake(100, this.abctoken.address, {from: alice})
+      expectEvent(receipt, "Stake", {
+        from: alice,
+        token: this.abctoken.address,
+        amount: "100"
+      })
+    })
   })
 
   describe("withdraw", () => {
@@ -171,6 +182,19 @@ describe("StakingPool", () => {
       await this.pool.withdraw(100, this.abctoken.address, {from: alice})
       expect((await this.pool.balanceOf(alice, this.abctoken.address)).toString()).to.equal("0")
       expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("100")
+    })
+
+    it("emit an event", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+
+      const receipt = await this.pool.withdraw(100, this.abctoken.address, {from: alice})
+      expectEvent(receipt, "Withdraw", {
+        from: alice,
+        token: this.abctoken.address,
+        amount: "100"
+      })
     })
   })
 })
