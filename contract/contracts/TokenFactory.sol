@@ -2,6 +2,7 @@ pragma solidity ^0.6.0;
 
 import "./interfaces.sol";
 import "./FanToken.sol";
+import "./StakingPool.sol";
 
 contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
@@ -14,11 +15,11 @@ contract TokenFactory is TokenFactoryInterface {
 
     uint256 private totalCount = 0;
     Vesting private vesting;
-    address private stakingPool;
+    StakingPool private stakingPool;
 
     constructor(address _vesting, address _stakingPool) public {
         vesting = Vesting(_vesting);
-        stakingPool = _stakingPool;
+        stakingPool = StakingPool(_stakingPool);
     }
 
     function totalTokenCount() public view override returns (uint256) {
@@ -50,8 +51,9 @@ contract TokenFactory is TokenFactoryInterface {
     ) external override returns (address) {
         require(ratio <= 100, "Ratio must be a number between 0 and 100");
         require(totalSupply > 10, "Total supply is too small");
-        // TODO register token to staking token list
-        FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, stakingPool);
+
+        FanToken newToken =
+        new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, address(stakingPool));
         {// To avoid stack too deep
             newToken.transfer(address(vesting), totalSupply.mul(ratio).div(100));
             // Tokens for fans is currently transferred to creator. Distributed by other ways in the future
@@ -62,6 +64,7 @@ contract TokenFactory is TokenFactoryInterface {
                 block.timestamp,
                 block.timestamp.add(uint256(lockupPeriod).mul(365 days))
             );
+            stakingPool.addStakingList(creator, address(newToken), !enableStakeToToken);
         }
         {
             uint256 nextTokenId = totalCount.add(1);

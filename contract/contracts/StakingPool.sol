@@ -9,18 +9,37 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract StakingPool is PoolInterface, Ownable {
     using SafeMath for uint256;
 
+    modifier stakingNotPaused(address token) {
+        require(!tokensStakingPaused[token], "Staking is paused");
+        _;
+    }
+
     // TODO define events
 
-    mapping(address  => uint256) public tokensTotalSupply;
+    mapping(address => uint256) public tokensTotalSupply;
+    mapping(address => bool) public tokensStakingPaused;
     mapping(address => mapping(address => uint256)) private creatorsTokenBalances;
     mapping(address => bool) public registeredTokens;
+    mapping(address => address) public tokensCreator;
 
-    function balanceOf(address account, address token) public view returns(uint256){
+    function balanceOf(address account, address token) public view returns (uint256){
         return creatorsTokenBalances[account][token];
     }
 
-    function addTokenToStakingList(address token) public onlyOwner {
+    function addStakingList(address creator, address token, bool paused) public override onlyOwner {
+        tokensCreator[token] = creator;
         registeredTokens[token] = true;
+        tokensStakingPaused[token] = paused;
+    }
+
+    function pauseStakingOf(address token) external {
+        require(msg.sender == tokensCreator[token], "Only creator can pause staking");
+        tokensStakingPaused[token] = true;
+    }
+
+    function resumeStakingOf(address token) external {
+        require(msg.sender == tokensCreator[token], "Only creator can resume staking");
+        tokensStakingPaused[token] = false;
     }
 
     function earned(
@@ -28,13 +47,14 @@ contract StakingPool is PoolInterface, Ownable {
         address token,
         uint256 totalSupply,
         uint8 decimals
-    ) public override view returns(uint256) {
+    ) public override view stakingNotPaused(token) returns (uint256) {
         // TODO: claim amount is currently simplest mock. It will be replaced with formula
         return balanceOf(account, token).mul(10 ** uint256(decimals)).div(totalSupply);
     }
 
-    function stake(uint256 amount, address token) public override {
+    function stake(uint256 amount, address token) public override stakingNotPaused(token) {
         require(registeredTokens[token], "Token is not registered to staking list");
+
         creatorsTokenBalances[msg.sender][token] = creatorsTokenBalances[msg.sender][token].add(amount);
         tokensTotalSupply[token] = tokensTotalSupply[token].add(amount);
         FanToken fanToken = FanToken(token);
@@ -48,7 +68,7 @@ contract StakingPool is PoolInterface, Ownable {
         fanToken.transfer(msg.sender, amount);
     }
 
-    function claim(address token) public override {
+    function claim(address token) public override stakingNotPaused(token) {
         FanToken fanToken = FanToken(token);
         uint256 totalSupply = fanToken.totalSupply();
         uint8 decimals = fanToken.decimals();
