@@ -61,7 +61,9 @@ contract TokenFactory is TokenFactoryInterface {
         require(creatorTokenRatio <= 100, "Ratio must be a number between 0 and 100");
         require(totalSupply > 10, "Total supply is too small");
         // TODO register token to staking token list
-        FanToken newToken = new FanToken(name, symbol, totalSupply, payable(address(this)), decimals, stakingPool);
+        FanToken newToken = new FanToken(
+            name, symbol, totalSupply, payable(address(this)), decimals, stakingPool, creatorTokenRatio, lockupPeriod
+        );
         {// To avoid stack too deep
             newToken.transfer(address(vesting), totalSupply.mul(creatorTokenRatio).div(100));
             // Tokens for fans is currently transferred to creator. Distributed by other ways in the future

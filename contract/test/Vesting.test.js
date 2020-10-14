@@ -17,7 +17,7 @@ describe("Vesting", () => {
   beforeEach(async () => {
     this.vesting = await Vesting.new({from: owner})
     this.abctoken = await FanToken.new(
-      "ABCToken", "ABC", totalSupply, owner, 5, minter, {from: owner}
+      "ABCToken", "ABC", totalSupply, owner, 5, minter, 50, 5, {from: owner}
     )
     await this.abctoken.transfer(this.vesting.address, totalSupply * 50 / 100, {from: owner})
     assert((await this.abctoken.balanceOf(this.vesting.address)).toString() === "500000000")
