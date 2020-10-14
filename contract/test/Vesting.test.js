@@ -138,4 +138,29 @@ describe("Vesting", () => {
       expect(recipientBalance).to.equal((totalSupply * 50 / 100).toString())
     })
   })
+
+  describe("redeemableAmount", () => {
+    it("returns partial token", async () => {
+      xyztoken = await FanToken.new(
+        "XYZToken", "XYZ", totalSupply, owner, 5, minter, {from: owner}
+      )
+      xyztoken.transfer(this.vesting.address, 100, { from: owner})
+      const start = (await time.latest()).toNumber()
+      const end = start + 60 * 60 * 24 * 365
+      await this.vesting.addVesting(
+        xyztoken.address, alice, start, end, {from: owner}
+      )
+      expect((await this.vesting.redeemableAmount(xyztoken.address)).toNumber()).to.equal(0)
+
+      const halfYear = 60 * 60 * 24 * 30 * 6
+      await time.increase(halfYear)
+      const partialAmount = (await this.vesting.redeemableAmount(xyztoken.address)).toNumber()
+      expect(partialAmount).to.below(totalSupply * 50 / 100)
+      expect(partialAmount).to.above(0)
+
+      const oneYear = end - start
+      await time.increase(oneYear)
+      expect((await this.vesting.redeemableAmount(xyztoken.address)).toNumber()).to.equal(100)
+    })
+  })
 })
