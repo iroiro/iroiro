@@ -152,6 +152,21 @@ describe("StakingPool", () => {
         assert(true)
       }
     })
+
+    it("throw an error if staking paused", async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+
+      try {
+        await this.pool.earned(alice, this.abctoken.address, totalSupply, decimals)
+        assert.fail("should not throw an error")
+      } catch (error) {
+        assert(true)
+      }
+    })
   })
 
   describe("stake", () => {
@@ -285,6 +300,45 @@ describe("StakingPool", () => {
         token: this.abctoken.address,
         amount: "100"
       })
+    })
+  })
+
+  describe("claim", () => {
+    beforeEach(async () => {
+      await this.pool.addStakingList(alice, this.abctoken.address, false, {from: owner})
+    })
+
+    it("throw an error if staking paused", async () => {
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+
+      try {
+        await this.pool.claim(this.abctoken.address, {from: alice})
+        assert.fail("should throw an error")
+      } catch (error) {
+        assert(true)
+      }
+    })
+
+    it("throw an nothing if staking paused after staking", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+      await this.pool.pauseStakingOf(this.abctoken.address, {from: alice})
+
+      try {
+        await this.pool.claim(this.abctoken.address, {from: alice})
+        assert(true)
+      } catch (error) {
+        assert.fail("should now throw an error")
+      }
+    })
+
+    it("mint a new token", async () => {
+      await this.abctoken.transfer(alice, 100, {from: owner})
+      await this.abctoken.approve(this.pool.address, 100, {from: alice})
+      await this.pool.stake(100, this.abctoken.address, {from: alice})
+
+      await this.pool.claim(this.abctoken.address, {from: alice})
     })
   })
 })

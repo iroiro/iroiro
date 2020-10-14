@@ -21,11 +21,6 @@ contract StakingPool is PoolInterface, Ownable {
         uint256 amount
     );
 
-    modifier stakingNotPaused(address token) {
-        require(!tokensStakingPaused[token], "Staking is paused");
-        _;
-    }
-
     // TODO define events
     mapping(address => mapping(address => uint256)) private creatorsTokenBalances;
     mapping(address => uint256) public tokensTotalSupply;
@@ -58,12 +53,17 @@ contract StakingPool is PoolInterface, Ownable {
         address token,
         uint256 totalSupply,
         uint8 decimals
-    ) public override view stakingNotPaused(token) returns (uint256) {
+    ) public override view returns (uint256) {
+        if (balanceOf(account, token) == 0) {
+            require(!tokensStakingPaused[token], "Staking is paused");
+        }
+
         // TODO: claim amount is currently simplest mock. It will be replaced with formula
         return balanceOf(account, token).mul(10 ** uint256(decimals)).div(totalSupply);
     }
 
-    function stake(uint256 amount, address token) public override stakingNotPaused(token) {
+    function stake(uint256 amount, address token) public override {
+        require(!tokensStakingPaused[token], "Staking is paused");
         require(registeredTokens[token], "Token is not registered to staking list");
 
         creatorsTokenBalances[msg.sender][token] = creatorsTokenBalances[msg.sender][token].add(amount);
@@ -83,7 +83,11 @@ contract StakingPool is PoolInterface, Ownable {
         emit Withdraw(msg.sender, token, amount);
     }
 
-    function claim(address token) public override stakingNotPaused(token) {
+    function claim(address token) public override {
+        if (balanceOf(msg.sender, token) == 0) {
+            require(!tokensStakingPaused[token], "Staking is paused");
+        }
+
         FanToken fanToken = FanToken(token);
         uint256 totalSupply = fanToken.totalSupply();
         uint8 decimals = fanToken.decimals();
