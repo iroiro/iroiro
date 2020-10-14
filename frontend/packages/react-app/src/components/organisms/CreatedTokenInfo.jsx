@@ -21,8 +21,8 @@ const CreatedTokenInfo = ({token, withdrawToken, restartStaking, stopStaking}) =
       <Box my={4}>
         <Text fontWeight={"bold"} mb={2}>Change Staking status</Text>
         {token.isStakingPaused
-          ? <Button onClick={() => restartStaking(token.address)}>Restart Staking</Button>
-          : <Button variant="danger" onClick={() => stopStaking(token.address)}>Stop Staking</Button>
+          ? <Box><Text mb={2}>Inactive</Text><Button onClick={() => restartStaking(token.address)}>Restart Staking</Button></Box>
+          : <Box><Text mb={2}>Active</Text><Button variant="danger" onClick={() => stopStaking(token.address)}>Stop Staking</Button></Box>
         }
       </Box>
     </Card>
