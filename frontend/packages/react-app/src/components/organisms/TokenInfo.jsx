@@ -7,7 +7,7 @@ const TokenInfo = ({ token, stakingInfo, withdrawEarnedToken, stakeToken, handle
     <Heading as={"h2"}>Basic Info</Heading>
     <Box>
       <Text>Symbol: {token.symbol}</Text>
-      <Text>Decimmals: {token.decimals}</Text>
+      <Text>Decimals: {token.decimals}</Text>
       <Text>Total Supply: {token.totalSupply}</Text>
       <Button as="a" href={`https://ropsten.etherscan.io/address/${token.address}`} target="\_blank">View in Etherscan</Button>
     </Box>
