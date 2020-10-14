@@ -8,10 +8,10 @@ describe("FanToken", () => {
 
   beforeEach(async () => {
     this.fanStockToken = await FanToken.new(
-      "FanStock", "FST", 1000000000, owner, 10, minter, {from: owner}
+      "FanStock", "FST", 1000000000, owner, 10, minter, 50, 3, {from: owner}
     )
     this.aliceToken = await FanToken.new(
-      "AliceToken", "ALC", 2000000000, alice, 15, minter, {from: owner}
+      "AliceToken", "ALC", 2000000000, alice, 15, minter, 20, 5,{from: owner}
     )
   })
 
@@ -23,6 +23,16 @@ describe("FanToken", () => {
   it("has a symbol", async () => {
     expect(await this.fanStockToken.symbol()).to.equal("FST");
     expect(await this.aliceToken.symbol()).to.equal("ALC");
+  })
+
+  it("has a creatorTokenRatio", async () => {
+    expect((await this.fanStockToken.creatorTokenRatio()).toNumber()).to.equal(50);
+    expect((await this.aliceToken.creatorTokenRatio()).toNumber()).to.equal(20);
+  })
+
+  it("has a lockupPeriod", async () => {
+    expect((await this.fanStockToken.lockupPeriod()).toNumber()).to.equal(3);
+    expect((await this.aliceToken.lockupPeriod()).toNumber()).to.equal(5);
   })
 
   it("mints a token", async () => {
