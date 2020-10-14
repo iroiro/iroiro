@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import TopPage from "./components/pages/TopPage";
 import CreateTokenPage from "./components/pages/CreateTokenPage";
 import ExplorePage from "./components/pages/ExplorePage";
+import DashboardPage from "./components/pages/DashboardPage";
+import TokenDetailPage from "./components/pages/TokenDetailPage";
 
 class App extends Component {
   render() {
@@ -13,6 +15,8 @@ class App extends Component {
             <Route exact path='/' component={TopPage}/>
             <Route path='/create' component={CreateTokenPage}/>
             <Route path='/explore' component={ExplorePage}/>
+            <Route path='/dashboard' component={DashboardPage}/>
+            <Route path='/token/:address' component={TokenDetailPage}/>
           </div>
         </Router>
       </div>

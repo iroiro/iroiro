@@ -7,8 +7,8 @@ import {abis, addresses} from "@project/contracts";
 import ExplorePageTemplate from "../templates/ExplorePageTemplate";
 
 const ExplorePage = () => {
-  
-  const [provider, setProvider] = useState();
+  const [provider, setProvider] = useState()
+  const [tokens, setTokens] = useState([])
   const [name, setName] = useState()
   const [symbol, setSymbol] = useState()
   const [balanceToEther, setBalance] = useState()
@@ -27,28 +27,44 @@ const ExplorePage = () => {
   }, [loadWeb3Modal]);
 
   useEffect(() => {
-    getTokenList();
-  }, []);
+    if(provider) {
+      getTokenList();
+    }
+  }, [provider]);
     
   async function getTokenList() {
-    const defaultProvider = getDefaultProvider("wss://ropsten.infura.io/ws/v3/459b18e59dc6427b8ca35ef8f1d9c17f");
-    const WEENUS = new Contract(addresses.WEENUS, abis.erc20, defaultProvider);
-    const name = await WEENUS.name();
-    const symbol = await WEENUS.symbol();
-    const tokenBalance = await WEENUS.balanceOf("0x4B8619890fa9C3cF11C497961eB4b970D440127F");
-    const balanceToEther = await ethers.utils.formatEther(tokenBalance)
-    setName(name)
-    setSymbol(symbol)
-    setBalance(balanceToEther)
+    const signer = await provider.getSigner()
+    const walletAddress = await signer.getAddress()
+    const tokenFactory = new Contract(addresses.TokenFactory, abis.tokenFactory, provider)
+    const totalTokenCount = await tokenFactory.totalTokenCount()
+    const numTotalToken = totalTokenCount.toNumber()
+    
+    let tokens = []
+    for(let i = 0; i < numTotalToken; i++) {
+      const tokenAddress = await tokenFactory.tokenOf(i+1)
+      const fanToken = new Contract(tokenAddress, abis.fanToken, provider)
+      const balance = await fanToken.balanceOf(walletAddress)
+      const numBalance = balance.toNumber()
+      if(numBalance > 0) {
+        const name = await fanToken.name()
+        const symbol = await fanToken.symbol()
+        const token = {
+          address: tokenAddress,
+          name: name,
+          symbol: symbol,
+          balance: numBalance,
+        }
+        tokens.push(token)
+      }
+    }
+    setTokens(tokens)
   }
 
   return (
     <ExplorePageTemplate
       provider={provider} 
       loadWeb3Modal={loadWeb3Modal}
-      name={name}
-      balance={balanceToEther}
-      symbol={symbol}
+      tokens={tokens}
     />
   );
 }

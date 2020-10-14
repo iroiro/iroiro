@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
+import { useHistory } from 'react-router-dom';
 import {ethers} from "ethers"
 import {web3Modal} from "../../utils/web3Modal";
 import {Contract} from "@ethersproject/contracts";
@@ -17,6 +18,7 @@ const CreateTokenPage = () => {
   const [communityValue, communityInput] = useState(70);
   const [lockupValue, lockupInput] = useState(2);
   const [stakingCheckboxValue, handleStakingCheckbox] = useState(true);
+  const history = useHistory();
 
   /* Open wallet selection modal. */
   const loadWeb3Modal = useCallback(async () => {
@@ -47,11 +49,10 @@ const CreateTokenPage = () => {
       lockupValue,
       stakingCheckboxValue
     )
-
-    const receipt = await tx.wait()
-    console.log(receipt)
-  }
   
+    history.push("/dashboard");
+  }
+
   return (
     <CreateTokenPageTemplate
       provider={provider} 
