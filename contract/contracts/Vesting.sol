@@ -38,16 +38,23 @@ contract Vesting is Ownable {
         require(block.timestamp >= tokensVestingStart[token], "Vesting is not started yet");
 
         FanToken fanToken = FanToken(token);
-        uint256 amount;
+        uint256 amount = redeemableAmount(token);
+        tokensLastUpdate[token] = block.timestamp;
 
+        fanToken.transfer(tokensRecipient[token], amount);
+    }
+
+    function redeemableAmount(address token) public view returns(uint256){
+        FanToken fanToken = FanToken(token);
+        uint256 amount;
         if (block.timestamp >= tokensVestingEnd[token]) {
             amount = fanToken.balanceOf(address(this));
         } else {
             amount = tokensVestingAmount[token]
-                .mul(block.timestamp - tokensLastUpdate[token])
-                .div(tokensVestingEnd[token] - tokensVestingStart[token]);
-            tokensLastUpdate[token] = block.timestamp;
+            .mul(block.timestamp - tokensLastUpdate[token])
+            .div(tokensVestingEnd[token] - tokensVestingStart[token]);
         }
-        fanToken.transfer(tokensRecipient[token], amount);
+
+        return amount;
     }
 }
