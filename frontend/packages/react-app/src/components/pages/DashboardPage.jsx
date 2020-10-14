@@ -3,7 +3,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { web3Modal } from "../../utils/web3Modal";
 import { Contract } from "@ethersproject/contracts";
 import { abis, addresses } from "@project/contracts";
-import Dashboard from "../templates/Dashboard"
+import Dashboard from "../templates/DashboardPageTemplate"
 
 const DashboardPage = () => {
   const [provider, setProvider] = useState();
