@@ -38,12 +38,14 @@ const TokenDetailPage = () => {
     const symbol = await fanToken.symbol()
     const totalSupply = await fanToken.totalSupply()
     const decimals = await fanToken.decimals()
+    const balance = await fanToken.balanceOf(walletAddress)
     const token = {
       address: tokenAddress,
       name: name,
       symbol: symbol,
       totalSupply: totalSupply.toNumber(),
-      decimals: decimals
+      decimals: decimals,
+      balance: balance.toNumber(),
     }
     setToken(token)
   }

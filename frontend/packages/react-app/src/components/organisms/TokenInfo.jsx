@@ -16,7 +16,12 @@ const TokenInfo = ({ token }) => (
       <Text>Team: 000%</Text>
       <Text>Lockup period: 000year</Text>
     </Box>
-    <Heading as={"h2"}>Earn Token</Heading>
+    <Heading as={"h2"}>Staking</Heading>
+    <Box>
+      <Text>Your balance: {token.balance}</Text>
+      <Text>Your staking amount: </Text>
+      <Text>Your earned amount: </Text>
+    </Box>
     <Input type="text" required={true} placeholder={`100,000`} />
     <Button>Stake</Button>
   </div>
