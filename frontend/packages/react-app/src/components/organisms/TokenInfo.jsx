@@ -1,7 +1,7 @@
 import React from "react";
-import { Heading, Box, Text, Button, Input } from "rimble-ui";
+import { Heading, Box, Text, Field, Button, Input, Flex } from "rimble-ui";
 
-const TokenInfo = ({ token }) => (
+const TokenInfo = ({ token, stakingInfo, withdrawEarnedToken, stakeToken, handleStakeInput, stakeValue }) => (
   <div>
     <Heading as={"h1"}>{token.name}</Heading>
     <Heading as={"h2"}>Basic Info</Heading>
@@ -19,11 +19,27 @@ const TokenInfo = ({ token }) => (
     <Heading as={"h2"}>Staking</Heading>
     <Box>
       <Text>Your balance: {token.balance}</Text>
-      <Text>Your staking amount: </Text>
-      <Text>Your earned amount: </Text>
+      <Text>Your staking amount: {stakingInfo.stakingAmount}</Text>
+      <Text>Your earned amount: {stakingInfo.earned}</Text>
     </Box>
-    <Input type="text" required={true} placeholder={`100,000`} />
-    <Button>Stake</Button>
+    <Flex style={{ alignItems: "center"}}>
+      <Text>{stakingInfo.earned} {token.symbol}</Text>
+      <Button onClick={withdrawEarnedToken}>Withdraw</Button>
+    </Flex>
+
+    <Box>
+      <Field label="Stake now">
+        <Flex>
+          <Input
+            type="number"
+            onChange={(event)=>handleStakeInput(event.target.value)}
+            value={stakeValue}
+            placeholder={`100,000`}
+          />
+          <Button onClick={stakeToken}>Stake</Button>
+        </Flex>
+      </Field>
+    </Box>
   </div>
 )
 

@@ -10,6 +10,9 @@ const TokenDetailPage = () => {
   const [provider, setProvider] = useState();
   const [tokenAddress, setTokenAddress] = useState()
   const [token, setToken] = useState({name:"", symbol: "", totalSupply: 0, decimals: 0})
+  const [stakingInfo, setStakingInfo] = useState({stakingAmount:"", earned: ""})
+  const [stakeValue, handleStakeInput] = useState()
+
   const params = useParams()
   
   const loadWeb3Modal = useCallback(async () => {
@@ -39,6 +42,9 @@ const TokenDetailPage = () => {
     const totalSupply = await fanToken.totalSupply()
     const decimals = await fanToken.decimals()
     const balance = await fanToken.balanceOf(walletAddress)
+
+    // TODO: call Staking contract to get info
+
     const token = {
       address: tokenAddress,
       name: name,
@@ -47,13 +53,33 @@ const TokenDetailPage = () => {
       decimals: decimals,
       balance: balance.toNumber(),
     }
+
+    const stakingInfo = {
+      stakingAmount: "暫定",
+      earned: "暫定"
+    }
+
     setToken(token)
+    setStakingInfo(stakingInfo)
+  }
+
+  const withdrawEarnedToken = () => {
+    alert("Withdraw earned tokens!!")
+  }
+
+  const stakeToken = () => {
+    alert(`Stake ${stakeValue} tokens!!`)
   }
 
   return (
     <TokenDetailePageTemplate
       tokenAddress={tokenAddress}
       token={token}
+      stakingInfo={stakingInfo}
+      withdrawEarnedToken={withdrawEarnedToken}
+      stakeToken={stakeToken}
+      handleStakeInput={handleStakeInput}
+      stakeValue={stakeValue}
     />
   );
 }
