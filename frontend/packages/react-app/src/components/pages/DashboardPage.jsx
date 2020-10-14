@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from "react"
-import {getDefaultProvider, Web3Provider} from "@ethersproject/providers";
-import {web3Modal} from "../../utils/web3Modal";
-import {Contract} from "@ethersproject/contracts";
-import {abis, addresses} from "@project/contracts";
+import React, { useCallback, useEffect, useState } from "react"
+import { Web3Provider } from "@ethersproject/providers";
+import { web3Modal } from "../../utils/web3Modal";
+import { Contract } from "@ethersproject/contracts";
+import { abis, addresses } from "@project/contracts";
 import Dashboard from "../templates/Dashboard"
 
 const DashboardPage = () => {
@@ -19,7 +19,6 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (web3Modal.cachedProvider) {
-      console.log("aa")
       loadWeb3Modal();
     }
   }, [loadWeb3Modal]);
