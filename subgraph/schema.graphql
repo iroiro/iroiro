@@ -9,6 +9,7 @@ type Token @entity {
   isTotalSupplyFixed: Boolean,
   lockupPeriod: Int,
   enableStakeToToken: Boolean
+  accountTokens: [AccountToken!]!
 }
 
 type Account @entity {
@@ -21,4 +22,5 @@ type AccountToken @entity {
   id: ID!
   account: Account!
   balance: BigInt!
+  token: Token! @derivedFrom(field: "accountTokens")
 }

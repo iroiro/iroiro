@@ -25,7 +25,6 @@ export function handleCreateToken(event: CreateToken): void {
     entity.isTotalSupplyFixed = event.params.isTotalSupplyFixed
     entity.lockupPeriod = event.params.lockupPeriod
     entity.enableStakeToToken = event.params.enableStakeToToken
-    entity.accounts = []
 
     // Entities can be written to the store with `.save()`
     entity.save()
@@ -55,6 +54,7 @@ export function handleCreateToken(event: CreateToken): void {
 }
 
 export function handleTransfer(event: Transfer): void {
+    let tokenId = event.address.toHex()
     let fromAccount = Account.load(event.params.from.toHex())
     if (fromAccount == null) {
         fromAccount = new Account(event.params.from.toHex())
@@ -67,8 +67,6 @@ export function handleTransfer(event: Transfer): void {
     }
     toAccount.save()
 
-    let tokenId = event.transaction.to.toHex()
-    let token = Token.load(tokenId)
     let fromAccountTokenId =
         event.params.from.toHexString().concat('-').concat(tokenId)
     let fromAccountToken = AccountToken.load(fromAccountTokenId)
@@ -90,6 +88,4 @@ export function handleTransfer(event: Transfer): void {
     toAccountToken.account = toAccount.id
     toAccountToken.balance = toAccountToken.balance.plus(event.params.value)
     toAccountToken.save()
-
-    token.save()
 }
