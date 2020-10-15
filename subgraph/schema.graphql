@@ -10,3 +10,15 @@ type Token @entity {
   lockupPeriod: Int,
   enableStakeToToken: Boolean
 }
+
+type Account @entity {
+  id: ID!
+  tokens: [AccountToken!]! @derivedFrom(field: "account")
+}
+
+type AccountToken @entity {
+  # Token id and account id contat by '-'
+  id: ID!
+  account: Account!
+  balance: BigInt!
+}
