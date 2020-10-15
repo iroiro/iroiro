@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
+import { ethers } from "ethers"
 import { Web3Provider } from "@ethersproject/providers";
 import { web3Modal } from "../../utils/web3Modal";
 import { Contract } from "@ethersproject/contracts";
-import { abis } from "@project/contracts";
+import { abis, addresses } from "@project/contracts";
 import TokenDetailePageTemplate from "../templates/TokenDetailPageTemplate"
 
 const TokenDetailPage = () => {
@@ -11,7 +12,7 @@ const TokenDetailPage = () => {
   const [tokenAddress, setTokenAddress] = useState()
   const [token, setToken] = useState({name:"", symbol: "", totalSupply: 0, decimals: 0})
   const [stakingInfo, setStakingInfo] = useState({stakingAmount:"", earned: ""})
-  const [stakeValue, handleStakeInput] = useState()
+  const [stakeValue, handleStakeInput] = useState("")
 
   const params = useParams()
   
@@ -42,8 +43,20 @@ const TokenDetailPage = () => {
     const totalSupply = await fanToken.totalSupply()
     const decimals = await fanToken.decimals()
     const balance = await fanToken.balanceOf(walletAddress)
+    const creatorTokenRatio = await fanToken.creatorTokenRatio()
+    const lockupPeriod = await fanToken.lockupPeriod()
 
-    // TODO: call Staking contract to get info
+    const staking = new Contract(addresses.Staking, abis.staking, provider)
+    const isStakingPaused = await staking.tokensStakingPaused(tokenAddress)
+    const stakingAmount = await staking.balanceOf(walletAddress, tokenAddress)
+    
+    let earned = ethers.BigNumber.from(0)
+    if(!isStakingPaused || stakingAmount > 0) {
+      earned = await staking.earned(walletAddress, tokenAddress, totalSupply, decimals)
+    }
+
+    const allowanceAmount = await fanToken.allowance(walletAddress, addresses.Staking)
+    console.log(allowanceAmount.toNumber())
 
     const token = {
       address: tokenAddress,
@@ -52,23 +65,51 @@ const TokenDetailPage = () => {
       totalSupply: totalSupply.toNumber(),
       decimals: decimals,
       balance: balance.toNumber(),
+      creatorTokenRatio: creatorTokenRatio,
+      lockupPeriod: lockupPeriod,
     }
 
     const stakingInfo = {
-      stakingAmount: "暫定",
-      earned: "暫定"
+      isStakingPaused: isStakingPaused,
+      stakingAmount: stakingAmount.toNumber(),
+      earned: earned.toNumber(),
+      allowance: allowanceAmount.toNumber()
     }
 
     setToken(token)
     setStakingInfo(stakingInfo)
   }
 
-  const withdrawEarnedToken = () => {
-    alert("Withdraw earned tokens!!")
+  const withdrawStakingToken = async (address) => {
+    const signer = await provider.getSigner()
+    const staking = new Contract(addresses.Staking, abis.staking, signer)
+    const bgStakingAmount = await ethers.BigNumber.from(stakingInfo.stakingAmount)
+    staking.withdraw(bgStakingAmount, address)
   }
 
-  const stakeToken = () => {
-    alert(`Stake ${stakeValue} tokens!!`)
+  const claimEarnedToken = async (address) => {
+    const signer = await provider.getSigner()
+    const staking = new Contract(addresses.Staking, abis.staking, signer)
+    staking.claim(address)
+  }
+
+  const approve = async (address) => {
+    if(stakeValue === "" || stakeValue == 0) {
+      return
+    }
+    const signer = await provider.getSigner()
+    const fanToken = new Contract(tokenAddress, abis.fanToken, signer)
+    if(stakingInfo.allowance > 0) {
+      fanToken.increaseAllowance(addresses.Staking, stakeValue)
+    } else {
+      fanToken.approve(addresses.Staking, stakeValue)
+    }
+  }
+
+  const stakeToken = async (address) => {
+    const signer = await provider.getSigner()
+    const staking = new Contract(addresses.Staking, abis.staking, signer)
+    staking.stake(stakeValue, address)
   }
 
   return (
@@ -76,7 +117,9 @@ const TokenDetailPage = () => {
       tokenAddress={tokenAddress}
       token={token}
       stakingInfo={stakingInfo}
-      withdrawEarnedToken={withdrawEarnedToken}
+      withdrawStakingToken={withdrawStakingToken}
+      claimEarnedToken={claimEarnedToken}
+      approve={approve}
       stakeToken={stakeToken}
       handleStakeInput={handleStakeInput}
       stakeValue={stakeValue}

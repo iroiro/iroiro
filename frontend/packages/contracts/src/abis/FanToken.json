@@ -25,6 +25,21 @@
 				"internalType": "uint8",
 				"name": "decimals",
 				"type": "uint8"
+			},
+			{
+				"internalType": "address",
+				"name": "_minter",
+				"type": "address"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_creatorTokenRatio",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_lockupPeriod",
+				"type": "uint8"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -149,6 +164,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "creatorTokenRatio",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "decimals",
 		"outputs": [
 			{
@@ -205,6 +233,37 @@
 				"type": "bool"
 			}
 		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "lockupPeriod",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
