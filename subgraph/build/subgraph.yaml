@@ -1,0 +1,23 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xf489F2DDD95409A4D82f0fcf071963DaC4c9FcF0"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - CreateToken
+      abis:
+        - name: Contract
+          file: Contract/abis/Contract.json
+      eventHandlers:
+        - event: CreateToken(indexed address,string,string,uint256,uint8,uint8,bool,uint8,bool)
+          handler: handleCreateToken
+      file: Contract/Contract.wasm
