@@ -1,6 +1,5 @@
-type ExampleEntity @entity {
+type Token @entity {
   id: ID!
-  count: BigInt!
   creator: Bytes! # address
   name: String! # string
   symbol: String!
