@@ -13,6 +13,8 @@
     "subgraph:codegen": "yarn workspace @project/subgraph codegen",
     "subgraph:build": "yarn workspace @project/subgraph build",
     "subgraph:deploy": "yarn workspace @project/subgraph deploy",
+    "subgraph:deploy:local": "yarn workspace @project/subgraph create-local && yarn workspace @project/subgraph deploy-local",
+    "subgraph:remove:local": "yarn workspace @project/subgraph remove-local ",
     "react-app:build": "yarn workspace @project/react-app build",
     "react-app:eject": "yarn workspace @project/react-app eject",
     "react-app:ipfs": "yarn workspace @project/react-app ipfs",

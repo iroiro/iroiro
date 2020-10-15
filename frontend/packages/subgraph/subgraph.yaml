@@ -1,26 +1,46 @@
 specVersion: 0.0.2
-description: Subgraph that indexes the blockchain data
-repository: https://github.com/sablierhq/sablier-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: CeaErc20
+    name: TokenFactory
+    #    network: ropsten
     network: mainnet
     source:
-      abi: erc20
-      address: "0xc1C0472c0C80bCcDC7F5D01A376Bd97a734B8815"
+      # address: "0x1a5d567c8d41dbc1b4650205ea745bec101e3407" // TokenFactory contract address on ropsten
+      address: "[REWRITE WITH TokenFactory ADDRESS HERE]"
+      abi: TokenFactory
+      # startBlock: [startBlock]
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
-      abis:
-        - name: erc20
-          file: ../contracts/src/abis/erc20.json
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
       entities:
-        - Token
-        - Transfer
+        - CreateToken
+      abis:
+        - name: TokenFactory
+          file: ../contracts/src/abis/TokenFactory.json
+      eventHandlers:
+        - event: CreateToken(indexed address,indexed address,string,string,uint256,uint8,uint8,bool,uint8,bool)
+          handler: handleCreateToken
+      file: ./src/mapping.ts
+templates:
+  - kind: ethereum/contract
+    name: FanToken
+    #    network: ropsten
+    network: mainnet
+    source:
+      abi: FanToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - FanToken
+      abis:
+        - name: FanToken
+          file: ../contracts/src/abis/FanToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/mappings/transfers.ts
-      language: wasm/assemblyscript
+      file: ./src/mapping.ts

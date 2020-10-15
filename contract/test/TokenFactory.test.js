@@ -174,7 +174,9 @@ describe("TokenFactory", () => {
 
     it("emit an event", async function () {
       const receipt = await this.factory.createToken(alice, "AliceToken", "ALC", 100000000000, 10, 50, true, 5, false, {from: owner})
+      const newTokenAddress = await this.factory.tokenOf(1)
       expectEvent(receipt, "CreateToken", {
+        token: newTokenAddress,
         creator: alice,
         name: "AliceToken",
         symbol: "ALC",

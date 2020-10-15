@@ -142,7 +142,7 @@ describe("Vesting", () => {
   describe("redeemableAmount", () => {
     it("returns partial token", async () => {
       xyztoken = await FanToken.new(
-        "XYZToken", "XYZ", totalSupply, owner, 5, minter, {from: owner}
+        "XYZToken", "XYZ", totalSupply, owner, 5, minter, 50, 5, {from: owner}
       )
       xyztoken.transfer(this.vesting.address, 100, { from: owner})
       const start = (await time.latest()).toNumber()
