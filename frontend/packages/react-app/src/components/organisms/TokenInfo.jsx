@@ -1,7 +1,7 @@
 import React from "react";
 import { Heading, Box, Text, Field, Button, Input, Flex } from "rimble-ui";
 
-const TokenInfo = ({ token, stakingInfo, withdrawStakingToken, claimEarnedToken, stakeToken, handleStakeInput, stakeValue }) => (
+const TokenInfo = ({ token, stakingInfo, withdrawStakingToken, claimEarnedToken, approve, stakeToken, handleStakeInput, stakeValue }) => (
   <div>
     <Heading as={"h1"}>{token.name}</Heading>
     <Heading as={"h2"}>Basic Info</Heading>
@@ -34,6 +34,7 @@ const TokenInfo = ({ token, stakingInfo, withdrawStakingToken, claimEarnedToken,
       </Flex>
     </Box>
     <Box>
+      <Text>Approved: {stakingInfo.allowance}</Text>
       <Field label="Stake now">
         <Flex>
           <Input
@@ -42,6 +43,7 @@ const TokenInfo = ({ token, stakingInfo, withdrawStakingToken, claimEarnedToken,
             value={stakeValue}
             placeholder={`100,000`}
           />
+          <Button onClick={() => {approve(token.address)}}>Approve</Button>
           <Button onClick={() => {stakeToken(token.address)}}>Stake</Button>
         </Flex>
       </Field>

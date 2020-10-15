@@ -49,6 +49,8 @@ const TokenDetailPage = () => {
     const staking = new Contract(addresses.Staking, abis.staking, provider)
     const stakingAmount = await staking.balanceOf(walletAddress, tokenAddress)
     const earned = await staking.earned(walletAddress, tokenAddress, totalSupply, decimals)
+    const allowanceAmount = await fanToken.allowance(walletAddress, addresses.Staking)
+    console.log(allowanceAmount.toNumber())
 
     const token = {
       address: tokenAddress,
@@ -64,6 +66,7 @@ const TokenDetailPage = () => {
     const stakingInfo = {
       stakingAmount: stakingAmount.toNumber(),
       earned: earned.toNumber(),
+      allowance: allowanceAmount.toNumber()
     }
 
     setToken(token)
@@ -83,6 +86,20 @@ const TokenDetailPage = () => {
     staking.claim(address)
   }
 
+  const approve = async (address) => {
+    if(stakeValue === "" || stakeValue == 0) {
+      return
+    }
+    const signer = await provider.getSigner()
+    const fanToken = new Contract(tokenAddress, abis.fanToken, signer)
+    if(stakingInfo.allowance > 0) {
+      fanToken.increaseAllowance(addresses.Staking, stakeValue)
+    } else {
+      fanToken.approve(addresses.Staking, stakeValue)
+    }
+
+  }
+
   const stakeToken = async (address) => {
     const signer = await provider.getSigner()
     const staking = new Contract(addresses.Staking, abis.staking, signer)
@@ -96,6 +113,7 @@ const TokenDetailPage = () => {
       stakingInfo={stakingInfo}
       withdrawStakingToken={withdrawStakingToken}
       claimEarnedToken={claimEarnedToken}
+      approve={approve}
       stakeToken={stakeToken}
       handleStakeInput={handleStakeInput}
       stakeValue={stakeValue}
