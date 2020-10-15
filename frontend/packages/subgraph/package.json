@@ -1,5 +1,5 @@
 {
-  "name": "fan-stock",
+  "name": "@project/subgraph",
   "version": "1.0.0",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.18.0",

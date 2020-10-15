@@ -2,6 +2,19 @@
 
 The Graph is a tool for for indexing events emitted on the Ethereum blockchain. It provides you with an easy-to-use GraphQL API.
 
+## How to deploy subgraph onto local graph node
+
+1. Confirm jsons in `../contracts/src/abis/` are up to date.
+1. Start (See "1. Set up Ganache CLI" section of following link: https://thegraph.com/docs/quick-start#local-development)
+1. Start graph-node(See "2. Run a local Graph Node" section of following link: https://thegraph.com/docs/quick-start#local-development)
+1. Deploy contracts and rewrite address in `subgraph.yaml` with TokenFactory contract address(Detailed deployment processes is explained in /contract/README.md)
+1. Run `yarn` to install dependencies
+1. Run `yarn codegen` to generate necessary files
+1. Run `yarn create-local` to allocate subgraph name on local graph-node
+1. Run `yarn deploy-local` to deploy subgraph on local graph-node
+
+Now you can see GraphiQL page on http://localhost:8000
+
 ## Available Scripts
 
 In the project directory, you can run:
