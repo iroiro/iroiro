@@ -60,4 +60,4 @@ typings/
 # dotenv environment variables file
 .env
 
-subgraph/src/types/
+packages/subgraph/src/types/
