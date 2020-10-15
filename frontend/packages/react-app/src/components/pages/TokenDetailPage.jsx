@@ -47,8 +47,14 @@ const TokenDetailPage = () => {
     const lockupPeriod = await fanToken.lockupPeriod()
 
     const staking = new Contract(addresses.Staking, abis.staking, provider)
+    const isStakingPaused = await staking.tokensStakingPaused(tokenAddress)
     const stakingAmount = await staking.balanceOf(walletAddress, tokenAddress)
-    const earned = await staking.earned(walletAddress, tokenAddress, totalSupply, decimals)
+    
+    let earned = ethers.BigNumber.from(0)
+    if(!isStakingPaused || stakingAmount > 0) {
+      earned = await staking.earned(walletAddress, tokenAddress, totalSupply, decimals)
+    }
+
     const allowanceAmount = await fanToken.allowance(walletAddress, addresses.Staking)
     console.log(allowanceAmount.toNumber())
 
@@ -64,6 +70,7 @@ const TokenDetailPage = () => {
     }
 
     const stakingInfo = {
+      isStakingPaused: isStakingPaused,
       stakingAmount: stakingAmount.toNumber(),
       earned: earned.toNumber(),
       allowance: allowanceAmount.toNumber()
@@ -97,7 +104,6 @@ const TokenDetailPage = () => {
     } else {
       fanToken.approve(addresses.Staking, stakeValue)
     }
-
   }
 
   const stakeToken = async (address) => {

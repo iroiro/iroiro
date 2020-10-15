@@ -33,21 +33,23 @@ const TokenInfo = ({ token, stakingInfo, withdrawStakingToken, claimEarnedToken,
         <Button onClick={() => claimEarnedToken(token.address)}>Claim</Button>
       </Flex>
     </Box>
-    <Box>
-      <Text>Approved: {stakingInfo.allowance}</Text>
-      <Field label="Stake now">
-        <Flex>
-          <Input
-            type="number"
-            onChange={(event)=>handleStakeInput(event.target.value)}
-            value={stakeValue}
-            placeholder={`100,000`}
-          />
-          <Button onClick={() => {approve(token.address)}}>Approve</Button>
-          <Button onClick={() => {stakeToken(token.address)}}>Stake</Button>
-        </Flex>
-      </Field>
-    </Box>
+    { !stakingInfo.isStakingPaused &&
+      <Box>
+        <Text>Approved: {stakingInfo.allowance}</Text>
+        <Field label="Stake now">
+          <Flex>
+            <Input
+              type="number"
+              onChange={(event)=>handleStakeInput(event.target.value)}
+              value={stakeValue}
+              placeholder={`100,000`}
+            />
+            <Button onClick={() => {approve(token.address)}}>Approve</Button>
+            <Button onClick={() => {stakeToken(token.address)}}>Stake</Button>
+          </Flex>
+        </Field>
+      </Box>
+    }
   </div>
 )
 
