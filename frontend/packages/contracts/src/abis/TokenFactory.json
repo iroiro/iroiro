@@ -3,6 +3,83 @@
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "_vesting",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_stakingPool",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "symbol",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "totalSupply",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint8",
+				"name": "decimals",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint8",
+				"name": "creatorTokenRatio",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "isTotalSupplyFixed",
+				"type": "bool"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint8",
+				"name": "lockupPeriod",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "enableStakeToToken",
+				"type": "bool"
+			}
+		],
+		"name": "CreateToken",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "creator",
 				"type": "address"
 			},
@@ -28,7 +105,7 @@
 			},
 			{
 				"internalType": "uint8",
-				"name": "ratio",
+				"name": "creatorTokenRatio",
 				"type": "uint8"
 			},
 			{

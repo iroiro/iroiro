@@ -19,147 +19,31 @@
 		"type": "event"
 	},
 	{
-		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
 				"internalType": "address",
 				"name": "token",
 				"type": "address"
 			},
 			{
-				"indexed": false,
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
+			},
+			{
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "vestingStart",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "vestingEnd",
 				"type": "uint256"
 			}
 		],
-		"name": "Stake",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "token",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "Withdraw",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "creator",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "token",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "paused",
-				"type": "bool"
-			}
-		],
-		"name": "addStakingList",
+		"name": "addVesting",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "token",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "token",
-				"type": "address"
-			}
-		],
-		"name": "claim",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "token",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "totalSupply",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint8",
-				"name": "decimals",
-				"type": "uint8"
-			}
-		],
-		"name": "earned",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -183,7 +67,7 @@
 				"type": "address"
 			}
 		],
-		"name": "pauseStakingOf",
+		"name": "redeem",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -192,16 +76,35 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "",
+				"name": "token",
 				"type": "address"
 			}
 		],
-		"name": "registeredTokens",
+		"name": "redeemableAmount",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "token",
+				"type": "address"
+			}
+		],
+		"name": "remainingAmount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -218,31 +121,19 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "token",
+				"name": "",
 				"type": "address"
 			}
 		],
-		"name": "resumeStakingOf",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
+		"name": "tokensLastUpdate",
+		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "",
 				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "token",
-				"type": "address"
 			}
 		],
-		"name": "stake",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -253,7 +144,7 @@
 				"type": "address"
 			}
 		],
-		"name": "tokensCreator",
+		"name": "tokensRecipient",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -272,12 +163,12 @@
 				"type": "address"
 			}
 		],
-		"name": "tokensStakingPaused",
+		"name": "tokensVestingAmount",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -291,7 +182,26 @@
 				"type": "address"
 			}
 		],
-		"name": "tokensTotalSupply",
+		"name": "tokensVestingEnd",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "tokensVestingStart",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -318,19 +228,20 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
 				"internalType": "address",
-				"name": "token",
+				"name": "",
 				"type": "address"
 			}
 		],
-		"name": "withdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "vestingTokens",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]
