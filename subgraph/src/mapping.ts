@@ -7,28 +7,28 @@ import {FanToken} from "../generated/templates"
 export function handleCreateToken(event: CreateToken): void {
     // Entities can be loaded from the store using a string ID; this ID
     // needs to be unique across all entities of the same type
-    let entity = Token.load(event.params.token.toHex())
+    let token = Token.load(event.params.token.toHex())
 
     // Entities only exist after they have been saved to the store;
     // `null` checks allow to create entities on demand
-    if (entity == null) {
-        entity = new Token(event.params.token.toHex())
+    if (token == null) {
+        token = new Token(event.params.token.toHex())
     }
 
     // Entity fields can be set based on event parameters
-    entity.creator = event.params.creator.toHex()
-    entity.name = event.params.name
-    entity.symbol = event.params.symbol
-    entity.totalSupply = event.params.totalSupply
-    entity.decimals = event.params.decimals
-    entity.creatorTokenRatio = event.params.creatorTokenRatio
-    entity.isTotalSupplyFixed = event.params.isTotalSupplyFixed
-    entity.lockupPeriod = event.params.lockupPeriod
-    entity.enableStakeToToken = event.params.enableStakeToToken
-    entity.accountTokens = []
+    token.creator = event.params.creator.toHex()
+    token.name = event.params.name
+    token.symbol = event.params.symbol
+    token.totalSupply = event.params.totalSupply
+    token.decimals = event.params.decimals
+    token.creatorTokenRatio = event.params.creatorTokenRatio
+    token.isTotalSupplyFixed = event.params.isTotalSupplyFixed
+    token.lockupPeriod = event.params.lockupPeriod
+    token.enableStakeToToken = event.params.enableStakeToToken
+    token.accountTokens = []
 
     // Entities can be written to the store with `.save()`
-    entity.save()
+    token.save()
 
     let creator = Creator.load(event.params.creator.toHex())
     if (creator == null) {
