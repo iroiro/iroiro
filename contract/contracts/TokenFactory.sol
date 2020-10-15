@@ -8,6 +8,7 @@ contract TokenFactory is TokenFactoryInterface {
     using SafeMath for uint256;
 
     event CreateToken (
+        address indexed token,
         address indexed creator,
         string name,
         string symbol,
@@ -96,6 +97,7 @@ contract TokenFactory is TokenFactoryInterface {
         }
 
         emit CreateToken(
+            address(newToken),
             creator,
             name,
             symbol,
