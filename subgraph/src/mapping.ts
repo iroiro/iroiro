@@ -22,6 +22,13 @@ export function handleCreateToken(event: CreateToken): void {
   // Entity fields can be set based on event parameters
   entity.creator = event.params.creator
   entity.name = event.params.name
+  entity.symbol = event.params.symbol
+  entity.totalSupply = event.params.totalSupply
+  entity.decimals = event.params.decimals
+  entity.creatorTokenRatio = event.params.creatorTokenRatio
+  entity.isTotalSupplyFixed = event.params.isTotalSupplyFixed
+  entity.lockupPeriod = event.params.lockupPeriod
+  entity.enableStakeToToken = event.params.enableStakeToToken
 
   // Entities can be written to the store with `.save()`
   entity.save()

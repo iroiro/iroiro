@@ -3,4 +3,11 @@ type ExampleEntity @entity {
   count: BigInt!
   creator: Bytes! # address
   name: String! # string
+  symbol: String!
+  totalSupply: BigInt!,
+  decimals: Int,
+  creatorTokenRatio: Int,
+  isTotalSupplyFixed: Boolean,
+  lockupPeriod: Int,
+  enableStakeToToken: Boolean
 }
