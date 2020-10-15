@@ -1,8 +1,8 @@
 import {BigInt} from "@graphprotocol/graph-ts"
-import {CreateToken} from "../generated/Contract/Contract"
-import {Transfer} from "../generated/templates/FanToken/FanToken"
-import {Account, AccountToken, Creator, Token} from "../generated/schema"
-import {FanToken} from "../generated/templates"
+import {CreateToken} from "./types/TokenFactory/TokenFactory"
+import {Transfer} from "./types/templates/FanToken/FanToken"
+import {Account, AccountToken, Creator, Token} from "./types/schema"
+import {FanToken} from "./types/templates"
 
 export function handleCreateToken(event: CreateToken): void {
     // Entities can be loaded from the store using a string ID; this ID

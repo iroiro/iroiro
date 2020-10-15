@@ -1,15 +1,18 @@
 {
-  "name": "@project/subgraph",
+  "name": "fan-stock",
   "version": "1.0.0",
   "dependencies": {
     "@graphprotocol/graph-cli": "0.18.0",
     "@graphprotocol/graph-ts": "0.18.1"
   },
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "auth": "graph auth https://api.thegraph.com/ $GRAPH_ACCESS_TOKEN",
     "build": "graph build",
     "codegen": "graph codegen --output-dir src/types/",
-    "deploy": "graph deploy paulrberg/create-eth-app --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ TART-tokyo/fan-stock",
+    "create-local": "graph create --node http://localhost:8020/ TART-tokyo/fan-stock",
+    "remove-local": "graph remove --node http://localhost:8020/ TART-tokyo/fan-stock",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 TART-tokyo/fan-stock"
   }
 }
