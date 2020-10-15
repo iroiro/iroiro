@@ -1,6 +1,6 @@
 type Token @entity {
   id: ID!
-  creator: Bytes! # address
+  creator: Creator! # address
   name: String! # string
   symbol: String!
   totalSupply: BigInt!,
@@ -10,6 +10,11 @@ type Token @entity {
   lockupPeriod: Int,
   enableStakeToToken: Boolean
   accountTokens: [AccountToken!]!
+}
+
+type Creator @entity {
+  id: ID!
+  tokens: [Token!]! @derivedFrom(field: "creator")
 }
 
 type Account @entity {

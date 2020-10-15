@@ -1,7 +1,7 @@
 import {BigInt} from "@graphprotocol/graph-ts"
 import {CreateToken} from "../generated/Contract/Contract"
 import {Transfer} from "../generated/templates/FanToken/FanToken"
-import {Account, AccountToken, Token} from "../generated/schema"
+import {Account, AccountToken, Creator, Token} from "../generated/schema"
 import {FanToken} from "../generated/templates"
 
 export function handleCreateToken(event: CreateToken): void {
@@ -16,7 +16,7 @@ export function handleCreateToken(event: CreateToken): void {
     }
 
     // Entity fields can be set based on event parameters
-    entity.creator = event.params.creator
+    entity.creator = event.params.creator.toHex()
     entity.name = event.params.name
     entity.symbol = event.params.symbol
     entity.totalSupply = event.params.totalSupply
@@ -29,6 +29,12 @@ export function handleCreateToken(event: CreateToken): void {
 
     // Entities can be written to the store with `.save()`
     entity.save()
+
+    let creator = Creator.load(event.params.creator.toHex())
+    if (creator == null) {
+        creator = new Creator(event.params.creator.toHex())
+    }
+    creator.save()
 
     FanToken.create(event.params.token)
 
