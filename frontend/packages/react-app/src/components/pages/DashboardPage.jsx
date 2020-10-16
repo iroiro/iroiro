@@ -69,31 +69,6 @@ const DashboardPage = () => {
       const signer = await provider.getSigner()
       const walletAddress = await signer.getAddress()
       setWalletAddress(walletAddress)
-
-      // for (let i = 0; i < tokenAmount; i++) {
-      //   const tokenAddress = await tokenFactory.creatorTokenOf(walletAddress, i + 1)
-      //   const fanToken = new Contract(tokenAddress, abis.fanToken, signer)
-      //   const name = await fanToken.name()
-      //   const symbol = await fanToken.symbol()
-      //
-      //   const vesting = new Contract(addresses.Vesting, abis.vesting, signer)
-      //   const vestingAmount = await vesting.remainingAmount(tokenAddress)
-      //   const redeemableAmount = await vesting.redeemableAmount(tokenAddress)
-      //
-      //   const staking = new Contract(addresses.Staking, abis.staking, signer)
-      //   const isStakingPaused = await staking.tokensStakingPaused(tokenAddress)
-      //
-      //   const tokenInfo = {
-      //     address: tokenAddress,
-      //     name: name,
-      //     symbol: symbol,
-      //     vestingAmount: vestingAmount.toNumber(),
-      //     redeemableAmount: redeemableAmount.toNumber(),
-      //     isStakingPaused: isStakingPaused,
-      //   }
-      //   tokenArray.push(tokenInfo)
-      // }
-      // setTokensAddress(tokenArray)
     }
     f()
   }, [provider, setWalletAddress])
