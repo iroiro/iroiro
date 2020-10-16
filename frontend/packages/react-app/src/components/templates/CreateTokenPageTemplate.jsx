@@ -6,7 +6,6 @@ import CreatTokenForm from "../organisms/CreateTokenForm";
 const CreateTokenPageTemplate = ({
   provider,
   loadWeb3Modal,
-  readOnChainData,
   handleSubmit,
   nameInput,
   nameValue,
@@ -20,12 +19,26 @@ const CreateTokenPageTemplate = ({
   limitCheckboxValue,
   teamInput,
   teamValue,
-  communityInput,
-  communityValue,
   lockupInput,
   lockupValue,
   handleStakingCheckbox,
   stakingCheckboxValue,
+  handleAudiusCheckbox,
+  audiusCheckboxValue,
+  audius,
+  libs,
+  isAudiusSigningIn,
+  emailRef,
+  passwordRef,
+  audiusFollowers,
+  audiusSignIn,
+  audiusSignOut,
+  openModal,
+  closeModal,
+  isOpen,
+  audiusPercentageInput,
+  audiusPercentageValue,
+  handleAudiusDistribution
 }) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
@@ -45,12 +58,26 @@ const CreateTokenPageTemplate = ({
           limitCheckboxValue={limitCheckboxValue}
           teamInput={teamInput}
           teamValue={teamValue}
-          communityInput={communityInput}
-          communityValue={communityValue}
           lockupInput={lockupInput}
           lockupValue={lockupValue}
           handleStakingCheckbox={handleStakingCheckbox}
           stakingCheckboxValue={stakingCheckboxValue}
+          handleAudiusCheckbox={handleAudiusCheckbox}
+          audiusCheckboxValu={audiusCheckboxValue}
+          audius={audius}
+          libs={libs}
+          isAudiusSigningIn={isAudiusSigningIn}
+          emailRef={emailRef}
+          passwordRef={passwordRef}
+          audiusFollowers={audiusFollowers}
+          audiusSignIn={audiusSignIn}
+          audiusSignOut={audiusSignOut}
+          openModal={openModal}
+          closeModal={closeModal}
+          isOpen={isOpen}
+          handleAudiusDistribution={handleAudiusDistribution}
+          audiusPercentageInput={audiusPercentageInput}
+          audiusPercentageValue={audiusPercentageValue}
         />
       }
     />
