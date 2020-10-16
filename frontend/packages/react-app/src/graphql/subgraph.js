@@ -1,15 +1,26 @@
-import { gql } from "apollo-boost";
+import {gql} from "apollo-boost";
 
-// See more example queries on https://thegraph.com/explorer/subgraph/paulrberg/create-eth-app
-const GET_TRANSFERS = gql`
-  {
-    transfers(first: 10) {
-      id
-      from
-      to
-      value
+export const GET_TOKENS = gql`
+    {
+        tokens {
+            id
+        }
     }
-  }
 `;
 
-export default GET_TRANSFERS;
+// Pass id as lower case string, subgraph id is case sensitive
+export const GET_TOKENS_BALANCE_USER_HOLDS = gql`
+    query getTokensBalanceUserHolds($id: ID!) {
+        account(id: $id) {
+            tokens {
+                id
+                balance
+                token {
+                    id
+                    name
+                    symbol
+                }
+            }
+        }
+    }
+`;
