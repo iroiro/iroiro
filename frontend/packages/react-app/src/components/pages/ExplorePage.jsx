@@ -9,6 +9,7 @@ const ExplorePage = () => {
   const [provider, setProvider] = useState()
   const [tokens, setTokens] = useState([])
   const [walletAddress, setWalletAddress] = useState("")
+  const [getTokensBalance, { loading, error, data }] = useLazyQuery(GET_TOKENS_BALANCE_USER_HOLDS)
 
   /* Open wallet selection modal. */
   const loadWeb3Modal = useCallback(async () => {
@@ -16,15 +17,13 @@ const ExplorePage = () => {
     setProvider(new Web3Provider(newProvider));
   }, []);
 
-  const [getTokensBalance, { loading, error, data }] = useLazyQuery(GET_TOKENS_BALANCE_USER_HOLDS)
-
   useEffect(() => {
     if (walletAddress !== "") {
       getTokensBalance({
         variables: {id: walletAddress.toLowerCase()}
       })
     }
-  }, [walletAddress]);
+  }, [walletAddress, getTokensBalance]);
 
   useEffect(() => {
     if (loading || error || !data) {
