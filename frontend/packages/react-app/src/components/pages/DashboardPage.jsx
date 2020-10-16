@@ -30,7 +30,6 @@ const DashboardPage = () => {
     if (loading || error || !data) {
       return
     }
-    console.debug(data)
     const f = async () => {
       const signer = await provider.getSigner()
       const staking = new Contract(addresses.Staking, abis.staking, signer)
@@ -49,7 +48,6 @@ const DashboardPage = () => {
           isStakingPaused: isStakingPaused
         }
       }))
-      console.debug(tmpTokens)
       setTokensAddress(tmpTokens)
     }
     f()

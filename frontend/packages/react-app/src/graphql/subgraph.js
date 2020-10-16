@@ -40,3 +40,21 @@ export const GET_CREATOR_TOKENS = gql`
         }
     }
 `;
+
+export const GET_ACCOUNT_TOKEN = gql`
+    query getAccountToken($id: ID!) {
+        accountToken(id: $id){
+            id
+            balance
+            token {
+                id
+                name
+                symbol
+                totalSupply
+                decimals
+                creatorTokenRatio
+                lockupPeriod
+            }
+        }
+    }
+`;
