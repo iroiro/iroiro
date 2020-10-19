@@ -48,7 +48,7 @@ interface PoolInterface {
     function claim(address token) external;
 }
 
-interface Vesting {
+interface VestingInterface {
 
     function addVesting(
         address token,
@@ -58,7 +58,7 @@ interface Vesting {
     ) external;
 
     // transfer available tokens to creator
-    function redeem() external;
+    function redeem(address token) external;
 }
 
 interface AudiusInterface {
