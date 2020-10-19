@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import "./interfaces.sol";
+import "./Vesting.sol";
 import "./FanToken.sol";
 import "./StakingPool.sol";
 

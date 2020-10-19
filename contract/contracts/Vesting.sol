@@ -3,8 +3,9 @@ pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./FanToken.sol";
+import "./interfaces.sol";
 
-contract Vesting is Ownable {
+contract Vesting is VestingInterface, Ownable {
     using SafeMath for uint256;
 
     mapping(address => bool) public vestingTokens;
@@ -24,7 +25,7 @@ contract Vesting is Ownable {
         address recipient,
         uint256 vestingStart,
         uint256 vestingEnd
-    ) external onlyOwner {
+    ) external override onlyOwner {
         require(!vestingTokens[token], "Token is already registered");
         vestingTokens[token] = true;
         tokensVestingAmount[token] = remainingAmount(token);
@@ -34,7 +35,7 @@ contract Vesting is Ownable {
         tokensLastUpdate[token] = vestingStart;
     }
 
-    function redeem(address token) external {
+    function redeem(address token) external override {
         require(vestingTokens[token], "Token is not registered");
         require(block.timestamp >= tokensVestingStart[token], "Vesting is not started yet");
 
