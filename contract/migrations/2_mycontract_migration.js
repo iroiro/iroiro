@@ -15,6 +15,7 @@ module.exports = async (deployer, network, [defaultAccount]) => {
     } catch (err) {
       console.error(err)
     }
+  // TODO Add ropsten case
   } else {
     // For live networks, use the 0 address to allow the ChainlinkRegistry
     // contract automatically retrieve the correct address for you
