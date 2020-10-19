@@ -9,6 +9,7 @@
     "test": "oz compile && mocha --exit --recursive test"
   },
   "dependencies": {
+    "@openzeppelin/cli": "^2.8.2",
     "@openzeppelin/contracts": "^3.2.0"
   }
 }
