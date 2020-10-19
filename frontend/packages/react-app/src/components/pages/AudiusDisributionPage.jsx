@@ -6,9 +6,10 @@ import {Contract} from "@ethersproject/contracts";
 import {abis, addresses} from "@project/contracts";
 import AudiusDistributionPageTemplate from "../templates/AudiusDistributionPageTemplate";
 import Audius from '@audius/libs'
+
 import IpfsHttpClient from "ipfs-http-client"
-const { globSource } = IpfsHttpClient;
-const ipfs = IpfsHttpClient()
+const infura = { host: "ipfs.infura.io", port: "5001", protocol: "https" };
+const ipfs = IpfsHttpClient(infura)
 
 const init = async () => {
   const dataRegistryAddress = '0xC611C82150b56E6e4Ec5973AcAbA8835Dd0d75A2'
@@ -80,7 +81,6 @@ const AudiusDisributionPage = () => {
   const audiusSignOut = useCallback(async () => {
     await libs.Account.logout()
     setAudiusAccount(null)
-    // closeModal()
   }, [libs])
 
   const handleSubmit = async (e) => {
@@ -123,14 +123,19 @@ const AudiusDisributionPage = () => {
       }
     }
 
+    let waelletAddresses = []
+    for(let i = 0; i < audiusFollowers.length; i++) {
+      waelletAddresses.push(audiusFollowers[i].wallet)
+    }
+    const json = {addresses: waelletAddresses}
+    const { path } = await ipfs.add(JSON.stringify(json))
+
     const audius = new Contract(addresses.Audius, abis.audius, signer)
-    const followersHash = ""
     const _followersNum = audiusFollowers.length
 
-    // await audius.addAudiusList(tokenId, followersHash, _followersNum)
-
-    // const file = await ipfs.add(globSource("./AudiusDisributionPage.jsx", { recursive: true }))
-    // console.log(file)
+    // TODO: add collect contract when it is ready
+    // await audius.addAudiusList(tokenId, path, _followersNum)
+    alert(`Success! ${_followersNum}, ${path}`)
   }
 
   useEffect(() => {
@@ -172,6 +177,7 @@ const AudiusDisributionPage = () => {
       emailRef={emailRef}
       passwordRef={passwordRef}
       audiusSignIn={audiusSignIn}
+      audiusSignOut={audiusSignOut}
       handleSubmit={handleSubmit}
       amountInput={amountInput}
       amountValue={amountValue}

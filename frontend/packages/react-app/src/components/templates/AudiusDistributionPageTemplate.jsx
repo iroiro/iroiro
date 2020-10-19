@@ -12,6 +12,7 @@ const TopPageTemplate = ({
   emailRef,
   passwordRef,
   audiusSignIn,
+  audiusSignOut,
   handleSubmit,
   amountInput,
   amountValue,
@@ -28,6 +29,7 @@ const TopPageTemplate = ({
       emailRef={emailRef}
       passwordRef={passwordRef}
       audiusSignIn={audiusSignIn}
+      audiusSignOut={audiusSignOut}
       handleSubmit={handleSubmit}
       amountInput={amountInput}
       amountValue={amountValue}

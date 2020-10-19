@@ -23,64 +23,30 @@ const CreateTokenPageTemplate = ({
   lockupValue,
   handleStakingCheckbox,
   stakingCheckboxValue,
-  handleAudiusCheckbox,
-  audiusCheckboxValue,
-  audius,
-  libs,
-  isAudiusSigningIn,
-  emailRef,
-  passwordRef,
-  audiusFollowers,
-  audiusSignIn,
-  audiusSignOut,
-  openModal,
-  closeModal,
-  isOpen,
-  audiusPercentageInput,
-  audiusPercentageValue,
-  handleAudiusDistribution
 }) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <Container
-      contents={
-        <CreatTokenForm
-          handleSubmit={handleSubmit}
-          nameInput={nameInput}
-          nameValue={nameValue}
-          symbolInput={symbolInput}
-          symbolValue={symbolValue}
-          numberInput={numberInput}
-          numberValue={numberValue}
-          decimalsInput={decimalsInput}
-          decimalsValue={decimalsValue}
-          handleLimitCheckbox={handleLimitCheckbox}
-          limitCheckboxValue={limitCheckboxValue}
-          teamInput={teamInput}
-          teamValue={teamValue}
-          lockupInput={lockupInput}
-          lockupValue={lockupValue}
-          handleStakingCheckbox={handleStakingCheckbox}
-          stakingCheckboxValue={stakingCheckboxValue}
-          handleAudiusCheckbox={handleAudiusCheckbox}
-          audiusCheckboxValu={audiusCheckboxValue}
-          audius={audius}
-          libs={libs}
-          isAudiusSigningIn={isAudiusSigningIn}
-          emailRef={emailRef}
-          passwordRef={passwordRef}
-          audiusFollowers={audiusFollowers}
-          audiusSignIn={audiusSignIn}
-          audiusSignOut={audiusSignOut}
-          openModal={openModal}
-          closeModal={closeModal}
-          isOpen={isOpen}
-          handleAudiusDistribution={handleAudiusDistribution}
-          audiusPercentageInput={audiusPercentageInput}
-          audiusPercentageValue={audiusPercentageValue}
-        />
-      }
-    />
+    <Container>
+      <CreatTokenForm
+        handleSubmit={handleSubmit}
+        nameInput={nameInput}
+        nameValue={nameValue}
+        symbolInput={symbolInput}
+        symbolValue={symbolValue}
+        numberInput={numberInput}
+        numberValue={numberValue}
+        decimalsInput={decimalsInput}
+        decimalsValue={decimalsValue}
+        handleLimitCheckbox={handleLimitCheckbox}
+        limitCheckboxValue={limitCheckboxValue}
+        teamInput={teamInput}
+        teamValue={teamValue}
+        lockupInput={lockupInput}
+        lockupValue={lockupValue}
+        handleStakingCheckbox={handleStakingCheckbox}
+        stakingCheckboxValue={stakingCheckboxValue}
+      />
+    </Container>
   </div>
 )
 
