@@ -1,6 +1,7 @@
 const Vesting = artifacts.require("Vesting")
 const StakingPool = artifacts.require("StakingPool")
 const TokenFactory = artifacts.require("TokenFactory")
+const Audius = artifacts.require("Audius")
 
 module.exports = async (deployer, network, [defaultAccount]) => {
   let vesting, staking
@@ -14,5 +15,6 @@ module.exports = async (deployer, network, [defaultAccount]) => {
     const tokenFactory = instance
     vesting.transferOwnership(tokenFactory.address)
     staking.transferOwnership(tokenFactory.address)
+    return deployer.deploy(Audius, tokenFactory.address)
   })
 }
