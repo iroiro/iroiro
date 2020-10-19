@@ -21,6 +21,7 @@ const AudiusDistribution = ({
   amountInput,
   amountValue,
   tokenInfo,
+  addAudiusList,
 }) => (
   <div>
     {libs && !audius && !isAudiusSigningIn ? 
@@ -49,6 +50,7 @@ const AudiusDistribution = ({
           </Box>
           <Button type="submit">Transfer tokens</Button>
         </Form>
+        <Button onClick={addAudiusList}>Add followers and start distribution</Button>
         {audiusFollowers.map(follower => 
           <Flex
             key={follower.wallet}

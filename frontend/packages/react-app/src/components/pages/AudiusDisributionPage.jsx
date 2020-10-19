@@ -6,6 +6,9 @@ import {Contract} from "@ethersproject/contracts";
 import {abis, addresses} from "@project/contracts";
 import AudiusDistributionPageTemplate from "../templates/AudiusDistributionPageTemplate";
 import Audius from '@audius/libs'
+import IpfsHttpClient from "ipfs-http-client"
+const { globSource } = IpfsHttpClient;
+const ipfs = IpfsHttpClient()
 
 const init = async () => {
   const dataRegistryAddress = '0xC611C82150b56E6e4Ec5973AcAbA8835Dd0d75A2'
@@ -80,9 +83,12 @@ const AudiusDisributionPage = () => {
     // closeModal()
   }, [libs])
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(amountValue)
+    const signer = await provider.getSigner()
+    const walletAddress = await signer.getAddress()
+    const fanToken = new Contract(tokenAddress, abis.fanToken, signer)
+    fanToken.transfer(tokenAddress, amountValue) // TODO: change contract address
   }
 
   const getTokenBalance = async () => {
@@ -99,6 +105,32 @@ const AudiusDisributionPage = () => {
     }
 
     setTokenInfo(token)
+  }
+
+  const addAudiusList = async () => {
+    const signer = await provider.getSigner()
+    const walletAddress = await signer.getAddress()
+    const factory = new Contract(addresses.TokenFactory, abis.tokenFactory, provider)
+    const tokenAmount = await factory.tokenAmountOf(walletAddress)
+    
+    console.log(tokenAmount)
+    let tokenId
+
+    for(let i = 0; i < tokenAmount.toNumber(); i++) {
+      const dddress = await factory.creatorTokenOf(walletAddress, i+1)
+      if(tokenAddress == dddress) {
+        tokenId = i+1
+      }
+    }
+
+    const audius = new Contract(addresses.Audius, abis.audius, signer)
+    const followersHash = ""
+    const _followersNum = audiusFollowers.length
+
+    // await audius.addAudiusList(tokenId, followersHash, _followersNum)
+
+    // const file = await ipfs.add(globSource("./AudiusDisributionPage.jsx", { recursive: true }))
+    // console.log(file)
   }
 
   useEffect(() => {
@@ -126,7 +158,6 @@ const AudiusDisributionPage = () => {
         const followers = await libs.User.getFollowersForUser(100, 0, user.user_id)
         setAudiusAccount(user)
         setAudiusFollowers(followers)
-        console.log(followers)
       }
     }
     initLibs()
@@ -145,6 +176,7 @@ const AudiusDisributionPage = () => {
       amountInput={amountInput}
       amountValue={amountValue}
       tokenInfo={tokenInfo}
+      addAudiusList={addAudiusList}
     />
   );
 }

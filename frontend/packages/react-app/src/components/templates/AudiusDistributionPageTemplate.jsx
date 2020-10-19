@@ -16,6 +16,7 @@ const TopPageTemplate = ({
   amountInput,
   amountValue,
   tokenInfo,
+  addAudiusList,
 }) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
@@ -31,6 +32,7 @@ const TopPageTemplate = ({
       amountInput={amountInput}
       amountValue={amountValue}
       tokenInfo={tokenInfo}
+      addAudiusList={addAudiusList}
     />
   </div>
 )
