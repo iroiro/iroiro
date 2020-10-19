@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
 interface TokenFactoryInterface {
@@ -62,7 +63,7 @@ interface Vesting {
 
 interface AudiusInterface {
     // Add Audius list
-    function addAudiusList(address creator, address token) external;
+    function addAudiusList(uint256 id, string memory _followersHash, uint256 _followersNum) external;
 
     // Get the amount of tokens distributed
     function distributedAmount(address token) external view returns (uint256);

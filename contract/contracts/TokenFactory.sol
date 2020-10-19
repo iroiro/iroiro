@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
 import "./interfaces.sol";
@@ -27,7 +28,6 @@ contract TokenFactory is TokenFactoryInterface {
     uint256 private totalCount = 0;
     Vesting private vesting;
     StakingPool private stakingPool;
-    Audius private audius;
 
     constructor(address _vesting, address _stakingPool) public {
         vesting = Vesting(_vesting);
@@ -59,14 +59,10 @@ contract TokenFactory is TokenFactoryInterface {
         uint8 creatorTokenRatio,
         bool isTotalSupplyFixed,
         uint8 lockupPeriod, // years
-        bool enableStakeToToken,
-        uint8 audiusRatio,
-        string followersHash,
-        uint256 followersNum
+        bool enableStakeToToken
     ) external override returns (address) {
-        require(creatorTokenRatio.add(audiusRatio) <= 100, "Ratio must be a number between 0 and 100");
+        require(creatorTokenRatio <= 100, "Ratio must be a number between 0 and 100");
         require(totalSupply > 10, "Total supply is too small");
-
         // TODO register token to staking token list
         FanToken newToken = new FanToken(
             name,
@@ -80,12 +76,8 @@ contract TokenFactory is TokenFactoryInterface {
         );
         {// To avoid stack too deep
             newToken.transfer(address(vesting), totalSupply.mul(creatorTokenRatio).div(100));
-            newToken.transfer(audius, totalSupply.sub(totalSupply.mul(audiusRatio).div(100)));
-
             // Tokens for fans is currently transferred to creator. Distributed by other ways in the future
-            uint8 communityTokenRation = 100.sub(creatorTokenRatio.add(audiusRatio));
-            newToken.transfer(creator, totalSupply.mul(communityTokenRation).div(100)));
-            
+            newToken.transfer(creator, totalSupply.sub(totalSupply.mul(creatorTokenRatio).div(100)));
             vesting.addVesting(
                 address(newToken),
                 creator,
@@ -93,7 +85,6 @@ contract TokenFactory is TokenFactoryInterface {
                 block.timestamp.add(uint256(lockupPeriod).mul(365 days))
             );
             stakingPool.addStakingList(creator, address(newToken), !enableStakeToToken);
-            audius.addAudiusList(creator, address(newToken), followersHash, followersNum)
         }
         {
             uint256 nextTokenId = totalCount.add(1);
