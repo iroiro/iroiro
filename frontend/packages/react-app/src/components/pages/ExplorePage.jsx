@@ -7,7 +7,7 @@ import ExplorePageTemplate from "../templates/ExplorePageTemplate";
 
 const ExplorePage = () => {
   const [provider, setProvider] = useState()
-  const [tokens, setTokens] = useState([])
+  const [tokens, setTokens] = useState("")
 
   /* Open wallet selection modal. */
   const loadWeb3Modal = useCallback(async () => {
@@ -41,6 +41,7 @@ const ExplorePage = () => {
       const fanToken = new Contract(tokenAddress, abis.fanToken, provider)
       const balance = await fanToken.balanceOf(walletAddress)
       const numBalance = balance.toNumber()
+
       if(numBalance > 0) {
         const name = await fanToken.name()
         const symbol = await fanToken.symbol()
