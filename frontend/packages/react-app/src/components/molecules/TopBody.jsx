@@ -8,7 +8,7 @@ const TopPageBody = () => (
     <Link to="/create"><Button>Create</Button></Link>
     <Link to="/explore"><Button ml={3}>Explore</Button></Link>
     <Heading as={"h3"} mt={4}>Get token from your Audius account</Heading>
-    <Link to="/audius"><Button>get token with Audius</Button></Link>
+    <Link to="/audius-token"><Button>get token with Audius</Button></Link>
   </div>
 )
 

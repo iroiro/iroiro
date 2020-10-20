@@ -19,7 +19,7 @@ class App extends Component {
             <Route path='/explore' component={ExplorePage}/>
             <Route path='/dashboard' component={DashboardPage}/>
             <Route path='/token/:address' component={TokenDetailPage}/>
-            <Route path='/audius' component={WithdrawAudiusPage}/>
+            <Route path='/audius-token' component={WithdrawAudiusPage}/>
             <Route path='/audius/:address' component={AudiusDisributionPage}/>
           </div>
         </Router>
