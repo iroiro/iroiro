@@ -46,7 +46,7 @@ const init = async () => {
 
 const AudiusDisributionPage = () => {
   const [provider, setProvider] = useState();
-  const [libs, setLibs] = useState(null)
+  const [libs, setLibs] = useState(Object)
   const [audiusAccount, setAudiusAccount] = useState(null)
   const [audiusFollowers, setAudiusFollowers] = useState([])
   const [isSigningIn, setIsSigningIn] = useState(false)
@@ -122,7 +122,7 @@ const AudiusDisributionPage = () => {
         tokenId = i+1
       }
     }
-
+    
     let waelletAddresses = []
     for(let i = 0; i < audiusFollowers.length; i++) {
       waelletAddresses.push(audiusFollowers[i].wallet)
@@ -157,13 +157,14 @@ const AudiusDisributionPage = () => {
     const initLibs = async () => {
       const libs = await init()
       setLibs(libs)
-
       const user = libs.Account.getCurrentUser()
+
       if (user) {
         const followers = await libs.User.getFollowersForUser(100, 0, user.user_id)
         setAudiusAccount(user)
         setAudiusFollowers(followers)
       }
+
     }
     initLibs()
   }, [])
