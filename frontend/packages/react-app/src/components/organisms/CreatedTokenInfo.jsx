@@ -12,6 +12,10 @@ const CreatedTokenInfo = ({token, withdrawToken, restartStaking, stopStaking}) =
         <Text>Locked amount: {token.vestingAmount} {token.symbol}</Text>
       </Box>
       <Box mt={4}>
+        <Text fontWeight={"bold"} mb={2}>Distribute token with Audius</Text>
+        <Link to={`/audius/${token.address}`}><Button>Go to Audius setting</Button></Link>
+      </Box>
+      <Box mt={4}>
         <Text fontWeight={"bold"} mb={2}>Withdrawable amount</Text>
         <Flex style={{ alignItems: "center"}}>
           <Text fontWeight="bold" fontSize={4} mr={3}>{token.redeemableAmount} {token.symbol}</Text>
@@ -22,7 +26,7 @@ const CreatedTokenInfo = ({token, withdrawToken, restartStaking, stopStaking}) =
         <Text fontWeight={"bold"} mb={2}>Change Staking status</Text>
         {token.isStakingPaused
           ? <Box><Text mb={2}>Inactive</Text><Button onClick={() => restartStaking(token.address)}>Restart Staking</Button></Box>
-          : <Box><Text mb={2}>Active</Text><Button variant="danger" onClick={() => stopStaking(token.address)}>Stop Staking</Button></Box>
+          : <Box><Text mb={2}>Active</Text><Button size="small" variant="danger" onClick={() => stopStaking(token.address)}>Stop Staking</Button></Box>
         }
       </Box>
     </Card>

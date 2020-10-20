@@ -6,7 +6,6 @@ import CreatTokenForm from "../organisms/CreateTokenForm";
 const CreateTokenPageTemplate = ({
   provider,
   loadWeb3Modal,
-  readOnChainData,
   handleSubmit,
   nameInput,
   nameValue,
@@ -20,8 +19,6 @@ const CreateTokenPageTemplate = ({
   limitCheckboxValue,
   teamInput,
   teamValue,
-  communityInput,
-  communityValue,
   lockupInput,
   lockupValue,
   handleStakingCheckbox,
@@ -29,31 +26,27 @@ const CreateTokenPageTemplate = ({
 }) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <Container
-      contents={
-        <CreatTokenForm
-          handleSubmit={handleSubmit}
-          nameInput={nameInput}
-          nameValue={nameValue}
-          symbolInput={symbolInput}
-          symbolValue={symbolValue}
-          numberInput={numberInput}
-          numberValue={numberValue}
-          decimalsInput={decimalsInput}
-          decimalsValue={decimalsValue}
-          handleLimitCheckbox={handleLimitCheckbox}
-          limitCheckboxValue={limitCheckboxValue}
-          teamInput={teamInput}
-          teamValue={teamValue}
-          communityInput={communityInput}
-          communityValue={communityValue}
-          lockupInput={lockupInput}
-          lockupValue={lockupValue}
-          handleStakingCheckbox={handleStakingCheckbox}
-          stakingCheckboxValue={stakingCheckboxValue}
-        />
-      }
-    />
+    <Container>
+      <CreatTokenForm
+        handleSubmit={handleSubmit}
+        nameInput={nameInput}
+        nameValue={nameValue}
+        symbolInput={symbolInput}
+        symbolValue={symbolValue}
+        numberInput={numberInput}
+        numberValue={numberValue}
+        decimalsInput={decimalsInput}
+        decimalsValue={decimalsValue}
+        handleLimitCheckbox={handleLimitCheckbox}
+        limitCheckboxValue={limitCheckboxValue}
+        teamInput={teamInput}
+        teamValue={teamValue}
+        lockupInput={lockupInput}
+        lockupValue={lockupValue}
+        handleStakingCheckbox={handleStakingCheckbox}
+        stakingCheckboxValue={stakingCheckboxValue}
+      />
+    </Container>
   </div>
 )
 
