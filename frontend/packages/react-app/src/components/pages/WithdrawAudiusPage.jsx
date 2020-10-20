@@ -47,6 +47,8 @@ const WithdrawAudiusPage = () => {
   const [myAccount, setMyAccount] = useState(null)
   const [isSigningIn, setIsSigningIn] = useState(false)
   const [wallet, setWallet] = useState(null)
+  const [addressValue, addressInput] = useState("")
+  const [distributedAmount, setDistributedAmount] = useState(0)
 
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -80,24 +82,6 @@ const WithdrawAudiusPage = () => {
     initLibs()
   }, [])
 
-  // Sample implementation
-  useEffect(() => {
-    const getBalance = async () => {
-      if(wallet) {
-        const provider = new ethers.providers.InfuraProvider("ropsten");
-        const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
-        const balance = await provider.getBalance(ethersWallet.address)
-        console.log(balance)
-        const fanToken = new Contract("0x0913477df38215f8104e7504676ce214640ab203", abis.fanToken, ethersWallet)
-        const b = await fanToken.balanceOf(ethersWallet.address)
-        console.log(b)
-        // fanToken.transfer("0x4B8619890fa9C3cF11C497961eB4b970D440127F", b)
-
-      }
-    }
-    getBalance()
-  }, [wallet])
-
   // Sign in handler
   const signIn = useCallback(async () => {
     setIsSigningIn(true)
@@ -105,7 +89,9 @@ const WithdrawAudiusPage = () => {
     const password = passwordRef.current.value
     const { user } = await libs.Account.login(email, password)
     setIsSigningIn(false)
-    setMyAccount(user)
+    if (user) {
+      setMyAccount(user)
+    }
     const wallet = libs.hedgehog.getWallet()
     setWallet(wallet)
   }, [libs])
@@ -116,6 +102,33 @@ const WithdrawAudiusPage = () => {
     setMyAccount(null)
     setWallet(null)
   }, [libs])
+
+  const addressSubmit = async (e) => {
+    e.preventDefault()
+    if(wallet) {
+      // TODO: Add correct contract function
+      // const provider = new ethers.providers.InfuraProvider("ropsten");
+      // const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
+      // const balance = await provider.getBalance(ethersWallet.address)
+      // const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
+      // const distributedAmount = await audius.distributedAmount(addressValue)
+      // setDistributedAmount(distributedAmount.toNumber())
+      setDistributedAmount(1000000)
+    }
+  }
+
+  const withdrawToken = async () => {
+    if(wallet) {
+      // TODO: Add correct contract function
+      // const provider = new ethers.providers.InfuraProvider("ropsten");
+      // const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
+      // const balance = await provider.getBalance(ethersWallet.address)
+      // const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
+      // await audius.claim(addressValue)
+      setDistributedAmount(0)
+      addressInput("")
+    }
+  }
 
   return (
     <WithdrawAudiusPageTemplate
@@ -128,6 +141,11 @@ const WithdrawAudiusPage = () => {
       signOut={signOut}
       emailRef={emailRef}
       passwordRef={passwordRef}
+      addressInput={addressInput}
+      addressValue={addressValue}
+      addressSubmit={addressSubmit}
+      distributedAmount={distributedAmount}
+      withdrawToken={withdrawToken}
     />
   );
 }

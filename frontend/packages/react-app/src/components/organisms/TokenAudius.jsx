@@ -1,5 +1,19 @@
 import React from "react";
-import { Button, Heading, Loader, Text, Box } from "rimble-ui";
+import {
+  Button,
+  Heading,
+  Loader,
+  Text,
+  Box,
+  Form,
+} from "rimble-ui";
+
+import TextInput from "../molecules/TextInput"
+import SignInAudius from "../molecules/SignInAudius"
+import SignOutAudius from "../molecules/SignOutAudius"
+import AudiusAccount from "../molecules/AudiusAccount"
+import AudiusAddressInput from "../molecules/AudiusAddressInput"
+import AudiusWithdrawToken from "../molecules/AudiusWithdrawToken"
 
 const TokenAudius = ({
   libs,
@@ -9,33 +23,45 @@ const TokenAudius = ({
   signOut,
   emailRef,
   passwordRef,
+  addressInput,
+  addressValue,
+  addressSubmit,
+  distributedAmount,
+  withdrawToken,
 }) => (
-  <Box>
+  <Box m={4} width={[ 1, 1/2, 1/4]}>
     {libs && !myAccount && !isSigningIn && (
-      <Box>
-        <div className="label">Email</div>
-        <input ref={emailRef} className="email" />
-        <div className="label">Password</div>
-        <input ref={passwordRef} type="password" className="password" />
-
-        <Button onClick={signIn}>Sign in</Button>
-      </Box>
+      <SignInAudius
+        emailRef={emailRef}
+        passwordRef={passwordRef}
+        audiusSignIn={signIn}
+      />
     )}
     {isSigningIn && (
-      <div>Signing in...</div>
+      <Loader size="80px" m="auto" />
     )}
     {myAccount && (
       <Box>
-        <Box>
-          <Text>{myAccount.name}</Text>
-          <Text>{`@${myAccount.handle}`}</Text>
-          <Text>{myAccount.wallet}</Text>
-        </Box>
-        <Box>
-          aaaa
-        </Box>
-        <Button mt={4} size="small" variant="danger" onClick={signOut}>Sign out</Button>
+        <AudiusAccount
+          myAccount={myAccount}
+        />
+        <AudiusAddressInput
+          addressSubmit={addressSubmit}
+          addressInput={addressInput}
+          addressValue={addressValue}
+        />
       </Box>
+    )}
+    {distributedAmount > 0 &&
+      <AudiusWithdrawToken
+        distributedAmount={distributedAmount}
+        withdrawToken={withdrawToken}
+      />
+    }
+    {myAccount && (
+      <SignOutAudius
+        audiusSignOut={signOut}
+      />
     )}
   </Box>
 )

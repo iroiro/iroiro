@@ -4,6 +4,7 @@ import tokenFactoryAbi from "./abis/TokenFactory.json";
 import fanTokenAbi from "./abis/FanToken.json";
 import stakingAbi from "./abis/Staking.json"
 import vestingAbi from "./abis/Vesting.json";
+import audiusAbi from "./abis/Audius.json";
 
 const abis = {
   erc20: erc20Abi,
@@ -12,6 +13,7 @@ const abis = {
   fanToken: fanTokenAbi,
   staking: stakingAbi,
   vesting: vestingAbi,
+  audius: audiusAbi,
 };
 
 export default abis;

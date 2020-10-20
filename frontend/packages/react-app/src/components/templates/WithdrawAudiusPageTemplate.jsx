@@ -11,7 +11,12 @@ const WithdrawAudiusPageTemplate = ({
   signIn,
   signOut,
   emailRef,
-  passwordRef
+  passwordRef,
+  addressInput,
+  addressValue,
+  addressSubmit,
+  distributedAmount,
+  withdrawToken,
 }) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
@@ -23,6 +28,11 @@ const WithdrawAudiusPageTemplate = ({
       signOut={signOut}
       emailRef={emailRef}
       passwordRef={passwordRef}
+      addressInput={addressInput}
+      addressValue={addressValue}
+      addressSubmit={addressSubmit}
+      distributedAmount={distributedAmount}
+      withdrawToken={withdrawToken}
     />
   </div>
 )
