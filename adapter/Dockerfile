@@ -7,3 +7,5 @@ COPY package*.json $APP_ROOT
 RUN yarn
 
 COPY . $APP_ROOT
+
+CMD ["yarn", "start"]

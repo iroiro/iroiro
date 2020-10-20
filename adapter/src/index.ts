@@ -6,13 +6,16 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/files/:cid/addresses/:address/existence', async (req, res) => {
-    const cid = req.params.cid
-    const address = req.params.address
+app.post('/api', async (req, res) => {
+    const cid = req.body.data.cid
+    const address = req.body.data.address
     const content = await getFile(cid)
     const isAddressContained = content.addresses.includes(address) // Assume json like { "addresses": ["address1", "address2", ...] }
 
-    return res.send(isAddressContained)
+    return res.send({
+        id: req.body.id,
+        data: isAddressContained
+    })
 })
 
 const getFile = async (cid) => {
