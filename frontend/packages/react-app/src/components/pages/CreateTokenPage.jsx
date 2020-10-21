@@ -9,14 +9,14 @@ import CreateTokenPageTemplate from "../templates/CreateTokenPageTemplate";
 
 const CreateTokenPage = () => {
   const [provider, setProvider] = useState();
-  const [nameValue , nameInput] = useState("Sample Token");
-  const [symbolValue , symbolInput] = useState("SMT");
-  const [numberValue , numberInput] = useState(10000000000);
-  const [decimalsValue , decimalsInput] = useState(18);
+  const [nameValue , nameInput] = useState("");
+  const [symbolValue , symbolInput] = useState("");
+  const [numberValue , numberInput] = useState("");
+  const [decimalsValue , decimalsInput] = useState("");
   const [limitCheckboxValue, handleLimitCheckbox] = useState(false);
-  const [teamValue, teamInput] = useState(30);
-  const [lockupValue, lockupInput] = useState(2);
-  const [stakingCheckboxValue, handleStakingCheckbox] = useState(true);
+  const [teamValue, teamInput] = useState("");
+  const [lockupValue, lockupInput] = useState("");
+  const [stakingCheckboxValue, handleStakingCheckbox] = useState(false);
 
   const history = useHistory();
 

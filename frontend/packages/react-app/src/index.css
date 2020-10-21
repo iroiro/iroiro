@@ -6,16 +6,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   align-items: center;
-  background-color: #282c34;
-  color: white;
+  background-color: #f8f8f8;
+  color: #333;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-/* 暫定 */
-.cZkAhc {
-  color: white !important;
 }

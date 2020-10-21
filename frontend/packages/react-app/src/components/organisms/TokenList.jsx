@@ -5,8 +5,8 @@ import TokenListItem from "../molecules/TokenListItem";
 const TokenList = ({ tokens }) => (
   <div>
     <Heading as={"h2"}>Token List</Heading>
-    {tokens.length === "" &&
-      <Loader size="80px" m="auto" />
+    {tokens.length == 0 &&
+      <Loader size="80px" m="auto" mt={5}/>
     }
     {tokens.length == 0
       ? <Text>You don't have any tokens</Text>
