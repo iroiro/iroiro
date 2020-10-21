@@ -29,7 +29,7 @@ contract Audius is AudiusInterface {
         nextTokenId = 1;
     }
 
-    function isClaimable(address token) public view returns(bool) {
+    function isClaimable(address token) public override view returns(bool) {
         // TODO Integrate with chainlink
         return true;
     }
