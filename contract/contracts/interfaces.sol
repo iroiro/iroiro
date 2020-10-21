@@ -62,7 +62,7 @@ interface VestingInterface {
 }
 
 interface AudiusInterface {
-    function isClaimable(address token) external view returns(bool);
+    function isClaimable(address token) external view returns (bool);
 
     // Add Audius list
     function addAudiusList(uint256 id, string memory _followersHash, uint256 _followersNum) external;
@@ -72,4 +72,15 @@ interface AudiusInterface {
 
     // Claim tokens
     function claim(address token) external;
+
+    // Request Checking Address to Chainlink
+    function requestCheckingAddress(
+        address _oracle,
+        bytes32 _jobId,
+        string memory _cid,
+        string memory tokenAddress,
+        string memory userAddress,
+        address token,
+        uint256 fee
+    ) external returns (bytes32 requestId);
 }
