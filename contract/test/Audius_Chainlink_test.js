@@ -40,7 +40,7 @@ contract('Audius', accounts => {
     context('without LINK', () => {
       it('reverts', async () => {
         await expectRevert.unspecified(
-          cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
+          cc.requestCheckingAddress(oc.address, jobId, "cid", "address",
             new web3.utils.BN("1000000000000000000"),
             {from: consumer,}
           ),
@@ -59,7 +59,7 @@ contract('Audius', accounts => {
 
       context('sending a request to a specific oracle contract address', () => {
         it('triggers a log event in the new Oracle contract', async () => {
-          const tx = await cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
+          const tx = await cc.requestCheckingAddress(oc.address, jobId, "cid", "address",
             new web3.utils.BN("1000000000000000000"),
             {from: consumer},
           )
@@ -111,7 +111,7 @@ contract('Audius', accounts => {
       await link.transfer(cc.address, web3.utils.toWei('1', 'ether'), {
         from: defaultAccount,
       })
-      const tx = await cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
+      const tx = await cc.requestCheckingAddress(oc.address, jobId, "cid", "address",
           new web3.utils.BN("1000000000000000000"),
           { from: consumer },
       )
@@ -161,7 +161,7 @@ contract('Audius', accounts => {
       await link.transfer(cc.address, web3.utils.toWei('1', 'ether'), {
         from: defaultAccount,
       })
-      const tx = await cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
+      const tx = await cc.requestCheckingAddress(oc.address, jobId, "cid", "address",
           new web3.utils.BN("1000000000000000000"),
           { from: consumer },
       )

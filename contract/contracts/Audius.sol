@@ -96,11 +96,9 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         fanToken.transfer(msg.sender, distributedAmount(token));
     }
 
-    // TODO Update arguments and local variables
     function requestCheckingAddress(
         address _oracle,
         bytes32 _jobId,
-        string memory _url,
         string memory _cid,
         string memory _address,
         uint256 fee
