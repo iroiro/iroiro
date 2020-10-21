@@ -27,8 +27,8 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     mapping(address => uint64) public userIdList;
     mapping(address => string) public followersHash;
     mapping(address => uint256) public followersNum;
+    // TODO fix
     mapping(address => bool) private followerClaimed;
-    string public data;
     mapping(bytes32 => bool) private claimKeyHashList;
 
     constructor(address _factory, address _link) public {
@@ -91,8 +91,9 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
 
     // Claim tokens
     function claim(address token) external override {
-        // TODO Check Chainlink api
         require(isClaimable(token), "Account is not able to claim");
+
+        // save claimed user list
 
         FanToken fanToken = FanToken(token);
         fanToken.transfer(msg.sender, distributedAmount(token));
@@ -110,12 +111,15 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
         request.add("cid", _cid);
         request.add("address", _address);
+        userIdList[msg.sender] = nextUserId;
+        // TODO Use safemath add function
+        nextUserId = nextUserId + 1;
 
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
 
     function fulfill(bytes32 _requestId, bytes32 _data) public recordChainlinkFulfillment(_requestId) {
-        data = bytes32ToString(_data);
+        claimKeyHashList[_data] = true;
     }
 
     /**
@@ -141,18 +145,5 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         uint256 _expiration
     ) public onlyOwner {
         cancelChainlinkRequest(_requestId, _payment, _callbackFunctionId, _expiration);
-    }
-
-    // TODO temp for development
-    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
-        uint8 i = 0;
-        while (i < 32 && _bytes32[i] != 0) {
-            i++;
-        }
-        bytes memory bytesArray = new bytes(i);
-        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
-            bytesArray[i] = _bytes32[i];
-        }
-        return string(bytesArray);
     }
 }
