@@ -65,4 +65,17 @@ contract Audius is AudiusInterface {
         FanToken fanToken = FanToken(token);
         fanToken.transfer(msg.sender, distributedAmount(token));
     }
+
+    function requestCheckingAddress(
+        address _oracle,
+        bytes32 _jobId,
+        string memory _cid,
+        string memory tokenAddress,
+        string memory userAddress,
+        address token,
+        uint256 fee
+    ) public override returns (bytes32 requestId) {
+        // tmp value
+        return _jobId;
+    }
 }
