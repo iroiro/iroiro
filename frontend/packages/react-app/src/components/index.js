@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 export const Header = styled.header`
-  background-color: #282c34;
+  background-color: white;
   min-height: 70px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  color: white;
+  color: #333333;
 `;
 
 export const Image = styled.img`

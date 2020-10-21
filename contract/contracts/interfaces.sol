@@ -73,13 +73,14 @@ interface AudiusInterface {
     // Claim tokens
     function claim(address token) external;
 
+    // Request Checking Address to Chainlink
     function requestCheckingAddress(
-        address _oracle,
-        bytes32 _jobId,
-        string memory _cid,
-        string memory tokenAddress,
-        string memory userAddress,
-        address token,
-        uint256 fee
+        address _oracle, // which Audius contract requests
+        bytes32 _jobId, // which checking address external adapter contained
+        string memory _cid, // hash id for address list JSON stored on IPFS
+        string memory tokenAddress, // which user want to claim, necessary for Chainlink request
+        string memory userAddress, // same as msg.sender but necessary for Chainlink request
+        address token, // which used for getting token id
+        uint256 fee // $LINK fee with 18 decimals
     ) external returns (bytes32 requestId);
 }

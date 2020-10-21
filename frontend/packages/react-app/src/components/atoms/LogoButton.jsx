@@ -1,10 +1,15 @@
 import React from "react"
 import { Link } from 'react-router-dom'
-import { Button } from "rimble-ui"
+import { Image } from "rimble-ui"
 
-const LogoButton = ({path, text}) => (
+const LogoButton = () => (
     <Link to="/" style={{textDecoration: 'none'}}>
-      <Button.Text mainColor="white" fontSize="32px">Fanstock</Button.Text>
+      <Image
+        alt="logo"
+        width="100"
+        height="auto"
+        src={`${window.location.origin}/iroiro_logo.svg`}
+      />
     </Link>
   )
 

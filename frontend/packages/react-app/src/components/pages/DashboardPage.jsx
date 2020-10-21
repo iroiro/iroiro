@@ -1,8 +1,9 @@
-import React, {useCallback, useEffect, useState} from "react"
-import {Web3Provider} from "@ethersproject/providers";
-import {web3Modal} from "../../utils/web3Modal";
-import {Contract} from "@ethersproject/contracts";
-import {abis, addresses} from "@project/contracts";
+import React, { useCallback, useEffect, useState } from "react"
+import { ethers } from "ethers"
+import { Web3Provider } from "@ethersproject/providers"
+import { web3Modal } from "../../utils/web3Modal"
+import { Contract } from "@ethersproject/contracts"
+import { abis, addresses } from "@project/contracts"
 import Dashboard from "../templates/DashboardPageTemplate"
 import {useLazyQuery} from "@apollo/react-hooks";
 import {GET_CREATOR_TOKENS} from "../../graphql/subgraph";
@@ -88,7 +89,7 @@ const DashboardPage = () => {
     const staking = new Contract(addresses.Staking, abis.staking, signer)
     staking.pauseStakingOf(address)
   }
-
+  
   return (
     <div>
       <Dashboard

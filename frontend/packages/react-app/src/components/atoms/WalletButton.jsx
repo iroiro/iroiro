@@ -1,9 +1,12 @@
-import {Button} from "../index";
+// import {Button} from "../index";
+import { Button } from "rimble-ui"
 import {logoutOfWeb3Modal} from "../../utils/web3Modal";
 import React from "react";
 
 const WalletButton = ({provider, loadWeb3Modal}) => (
-    <Button
+    <Button.Outline
+      mainColor="#333"
+      mr={4}
       onClick={() => {
         if (!provider) {
           loadWeb3Modal();
@@ -13,7 +16,7 @@ const WalletButton = ({provider, loadWeb3Modal}) => (
       }}
     >
       {!provider ? "Connect Wallet" : "Disconnect Wallet"}
-    </Button>
+    </Button.Outline>
   )
 
 export default WalletButton
