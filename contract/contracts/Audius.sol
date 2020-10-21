@@ -29,6 +29,11 @@ contract Audius is AudiusInterface {
         nextTokenId = 1;
     }
 
+    function isClaimable(address token) public view returns(bool) {
+        // TODO Integrate with chainlink
+        return true;
+    }
+
     function remainingAmount(address token) public view returns (uint256) {
         FanToken fanToken = FanToken(token);
         return fanToken.balanceOf(address(this));
@@ -55,6 +60,7 @@ contract Audius is AudiusInterface {
     // Claim tokens
     function claim(address token) external override {
         // TODO Check Chainlink api
+        require(isClaimable(token), "Account is not able to claim");
 
         FanToken fanToken = FanToken(token);
         fanToken.transfer(msg.sender, distributedAmount(token));

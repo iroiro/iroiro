@@ -53,6 +53,21 @@ describe("Audius", () => {
     })
   })
 
+  describe("isClaimable", () => {
+    it("returns true", async() => {
+      const id = (await this.factory.tokenAmountOf(alice)).toNumber()
+      const tokenAddress = await this.factory.creatorTokenOf(alice, id)
+      const isClaimable = await this.audius.isClaimable(tokenAddress)
+      expect(isClaimable).to.equal(true)
+    })
+
+    // TODO activate
+    xit("returns false", async() => {
+      const isClaimable = await this.audius.isClaimable(tokenAddress)
+      expect(isClaimable).to.equal(false)
+    })
+  })
+
   describe("addAudiusList", () => {
     it("success", async () => {
       try {
