@@ -23,7 +23,7 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     mapping(address => string) public followersHash;
     mapping(address => uint256) public followersNum;
     mapping(address => bool) private followerClaimed;
-    bool public isIncluded;
+    string public data;
 
     constructor(address _factory, address _link) public {
         nextTokenId = 1;
@@ -92,8 +92,8 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
 
-    function fulfill(bytes32 _requestId, bool _data) public recordChainlinkFulfillment(_requestId) {
-        isIncluded = _data;
+    function fulfill(bytes32 _requestId, bytes32 _data) public recordChainlinkFulfillment(_requestId) {
+        data = bytes32ToString(_data);
     }
 
     /**
@@ -119,5 +119,18 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         uint256 _expiration
     ) public onlyOwner {
         cancelChainlinkRequest(_requestId, _payment, _callbackFunctionId, _expiration);
+    }
+
+    // TODO temp for development
+    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
+        uint8 i = 0;
+        while (i < 32 && _bytes32[i] != 0) {
+            i++;
+        }
+        bytes memory bytesArray = new bytes(i);
+        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
+            bytesArray[i] = _bytes32[i];
+        }
+        return string(bytesArray);
     }
 }

@@ -13,6 +13,7 @@ contract('Audius', accounts => {
   const stranger = accounts[2]
   const consumer = accounts[3]
   const factory = accounts[4]
+  const user = accounts[5]
 
   // These parameters are used to validate the data was received
   // on the deployed oracle contract. The Job ID only represents
@@ -20,10 +21,6 @@ contract('Audius', accounts => {
   // For the latest JobIDs, visit our docs here:
   // https://docs.chain.link/docs/testnet-oracles
   const jobId = web3.utils.toHex('4c7b7ffb66b344fbaa64995af81e355a')
-  const url =
-    'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR,JPY'
-  const path = 'USD'
-  const times = 100
 
   // Represents 1 LINK for testnet requests
   const payment = web3.utils.toWei('1')
@@ -80,11 +77,12 @@ contract('Audius', accounts => {
   })
 
   describe('#fulfill', () => {
-    const response = web3.utils.toHex(true)
+    const userId = 1
+    const tokenId = 1
+    const response = `${userId}-${tokenId}-true`
     let request
 
     beforeEach(async () => {
-      console.debug('hoge', await cc.isIncluded())
       await link.transfer(cc.address, web3.utils.toWei('1', 'ether'), {
         from: defaultAccount,
       })
@@ -102,10 +100,10 @@ contract('Audius', accounts => {
     })
 
     it('records the data given to it by the oracle', async () => {
-      const isIncluded = await cc.isIncluded()
+      const data = await cc.data()
       assert.equal(
-        isIncluded,
-        true
+        data,
+        "1-1-true"
       )
     })
 
@@ -129,8 +127,11 @@ contract('Audius', accounts => {
 
     context('when called by anyone other than the oracle contract', () => {
       it('does not accept the data provided', async () => {
+        const [, , , , , responseBytes] = oracle.convertFufillParams(request, response, {
+          from: oracleNode,
+        })
         await expectRevert.unspecified(
-          cc.fulfill(request.requestId, response, { from: stranger }),
+          cc.fulfill(request.requestId, responseBytes, { from: stranger }),
         )
       })
     })
