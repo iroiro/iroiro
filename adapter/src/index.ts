@@ -1,5 +1,18 @@
 import * as express from "express"
 import * as ipfsClient from "ipfs-http-client"
+import {AbiItem, soliditySha3} from "web3-utils"
+import * as BN from "bn.js"
+import * as dotenv from "dotenv"
+dotenv.config()
+
+const Web3 = require("web3");
+
+// TODO: Update getting ABI logic
+const {abi} = require('../../contract/build/contracts/Audius.json');
+const contractInterface: AbiItem[] = abi;
+const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER));
+const proxyAddress: string = process.env.AUDIUS_CONTRACT_ADDRESS
+const Audius = new web3.eth.Contract(contractInterface, proxyAddress);
 
 const ipfs = ipfsClient("https://ipfs.infura.io:5001")
 const app = express();
@@ -7,16 +20,36 @@ const app = express();
 app.use(express.json());
 
 app.post('/api', async (req, res) => {
+    console.debug("request body: ", req.body)
     const cid = req.body.data.cid
-    const address = req.body.data.address
+    const userAddress = req.body.data.userAddress
+    const tokenAddress = req.body.data.tokenAddress
+    const userId = new BN(await Audius.methods.userIdList(userAddress).call())
+    const tokenId = new BN(await Audius.methods.tokenIdList(tokenAddress).call())
+
+    // TODO Add error handling
+
+    // TODO: Add handling error
     const content = await getFile(cid)
-    const isAddressContained = content.addresses.includes(address) // Assume json like { "addresses": ["address1", "address2", ...] }
+
+    const isClaimable = content.addresses.includes(userAddress) // Assume json like { "addresses": ["address1", "address2", ...] }
+    const claimKeyHash = getClaimKeyHash(userId, tokenId, isClaimable)
+    console.debug("Claim key hash: ", claimKeyHash)
 
     return res.send({
         id: req.body.id,
-        data: isAddressContained
+        data: claimKeyHash
     })
 })
+
+const getClaimKeyHash = (userId, tokenId, isClimable) => {
+    const truthyValue = isClimable ? 1 : 0;
+    const truthyBN = new BN(truthyValue)
+    const claimKey = userId.add(tokenId).add(truthyBN)
+    console.debug("Claim key: ", claimKey)
+
+    return soliditySha3(claimKey)
+}
 
 const getFile = async (cid) => {
     for await (const file of ipfs.get(cid)) {
