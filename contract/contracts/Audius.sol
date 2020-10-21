@@ -42,7 +42,8 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     }
 
     function generateClaimKey(uint64 userId, uint64 tokenId) public pure returns (uint256){
-        return uint256(userId) * (10 ** 21) + uint256(tokenId) * 10 + 1; // 1 as true
+        return uint256(userId) * (10 ** 21) + uint256(tokenId) * 10 + 1;
+        // 1 as true
     }
 
     function isClaimable(address token) public override view returns (bool) {
@@ -90,24 +91,39 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     // Claim tokens
     function claim(address token) external override {
         require(isClaimable(token), "Account is not able to claim");
+        // TODO check user already claimed
 
         followerClaimedTokens[token][msg.sender] = true;
         FanToken fanToken = FanToken(token);
         fanToken.transfer(msg.sender, distributedAmount(token));
     }
 
+    // TODO Consider avoid duplicate value
     function requestCheckingAddress(
         address _oracle,
         bytes32 _jobId,
         string memory _cid,
-        string memory _address,
+        string memory tokenAddress,
+        string memory userAddress,
+        address token,
         uint256 fee
-    ) public returns (bytes32 requestId) {
+    ) public override returns (bytes32 requestId) {
+        uint64 tokenId = tokenIdList[token];
+        require(tokenId > 0, "Token is not registered");
+
+        uint64 userId;
+        if (userIdList[msg.sender] == 0) {
+            userId = nextUserId;
+            userIdList[msg.sender] = userId;
+            nextUserId = nextUserId.add(1);
+        } else {
+            userId = userIdList[msg.sender];
+        }
+
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
         request.add("cid", _cid);
-        request.add("address", _address);
-        userIdList[msg.sender] = nextUserId;
-        nextUserId = nextUserId.add(1);
+        request.add("tokenAddress", tokenAddress);
+        request.add("userAddress", userAddress);
 
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
@@ -139,5 +155,9 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         uint256 _expiration
     ) public onlyOwner {
         cancelChainlinkRequest(_requestId, _payment, _callbackFunctionId, _expiration);
+    }
+
+    function addressToStringTest() public view returns(string memory) {
+        return string(abi.encodePacked(msg.sender));
     }
 }
