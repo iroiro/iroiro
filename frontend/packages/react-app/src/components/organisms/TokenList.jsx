@@ -6,7 +6,7 @@ const TokenList = ({ tokens }) => (
   <div>
     <Heading as={"h2"}>Token List</Heading>
     {tokens.length == 0 &&
-      <Loader size="80px" m="auto" />
+      <Loader size="80px" m="auto" mt={5}/>
     }
     {tokens.map(token => 
       <TokenListItem

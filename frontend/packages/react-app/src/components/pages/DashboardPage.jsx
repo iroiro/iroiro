@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Web3Provider } from "@ethersproject/providers";
-import { web3Modal } from "../../utils/web3Modal";
-import { Contract } from "@ethersproject/contracts";
-import { abis, addresses } from "@project/contracts";
+import { ethers } from "ethers"
+import { Web3Provider } from "@ethersproject/providers"
+import { web3Modal } from "../../utils/web3Modal"
+import { Contract } from "@ethersproject/contracts"
+import { abis, addresses } from "@project/contracts"
 import Dashboard from "../templates/DashboardPageTemplate"
 
 const DashboardPage = () => {
@@ -31,7 +32,6 @@ const DashboardPage = () => {
     const walletAddress = await signer.getAddress()
     const tokenFactory = new Contract(addresses.TokenFactory, abis.tokenFactory, signer)
     const tokenAmount = await tokenFactory.tokenAmountOf(walletAddress)
-    console.log(tokenAmount.toNumber())
 
     const tokenArray = []
 
@@ -78,7 +78,7 @@ const DashboardPage = () => {
     const staking = new Contract(addresses.Staking, abis.staking, signer)
     staking.pauseStakingOf(address)
   }
-
+  
   return (
     <div>
       <Dashboard
