@@ -4,8 +4,8 @@ const { expectRevert, time } = require('@openzeppelin/test-helpers')
 
 // TODO currently work with `truffle test`. Update for mocha
 contract('Audius', accounts => {
-  const { LinkToken } = require('@chainlink/contracts/truffle/v0.4/LinkToken')
-  const { Oracle } = require('@chainlink/contracts/truffle/v0.6/Oracle')
+  const {LinkToken} = require('@chainlink/contracts/truffle/v0.4/LinkToken')
+  const {Oracle} = require('@chainlink/contracts/truffle/v0.6/Oracle')
   const Audius = artifacts.require('Audius.sol')
 
   const defaultAccount = accounts[0]
@@ -28,9 +28,9 @@ contract('Audius', accounts => {
   let link, oc, cc
 
   beforeEach(async () => {
-    link = await LinkToken.new({ from: defaultAccount })
-    oc = await Oracle.new(link.address, { from: defaultAccount })
-    cc = await Audius.new(factory, link.address, { from: consumer })
+    link = await LinkToken.new({from: defaultAccount})
+    oc = await Oracle.new(link.address, {from: defaultAccount})
+    cc = await Audius.new(factory, link.address, {from: consumer})
     await oc.setFulfillmentPermission(oracleNode, true, {
       from: defaultAccount,
     })
@@ -40,10 +40,10 @@ contract('Audius', accounts => {
     context('without LINK', () => {
       it('reverts', async () => {
         await expectRevert.unspecified(
-          cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
-            new web3.utils.BN("1000000000000000000"),
-            { from: consumer, }
-          ),
+            cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
+                new web3.utils.BN("1000000000000000000"),
+                {from: consumer,}
+            ),
         )
       })
     })
@@ -60,16 +60,16 @@ contract('Audius', accounts => {
       context('sending a request to a specific oracle contract address', () => {
         it('triggers a log event in the new Oracle contract', async () => {
           const tx = await cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
-            new web3.utils.BN("1000000000000000000"),
-            { from: consumer },
+              new web3.utils.BN("1000000000000000000"),
+              {from: consumer},
           )
           request = oracle.decodeRunRequest(tx.receipt.rawLogs[3])
           assert.equal(oc.address, tx.receipt.rawLogs[3].address)
           assert.equal(
-            request.topic,
-            web3.utils.keccak256(
-              'OracleRequest(bytes32,address,bytes32,uint256,address,bytes4,uint256,uint256,bytes)',
-            ),
+              request.topic,
+              web3.utils.keccak256(
+                  'OracleRequest(bytes32,address,bytes32,uint256,address,bytes4,uint256,uint256,bytes)',
+              ),
           )
         })
       })
@@ -87,12 +87,19 @@ contract('Audius', accounts => {
 
     it("returns a minimum value", async () => {
       const claimKey = (await cc.generateClaimKey(
-        new web3.utils.BN("1"),
-        new web3.utils.BN("1")
-    )).toString()
+          new web3.utils.BN("1"),
+          new web3.utils.BN("1")
+      )).toString()
       expect(claimKey).to.equal("1" + "0000000000000000000" + "1" + "1")
     })
   })
+
+  // it("keccak", async() => {
+  //   const claimKey = "1000000000000000000011"
+  //   const hash1 = await cc.keccakTest(claimKey)
+  //   const hash2 = web3.utils.soliditySha3(claimKey)
+  //   expect(hash1).to.equal(hash2)
+  // })
 
   describe('#fulfill', () => {
     const userId = 1
@@ -114,14 +121,6 @@ contract('Audius', accounts => {
           from: oracleNode,
           gas: 500000,
         }),
-      )
-    })
-
-    it('records the data given to it by the oracle', async () => {
-      const data = await cc.data()
-      assert.equal(
-        data,
-        "1-1-true"
       )
     })
 

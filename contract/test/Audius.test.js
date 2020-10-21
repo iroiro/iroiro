@@ -54,6 +54,16 @@ describe("Audius", () => {
   })
 
   describe("isClaimable", () => {
+    // TODO Activate this
+    // beforeEach(async () => {
+    //   const truthyClaimKey = "1000000000000000000011"
+    //   console.log("solidity sha3 of truthyClaimKey: ", web3.utils.soliditySha3(truthyClaimKey))
+    //   const truthyClaimKeyHash = web3.utils.soliditySha3(truthyClaimKey)
+    //   const falsyClaimKey = "1000000000000000000010"
+    //   console.log("solidity sha3 of falsyClaimKey: ", web3.utils.soliditySha3(falsyClaimKey))
+    //   const falsyClaimKeyHash = web3.utils.soliditySha3(falsyClaimKey)
+    // })
+
     it("returns true", async() => {
       const id = (await this.factory.tokenAmountOf(alice)).toNumber()
       const tokenAddress = await this.factory.creatorTokenOf(alice, id)
