@@ -13,8 +13,8 @@ const AppHeader = ({ provider, loadWeb3Modal}) => (
         <LogoButton />
       </Box>
       <div>
-        <LinkButton p={4} path="dashboard" text="Dashboard" mainColor={"#E25E89"}/>
-        <LinkButton p={4} path="explore" text="Explore" mainColor={"#48C5D5"}/>
+        <LinkButton p={4} path="/dashboard" text="Dashboard" mainColor={"#E25E89"}/>
+        <LinkButton p={4} path="/explore" text="Explore" mainColor={"#48C5D5"}/>
         <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} />
       </div>
     </Header>

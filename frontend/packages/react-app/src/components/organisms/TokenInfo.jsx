@@ -48,18 +48,20 @@ const TokenInfo = ({ token, stakingInfo, withdrawStakingToken, claimEarnedToken,
         <Text>Your balance:</Text>
         <Text fontSize={5} fontWeight={"bold"}>{token.balance}</Text>
       </Box>
-      <Flex style={{ justifyContent: "space-between", maxWidth: "600px"}}>
+      <Flex style={{ justifyContent: "space-between"}}>
         <Box mt={2}>
           <Text>Your staking amount:</Text>
           <Flex mt={2} style={{ alignItems: "center"}}>
-            <Text fontSize={5} fontWeight={"bold"} mr={3}>{stakingInfo.stakingAmount} {token.symbol}</Text>
+            <Text fontSize={5} fontWeight={"bold"} mr={3}>{stakingInfo.stakingAmount}</Text>
+            <Text fontWeight={"bold"} mr={3}>{token.symbol}</Text>
             <Button onClick={() => withdrawStakingToken(token.address)} mainColor="itblue">Withdraw</Button>
           </Flex>
         </Box>
         <Box mt={2}>
           <Text>Your earned amount:</Text>
           <Flex mt={2} style={{ alignItems: "center"}}>
-            <Text fontSize={5} fontWeight={"bold"} mr={3}>{stakingInfo.earned} {token.symbol}</Text>
+            <Text fontSize={5} fontWeight={"bold"} mr={3}>{stakingInfo.earned}</Text>
+            <Text fontWeight={"bold"} mr={3}>{token.symbol}</Text>
             <Button onClick={() => claimEarnedToken(token.address)} mainColor="itblue">Claim</Button>
           </Flex>
         </Box>
