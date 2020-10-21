@@ -4,7 +4,7 @@ import { Button, Heading, Card, Text, Flex } from "rimble-ui";
 
 const TopPageBody = () => (
   <div>
-    <Heading fontSize={6} bg={"white"}>Fans and creators can connect through social moneys.</Heading>
+    <Heading fontSize={6}>Fans and creators can connect through social moneys.</Heading>
     <Card>
       <Heading mt={0} fontSize={5} color="itred">For creators</Heading>
       <Text mb={3} color="black">
