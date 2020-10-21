@@ -13,7 +13,7 @@ const abis = {
   fanToken: fanTokenAbi,
   staking: stakingAbi,
   vesting: vestingAbi,
-  audius: audiusAbi, // TODO: Have to change correct abi
+  audius: audiusAbi,
 };
 
 export default abis;

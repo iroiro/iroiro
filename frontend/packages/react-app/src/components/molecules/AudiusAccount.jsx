@@ -14,6 +14,7 @@ const AudiusInfo = ({
       <Text>{myAccount.name}</Text>
       <Text>{`@${myAccount.handle}`}</Text>
       <Text>{myAccount.wallet}</Text>
+      <Text>{myAccount.balance}</Text>
     </Box>
   </Box>
 )

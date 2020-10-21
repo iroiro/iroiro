@@ -1,11 +1,8 @@
 import React from "react";
 import {
-  Button,
-  Heading,
   Loader,
-  Text,
   Box,
-  Form,
+  Flash,
 } from "rimble-ui";
 
 import TextInput from "../molecules/TextInput"
@@ -28,8 +25,14 @@ const TokenAudius = ({
   addressSubmit,
   distributedAmount,
   withdrawToken,
+  isClaimable,
 }) => (
   <Box m={4} width={[ 1, 1/2, 1/4]}>
+    { !isClaimable && (
+      <Flash my={3} variant="danger">
+        You can't withdraw tokens from this contract.
+      </Flash>
+    )}
     {libs && !myAccount && !isSigningIn && (
       <SignInAudius
         emailRef={emailRef}
