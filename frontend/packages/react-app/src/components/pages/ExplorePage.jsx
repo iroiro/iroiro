@@ -62,6 +62,7 @@ const ExplorePage = () => {
       provider={provider}
       loadWeb3Modal={loadWeb3Modal}
       tokens={tokens}
+      loading={loading}
     />
   );
 }

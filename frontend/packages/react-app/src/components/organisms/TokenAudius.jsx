@@ -1,14 +1,10 @@
-import React from "react";
+import React from "react"
 import {
-  Button,
-  Heading,
   Loader,
-  Text,
   Box,
-  Form,
-} from "rimble-ui";
+  Flex,
+} from "rimble-ui"
 
-import TextInput from "../molecules/TextInput"
 import SignInAudius from "../molecules/SignInAudius"
 import SignOutAudius from "../molecules/SignOutAudius"
 import AudiusAccount from "../molecules/AudiusAccount"
@@ -29,7 +25,7 @@ const TokenAudius = ({
   distributedAmount,
   withdrawToken,
 }) => (
-  <Box m={4} width={[ 1, 1/2, 1/4]}>
+  <Box>
     {libs && !myAccount && !isSigningIn && (
       <SignInAudius
         emailRef={emailRef}
@@ -45,23 +41,23 @@ const TokenAudius = ({
         <AudiusAccount
           myAccount={myAccount}
         />
+        <Flex style={{ justifyContent: "flex-end" }}>
+          <SignOutAudius
+            audiusSignOut={signOut}
+          />
+        </Flex>
         <AudiusAddressInput
           addressSubmit={addressSubmit}
           addressInput={addressInput}
           addressValue={addressValue}
         />
+        {distributedAmount > 0 &&
+          <AudiusWithdrawToken
+            distributedAmount={distributedAmount}
+            withdrawToken={withdrawToken}
+          />
+        }
       </Box>
-    )}
-    {distributedAmount > 0 &&
-      <AudiusWithdrawToken
-        distributedAmount={distributedAmount}
-        withdrawToken={withdrawToken}
-      />
-    }
-    {myAccount && (
-      <SignOutAudius
-        audiusSignOut={signOut}
-      />
     )}
   </Box>
 )

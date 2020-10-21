@@ -2,13 +2,13 @@ import React from "react";
 import { Heading, Loader, Text, Box } from "rimble-ui";
 import TokenListItem from "../molecules/TokenListItem";
 
-const TokenList = ({ tokens }) => (
+const TokenList = ({ tokens, loading }) => (
   <div>
     <Heading as={"h2"}>Token List</Heading>
-    {tokens.length == 0 &&
-      <Loader size="80px" m="auto" mt={5}/>
+    {loading &&
+      <Loader size="80px" m="auto" mt={5} color="itblue"/>
     }
-    {tokens.length == 0
+    {!loading && tokens.length == 0
       ? <Text>You don't have any tokens</Text>
       : <Box>
           {tokens.map(token => 

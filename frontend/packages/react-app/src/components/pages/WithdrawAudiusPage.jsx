@@ -69,7 +69,9 @@ const WithdrawAudiusPage = () => {
   // Initialize @audius/libs on mount
   useEffect(() => {
     const initLibs = async () => {
+      setIsSigningIn(true)
       const libs = await init()
+      setIsSigningIn(false)
       setLibs(libs)
 
       const user = libs.Account.getCurrentUser()

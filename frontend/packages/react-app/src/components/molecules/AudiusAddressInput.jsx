@@ -4,6 +4,8 @@ import {
   Box,
   Form,
   Button,
+  Card,
+  Text
 } from "rimble-ui";
 
 import TextInput from "../molecules/TextInput"
@@ -15,15 +17,18 @@ const AudiusAddressInput = ({
 }) => (
   <Box mt={4}>
     <Heading as={"h2"}>Add Contract</Heading>
-    <Form onSubmit={addressSubmit}>
-      <TextInput
-        label="Input Token's Contract"
-        handleInput={addressInput}
-        inputValue={addressValue}
-        placeholder="0x123...123"
-      />
-      <Button mb={3} type="submit">Check tokens amount</Button>
-    </Form>
+    <Card>
+      <Form onSubmit={addressSubmit}>
+        <Text fontSize="3" fontWeight="bold">Input Token's Contract</Text>
+        <TextInput
+          label=""
+          handleInput={addressInput}
+          inputValue={addressValue}
+          placeholder="0x123...123"
+        />
+        <Button mb={3} mainColor="itred" type="submit">Check tokens amount</Button>
+      </Form>
+    </Card>
   </Box>
 )
 
