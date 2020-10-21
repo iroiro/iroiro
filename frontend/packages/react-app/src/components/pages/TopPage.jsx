@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {useQuery} from "@apollo/react-hooks";
-import GET_TRANSFERS from "../../graphql/subgraph";
+import {GET_TOKENS} from "../../graphql/subgraph";
 import {web3Modal} from "../../utils/web3Modal";
 import {getDefaultProvider, Web3Provider} from "@ethersproject/providers";
 import TopPageTemplate from "../templates/TopPageTemplate";
@@ -19,7 +19,6 @@ async function readOnChainData() {
 }
 
 const TopPage = () => {
-  const { loading, error, data } = useQuery(GET_TRANSFERS);
   const [provider, setProvider] = useState();
 
   /* Open wallet selection modal. */
@@ -34,12 +33,6 @@ const TopPage = () => {
       loadWeb3Modal();
     }
   }, [loadWeb3Modal]);
-
-  React.useEffect(() => {
-    if (!loading && !error && data && data.transfers) {
-      console.log({ transfers: data.transfers });
-    }
-  }, [loading, error, data]);
 
   return (
     <TopPageTemplate
