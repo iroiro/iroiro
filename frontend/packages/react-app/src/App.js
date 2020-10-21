@@ -5,7 +5,8 @@ import CreateTokenPage from "./components/pages/CreateTokenPage";
 import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
 import TokenDetailPage from "./components/pages/TokenDetailPage";
-import AudiusDisributionPage from "./components/pages/AudiusDisributionPage";
+import WithdrawAudiusPage from "./components/pages/WithdrawAudiusPage";
+import AudiusDisributionPage from "./components/pages/AudiusDisributionPage"
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path='/explore' component={ExplorePage}/>
             <Route path='/dashboard' component={DashboardPage}/>
             <Route path='/token/:address' component={TokenDetailPage}/>
+            <Route path='/audius-token' component={WithdrawAudiusPage}/>
             <Route path='/audius/:address' component={AudiusDisributionPage}/>
           </div>
         </Router>

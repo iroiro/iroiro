@@ -20,6 +20,8 @@ const TopPageBody = () => (
         </Text>
         <Link style={{textDecoration: 'none'}} to="/explore"><Button mainColor="#48C5D5">Explore</Button></Link>
       </Card>
+    <Heading as={"h3"} mt={4}>Get token from your Audius account</Heading>
+    <Link to="/audius-token"><Button>get token with Audius</Button></Link>
   </div>
 )
 
