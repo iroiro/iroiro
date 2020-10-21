@@ -27,8 +27,7 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     mapping(address => uint64) public userIdList;
     mapping(address => string) public followersHash;
     mapping(address => uint256) public followersNum;
-    // TODO fix
-    mapping(address => bool) private followerClaimed;
+    mapping(address => mapping(address => bool)) private followerClaimedTokens;
     mapping(bytes32 => bool) private claimKeyHashList;
 
     constructor(address _factory, address _link) public {
@@ -93,8 +92,7 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     function claim(address token) external override {
         require(isClaimable(token), "Account is not able to claim");
 
-        // save claimed user list
-
+        followerClaimedTokens[token][msg.sender] = true;
         FanToken fanToken = FanToken(token);
         fanToken.transfer(msg.sender, distributedAmount(token));
     }

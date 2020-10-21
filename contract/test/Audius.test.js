@@ -53,6 +53,10 @@ describe("Audius", () => {
     })
   })
 
+  xdescribe("claim", () => {
+
+  })
+
   describe("isClaimable", () => {
     // TODO Activate this
     // beforeEach(async () => {

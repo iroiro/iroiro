@@ -40,10 +40,10 @@ contract('Audius', accounts => {
     context('without LINK', () => {
       it('reverts', async () => {
         await expectRevert.unspecified(
-            cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
-                new web3.utils.BN("1000000000000000000"),
-                {from: consumer,}
-            ),
+          cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
+            new web3.utils.BN("1000000000000000000"),
+            {from: consumer,}
+          ),
         )
       })
     })
@@ -60,16 +60,16 @@ contract('Audius', accounts => {
       context('sending a request to a specific oracle contract address', () => {
         it('triggers a log event in the new Oracle contract', async () => {
           const tx = await cc.requestCheckingAddress(oc.address, jobId, "dummy", "cid", "address",
-              new web3.utils.BN("1000000000000000000"),
-              {from: consumer},
+            new web3.utils.BN("1000000000000000000"),
+            {from: consumer},
           )
           request = oracle.decodeRunRequest(tx.receipt.rawLogs[3])
           assert.equal(oc.address, tx.receipt.rawLogs[3].address)
           assert.equal(
-              request.topic,
-              web3.utils.keccak256(
-                  'OracleRequest(bytes32,address,bytes32,uint256,address,bytes4,uint256,uint256,bytes)',
-              ),
+            request.topic,
+            web3.utils.keccak256(
+              'OracleRequest(bytes32,address,bytes32,uint256,address,bytes4,uint256,uint256,bytes)',
+            ),
           )
         })
       })
@@ -87,8 +87,8 @@ contract('Audius', accounts => {
 
     it("returns a minimum value", async () => {
       const claimKey = (await cc.generateClaimKey(
-          new web3.utils.BN("1"),
-          new web3.utils.BN("1")
+        new web3.utils.BN("1"),
+        new web3.utils.BN("1")
       )).toString()
       expect(claimKey).to.equal("1" + "0000000000000000000" + "1" + "1")
     })
