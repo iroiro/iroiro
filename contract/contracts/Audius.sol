@@ -7,11 +7,11 @@ import "./TokenFactory.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "contracts/SafeMath64.sol";
 
 // Owner must be TokenFactory
 contract Audius is AudiusInterface, ChainlinkClient, Ownable {
-    // TODO Introduce SafeMath for uint64
-    // Using SafeMath for uint64
+    using SafeMath64 for uint64;
 
     event Claim(
         address indexed from,
@@ -41,7 +41,7 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         }
     }
 
-    function generateClaimKey(uint64 userId, uint64 tokenId) public pure returns(uint256){
+    function generateClaimKey(uint64 userId, uint64 tokenId) public pure returns (uint256){
         return uint256(userId) * (10 ** 21) + uint256(tokenId) * 10 + 1; // 1 as true
     }
 
@@ -77,8 +77,7 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         followersHash[token] = _followersHash;
         followersNum[token] = _followersNum;
         tokenIdList[token] = nextTokenId;
-        // TODO Use SafeMath
-        nextTokenId = nextTokenId + 1;
+        nextTokenId = nextTokenId.add(1);
     }
 
     // Get the amount of tokens distributed
@@ -110,8 +109,7 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         request.add("cid", _cid);
         request.add("address", _address);
         userIdList[msg.sender] = nextUserId;
-        // TODO Use safemath add function
-        nextUserId = nextUserId + 1;
+        nextUserId = nextUserId.add(1);
 
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
