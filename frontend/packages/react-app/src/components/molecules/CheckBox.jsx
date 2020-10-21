@@ -2,7 +2,8 @@ import React from "react";
 import {
   Box,
   Field,
-  Checkbox
+  Checkbox,
+  Text,
 } from "rimble-ui";
 
 const CheckBox = ({ handleCheckbox, checkboxValue, text }) => (
@@ -11,7 +12,7 @@ const CheckBox = ({ handleCheckbox, checkboxValue, text }) => (
     <Checkbox
       label={text}
       value={checkboxValue}
-      onChange={e => handleCheckbox(!checkboxValue)}
+      onChange={e => handleCheckbox(e.target.checked)}
     />
   </Field>
 </Box>

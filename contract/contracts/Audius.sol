@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// Owner must be TokenFactory
 contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     event Claim(
         address indexed from,
@@ -17,19 +18,26 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
 
     TokenFactory tokenFactory;
 
-    mapping(address => bool) public registerdTokens;
+    uint256 public nextTokenId;
+    mapping(address => uint256) public tokenIdList;
     mapping(address => string) public followersHash;
     mapping(address => uint256) public followersNum;
     mapping(address => bool) private followerClaimed;
     bool public isIncluded;
 
     constructor(address _factory, address _link) public {
+        nextTokenId = 1;
         tokenFactory = TokenFactory(_factory);
         if (_link == address(0)) {
             setPublicChainlinkToken();
         } else {
             setChainlinkToken(_link);
         }
+    }
+
+    function isClaimable(address token) public override view returns(bool) {
+        // TODO Integrate with chainlink
+        return true;
     }
 
     function getChainlinkToken() public view returns (address) {
@@ -44,13 +52,15 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     // Add Audius list
     function addAudiusList(uint256 id, string memory _followersHash, uint256 _followersNum) external override {
         address token = tokenFactory.creatorTokenOf(msg.sender, id);
-        require(!registerdTokens[token], "Token is already registered");
+        require(tokenIdList[token] == 0, "Token is already registered");
+
         followersHash[token] = _followersHash;
         followersNum[token] = _followersNum;
-        registerdTokens[token] = true;
+        tokenIdList[token] = nextTokenId;
+        nextTokenId = nextTokenId.add(1);
     }
 
-    // Get the amount of token}}s distributed
+    // Get the amount of tokens distributed
     function distributedAmount(address token) public override view returns (uint256) {
         FanToken fanToken = FanToken(token);
         uint256 balance = fanToken.balanceOf(address(this));
@@ -60,6 +70,7 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     // Claim tokens
     function claim(address token) external override {
         // TODO Check Chainlink api
+        require(isClaimable(token), "Account is not able to claim");
 
         FanToken fanToken = FanToken(token);
         fanToken.transfer(msg.sender, distributedAmount(token));

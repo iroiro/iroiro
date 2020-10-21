@@ -4,7 +4,12 @@ import {
   Box,
   Form,
   Button,
-  Flex
+  Flex,
+  Text,
+  Modal,
+  Card,
+  Field,
+  Input,
 } from "rimble-ui";
 import TextInput from "../molecules/TextInput"
 import NumberInput from "../molecules/NumberInput"
@@ -25,12 +30,10 @@ const CreateTokenForm = ({
   limitCheckboxValue,
   teamInput,
   teamValue,
-  communityInput,
-  communityValue,
   lockupInput,
   lockupValue,
   handleStakingCheckbox,
-  stakingCheckboxValue
+  stakingCheckboxValue,
 }) => (
   <div>
     <Box>
@@ -77,34 +80,31 @@ const CreateTokenForm = ({
         </Box>
         <Heading as={"h2"}>Allocation</Heading>
         <Box>
-          <Flex flexWrap={"wrap"}>
-            <NumberInput
-              label="Team"
-              handleInput={teamInput}
-              inputValue={teamValue}
-              max={100}
-              placeholder="30%"
-            />
-            <NumberInputReadOnly
-              label="Community"
-              value={100 - teamValue}
-              placeholder="70%"
-            />
-          </Flex>
+          <NumberInput
+            label="Team"
+            handleInput={teamInput}
+            inputValue={teamValue}
+            max={100}
+            placeholder="30%"
+          />
+          <NumberInputReadOnly
+            label="Community"
+            value={100 - teamValue}
+          />
           <NumberInput
             label="Lockup period (year)"
             handleInput={lockupInput}
             inputValue={lockupValue}
             placeholder="3"
           />
-          <Heading as={"h2"}>Earning option</Heading>
-          <Box>
-            <CheckBox
-              handleCheckbox={handleStakingCheckbox}
-              checkboxValue={stakingCheckboxValue}
-              text="Can earn tokens through token staking"
-            />
-          </Box>
+        </Box>
+        <Heading as={"h2"}>Earning option</Heading>
+        <Box>
+          <CheckBox
+            handleCheckbox={handleStakingCheckbox}
+            checkboxValue={stakingCheckboxValue}
+            text="Can earn tokens through token staking"
+          />
         </Box>
         <Button type="submit">
           Create Token

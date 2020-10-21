@@ -31,6 +31,86 @@ describe("Audius", () => {
     await this.sampleToken.transfer(this.audius.address, 20000, {from: alice})
   })
 
+  describe("nextTokenId", () => {
+    it("returns 1 when token is not registered yet", async () => {
+      const tokenId = (await this.audius.nextTokenId()).toString()
+      expect(tokenId).to.equal("1")
+    })
+
+    it("is incremented after token is registered", async () => {
+      const id = (await this.factory.tokenAmountOf(alice)).toNumber()
+      const tokenAddress = await this.factory.creatorTokenOf(alice, id)
+      expect(tokenAddress).to.equal(this.sampleToken.address)
+      await this.audius.addAudiusList(
+          id,
+          "SampleHash",
+          100,
+          {from: alice}
+      )
+
+      const tokenId = (await this.audius.nextTokenId()).toString()
+      expect(tokenId).to.equal("2")
+    })
+  })
+
+  describe("isClaimable", () => {
+    it("returns true", async() => {
+      const id = (await this.factory.tokenAmountOf(alice)).toNumber()
+      const tokenAddress = await this.factory.creatorTokenOf(alice, id)
+      const isClaimable = await this.audius.isClaimable(tokenAddress)
+      expect(isClaimable).to.equal(true)
+    })
+
+    // TODO activate
+    xit("returns false", async() => {
+      const isClaimable = await this.audius.isClaimable(tokenAddress)
+      expect(isClaimable).to.equal(false)
+    })
+  })
+
+  describe("addAudiusList", () => {
+    it("success", async () => {
+      try {
+        const id = (await this.factory.tokenAmountOf(alice)).toNumber()
+        const tokenAddress = await this.factory.creatorTokenOf(alice, id)
+        expect(tokenAddress).to.equal(this.sampleToken.address)
+        await this.audius.addAudiusList(
+            id,
+            "SampleHash",
+            100,
+            {from: alice}
+        )
+        assert(true)
+      } catch(error) {
+        assert.fail("should success")
+      }
+    })
+
+    it("should throw if already registered", async () => {
+      try {
+        const id = (await this.factory.tokenAmountOf(alice)).toNumber()
+        const tokenAddress = await this.factory.creatorTokenOf(alice, id)
+        expect(tokenAddress).to.equal(this.sampleToken.address)
+        await this.audius.addAudiusList(
+            id,
+            "SampleHash",
+            100,
+            {from: alice}
+        )
+        await this.audius.addAudiusList(
+            id,
+            "SampleHash",
+            100,
+            {from: alice}
+        )
+        assert.fail("should throw an error")
+      } catch(error) {
+        assert(true)
+      }
+    })
+  })
+
+
   describe("remainingAmount", () => {
     it("returns deposit tokens num ", async () => {
       const remainingAmount = (await this.audius.remainingAmount(this.sampleToken.address)).toNumber()
@@ -43,13 +123,13 @@ describe("Audius", () => {
       expect(tokenAddress).to.equal(this.sampleToken.address)
       await this.audius.addAudiusList(
         id,
-        "SamppleHash",
+        "SampleHash",
         100,
         {from: alice}
       )
 
       const hash = await this.audius.followersHash(tokenAddress)
-      expect(hash).to.equal("SamppleHash")
+      expect(hash).to.equal("SampleHash")
     })
   })
 

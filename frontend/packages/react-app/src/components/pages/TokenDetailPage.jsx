@@ -1,21 +1,25 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
-import { ethers } from "ethers"
-import { Web3Provider } from "@ethersproject/providers";
-import { web3Modal } from "../../utils/web3Modal";
-import { Contract } from "@ethersproject/contracts";
-import { abis, addresses } from "@project/contracts";
+import React, {useCallback, useEffect, useState} from "react";
+import {useParams} from "react-router-dom"
+import {ethers} from "ethers"
+import {Web3Provider} from "@ethersproject/providers";
+import {web3Modal} from "../../utils/web3Modal";
+import {Contract} from "@ethersproject/contracts";
+import {abis, addresses} from "@project/contracts";
 import TokenDetailePageTemplate from "../templates/TokenDetailPageTemplate"
+import {GET_ACCOUNT_TOKEN} from "../../graphql/subgraph";
+import {useLazyQuery} from "@apollo/react-hooks";
 
 const TokenDetailPage = () => {
   const [provider, setProvider] = useState();
-  const [tokenAddress, setTokenAddress] = useState()
-  const [token, setToken] = useState({name:"", symbol: "", totalSupply: 0, decimals: 0})
-  const [stakingInfo, setStakingInfo] = useState({stakingAmount:"", earned: ""})
+  const [walletAddress, setWalletAddress] = useState("")
+  const [token, setToken] = useState({name: "", symbol: "", totalSupply: 0, decimals: 0})
+  const [stakingInfo, setStakingInfo] = useState({stakingAmount: "", earned: ""})
   const [stakeValue, handleStakeInput] = useState("")
+  const [getAccountToken, {loading, error, data}] = useLazyQuery(GET_ACCOUNT_TOKEN)
 
   const params = useParams()
-  
+  const tokenAddress = params.address
+
   const loadWeb3Modal = useCallback(async () => {
     const newProvider = await web3Modal.connect();
     setProvider(new Web3Provider(newProvider));
@@ -28,57 +32,64 @@ const TokenDetailPage = () => {
   }, [loadWeb3Modal]);
 
   useEffect(() => {
-    setTokenAddress(params.address)
-    if(provider && tokenAddress) {
-      getTokenInfo()
+    if (!walletAddress || !tokenAddress) {
+      return
     }
-  },[provider, tokenAddress])
+    getAccountToken({
+      variables: {id: walletAddress.toLowerCase().concat("-").concat(tokenAddress)}
+    })
+  }, [walletAddress, tokenAddress, getAccountToken])
 
-  const getTokenInfo = async () => {
-    const signer = await provider.getSigner()
-    const walletAddress = await signer.getAddress()
-    const fanToken = new Contract(tokenAddress, abis.fanToken, provider)
-    const name = await fanToken.name()
-    const symbol = await fanToken.symbol()
-    const totalSupply = await fanToken.totalSupply()
-    const decimals = await fanToken.decimals()
-    const balance = await fanToken.balanceOf(walletAddress)
-    const creatorTokenRatio = await fanToken.creatorTokenRatio()
-    const lockupPeriod = await fanToken.lockupPeriod()
-
-    const staking = new Contract(addresses.Staking, abis.staking, provider)
-    const isStakingPaused = await staking.tokensStakingPaused(tokenAddress)
-    const stakingAmount = await staking.balanceOf(walletAddress, tokenAddress)
-    
-    let earned = ethers.BigNumber.from(0)
-    if(!isStakingPaused || stakingAmount > 0) {
-      earned = await staking.earned(walletAddress, tokenAddress, totalSupply, decimals)
+  useEffect(() => {
+    if (loading || error || !data) {
+      return
     }
+    setToken({
+        address: data.accountToken.token.id,
+        name: data.accountToken.token.name,
+        symbol: data.accountToken.token.symbol,
+        totalSupply: data.accountToken.token.totalSupply,
+        decimals: data.accountToken.token.decimals,
+        balance: data.accountToken.balance,
+        creatorTokenRatio: data.accountToken.token.creatorTokenRatio,
+        lockupPeriod: data.accountToken.lockupPeriod,
+      }
+    )
+  }, [loading, error, data, setToken]);
 
-    const allowanceAmount = await fanToken.allowance(walletAddress, addresses.Staking)
-    console.log(allowanceAmount.toNumber())
-
-    const token = {
-      address: tokenAddress,
-      name: name,
-      symbol: symbol,
-      totalSupply: totalSupply.toNumber(),
-      decimals: decimals,
-      balance: balance.toNumber(),
-      creatorTokenRatio: creatorTokenRatio,
-      lockupPeriod: lockupPeriod,
+  useEffect(() => {
+    if (!tokenAddress || !provider) {
+      return
     }
+    const f = async () => {
+      const signer = await provider.getSigner()
+      const walletAddress = await signer.getAddress()
+      setWalletAddress(walletAddress)
 
-    const stakingInfo = {
-      isStakingPaused: isStakingPaused,
-      stakingAmount: stakingAmount.toNumber(),
-      earned: earned.toNumber(),
-      allowance: allowanceAmount.toNumber()
+      const fanToken = new Contract(tokenAddress, abis.fanToken, provider)
+      const totalSupply = await fanToken.totalSupply()
+      const decimals = await fanToken.decimals()
+
+      const staking = new Contract(addresses.Staking, abis.staking, provider)
+      const isStakingPaused = await staking.tokensStakingPaused(tokenAddress)
+      const stakingAmount = await staking.balanceOf(walletAddress, tokenAddress)
+
+      let earned = ethers.BigNumber.from(0)
+      if (!isStakingPaused || stakingAmount > 0) {
+        earned = await staking.earned(walletAddress, tokenAddress, totalSupply, decimals)
+      }
+
+      const allowanceAmount = await fanToken.allowance(walletAddress, addresses.Staking)
+      const stakingInfo = {
+        isStakingPaused: isStakingPaused,
+        stakingAmount: stakingAmount.toNumber(),
+        earned: earned.toNumber(),
+        allowance: allowanceAmount.toNumber()
+      }
+      setStakingInfo(stakingInfo)
     }
-
-    setToken(token)
-    setStakingInfo(stakingInfo)
-  }
+    f()
+  }, [provider, tokenAddress])
 
   const withdrawStakingToken = async (address) => {
     const signer = await provider.getSigner()
@@ -94,12 +105,12 @@ const TokenDetailPage = () => {
   }
 
   const approve = async (address) => {
-    if(stakeValue === "" || stakeValue == 0) {
+    if (stakeValue === "" || stakeValue == 0) {
       return
     }
     const signer = await provider.getSigner()
     const fanToken = new Contract(tokenAddress, abis.fanToken, signer)
-    if(stakingInfo.allowance > 0) {
+    if (stakingInfo.allowance > 0) {
       fanToken.increaseAllowance(addresses.Staking, stakeValue)
     } else {
       fanToken.approve(addresses.Staking, stakeValue)
