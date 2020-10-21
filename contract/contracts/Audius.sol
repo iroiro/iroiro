@@ -10,6 +10,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 // Owner must be TokenFactory
 contract Audius is AudiusInterface, ChainlinkClient, Ownable {
+    // TODO Introduce SafeMath for uint64
+    // Using SafeMath for uint64
+
     event Claim(
         address indexed from,
         address indexed token,
@@ -18,15 +21,19 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
 
     TokenFactory tokenFactory;
 
-    uint256 public nextTokenId;
-    mapping(address => uint256) public tokenIdList;
+    uint64 public nextTokenId;
+    uint64 public nextUserId;
+    mapping(address => uint64) public tokenIdList;
+    mapping(address => uint64) public userIdList;
     mapping(address => string) public followersHash;
     mapping(address => uint256) public followersNum;
     mapping(address => bool) private followerClaimed;
     string public data;
+    mapping(bytes32 => bool) private claimKeyHashList;
 
     constructor(address _factory, address _link) public {
         nextTokenId = 1;
+        nextUserId = 1;
         tokenFactory = TokenFactory(_factory);
         if (_link == address(0)) {
             setPublicChainlinkToken();
@@ -35,9 +42,23 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         }
     }
 
-    function isClaimable(address token) public override view returns(bool) {
-        // TODO Integrate with chainlink
-        return true;
+    function generateClaimKey(uint64 userId, uint64 tokenId) public pure returns(uint256){
+        return uint256(userId) * (10 ** 21) + uint256(tokenId) * 10 + 1; // 1 as true
+    }
+
+    function isClaimable(address token) public override view returns (bool) {
+        uint64 tokenId = tokenIdList[token];
+        require(tokenId > 0, "Token is not registered");
+        uint64 userId = userIdList[msg.sender];
+        require(userId > 0, "User is not registered");
+
+        uint256 claimKey = generateClaimKey(userId, tokenId);
+        bytes32 claimKeyHash = keccak256(abi.encodePacked(claimKey));
+        if (claimKeyHashList[claimKeyHash]) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function getChainlinkToken() public view returns (address) {
@@ -57,7 +78,8 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         followersHash[token] = _followersHash;
         followersNum[token] = _followersNum;
         tokenIdList[token] = nextTokenId;
-        nextTokenId = nextTokenId.add(1);
+        // TODO Use SafeMath
+        nextTokenId = nextTokenId + 1;
     }
 
     // Get the amount of tokens distributed

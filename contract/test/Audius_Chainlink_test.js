@@ -76,6 +76,24 @@ contract('Audius', accounts => {
     })
   })
 
+  describe("generateClaimKey", () => {
+    it("returns a max value", async () => {
+      const claimKey = (await cc.generateClaimKey(
+          new web3.utils.BN("18446744073709551615"),
+          new web3.utils.BN("18446744073709551615")
+      )).toString()
+      expect(claimKey).to.equal("18446744073709551615" + "18446744073709551615" + "1")
+    })
+
+    it("returns a minimum value", async () => {
+      const claimKey = (await cc.generateClaimKey(
+        new web3.utils.BN("1"),
+        new web3.utils.BN("1")
+    )).toString()
+      expect(claimKey).to.equal("1" + "0000000000000000000" + "1" + "1")
+    })
+  })
+
   describe('#fulfill', () => {
     const userId = 1
     const tokenId = 1
