@@ -18,7 +18,7 @@ contract Audius is AudiusInterface {
 
     TokenFactory tokenFactory;
 
-    mapping(address => bool) public registerdTokens;
+    mapping(address => bool) public registeredTokens;
     mapping(address => string) public followersHash;
     mapping(address => uint256) public followersNum;
     mapping(address => bool) private followerClaimed;
@@ -35,10 +35,10 @@ contract Audius is AudiusInterface {
     // Add Audius list
     function addAudiusList(uint256 id, string memory _followersHash, uint256 _followersNum) external override {
         address token = tokenFactory.creatorTokenOf(msg.sender, id);
-        require(!registerdTokens[token], "Token is already registered");
+        require(!registeredTokens[token], "Token is already registered");
         followersHash[token] = _followersHash;
         followersNum[token] = _followersNum;
-        registerdTokens[token] = true;
+        registeredTokens[token] = true;
     }
 
     // Get the amount of tokens distributed
