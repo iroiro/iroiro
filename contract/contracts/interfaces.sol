@@ -62,6 +62,8 @@ interface VestingInterface {
 }
 
 interface AudiusInterface {
+    function isClaimable(address token) external view returns(bool);
+
     // Add Audius list
     function addAudiusList(uint256 id, string memory _followersHash, uint256 _followersNum) external;
 
