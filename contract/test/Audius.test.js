@@ -9,7 +9,7 @@ const Vesting = contract.fromArtifact("Vesting");
 const StakingPool = contract.fromArtifact("StakingPool");
 
 describe("Audius", () => {
-  const [owner, alice, minter] = accounts
+  const [owner, alice, minter, linkToken] = accounts
   const totalSupply = 1000000000
   const creatorTokenRatio = 50;
 
@@ -21,7 +21,7 @@ describe("Audius", () => {
     await this.stakingPool.transferOwnership(this.factory.address, {from: owner})
     await this.vesting.transferOwnership(this.factory.address, {from: owner})
 
-    this.audius = await Audius.new(this.factory.address, {from: owner})
+    this.audius = await Audius.new(this.factory.address, linkToken, {from: owner})
     await this.factory.createToken(alice, "SampleToken", "SML", totalSupply, 18, creatorTokenRatio, true, 5, true, {from: alice})
 
     const sampleTokenAddress = await this.factory.creatorTokenOf(alice, 1)
