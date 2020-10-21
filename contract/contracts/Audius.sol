@@ -18,41 +18,51 @@ contract Audius is AudiusInterface {
 
     TokenFactory tokenFactory;
 
-    mapping(address => bool) public registerdTokens;
+    uint256 public nextTokenId;
+    mapping(address => uint256) public tokenIdList;
     mapping(address => string) public followersHash;
     mapping(address => uint256) public followersNum;
     mapping(address => bool) private followerClaimed;
 
     constructor(address _factory) public {
-      tokenFactory = TokenFactory(_factory);
+        tokenFactory = TokenFactory(_factory);
+        nextTokenId = 1;
     }
 
-    function remainingAmount(address token) public view returns(uint256) {
+    function isClaimable(address token) public override view returns(bool) {
+        // TODO Integrate with chainlink
+        return true;
+    }
+
+    function remainingAmount(address token) public view returns (uint256) {
         FanToken fanToken = FanToken(token);
         return fanToken.balanceOf(address(this));
     }
-    
+
     // Add Audius list
     function addAudiusList(uint256 id, string memory _followersHash, uint256 _followersNum) external override {
-      address token = tokenFactory.creatorTokenOf(msg.sender, id);
-      require(!registerdTokens[token], "Token is already registered");
-      followersHash[token] = _followersHash;
-      followersNum[token] = _followersNum;
-      registerdTokens[token] = true;
+        address token = tokenFactory.creatorTokenOf(msg.sender, id);
+        require(tokenIdList[token] == 0, "Token is already registered");
+
+        followersHash[token] = _followersHash;
+        followersNum[token] = _followersNum;
+        tokenIdList[token] = nextTokenId;
+        nextTokenId = nextTokenId.add(1);
     }
 
     // Get the amount of tokens distributed
     function distributedAmount(address token) public override view returns (uint256) {
-      FanToken fanToken = FanToken(token);
-      uint256 balance = fanToken.balanceOf(address(this));
-      return balance.div(followersNum[token]);
+        FanToken fanToken = FanToken(token);
+        uint256 balance = fanToken.balanceOf(address(this));
+        return balance.div(followersNum[token]);
     }
 
     // Claim tokens
     function claim(address token) external override {
-      // TODO Check Chainlink api
-      
-      FanToken fanToken = FanToken(token);
-      fanToken.transfer(msg.sender, distributedAmount(token));
+        // TODO Check Chainlink api
+        require(isClaimable(token), "Account is not able to claim");
+
+        FanToken fanToken = FanToken(token);
+        fanToken.transfer(msg.sender, distributedAmount(token));
     }
 }
