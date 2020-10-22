@@ -3,7 +3,8 @@ import {
   Loader,
   Box,
   Flex,
-} from "rimble-ui"
+  Flash,
+} from "rimble-ui";
 
 import SignInAudius from "../molecules/SignInAudius"
 import SignOutAudius from "../molecules/SignOutAudius"
@@ -24,8 +25,14 @@ const TokenAudius = ({
   addressSubmit,
   distributedAmount,
   withdrawToken,
+  isClaimable,
 }) => (
   <Box>
+    { !isClaimable && (
+      <Flash my={3} variant="danger">
+        You can't withdraw tokens from this contract.
+      </Flash>
+    )}
     {libs && !myAccount && !isSigningIn && (
       <SignInAudius
         emailRef={emailRef}

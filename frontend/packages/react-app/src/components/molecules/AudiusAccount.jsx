@@ -24,6 +24,7 @@ const AudiusInfo = ({
         <Text fontWeight="bold">{myAccount.name}</Text>
         <Text mt={1}>{`@${myAccount.handle}`}</Text>
         <Text mt={1}>{myAccount.wallet}</Text>
+        <Text mt={1}>{myAccount.balance}</Text>
       </Box>
     </Flex>
   </Card>
