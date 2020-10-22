@@ -102,10 +102,8 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     function requestCheckingAddress(
         address _oracle,
         bytes32 _jobId,
-        // TODO Hash is already registered. Remove below argument
-        string memory _cid,
-        string memory tokenAddress,
         string memory userAddress,
+        string memory tokenAddress,
         address token,
         uint256 fee
     ) public override returns (bytes32 requestId) {
@@ -120,9 +118,10 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
         } else {
             userId = userIdList[msg.sender];
         }
+        string memory followersHash = followersHash[token];
 
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
-        request.add("cid", _cid);
+        request.add("cid", followersHash);
         request.add("tokenAddress", tokenAddress);
         request.add("userAddress", userAddress);
 
