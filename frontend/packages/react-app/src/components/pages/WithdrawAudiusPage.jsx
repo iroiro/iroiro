@@ -52,7 +52,7 @@ const WithdrawAudiusPage = () => {
   const [isClaimable, setIsClaimable] = useState(true)
   const [isRequestAddress, setIsRequestAddress] = useState(false)
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false)
-  const [tokenInfo, setTokenInfo] = useState({name: "-", symbol: "-", balance: "-", address: "-", })
+  const [tokenInfo, setTokenInfo] = useState({name: "-", symbol: "-", balance: "-", address: "-", decimals: ""})
 
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -84,7 +84,7 @@ const WithdrawAudiusPage = () => {
       const balance = await provider.getBalance(wallet.getAddressString())
 
       if (user) {
-        user.balance = balance.toString()
+        user.balance = ethers.utils.formatUnits(balance, 18)
         setMyAccount(user)
         setWallet(wallet)
       }
@@ -128,31 +128,32 @@ const WithdrawAudiusPage = () => {
       const followersHash = await audius.followersHash(addressValue)
       const fee = ethers.BigNumber.from('2000000000000000000')
 
-      // const tx = await audius.requestCheckingAddress(
-      //   addresses.Oracle,
-      //   oracleJobs.jobIdBytes,
-      //   "QmSnEM9zVdVAaezRh5HbsBrjidnrkR1HhQG2MfToZaqQDX",
-      //   addressValue,
-      //   walletAddress,
-      //   addressValue,
-      //   fee,
-      // )
+      const tx = await audius.requestCheckingAddress(
+        addresses.Oracle,
+        oracleJobs.jobIdBytes,
+        walletAddress,
+        addressValue,
+        addressValue,
+        fee,
+      )
       
-      // tx.wait().then(async (receipt) => {
+      tx.wait().then(async (receipt) => {
         const fanToken = new Contract(addressValue, abis.fanToken, ethersWallet)
         const name = await fanToken.name()
         const symbol = await fanToken.symbol()
         const balance = await fanToken.balanceOf(walletAddress)
+        const decimals = await fanToken.decimals()
 
         const token = {
           name: name,
           symbol: symbol,
           balance: balance.toString(),
           address: addressValue,
+          decimals: decimals,
         }
         setTokenInfo(token)
         setIsRequestAddress(true)
-      // })
+      })
     }
   }
 
@@ -166,11 +167,15 @@ const WithdrawAudiusPage = () => {
       setIsClaimable(false)
       return
     }
+    
+    const fanToken = new Contract(addressValue, abis.fanToken, ethersWallet)
+    const decimals = await fanToken.decimals()
 
     const distributedAmount = await audius.distributedAmount(addressValue)
-    const distributedNum = distributedAmount.toNumber()
-    console.log(distributedNum)
-    setDistributedAmount(distributedNum)
+    const distributedAmountString = ethers.utils.formatUnits(distributedAmount, decimals)
+
+    setIsClaimable(true)
+    setDistributedAmount(distributedAmountString)
   }
 
   const withdrawToken = async () => {
