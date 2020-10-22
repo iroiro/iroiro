@@ -20,14 +20,14 @@ const AudiusAddressInput = ({
     <Card>
       <Form onSubmit={addressSubmit}>
         <Text fontSize="3" fontWeight="bold">Step 01:</Text>
-        <Text fontSize="2" fontWeight="bold">Input token's contract to request contract to check.</Text>
+        <Text fontSize="2" fontWeight="bold">Input token's contract address to request to set your wallet address.</Text>
         <TextInput
           label=""
           handleInput={addressInput}
           inputValue={addressValue}
           placeholder="0x123...123"
         />
-        <Button mb={3} mainColor="itred" type="submit">Request to check contract</Button>
+        <Button mb={3} mainColor="itred" type="submit">Request</Button>
       </Form>
     </Card>
   </Box>

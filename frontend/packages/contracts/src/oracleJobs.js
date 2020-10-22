@@ -1,0 +1,6 @@
+const oracleJobs = {
+  jobId: "569c6d88d599497791c6fc24d80cc26f",
+  jobIdBytes: "0x3638343631643637313030313431663461353931303532346364313062353338"
+};
+
+export default oracleJobs;

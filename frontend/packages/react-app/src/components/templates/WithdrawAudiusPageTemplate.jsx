@@ -19,6 +19,10 @@ const WithdrawAudiusPageTemplate = ({
   distributedAmount,
   withdrawToken,
   isClaimable,
+  isRequestAddress,
+  checkAudiusStatus,
+  isWithdrawLoading,
+  tokenInfo,
 }) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
@@ -37,6 +41,10 @@ const WithdrawAudiusPageTemplate = ({
         distributedAmount={distributedAmount}
         withdrawToken={withdrawToken}
         isClaimable={isClaimable}
+        isRequestAddress={isRequestAddress}
+        checkAudiusStatus={checkAudiusStatus}
+        isWithdrawLoading={isWithdrawLoading}
+        tokenInfo={tokenInfo}
       />
     </Box>
   </div>

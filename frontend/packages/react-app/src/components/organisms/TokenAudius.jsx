@@ -11,6 +11,8 @@ import SignOutAudius from "../molecules/SignOutAudius"
 import AudiusAccount from "../molecules/AudiusAccount"
 import AudiusAddressInput from "../molecules/AudiusAddressInput"
 import AudiusWithdrawToken from "../molecules/AudiusWithdrawToken"
+import CheckClaimable from "../molecules/CheckClaimable"
+import UserTokenInfo from "../molecules/UserTokenInfo"
 
 const TokenAudius = ({
   libs,
@@ -26,13 +28,12 @@ const TokenAudius = ({
   distributedAmount,
   withdrawToken,
   isClaimable,
+  isRequestAddress,
+  checkAudiusStatus,
+  isWithdrawLoading,
+  tokenInfo,
 }) => (
   <Box>
-    { !isClaimable && (
-      <Flash my={3} variant="danger">
-        You can't withdraw tokens from this contract.
-      </Flash>
-    )}
     {libs && !myAccount && !isSigningIn && (
       <SignInAudius
         emailRef={emailRef}
@@ -58,10 +59,26 @@ const TokenAudius = ({
           addressInput={addressInput}
           addressValue={addressValue}
         />
+        {/* { isRequestAddress && */}
+          <UserTokenInfo
+            tokenInfo={tokenInfo}
+          />
+        {/* } */}
+        {/* { isRequestAddress && */}
+          <CheckClaimable
+            checkAudiusStatus={checkAudiusStatus}
+          />
+        {/* } */}
+        { !isClaimable && (
+          <Flash my={3} variant="danger">
+            You can't withdraw tokens from this contract.
+          </Flash>
+        )}
         {distributedAmount > 0 &&
           <AudiusWithdrawToken
             distributedAmount={distributedAmount}
             withdrawToken={withdrawToken}
+            isWithdrawLoading={isWithdrawLoading}
           />
         }
       </Box>
