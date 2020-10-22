@@ -102,6 +102,7 @@ contract Audius is AudiusInterface, ChainlinkClient, Ownable {
     function requestCheckingAddress(
         address _oracle,
         bytes32 _jobId,
+        // TODO Hash is already registered. Remove below argument
         string memory _cid,
         string memory tokenAddress,
         string memory userAddress,
