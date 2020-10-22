@@ -24,11 +24,6 @@ module.exports = async (deployer, network, [defaultAccount]) => {
       Oracle.setProvider(deployer.provider)
       try {
         await deployer.deploy(Oracle, "0x20fE562d797A42Dcb3399062AE9546cd06f63280", {from: defaultAccount})
-            .then(instance => {
-              // Chainlink node account address
-              const nodeAddress = "[set_node_address_here]"
-              instance.setFulfillmentPermission(nodeAddress, true, {from: defaultAccount})
-            })
         await deployer.deploy(Audius, factory.address, "0x20fE562d797A42Dcb3399062AE9546cd06f63280")
       } catch (err) {
         console.error(err)
