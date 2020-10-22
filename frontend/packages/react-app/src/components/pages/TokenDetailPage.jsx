@@ -44,13 +44,14 @@ const TokenDetailPage = () => {
     if (loading || error || !data) {
       return
     }
+    const decimals = data.accountToken.token.decimals
     setToken({
         address: data.accountToken.token.id,
         name: data.accountToken.token.name,
         symbol: data.accountToken.token.symbol,
-        totalSupply: data.accountToken.token.totalSupply,
-        decimals: data.accountToken.token.decimals,
-        balance: data.accountToken.balance,
+        totalSupply: ethers.utils.formatUnits(data.accountToken.token.totalSupply, decimals),
+        decimals: decimals,
+        balance: ethers.utils.formatUnits(data.accountToken.balance, decimals),
         creatorTokenRatio: data.accountToken.token.creatorTokenRatio,
         lockupPeriod: data.accountToken.lockupPeriod,
       }
@@ -82,8 +83,8 @@ const TokenDetailPage = () => {
       const allowanceAmount = await fanToken.allowance(walletAddress, addresses.Staking)
       const stakingInfo = {
         isStakingPaused: isStakingPaused,
-        stakingAmount: stakingAmount.toNumber(),
-        earned: earned.toNumber(),
+        stakingAmount: ethers.utils.formatUnits(stakingAmount),
+        earned: ethers.utils.formatUnits(earned),
         allowance: allowanceAmount.toNumber()
       }
       setStakingInfo(stakingInfo)
@@ -94,7 +95,7 @@ const TokenDetailPage = () => {
   const withdrawStakingToken = async (address) => {
     const signer = await provider.getSigner()
     const staking = new Contract(addresses.Staking, abis.staking, signer)
-    const bgStakingAmount = await ethers.BigNumber.from(stakingInfo.stakingAmount)
+    const bgStakingAmount = await ethers.BigNumber.from(ethers.utils.parseUnits(stakingInfo.stakingAmount), token.decimals)
     staking.withdraw(bgStakingAmount, address)
   }
 
