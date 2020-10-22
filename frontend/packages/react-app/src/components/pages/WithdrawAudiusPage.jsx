@@ -49,6 +49,7 @@ const WithdrawAudiusPage = () => {
   const [wallet, setWallet] = useState(null)
   const [addressValue, addressInput] = useState("")
   const [distributedAmount, setDistributedAmount] = useState(0)
+  const [isClaimable, setIsClaimable] = useState(true)
 
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -73,9 +74,14 @@ const WithdrawAudiusPage = () => {
       setLibs(libs)
 
       const user = libs.Account.getCurrentUser()
+      const wallet = libs.hedgehog.getWallet()
+      const provider = new ethers.providers.InfuraProvider("ropsten");
+      const balance = await provider.getBalance(wallet.getAddressString())
+      const balanceStr = balance.toString()
+
       if (user) {
+        user.balance = balance.toString()
         setMyAccount(user)
-        const wallet = libs.hedgehog.getWallet()
         setWallet(wallet)
       }
     }
@@ -89,10 +95,15 @@ const WithdrawAudiusPage = () => {
     const password = passwordRef.current.value
     const { user } = await libs.Account.login(email, password)
     setIsSigningIn(false)
+
+    const wallet = libs.hedgehog.getWallet()
+    const provider = new ethers.providers.InfuraProvider("ropsten");
+    const balance = await provider.getBalance(wallet.getAddressString())
+    
     if (user) {
+      user.balance = balance.toString()
       setMyAccount(user)
     }
-    const wallet = libs.hedgehog.getWallet()
     setWallet(wallet)
   }, [libs])
 
@@ -106,25 +117,28 @@ const WithdrawAudiusPage = () => {
   const addressSubmit = async (e) => {
     e.preventDefault()
     if(wallet) {
-      // TODO: Add correct contract function
-      // const provider = new ethers.providers.InfuraProvider("ropsten");
-      // const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
-      // const balance = await provider.getBalance(ethersWallet.address)
-      // const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
-      // const distributedAmount = await audius.distributedAmount(addressValue)
-      // setDistributedAmount(distributedAmount.toNumber())
-      setDistributedAmount(1000000)
+      const provider = new ethers.providers.InfuraProvider("ropsten");
+      const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
+      const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
+      const claimable = await audius.isClaimable(addressValue)
+
+      if(!claimable) {
+        setIsClaimable(false)
+        return
+      }
+
+      const distributedAmount = await audius.distributedAmount(addressValue)
+      const distributedNum = distributedAmount.toNumber()
+      setDistributedAmount(distributedNum)
     }
   }
 
   const withdrawToken = async () => {
     if(wallet) {
-      // TODO: Add correct contract function
-      // const provider = new ethers.providers.InfuraProvider("ropsten");
-      // const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
-      // const balance = await provider.getBalance(ethersWallet.address)
-      // const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
-      // await audius.claim(addressValue)
+      const provider = new ethers.providers.InfuraProvider("ropsten");
+      const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
+      const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
+      audius.claim(addressValue)
       setDistributedAmount(0)
       addressInput("")
     }
@@ -146,6 +160,7 @@ const WithdrawAudiusPage = () => {
       addressSubmit={addressSubmit}
       distributedAmount={distributedAmount}
       withdrawToken={withdrawToken}
+      isClaimable={isClaimable}
     />
   );
 }

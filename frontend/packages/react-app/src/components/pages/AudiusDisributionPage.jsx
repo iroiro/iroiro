@@ -113,29 +113,27 @@ const AudiusDisributionPage = () => {
     const factory = new Contract(addresses.TokenFactory, abis.tokenFactory, provider)
     const tokenAmount = await factory.tokenAmountOf(walletAddress)
     
-    console.log(tokenAmount)
     let tokenId
-
     for(let i = 0; i < tokenAmount.toNumber(); i++) {
-      const dddress = await factory.creatorTokenOf(walletAddress, i+1)
-      if(tokenAddress == dddress) {
+      const address = await factory.creatorTokenOf(walletAddress, i+1)
+      const lowerAddress = address.toLowerCase()
+      const lowerTokenAddress = tokenAddress.toLowerCase()
+      if( lowerTokenAddress === lowerAddress ) {
         tokenId = i+1
       }
     }
     
-    let waelletAddresses = []
+    let walletAddresses = []
     for(let i = 0; i < audiusFollowers.length; i++) {
-      waelletAddresses.push(audiusFollowers[i].wallet)
+      walletAddresses.push(audiusFollowers[i].wallet)
     }
-    const json = {addresses: waelletAddresses}
+    const json = {addresses: walletAddresses}
     const { path } = await ipfs.add(JSON.stringify(json))
 
     const audius = new Contract(addresses.Audius, abis.audius, signer)
     const _followersNum = audiusFollowers.length
 
-    // TODO: add collect contract when it is ready
-    // await audius.addAudiusList(tokenId, path, _followersNum)
-    alert(`Success! ${_followersNum}, ${path}`)
+    audius.addAudiusList(tokenId, path, _followersNum)
   }
 
   useEffect(() => {
