@@ -128,17 +128,16 @@ const WithdrawAudiusPage = () => {
       const followersHash = await audius.followersHash(addressValue)
       const fee = ethers.BigNumber.from('2000000000000000000')
 
-      // const tx = await audius.requestCheckingAddress(
-      //   addresses.Oracle,
-      //   oracleJobs.jobIdBytes,
-      //   "QmSnEM9zVdVAaezRh5HbsBrjidnrkR1HhQG2MfToZaqQDX",
-      //   addressValue,
-      //   walletAddress,
-      //   addressValue,
-      //   fee,
-      // )
+      const tx = await audius.requestCheckingAddress(
+        addresses.Oracle,
+        oracleJobs.jobIdBytes,
+        walletAddress,
+        addressValue,
+        addressValue,
+        fee,
+      )
       
-      // tx.wait().then(async (receipt) => {
+      tx.wait().then(async (receipt) => {
         const fanToken = new Contract(addressValue, abis.fanToken, ethersWallet)
         const name = await fanToken.name()
         const symbol = await fanToken.symbol()
@@ -152,7 +151,7 @@ const WithdrawAudiusPage = () => {
         }
         setTokenInfo(token)
         setIsRequestAddress(true)
-      // })
+      })
     }
   }
 
