@@ -35,6 +35,9 @@ const DashboardPage = () => {
       const signer = await provider.getSigner()
       const staking = new Contract(addresses.Staking, abis.staking, signer)
       const vesting = new Contract(addresses.Vesting, abis.vesting, signer)
+      if (!data.creator) {
+        return
+      }
       const tmpTokens = await Promise.all(data.creator.tokens.map(async creatorToken => {
         const vestingAmount = await vesting.remainingAmount(creatorToken.id)
         const redeemableAmount = await vesting.redeemableAmount(creatorToken.id)

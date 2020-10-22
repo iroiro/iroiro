@@ -44,6 +44,7 @@ const TokenDetailPage = () => {
     if (loading || error || !data) {
       return
     }
+
     const decimals = data.accountToken.token.decimals
     setToken({
         address: data.accountToken.token.id,
@@ -53,7 +54,7 @@ const TokenDetailPage = () => {
         decimals: decimals,
         balance: ethers.utils.formatUnits(data.accountToken.balance, decimals),
         creatorTokenRatio: data.accountToken.token.creatorTokenRatio,
-        lockupPeriod: data.accountToken.lockupPeriod,
+        lockupPeriod: data.accountToken.token.lockupPeriod,
       }
     )
   }, [loading, error, data, setToken]);

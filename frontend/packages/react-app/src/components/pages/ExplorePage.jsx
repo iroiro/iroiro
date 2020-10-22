@@ -30,6 +30,9 @@ const ExplorePage = () => {
     if (loading || error || !data) {
       return
     }
+    if (!data.account) {
+      return
+    }
     const tmpTokens = data.account.tokens.map(accountToken => ({
         address: accountToken.token.id,
         name: accountToken.token.name,
