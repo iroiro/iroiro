@@ -39,6 +39,7 @@ const DashboardPage = () => {
         const vestingAmount = await vesting.remainingAmount(creatorToken.id)
         const redeemableAmount = await vesting.redeemableAmount(creatorToken.id)
         const isStakingPaused = await staking.tokensStakingPaused(creatorToken.id)
+        console.log(creatorToken.decimals)
         return {
           address: creatorToken.id,
           name: creatorToken.name,
