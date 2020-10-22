@@ -8,7 +8,7 @@ dotenv.config()
 const Web3 = require("web3");
 
 // TODO: Update getting ABI logic
-const {abi} = require('../../contract/build/contracts/Audius.json');
+const {abi} = require('../build/contracts/Audius.json');
 const contractInterface: AbiItem[] = abi;
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER));
 const proxyAddress: string = process.env.AUDIUS_CONTRACT_ADDRESS
