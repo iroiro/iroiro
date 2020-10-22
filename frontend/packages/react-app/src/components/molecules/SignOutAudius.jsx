@@ -8,8 +8,8 @@ import {
 const SignInAudius = ({
   audiusSignOut
 }) => (
-  <Box mt={4}>
-    <Button size="small" variant="danger" onClick={audiusSignOut}>Signout from Audius</Button>
+  <Box mt={2}>
+    <Button.Outline size="small" mainColor="#333" onClick={audiusSignOut}>Signout from Audius</Button.Outline>
   </Box>
 )
 

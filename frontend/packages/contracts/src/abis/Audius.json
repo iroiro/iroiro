@@ -183,6 +183,55 @@
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "_oracle",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_jobId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "_cid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "tokenAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "userAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "token",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "fee",
+				"type": "uint256"
+			}
+		],
+		"name": "requestCheckingAddress",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "requestId",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "",
 				"type": "address"
 			}

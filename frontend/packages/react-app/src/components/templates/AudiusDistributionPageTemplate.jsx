@@ -1,4 +1,5 @@
 import React from "react";
+import { Box } from "rimble-ui"
 import AppHeader from "../molecules/AppHeader";
 import AudiusDistribution from "../organisms/AudiusDistribution";
 
@@ -21,21 +22,23 @@ const TopPageTemplate = ({
 }) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <AudiusDistribution
-      libs={libs}
-      audius={audius}
-      audiusFollowers={audiusFollowers}
-      isAudiusSigningIn={isAudiusSigningIn}
-      emailRef={emailRef}
-      passwordRef={passwordRef}
-      audiusSignIn={audiusSignIn}
-      audiusSignOut={audiusSignOut}
-      handleSubmit={handleSubmit}
-      amountInput={amountInput}
-      amountValue={amountValue}
-      tokenInfo={tokenInfo}
-      addAudiusList={addAudiusList}
-    />
+    <Box m={"auto"} my={5} width={[4/5, 3/4]} >
+      <AudiusDistribution
+        libs={libs}
+        audius={audius}
+        audiusFollowers={audiusFollowers}
+        isAudiusSigningIn={isAudiusSigningIn}
+        emailRef={emailRef}
+        passwordRef={passwordRef}
+        audiusSignIn={audiusSignIn}
+        audiusSignOut={audiusSignOut}
+        handleSubmit={handleSubmit}
+        amountInput={amountInput}
+        amountValue={amountValue}
+        tokenInfo={tokenInfo}
+        addAudiusList={addAudiusList}
+      />
+    </Box>
   </div>
 )
 

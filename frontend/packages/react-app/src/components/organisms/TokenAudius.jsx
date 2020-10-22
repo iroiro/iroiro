@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 import {
   Loader,
   Box,
+  Flex,
   Flash,
 } from "rimble-ui";
 
-import TextInput from "../molecules/TextInput"
 import SignInAudius from "../molecules/SignInAudius"
 import SignOutAudius from "../molecules/SignOutAudius"
 import AudiusAccount from "../molecules/AudiusAccount"
@@ -27,7 +27,7 @@ const TokenAudius = ({
   withdrawToken,
   isClaimable,
 }) => (
-  <Box m={4} width={[ 1, 1/2, 1/4]}>
+  <Box>
     { !isClaimable && (
       <Flash my={3} variant="danger">
         You can't withdraw tokens from this contract.
@@ -48,23 +48,23 @@ const TokenAudius = ({
         <AudiusAccount
           myAccount={myAccount}
         />
+        <Flex style={{ justifyContent: "flex-end" }}>
+          <SignOutAudius
+            audiusSignOut={signOut}
+          />
+        </Flex>
         <AudiusAddressInput
           addressSubmit={addressSubmit}
           addressInput={addressInput}
           addressValue={addressValue}
         />
+        {distributedAmount > 0 &&
+          <AudiusWithdrawToken
+            distributedAmount={distributedAmount}
+            withdrawToken={withdrawToken}
+          />
+        }
       </Box>
-    )}
-    {distributedAmount > 0 &&
-      <AudiusWithdrawToken
-        distributedAmount={distributedAmount}
-        withdrawToken={withdrawToken}
-      />
-    }
-    {myAccount && (
-      <SignOutAudius
-        audiusSignOut={signOut}
-      />
     )}
   </Box>
 )
