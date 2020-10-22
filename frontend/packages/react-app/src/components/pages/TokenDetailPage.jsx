@@ -125,6 +125,8 @@ const TokenDetailPage = () => {
 
   return (
     <TokenDetailePageTemplate
+      provider={provider} 
+      loadWeb3Modal={loadWeb3Modal}
       tokenAddress={tokenAddress}
       token={token}
       stakingInfo={stakingInfo}

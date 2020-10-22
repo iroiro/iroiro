@@ -2,7 +2,6 @@ import React from "react";
 import {
   Box,
 } from "rimble-ui";
-import Container from "../atoms/Container"
 import SignInAudius from "../molecules/SignInAudius"
 import SignOutAudius from "../molecules/SignOutAudius"
 import DistributeAudiusToken from "../molecules/DistributeAudiusToken"
@@ -23,7 +22,7 @@ const AudiusDistribution = ({
   addAudiusList,
 }) => (
   <div>
-    <Container>
+    <Box>
       {libs && !audius && !isAudiusSigningIn
       ? 
         <SignInAudius
@@ -41,12 +40,14 @@ const AudiusDistribution = ({
             addAudiusList={addAudiusList}
             audiusFollowers={audiusFollowers}
           />
-          <SignOutAudius
-            audiusSignOut={audiusSignOut}
-          />
+          <Box mt={4} style={{textAlign: "center"}}>
+            <SignOutAudius
+              audiusSignOut={audiusSignOut}
+            />
+          </Box>
         </Box>
       }
-    </Container>
+    </Box>
   </div>
 )
 

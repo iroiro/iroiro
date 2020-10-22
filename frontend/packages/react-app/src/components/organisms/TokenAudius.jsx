@@ -1,19 +1,18 @@
-import React from "react";
+import React from "react"
 import {
-  Button,
-  Heading,
   Loader,
-  Text,
   Box,
-  Form,
+  Flex,
+  Flash,
 } from "rimble-ui";
 
-import TextInput from "../molecules/TextInput"
 import SignInAudius from "../molecules/SignInAudius"
 import SignOutAudius from "../molecules/SignOutAudius"
 import AudiusAccount from "../molecules/AudiusAccount"
 import AudiusAddressInput from "../molecules/AudiusAddressInput"
 import AudiusWithdrawToken from "../molecules/AudiusWithdrawToken"
+import CheckClaimable from "../molecules/CheckClaimable"
+import UserTokenInfo from "../molecules/UserTokenInfo"
 
 const TokenAudius = ({
   libs,
@@ -28,8 +27,13 @@ const TokenAudius = ({
   addressSubmit,
   distributedAmount,
   withdrawToken,
+  isClaimable,
+  isRequestAddress,
+  checkAudiusStatus,
+  isWithdrawLoading,
+  tokenInfo,
 }) => (
-  <Box m={4} width={[ 1, 1/2, 1/4]}>
+  <Box>
     {libs && !myAccount && !isSigningIn && (
       <SignInAudius
         emailRef={emailRef}
@@ -45,23 +49,39 @@ const TokenAudius = ({
         <AudiusAccount
           myAccount={myAccount}
         />
+        <Flex style={{ justifyContent: "flex-end" }}>
+          <SignOutAudius
+            audiusSignOut={signOut}
+          />
+        </Flex>
         <AudiusAddressInput
           addressSubmit={addressSubmit}
           addressInput={addressInput}
           addressValue={addressValue}
         />
+        {/* { isRequestAddress && */}
+          <UserTokenInfo
+            tokenInfo={tokenInfo}
+          />
+        {/* } */}
+        {/* { isRequestAddress && */}
+          <CheckClaimable
+            checkAudiusStatus={checkAudiusStatus}
+          />
+        {/* } */}
+        { !isClaimable && (
+          <Flash my={3} variant="danger">
+            You can't withdraw tokens from this contract.
+          </Flash>
+        )}
+        {distributedAmount > 0 &&
+          <AudiusWithdrawToken
+            distributedAmount={distributedAmount}
+            withdrawToken={withdrawToken}
+            isWithdrawLoading={isWithdrawLoading}
+          />
+        }
       </Box>
-    )}
-    {distributedAmount > 0 &&
-      <AudiusWithdrawToken
-        distributedAmount={distributedAmount}
-        withdrawToken={withdrawToken}
-      />
-    }
-    {myAccount && (
-      <SignOutAudius
-        audiusSignOut={signOut}
-      />
     )}
   </Box>
 )

@@ -1,8 +1,7 @@
 import React from "react";
-import AppHeader from "../molecules/AppHeader";
-import Container from "../atoms/Container"
-import CreatTokenForm from "../organisms/CreateTokenForm";
-import { Box } from "rimble-ui";
+import AppHeader from "../molecules/AppHeader"
+import CreatTokenForm from "../organisms/CreateTokenForm"
+import { Box } from "rimble-ui"
 
 const CreateTokenPageTemplate = ({
   provider,
@@ -27,7 +26,7 @@ const CreateTokenPageTemplate = ({
 }) => (
   <div>
     <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <Box m={"auto"} mt={5} width={[3/4, 1/2, 1/3]} >
+    <Box m={"auto"} my={5} width={[3/4, 1/2, 1/3]} >
       <CreatTokenForm
         handleSubmit={handleSubmit}
         nameInput={nameInput}

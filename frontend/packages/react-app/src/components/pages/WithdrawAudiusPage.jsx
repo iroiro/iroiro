@@ -2,8 +2,8 @@ import React, {useCallback, useEffect, useState, useRef} from "react";
 // import { useHistory } from 'react-router-dom';
 import { ethers } from "ethers"
 import { web3Modal } from "../../utils/web3Modal";
-import {Contract} from "@ethersproject/contracts";
-import {abis, addresses} from "@project/contracts";
+import { Contract } from "@ethersproject/contracts";
+import { abis, addresses, oracleJobs } from "@project/contracts";
 import { Web3Provider} from "@ethersproject/providers";
 import WithdrawAudiusPageTemplate from "../templates/WithdrawAudiusPageTemplate";
 import Audius from "@audius/libs"
@@ -49,6 +49,10 @@ const WithdrawAudiusPage = () => {
   const [wallet, setWallet] = useState(null)
   const [addressValue, addressInput] = useState("")
   const [distributedAmount, setDistributedAmount] = useState(0)
+  const [isClaimable, setIsClaimable] = useState(true)
+  const [isRequestAddress, setIsRequestAddress] = useState(false)
+  const [isWithdrawLoading, setIsWithdrawLoading] = useState(false)
+  const [tokenInfo, setTokenInfo] = useState({name: "-", symbol: "-", balance: "-", address: "-", })
 
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -69,13 +73,19 @@ const WithdrawAudiusPage = () => {
   // Initialize @audius/libs on mount
   useEffect(() => {
     const initLibs = async () => {
+      setIsSigningIn(true)
       const libs = await init()
+      setIsSigningIn(false)
       setLibs(libs)
 
       const user = libs.Account.getCurrentUser()
+      const wallet = libs.hedgehog.getWallet()
+      const provider = new ethers.providers.InfuraProvider("ropsten");
+      const balance = await provider.getBalance(wallet.getAddressString())
+
       if (user) {
+        user.balance = balance.toString()
         setMyAccount(user)
-        const wallet = libs.hedgehog.getWallet()
         setWallet(wallet)
       }
     }
@@ -89,10 +99,15 @@ const WithdrawAudiusPage = () => {
     const password = passwordRef.current.value
     const { user } = await libs.Account.login(email, password)
     setIsSigningIn(false)
+
+    const wallet = libs.hedgehog.getWallet()
+    const provider = new ethers.providers.InfuraProvider("ropsten");
+    const balance = await provider.getBalance(wallet.getAddressString())
+    
     if (user) {
+      user.balance = balance.toString()
       setMyAccount(user)
     }
-    const wallet = libs.hedgehog.getWallet()
     setWallet(wallet)
   }, [libs])
 
@@ -106,27 +121,82 @@ const WithdrawAudiusPage = () => {
   const addressSubmit = async (e) => {
     e.preventDefault()
     if(wallet) {
-      // TODO: Add correct contract function
-      // const provider = new ethers.providers.InfuraProvider("ropsten");
-      // const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
-      // const balance = await provider.getBalance(ethersWallet.address)
-      // const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
-      // const distributedAmount = await audius.distributedAmount(addressValue)
-      // setDistributedAmount(distributedAmount.toNumber())
-      setDistributedAmount(1000000)
+      const provider = new ethers.providers.InfuraProvider("ropsten");
+      const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
+      const walletAddress = await wallet.getAddressString()
+      const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
+      const followersHash = await audius.followersHash(addressValue)
+      const fee = ethers.BigNumber.from('2000000000000000000')
+
+      // const tx = await audius.requestCheckingAddress(
+      //   addresses.Oracle,
+      //   oracleJobs.jobIdBytes,
+      //   "QmSnEM9zVdVAaezRh5HbsBrjidnrkR1HhQG2MfToZaqQDX",
+      //   addressValue,
+      //   walletAddress,
+      //   addressValue,
+      //   fee,
+      // )
+      
+      // tx.wait().then(async (receipt) => {
+        const fanToken = new Contract(addressValue, abis.fanToken, ethersWallet)
+        const name = await fanToken.name()
+        const symbol = await fanToken.symbol()
+        const balance = await fanToken.balanceOf(walletAddress)
+
+        const token = {
+          name: name,
+          symbol: symbol,
+          balance: balance.toString(),
+          address: addressValue,
+        }
+        setTokenInfo(token)
+        setIsRequestAddress(true)
+      // })
     }
+  }
+
+  const checkAudiusStatus = async () => {
+    const provider = new ethers.providers.InfuraProvider("ropsten");
+    const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
+    const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
+    const claimable = await audius.isClaimable(addressValue)
+
+    if(!claimable) {
+      setIsClaimable(false)
+      return
+    }
+
+    const distributedAmount = await audius.distributedAmount(addressValue)
+    const distributedNum = distributedAmount.toNumber()
+    console.log(distributedNum)
+    setDistributedAmount(distributedNum)
   }
 
   const withdrawToken = async () => {
     if(wallet) {
-      // TODO: Add correct contract function
-      // const provider = new ethers.providers.InfuraProvider("ropsten");
-      // const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
-      // const balance = await provider.getBalance(ethersWallet.address)
-      // const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
-      // await audius.claim(addressValue)
-      setDistributedAmount(0)
-      addressInput("")
+      const provider = new ethers.providers.InfuraProvider("ropsten");
+      const ethersWallet = new ethers.Wallet(wallet.getPrivateKey(), provider)
+      const audius = new Contract(addresses.Audius, abis.audius, ethersWallet)
+
+      const tx = await audius.claim(addressValue)
+      
+      tx.wait().then(async (receipt) => {
+        const walletAddress = await wallet.getAddressString()
+        const fanToken = new Contract(addressValue, abis.fanToken, ethersWallet)
+        const name = await fanToken.name()
+        const symbol = await fanToken.symbol()
+        const balance = await fanToken.balanceOf(walletAddress)
+  
+        const token = {
+          name: name,
+          symbol: symbol,
+          balance: balance.toString(),
+          address: addressValue,
+        }
+        setTokenInfo(token)
+        setDistributedAmount(0)
+      })
     }
   }
 
@@ -146,6 +216,11 @@ const WithdrawAudiusPage = () => {
       addressSubmit={addressSubmit}
       distributedAmount={distributedAmount}
       withdrawToken={withdrawToken}
+      isClaimable={isClaimable}
+      isRequestAddress={isRequestAddress}
+      checkAudiusStatus={checkAudiusStatus}
+      isWithdrawLoading={isWithdrawLoading}
+      tokenInfo={tokenInfo}
     />
   );
 }

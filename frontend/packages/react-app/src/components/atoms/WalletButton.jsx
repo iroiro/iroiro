@@ -1,7 +1,6 @@
-// import {Button} from "../index";
 import { Button } from "rimble-ui"
-import {logoutOfWeb3Modal} from "../../utils/web3Modal";
-import React from "react";
+import { logoutOfWeb3Modal } from "../../utils/web3Modal"
+import React from "react"
 
 const WalletButton = ({provider, loadWeb3Modal}) => (
     <Button.Outline
