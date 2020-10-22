@@ -44,6 +44,7 @@ const TokenDetailPage = () => {
     if (loading || error || !data) {
       return
     }
+    console.log("token", data.accountToken)
     setToken({
         address: data.accountToken.token.id,
         name: data.accountToken.token.name,
@@ -52,7 +53,7 @@ const TokenDetailPage = () => {
         decimals: data.accountToken.token.decimals,
         balance: data.accountToken.balance,
         creatorTokenRatio: data.accountToken.token.creatorTokenRatio,
-        lockupPeriod: data.accountToken.lockupPeriod,
+        lockupPeriod: data.accountToken.token.lockupPeriod,
       }
     )
   }, [loading, error, data, setToken]);
