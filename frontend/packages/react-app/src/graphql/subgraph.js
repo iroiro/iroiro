@@ -19,6 +19,7 @@ export const GET_TOKENS_BALANCE_USER_HOLDS = gql`
                     id
                     name
                     symbol
+                    decimals
                 }
             }
         }
