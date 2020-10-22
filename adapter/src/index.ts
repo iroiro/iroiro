@@ -25,7 +25,9 @@ app.post('/api', async (req, res) => {
     const userAddress = req.body.data.userAddress
     const tokenAddress = req.body.data.tokenAddress
     const userId = new BN(await Audius.methods.userIdList(userAddress).call())
+        .mul(new BN(10).pow(new BN(21)))
     const tokenId = new BN(await Audius.methods.tokenIdList(tokenAddress).call())
+        .mul(new BN(10))
 
     // TODO Add error handling
 
@@ -46,7 +48,7 @@ const getClaimKeyHash = (userId, tokenId, isClimable) => {
     const truthyValue = isClimable ? 1 : 0;
     const truthyBN = new BN(truthyValue)
     const claimKey = userId.add(tokenId).add(truthyBN)
-    console.debug("Claim key: ", claimKey)
+    console.debug("Claim key: ", claimKey.toString())
 
     return soliditySha3(claimKey)
 }
