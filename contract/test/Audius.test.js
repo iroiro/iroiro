@@ -9,7 +9,7 @@ const Vesting = contract.fromArtifact("Vesting");
 const StakingPool = contract.fromArtifact("StakingPool");
 
 describe("Audius", () => {
-  const [owner, alice, minter] = accounts
+  const [owner, alice, minter, linkToken] = accounts
   const totalSupply = 1000000000
   const creatorTokenRatio = 50;
 
@@ -21,7 +21,7 @@ describe("Audius", () => {
     await this.stakingPool.transferOwnership(this.factory.address, {from: owner})
     await this.vesting.transferOwnership(this.factory.address, {from: owner})
 
-    this.audius = await Audius.new(this.factory.address, {from: owner})
+    this.audius = await Audius.new(this.factory.address, linkToken, {from: owner})
     await this.factory.createToken(alice, "SampleToken", "SML", totalSupply, 18, creatorTokenRatio, true, 5, true, {from: alice})
 
     const sampleTokenAddress = await this.factory.creatorTokenOf(alice, 1)
@@ -53,7 +53,21 @@ describe("Audius", () => {
     })
   })
 
+  xdescribe("claim", () => {
+
+  })
+
   describe("isClaimable", () => {
+    // TODO Activate this
+    // beforeEach(async () => {
+    //   const truthyClaimKey = "1000000000000000000011"
+    //   console.log("solidity sha3 of truthyClaimKey: ", web3.utils.soliditySha3(truthyClaimKey))
+    //   const truthyClaimKeyHash = web3.utils.soliditySha3(truthyClaimKey)
+    //   const falsyClaimKey = "1000000000000000000010"
+    //   console.log("solidity sha3 of falsyClaimKey: ", web3.utils.soliditySha3(falsyClaimKey))
+    //   const falsyClaimKeyHash = web3.utils.soliditySha3(falsyClaimKey)
+    // })
+
     it("returns true", async() => {
       const id = (await this.factory.tokenAmountOf(alice)).toNumber()
       const tokenAddress = await this.factory.creatorTokenOf(alice, id)

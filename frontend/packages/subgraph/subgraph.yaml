@@ -7,10 +7,10 @@ dataSources:
     network: ropsten
     # network: mainnet # This is for local graph node
     source:
-      address: "0xc76360e97B2ABA7e2a2a1168b2Cd656582b0441C" # TokenFactory contract address on ropsten
+      address: "0xe9ef9C49a9903C3CD8Ed99ffA82c3932a4Fd7B7b" # TokenFactory contract address on ropsten
       # address: "[REWRITE WITH TokenFactory ADDRESS HERE]" # This is for local graph node
       abi: TokenFactory
-      startBlock: 8886189 # Comment out this line for local graph node
+      startBlock: 8924976 # Comment out this line for local graph node
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
