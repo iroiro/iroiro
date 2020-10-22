@@ -42,12 +42,13 @@ const DashboardPage = () => {
         const vestingAmount = await vesting.remainingAmount(creatorToken.id)
         const redeemableAmount = await vesting.redeemableAmount(creatorToken.id)
         const isStakingPaused = await staking.tokensStakingPaused(creatorToken.id)
+        const decimals = creatorToken.decimals
         return {
           address: creatorToken.id,
           name: creatorToken.name,
           symbol: creatorToken.symbol,
-          vestingAmount: vestingAmount.toNumber(),
-          redeemableAmount: redeemableAmount.toNumber(),
+          vestingAmount: ethers.utils.formatUnits(vestingAmount, decimals),
+          redeemableAmount: ethers.utils.formatUnits(redeemableAmount, decimals),
           // isStakingPaused: !creatorToken.enableStakeToToken // TODO Fix staking status from subgraph is not updated
           isStakingPaused: isStakingPaused
         }

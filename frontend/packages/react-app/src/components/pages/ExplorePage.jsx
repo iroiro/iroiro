@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useState} from "react"
-import { Web3Provider} from "@ethersproject/providers";
-import {web3Modal} from "../../utils/web3Modal";
-import ExplorePageTemplate from "../templates/ExplorePageTemplate";
-import {GET_TOKENS_BALANCE_USER_HOLDS} from "../../graphql/subgraph";
-import {useLazyQuery} from "@apollo/react-hooks";
+import { Web3Provider } from "@ethersproject/providers"
+import { web3Modal } from "../../utils/web3Modal"
+import ExplorePageTemplate from "../templates/ExplorePageTemplate"
+import { GET_TOKENS_BALANCE_USER_HOLDS } from "../../graphql/subgraph"
+import { useLazyQuery } from "@apollo/react-hooks"
+import { ethers } from "ethers"
 
 const ExplorePage = () => {
   const [provider, setProvider] = useState()
@@ -36,7 +37,7 @@ const ExplorePage = () => {
         address: accountToken.token.id,
         name: accountToken.token.name,
         symbol: accountToken.token.symbol,
-        balance: accountToken.balance
+        balance: ethers.utils.formatUnits(accountToken.balance, accountToken.token.decimals)
     }))
     setTokens(tmpTokens)
   }, [loading, error, data, setTokens]);

@@ -19,6 +19,7 @@ export const GET_TOKENS_BALANCE_USER_HOLDS = gql`
                     id
                     name
                     symbol
+                    decimals
                 }
             }
         }
@@ -33,6 +34,7 @@ export const GET_CREATOR_TOKENS = gql`
                 id
                 name
                 symbol
+                decimals
                 totalSupply
                 creatorTokenRatio
                 enableStakeToToken

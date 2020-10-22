@@ -14,10 +14,8 @@ const CreatedTokenInfo = ({token, withdrawToken, restartStaking, stopStaking}) =
         </Box>
         <Box mt={4}>
           <Text fontWeight={"bold"} mb={2}>Withdrawable amount</Text>
-          <Flex style={{ alignItems: "center"}}>
-            <Text fontWeight="bold" fontSize={5} mr={3}>{token.redeemableAmount} {token.symbol}</Text>
-            <Button onClick={() => withdrawToken(token.address)}>Withdraw</Button>
-          </Flex>
+          <Text fontWeight="bold" fontSize={5} mr={3}>{token.redeemableAmount} {token.symbol}</Text>
+          <Button onClick={() => withdrawToken(token.address)}>Withdraw</Button>
         </Box>
         <Box my={4}>
           <Text fontWeight={"bold"} mb={2}>Change Staking status</Text>
