@@ -79,6 +79,7 @@ const TokenAudius = ({
             distributedAmount={distributedAmount}
             withdrawToken={withdrawToken}
             isWithdrawLoading={isWithdrawLoading}
+            tokenInfo={tokenInfo}
           />
         }
       </Box>
