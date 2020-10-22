@@ -33,6 +33,7 @@ export const GET_CREATOR_TOKENS = gql`
                 id
                 name
                 symbol
+                decimals
                 totalSupply
                 creatorTokenRatio
                 enableStakeToToken
