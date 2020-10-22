@@ -1,8 +1,7 @@
 import React from "react";
-import AppHeader from "../molecules/AppHeader";
-import Container from "../atoms/Container"
-import CreatTokenForm from "../organisms/CreateTokenForm";
-import { Box } from "rimble-ui";
+import AppHeader from "../molecules/AppHeader"
+import CreatTokenForm from "../organisms/CreateTokenForm"
+import { Box } from "rimble-ui"
 
 const CreateTokenPageTemplate = ({
   provider,

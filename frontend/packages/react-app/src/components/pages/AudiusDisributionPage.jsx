@@ -52,7 +52,7 @@ const AudiusDisributionPage = () => {
   const [isSigningIn, setIsSigningIn] = useState(false)
   const [amountValue, amountInput] = useState("")
   const [tokenAddress, setTokenAddress] = useState(0)
-  const [tokenInfo, setTokenInfo] = useState({name: "", balance: 0, address: ""})
+  const [tokenInfo, setTokenInfo] = useState({name: "", symbol: "", balance: "0", address: "", balanceOfAudius: "0"})
 
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -88,7 +88,21 @@ const AudiusDisributionPage = () => {
     const signer = await provider.getSigner()
     const walletAddress = await signer.getAddress()
     const fanToken = new Contract(tokenAddress, abis.fanToken, signer)
-    fanToken.transfer(tokenAddress, amountValue) // TODO: change contract address
+    fanToken.transfer(addresses.Audius, amountValue)
+    amountInput("")
+    const filter = fanToken.filters.Transfer(walletAddress);
+    fanToken.on(filter, async () => {
+      const balanceOfAudius = await fanToken.balanceOf(addresses.Audius)
+      console.log(balanceOfAudius.toString())
+      const newTokenInfo = {
+        name: tokenInfo.name,
+        symbol: tokenInfo.symbol,
+        balance: tokenInfo.balance,
+        address: tokenInfo.address,
+        balanceOfAudius: balanceOfAudius.toString()
+      }
+      setTokenInfo(newTokenInfo)
+    })
   }
 
   const getTokenBalance = async () => {
@@ -96,12 +110,16 @@ const AudiusDisributionPage = () => {
     const walletAddress = await signer.getAddress()
     const fanToken = new Contract(tokenAddress, abis.fanToken, provider)
     const name = await fanToken.name()
+    const symbol = await fanToken.symbol()
     const balance = await fanToken.balanceOf(walletAddress)
+    const balanceOfAudius = await fanToken.balanceOf(addresses.Audius)
 
     const token = {
       name: name,
-      balance: balance.toNumber(),
-      address: tokenAddress
+      symbol: symbol,
+      balance: balance.toString(),
+      address: tokenAddress,
+      balanceOfAudius: balanceOfAudius.toString(),
     }
 
     setTokenInfo(token)
@@ -113,7 +131,6 @@ const AudiusDisributionPage = () => {
     const factory = new Contract(addresses.TokenFactory, abis.tokenFactory, provider)
     const tokenAmount = await factory.tokenAmountOf(walletAddress)
     
-    console.log(tokenAmount)
     let tokenId
 
     for(let i = 0; i < tokenAmount.toNumber(); i++) {
@@ -133,9 +150,8 @@ const AudiusDisributionPage = () => {
     const audius = new Contract(addresses.Audius, abis.audius, signer)
     const _followersNum = audiusFollowers.length
 
-    // TODO: add collect contract when it is ready
-    // await audius.addAudiusList(tokenId, path, _followersNum)
-    alert(`Success! ${_followersNum}, ${path}`)
+    // audius.addAudiusList(tokenId, path, _followersNum)
+    alert("TODO!!")
   }
 
   useEffect(() => {
@@ -171,6 +187,8 @@ const AudiusDisributionPage = () => {
 
   return (
     <AudiusDistributionPageTemplate
+      provider={provider} 
+      loadWeb3Modal={loadWeb3Modal}
       libs={libs}
       audius={audiusAccount}
       audiusFollowers={audiusFollowers}
