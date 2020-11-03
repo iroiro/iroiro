@@ -4,7 +4,6 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import "./index.css";
 import App from "./App";
-// @ts-ignore
 import { theme } from "rimble-ui";
 import { ThemeProvider } from "styled-components";
 
