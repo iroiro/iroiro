@@ -5,12 +5,13 @@ import ExplorePageTemplate from "../templates/ExplorePageTemplate"
 import { GET_TOKENS_BALANCE_USER_HOLDS } from "../../graphql/subgraph"
 import { useLazyQuery } from "@apollo/react-hooks"
 import { ethers } from "ethers"
+import {TokenBalanceUserHolds, UserToken} from "../../interfaces";
 
 const ExplorePage = () => {
-  const [provider, setProvider] = useState()
-  const [tokens, setTokens] = useState([])
+  const [provider, setProvider] = useState<Web3Provider>()
+  const [tokens, setTokens] = useState<UserToken[]>([])
   const [walletAddress, setWalletAddress] = useState("")
-  const [getTokensBalance, { loading, error, data }] = useLazyQuery(GET_TOKENS_BALANCE_USER_HOLDS)
+  const [getTokensBalance, { loading, error, data }] = useLazyQuery<TokenBalanceUserHolds>(GET_TOKENS_BALANCE_USER_HOLDS)
 
   /* Open wallet selection modal. */
   const loadWeb3Modal = useCallback(async () => {

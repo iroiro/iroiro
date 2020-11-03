@@ -1,8 +1,14 @@
 import React from "react";
 import { Heading, Loader, Text, Box } from "rimble-ui";
 import TokenListItem from "../molecules/TokenListItem";
+import {UserToken} from "../../interfaces";
 
-const TokenList = ({ tokens, loading }) => (
+interface Props {
+    readonly tokens: UserToken[]
+    readonly loading: boolean
+}
+
+const TokenList = ({ tokens, loading }: Props) => (
   <div>
     <Heading as={"h2"}>Token List</Heading>
     {loading &&
