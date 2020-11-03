@@ -5,8 +5,9 @@ import { Box, Button } from "rimble-ui";
 import LogoButton from "../atoms/LogoButton"
 import LinkButton from "../atoms/LinkButton"
 import WalletButton from "../atoms/WalletButton";
+import {Web3Props} from "../../interfaces";
 
-const AppHeader = ({ provider, loadWeb3Modal}) => (
+const AppHeader = ({ provider, loadWeb3Modal}: Web3Props) => (
   <div>
     <Header>
       <Box ml={4}>
