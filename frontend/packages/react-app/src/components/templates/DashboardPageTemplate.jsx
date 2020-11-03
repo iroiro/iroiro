@@ -1,11 +1,11 @@
 import React from "react"
 import { Heading, Loader, Box } from "rimble-ui"
-import AppHeader from "../molecules/AppHeader"
+import Index from "../molecules/AppHeader"
 import CreatedTokenInfo from "../organisms/CreatedTokenInfo"
 
 const DashboardPageTemplate = ({ provider, loadWeb3Modal, tokens, withdrawToken, restartStaking, stopStaking}) => (
   <div>
-    <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
+    <Index provider={provider} loadWeb3Modal={loadWeb3Modal}/>
     <Box m={"auto"} my={5} width={[3/4, 1/2]} >
       <Heading as={"h2"}>Created Tokens</Heading>
       {tokens.length == 0 &&
