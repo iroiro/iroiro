@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "rimble-ui"
-import AppHeader from "../molecules/AppHeader";
+import Index from "../molecules/AppHeader";
 import AudiusDistribution from "../organisms/AudiusDistribution";
 
 const TopPageTemplate = ({
@@ -21,7 +21,7 @@ const TopPageTemplate = ({
   addAudiusList,
 }) => (
   <div>
-    <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
+    <Index provider={provider} loadWeb3Modal={loadWeb3Modal}/>
     <Box m={"auto"} my={5} width={[4/5, 3/4]} >
       <AudiusDistribution
         libs={libs}
