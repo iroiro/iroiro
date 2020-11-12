@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { oracle } = require('@chainlink/test-helpers')
-const { expectRevert, time } = require('@openzeppelin/test-helpers')
+const { constants, expectRevert, time } = require('@openzeppelin/test-helpers')
 
 // TODO currently work with `truffle test`. Update for mocha
 contract('Audius', accounts => {
@@ -40,7 +40,7 @@ contract('Audius', accounts => {
     context('without LINK', () => {
       it('reverts', async () => {
         await expectRevert.unspecified(
-          cc.requestCheckingAddress(oc.address, jobId, "cid", "address",
+          cc.requestCheckingAddress(oc.address, jobId, "userAddress", "tokenAddress", constants.ZERO_ADDRESS,
             new web3.utils.BN("1000000000000000000"),
             {from: consumer,}
           ),
@@ -58,8 +58,8 @@ contract('Audius', accounts => {
       })
 
       context('sending a request to a specific oracle contract address', () => {
-        it('triggers a log event in the new Oracle contract', async () => {
-          const tx = await cc.requestCheckingAddress(oc.address, jobId, "cid", "address",
+        xit('triggers a log event in the new Oracle contract', async () => {
+          const tx = await cc.requestCheckingAddress(oc.address, jobId, "userAddress", "tokenAddress", constants.ZERO_ADDRESS,
             new web3.utils.BN("1000000000000000000"),
             {from: consumer},
           )
@@ -101,7 +101,7 @@ contract('Audius', accounts => {
   //   expect(hash1).to.equal(hash2)
   // })
 
-  describe('#fulfill', () => {
+  xdescribe('#fulfill', () => {
     const userId = 1
     const tokenId = 1
     const response = `${userId}-${tokenId}-true`
@@ -111,7 +111,7 @@ contract('Audius', accounts => {
       await link.transfer(cc.address, web3.utils.toWei('1', 'ether'), {
         from: defaultAccount,
       })
-      const tx = await cc.requestCheckingAddress(oc.address, jobId, "cid", "address",
+      const tx = await cc.requestCheckingAddress(oc.address, jobId, "userAddress", "tokenAddress", constants.ZERO_ADDRESS,
           new web3.utils.BN("1000000000000000000"),
           { from: consumer },
       )
@@ -154,14 +154,14 @@ contract('Audius', accounts => {
     })
   })
 
-  describe('#cancelRequest', () => {
+  xdescribe('#cancelRequest', () => {
     let request
 
     beforeEach(async () => {
       await link.transfer(cc.address, web3.utils.toWei('1', 'ether'), {
         from: defaultAccount,
       })
-      const tx = await cc.requestCheckingAddress(oc.address, jobId, "cid", "address",
+      const tx = await cc.requestCheckingAddress(oc.address, jobId, "userAddress", "tokenAddress", constants.ZERO_ADDRESS,
           new web3.utils.BN("1000000000000000000"),
           { from: consumer },
       )
