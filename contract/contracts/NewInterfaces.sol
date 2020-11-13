@@ -6,14 +6,10 @@ contract DistributerInterface {
 
     string name;
     address tokenHolder;
-    mapping(address => address) tokenRefundDestinationList;
-
-    function balanceOf(address token) virtual external view returns (uint256) {}
-
-    function addToken() virtual external {}
 
     function createCampaign(
         address token,
+        address tokenHolder, // Not only TokenHolder contract address but include creator address
         string memory campaignInfoCid,
         string memory recipientsCid,
         string memory recipientsNum,
