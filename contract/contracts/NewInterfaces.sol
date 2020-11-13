@@ -25,7 +25,7 @@ contract CampaignInterface {
 
     string campaignInfoCid; // Contains campaign name and description as JSON
     string recipientsCid; // Contains recipients value as JSON
-    uint32 recipientsNum;
+    uint256 claimedAmount;
     uint32 claimedNum;
     address refundDestination; // Use when campaign is cancelled
 
