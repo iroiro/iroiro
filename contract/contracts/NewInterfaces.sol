@@ -24,13 +24,17 @@ contract DistributerInterface {
 contract CampaignInterface {
     // TODO Add events
 
+    enum Status {Active, Cancelled, Ended}
+
     string campaignInfoCid; // Contains campaign name and description as JSON
     string recipientsCid; // Contains recipients value as JSON
-    uint256 claimedAmount;
+    // TODO Consider a gap between actual JSON elements and claim amounts.
+    uint256 claimAmount;
     uint32 claimedNum;
     address refundDestination; // Use when campaign is cancelled
     uint256 startDate;
     uint256 endDate;
+    Status status;
 
     // Check msg.sender is claimable
     function isClaimable(address token) virtual external view returns (bool) {}
