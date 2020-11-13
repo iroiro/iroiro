@@ -64,8 +64,8 @@ contract DonatorInerface {
     mapping(address => address) tokenDonateeList;
 
     // TODO This function should be restricted for authenticated token owners
-    function setDonatee() virtual external {}
+    function setDonatee(address token) virtual external {}
 
-    function donate() virtual external {}
+    function donate(address token, uint256 amount) virtual external {}
 }
 
