@@ -57,7 +57,7 @@ describe("Audius", () => {
 
   })
 
-  describe("isClaimable", () => {
+  xdescribe("isClaimable", () => {
     // TODO Activate this
     // beforeEach(async () => {
     //   const truthyClaimKey = "1000000000000000000011"
