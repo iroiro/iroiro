@@ -13,7 +13,8 @@ contract DistributerInterface {
         string memory campaignInfoCid,
         string memory recipientsCid,
         string memory recipientsNum,
-        uint256 startDate
+        uint256 startDate,
+        uint256 endDate
     ) virtual external {}
 
     // Future functionality
@@ -28,6 +29,8 @@ contract CampaignInterface {
     uint256 claimedAmount;
     uint32 claimedNum;
     address refundDestination; // Use when campaign is cancelled
+    uint256 startDate;
+    uint256 endDate;
 
     // Check msg.sender is claimable
     function isClaimable(address token) virtual external view returns (bool) {}
@@ -36,6 +39,8 @@ contract CampaignInterface {
     function claim(address token) virtual external {}
 
     function cancelCampaign() virtual external {}
+
+    function endCampaign() virtual external {}
 
     // This function should be overloaded because arguments could be added for each campaigns
     // Request to Chainlink for checking claimability
