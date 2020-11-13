@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
+// TODO Remove this file after new interfaces are implemented
+
 interface TokenFactoryInterface {
     // Get created token count
     function totalTokenCount() external view returns (uint256);
