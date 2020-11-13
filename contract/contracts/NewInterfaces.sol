@@ -61,7 +61,7 @@ contract CampaignInterface {
 contract DonatorInterface {
     // TODO Add events
 
-    mapping(address => address) tokenDonateeList;
+    mapping(address => address) public tokenDonateeList;
 
     // TODO This function should be restricted for authenticated token owners
     function setDonatee(address token) virtual external {}
