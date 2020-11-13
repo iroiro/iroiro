@@ -14,7 +14,8 @@ contract DistributerInterface {
         string memory recipientsCid,
         string memory recipientsNum,
         uint256 startDate,
-        uint256 endDate
+        uint256 endDate,
+        string baseURL
     ) virtual external {}
 
     // Future functionality
@@ -34,6 +35,7 @@ contract CampaignInterface {
     address refundDestination; // Use when campaign is cancelled
     uint256 startDate;
     uint256 endDate;
+    string baseURL;
     Status status;
 
     // Check msg.sender is claimable
