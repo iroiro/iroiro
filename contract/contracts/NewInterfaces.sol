@@ -58,7 +58,7 @@ contract CampaignInterface {
     // ) external returns (bytes32 requestId);
 }
 
-contract DonatorInerface {
+contract DonatorInterface {
     // TODO Add events
 
     mapping(address => address) tokenDonateeList;
