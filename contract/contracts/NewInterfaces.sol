@@ -32,7 +32,7 @@ contract CampaignInterface {
     event Claim(
         uint256 amount
     );
-    event UpdateCampaignStatus(
+    event UpdateStatus(
         Status status
     );
 
