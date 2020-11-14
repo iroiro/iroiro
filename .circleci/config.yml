@@ -1,7 +1,11 @@
-version: 2.1
 orbs:
-  node: circleci/node@3.0.0
+  node: circleci/node@4.1.0
+
+version: 2.1
+
 workflows:
-  node-tests:
+  app-tests:
     jobs:
-      - node/test
+      - node/test:
+          app-dir: ~/project/contract
+          pkg-manager: yarn
