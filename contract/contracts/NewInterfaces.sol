@@ -15,7 +15,7 @@ contract DistributerInterface {
         string memory recipientsNum,
         uint256 startDate,
         uint256 endDate,
-        string baseURL
+        string memory baseURL
     ) virtual external {}
 
     // Future functionality
