@@ -16,7 +16,11 @@ contract DistributerInterface {
         uint256 endDate
     );
 
-    string name;
+    constructor(string memory _name) public {
+        name = _name;
+    }
+
+    string public name;
 
     function getAllowanceOf(address token, address owner) internal view returns (uint256) {
         ERC20 erc20 = ERC20(token);

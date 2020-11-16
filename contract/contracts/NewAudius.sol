@@ -6,6 +6,8 @@ import "contracts/SafeMath64.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract AudiusFollowersDistributer is DistributerInterface {
+    constructor (string memory _name) public DistributerInterface(_name) {}
+
     function createCampaign(
         address payable token,
         address tokenSender,
