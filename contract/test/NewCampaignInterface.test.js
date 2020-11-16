@@ -79,6 +79,9 @@ describe("CampaignInterface", () => {
       it("emits event", async() => {
 
       })
+      it("transfer token to refund destination", async() => {
+
+      })
     })
   })
 
@@ -91,6 +94,9 @@ describe("CampaignInterface", () => {
 
       })
       it("emits event", async () => {
+
+      })
+      it("transfer token to refund destination", async() => {
 
       })
     })
