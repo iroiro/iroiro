@@ -5,6 +5,7 @@ import "./NewInterfaces.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./SafeMath64.sol";
 
+// TODO move to Audius dir
 contract AudiusFollowersDistributer is DistributerInterface {
     constructor (string memory _name) public DistributerInterface(_name) {}
 
