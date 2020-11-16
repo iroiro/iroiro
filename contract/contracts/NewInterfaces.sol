@@ -69,17 +69,17 @@ contract CampaignInterface is ChainlinkClient {
 
     enum Status {Active, Cancelled, Ended}
 
-    address payable token;
-    string campaignInfoCid; // Contains campaign name and description as JSON
-    string recipientsCid; // Contains recipients value as JSON
+    address payable public token;
+    string public campaignInfoCid; // Contains campaign name and description as JSON
+    string public recipientsCid; // Contains recipients value as JSON
     // TODO Consider a gap between actual JSON elements and claim amounts.
-    uint256 claimAmount;
-    uint32 claimedNum = 0;
-    address refundDestination; // Use when campaign is cancelled
-    uint256 startDate;
-    uint256 endDate;
-    string baseURL;
-    Status status = Status.Active;
+    uint256 public claimAmount;
+    uint32 public claimedNum = 0;
+    address public refundDestination; // Use when campaign is cancelled
+    uint256 public startDate;
+    uint256 public endDate;
+    string public baseURL;
+    Status public status = Status.Active;
 
     constructor(
         address payable _token,
@@ -98,7 +98,7 @@ contract CampaignInterface is ChainlinkClient {
         refundDestination = _refundDestination;
         startDate = _startDate;
         endDate = _endDate;
-        status = Status.Active;
+        baseURL = _baseURL;
     }
 
     function cancelCampaign() external {
