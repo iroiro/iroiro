@@ -67,4 +67,32 @@ describe("CampaignInterface", () => {
         }
     })
   })
+
+  xdescribe("cancelCampaign", () => {
+    it("fail if current date is greather than or equal to start date", async () => {
+
+    })
+    describe("success case", () => {
+      it("update status to cancelled", async() => {
+
+      })
+      it("emits event", async() => {
+
+      })
+    })
+  })
+
+  xdescribe("endCampaign", () => {
+    it("fail if current date is less than or equal to start date", async () => {
+
+    })
+    describe("success case", () => {
+      it("update status to ended", async () => {
+
+      })
+      it("emits event", async () => {
+
+      })
+    })
+  })
 })
