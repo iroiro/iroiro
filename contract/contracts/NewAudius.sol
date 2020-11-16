@@ -4,9 +4,9 @@ pragma solidity ^0.6.0;
 import "./NewInterfaces.sol";
 
 contract AudiusFollowersDistributer is DistributerInterface {
-
     function createCampaign(
         address token,
+        // TODO Update arg name to `tokenSender`
         address tokenHolder,
         string memory campaignInfoCid,
         string memory recipientsCid,
@@ -15,10 +15,13 @@ contract AudiusFollowersDistributer is DistributerInterface {
         uint256 endDate,
         string memory baseURL
     ) public override {
+        // TODO Update checking TokenHolder logic with token issuance phase
+        require(msg.sender == tokenHolder, "Token holder must match to msg.sender");
+        uint256 allowance = getAllowanceOf(token, tokenHolder);
+        require(allowance > 0, "No token is approved to transfer");
+        require(allowance > recipientsNum, "Token amount is not enough to distribute");
 
-        // TODO Calculate amount by balance and recipients num
-        uint256 claimAmount = 0;
-
+        uint256 claimAmount = calculateClaimAmount(allowance, recipientsNum);
         AudiusFollowersCampaign campaign = new AudiusFollowersCampaign(
             token,
             campaignInfoCid,
@@ -29,8 +32,7 @@ contract AudiusFollowersDistributer is DistributerInterface {
             endDate,
             baseURL
         );
-
-        // Transfer token from tokenHolder
+        transferToken(token, tokenHolder, address(campaign), allowance);
 
         emit CreateCampaign(
             token,
