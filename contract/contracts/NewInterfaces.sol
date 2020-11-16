@@ -66,6 +66,7 @@ contract CampaignInterface is ChainlinkClient {
 
     enum Status {Active, Cancelled, Ended}
 
+    address token;
     string campaignInfoCid; // Contains campaign name and description as JSON
     string recipientsCid; // Contains recipients value as JSON
     // TODO Consider a gap between actual JSON elements and claim amounts.
@@ -87,7 +88,8 @@ contract CampaignInterface is ChainlinkClient {
     function endCampaign() external override {
         require(endDate < block.timestamp, "Campaign is not ended yet");
         status = Status.Ended;
-        // TODO Add transferring remaining token
+        ERC20 erc20 = ERC20(token);
+        erc20.transfer(to, erc20.balanceOf(address(this)));
 
         emit UpdateStatus(Status.Ended);
     }
