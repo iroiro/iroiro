@@ -81,6 +81,26 @@ contract CampaignInterface is ChainlinkClient {
     string baseURL;
     Status status = Status.Active;
 
+    constructor(
+        address payable _token,
+        string memory _campaignInfoCid,
+        string memory _recipientsCid,
+        uint256 _claimAmount,
+        address _refundDestination,
+        uint256 _startDate,
+        uint256 _endDate,
+        string memory _baseURL
+    ) public {
+        token = _token;
+        campaignInfoCid = _campaignInfoCid;
+        recipientsCid = _recipientsCid;
+        claimAmount = _claimAmount;
+        refundDestination = _refundDestination;
+        startDate = _startDate;
+        endDate = _endDate;
+        status = Status.Active;
+    }
+
     function cancelCampaign() external {
         require(block.timestamp < startDate, "Campaign is already started");
         status = Status.Cancelled;

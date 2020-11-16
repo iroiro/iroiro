@@ -2,8 +2,8 @@
 pragma solidity ^0.6.0;
 
 import "./NewInterfaces.sol";
-import "contracts/SafeMath64.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "./SafeMath64.sol";
 
 contract AudiusFollowersDistributer is DistributerInterface {
     constructor (string memory _name) public DistributerInterface(_name) {}
@@ -55,6 +55,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
     mapping(address => bool) claimedUserList;
     mapping(bytes32 => bool) private claimKeyHashList;
 
+    // TODO Integrate with parent constructor
     constructor(
         address payable _token,
         string memory _campaignInfoCid,
@@ -64,16 +65,20 @@ contract AudiusFollowersCampaign is CampaignInterface {
         uint256 _startDate,
         uint256 _endDate,
         string memory _baseURL
-    ) public {
-        token = _token;
-        campaignInfoCid = _campaignInfoCid;
-        recipientsCid = _recipientsCid;
-        claimAmount = _claimAmount;
-        status = Status.Active;
-    }
+    ) public CampaignInterface(
+        _token,
+        _campaignInfoCid,
+        _recipientsCid,
+        _claimAmount,
+        _refundDestination,
+        _startDate,
+        _endDate,
+        _baseURL
+    ) {}
 
     function generateClaimKey(uint64 userId) public pure returns (uint256){
-        return uint256(userId) * 10 + 1; // 1 as true
+        return uint256(userId) * 10 + 1;
+        // 1 as true
     }
 
     function isClaimable() public view override returns (bool) {
