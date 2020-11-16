@@ -16,6 +16,11 @@ contract NewDonator is DonatorInterface {
         ERC20 token = ERC20(_token);
         token.transferFrom(msg.sender, donatee, _amount);
 
-        // TODO emit event
+        emit Donate(
+            msg.sender,
+            donatee,
+            _token,
+            _amount
+        );
     }
 }

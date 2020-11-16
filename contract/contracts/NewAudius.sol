@@ -10,14 +10,15 @@ contract AudiusFollowersDistributer is DistributerInterface {
         address tokenHolder,
         string memory campaignInfoCid,
         string memory recipientsCid,
-        string memory recipientsNum,
+        uint32 recipientsNum,
         uint256 startDate,
         uint256 endDate,
         string memory baseURL
     ) public override {
 
+        // TODO Calculate amount by balance and recipients num
         uint256 claimAmount = 0;
-        // Create Campaign
+
         AudiusFollowersCampaign campaign = new AudiusFollowersCampaign(
             token,
             campaignInfoCid,
@@ -31,7 +32,13 @@ contract AudiusFollowersDistributer is DistributerInterface {
 
         // Transfer token from tokenHolder
 
-        // emit event
+        emit CreateCampaign(
+            token,
+            recipientsCid,
+            recipientsNum,
+            startDate,
+            endDate
+        );
     }
 }
 
@@ -57,15 +64,15 @@ contract AudiusFollowersCampaign is CampaignInterface {
     }
 
     function claim(address token) external override {
-
+        emit Claim(claimAmount);
     }
 
     function cancelCampaign() external override {
-
+        emit UpdateStatus(Status.Cancelled);
     }
 
     function endCampaign() external override {
-
+        emit UpdateStatus(Status.Ended);
     }
 
     function requestCheckingIsClaimable(
