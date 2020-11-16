@@ -84,12 +84,15 @@ contract AudiusFollowersCampaign is CampaignInterface {
 
     function isClaimable() public view override returns (bool) {
         uint64 userId = userIdList[msg.sender];
-        require(userId > 0, "User is not registered");
+        if (userId == 0) {
+            return false;
+        }
         if (claimedUserList[msg.sender]) {
             return false;
         }
-
-        return true;
+        uint256 claimKey = generateClaimKey(userId);
+        bytes32 claimKeyHash = keccak256(abi.encodePacked(claimKey));
+        return claimKeyHashList[claimKeyHash];
     }
 
     // TODO Logic could be changed
