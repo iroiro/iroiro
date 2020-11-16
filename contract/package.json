@@ -12,7 +12,7 @@
     "migrate:dev": "npx truffle migrate --reset --network cldev",
     "migrate:ropsten": "npx truffle migrate --reset --network ropsten",
     "migrate:live": "npx truffle migrate --network live",
-    "test": "oz compile && mocha --exit --recursive test"
+    "test": "oz compile && npx truffle test"
   },
   "license": "MIT",
   "dependencies": {
