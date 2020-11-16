@@ -2,7 +2,13 @@
 pragma solidity ^0.6.0;
 
 contract DistributerInterface {
-    // TODO Add events
+    event CreateCampaign(
+        address token,
+        string recipientsCid,
+        uint32 recipientsNum,
+        uint256 startDate,
+        uint256 endDate
+    );
 
     string name;
     address tokenHolder;
@@ -12,7 +18,7 @@ contract DistributerInterface {
         address tokenHolder, // Not only TokenHolder contract address but include creator address
         string memory campaignInfoCid,
         string memory recipientsCid,
-        string memory recipientsNum,
+        uint32 recipientsNum,
         uint256 startDate,
         uint256 endDate,
         string memory baseURL
@@ -24,7 +30,12 @@ contract DistributerInterface {
 
 // TODO Inherit ChainlinkClient
 contract CampaignInterface {
-    // TODO Add events
+    event Claim(
+        uint256 amount
+    );
+    event UpdateStatus(
+        Status status
+    );
 
     enum Status {Active, Cancelled, Ended}
 
@@ -59,8 +70,12 @@ contract CampaignInterface {
     // ) external returns (bytes32 requestId);
 }
 
-contract DonatorInterface {
-    // TODO Add events
+contract DonatorInerface {
+    event Donate(
+        address from,
+        address to,
+        uint256 amount
+    );
 
     mapping(address => address) public tokenDonateeList;
 
