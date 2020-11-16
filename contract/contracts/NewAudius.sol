@@ -23,7 +23,7 @@ contract AudiusFollowersDistributer is DistributerInterface {
         require(msg.sender == tokenSender, "Token holder must match to msg.sender");
         uint256 allowance = getAllowanceOf(token, tokenSender);
         require(allowance > 0, "No token is approved to transfer");
-        require(allowance > recipientsNum, "Token amount is not enough to distribute");
+        require(allowance >= recipientsNum, "Token amount is not enough to distribute");
 
         uint256 claimAmount = calculateClaimAmount(allowance, recipientsNum);
         AudiusFollowersCampaign campaign = new AudiusFollowersCampaign(
@@ -37,6 +37,8 @@ contract AudiusFollowersDistributer is DistributerInterface {
             baseURL
         );
         transferToken(token, tokenSender, address(campaign), allowance);
+        campaignList[nextCampaignId] = address(campaign);
+        nextCampaignId = nextCampaignId.add(1);
 
         emit CreateCampaign(
             token,
