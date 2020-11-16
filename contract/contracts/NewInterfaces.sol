@@ -70,10 +70,11 @@ contract CampaignInterface {
     // ) external returns (bytes32 requestId);
 }
 
-contract DonatorInerface {
+contract DonatorInterface {
     event Donate(
         address from,
         address to,
+        address token,
         uint256 amount
     );
 
