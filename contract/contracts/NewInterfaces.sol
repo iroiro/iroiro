@@ -77,6 +77,21 @@ contract CampaignInterface is ChainlinkClient {
     string baseURL;
     Status status = Status.Active;
 
+    function cancelCampaign() external override {
+        require(block.timestamp < startDate, "Campaign is already started");
+        status = Status.Cancelled;
+
+        emit UpdateStatus(Status.Cancelled);
+    }
+
+    function endCampaign() external override {
+        require(endDate < block.timestamp, "Campaign is not ended yet");
+        status = Status.Ended;
+        // TODO Add transferring remaining token
+
+        emit UpdateStatus(Status.Ended);
+    }
+
     // Check msg.sender is claimable
     function isClaimable(address token) virtual external view returns (bool) {}
 

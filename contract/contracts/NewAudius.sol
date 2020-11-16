@@ -69,22 +69,6 @@ contract AudiusFollowersCampaign is CampaignInterface {
         emit Claim(claimAmount);
     }
 
-    // TODO Move to parent contract
-    function cancelCampaign() external override {
-        require(block.timestamp < startDate, "Campaign is already started");
-        status = Status.Cancelled;
-
-        emit UpdateStatus(Status.Cancelled);
-    }
-
-    function endCampaign() external override {
-        require(endDate < block.timestamp, "Campaign is not ended yet");
-        status = Status.Ended;
-        // TODO Add transferring remaining token
-
-        emit UpdateStatus(Status.Ended);
-    }
-
     function fulfill(bytes32 _requestId, bytes32 data) public recordChainlinkFulfillment(_requestId) {
         // TODO: implement logic
     }
