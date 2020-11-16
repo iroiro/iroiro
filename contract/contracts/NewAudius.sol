@@ -3,7 +3,6 @@ pragma solidity ^0.6.0;
 
 import "./NewInterfaces.sol";
 import "contracts/SafeMath64.sol";
-import "./SafeMath64.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract AudiusFollowersDistributer is DistributerInterface {
