@@ -85,7 +85,7 @@ describe("CampaignInterface", () => {
     })
   })
 
-  xdescribe("endCampaign", () => {
+  xdescribe("refundRemainingTokens", () => {
     it("fail if current date is less than or equal to start date", async () => {
 
     })

@@ -110,7 +110,7 @@ contract CampaignInterface is ChainlinkClient {
         emit UpdateStatus(Status.Cancelled);
     }
 
-    function endCampaign() external {
+    function refundRemainingTokens() external {
         require(endDate < block.timestamp, "Campaign is not ended yet");
         status = Status.Ended;
         ERC20 erc20 = ERC20(token);
