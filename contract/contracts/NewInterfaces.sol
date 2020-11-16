@@ -88,7 +88,7 @@ contract CampaignInterface is ChainlinkClient {
         require(endDate < block.timestamp, "Campaign is not ended yet");
         status = Status.Ended;
         ERC20 erc20 = ERC20(token);
-        erc20.transfer(to, erc20.balanceOf(address(this)));
+        erc20.transfer(refundDestination, erc20.balanceOf(address(this)));
 
         emit UpdateStatus(Status.Ended);
     }
