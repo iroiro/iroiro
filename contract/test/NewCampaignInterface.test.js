@@ -6,7 +6,7 @@ const Campaign = contract.fromArtifact("CampaignInterface")
 const FanToken = contract.fromArtifact("FanToken")
 
 describe("CampaignInterface", () => {
-  const [owner, alice, minter] = accounts;
+  const [owner, alice, link] = accounts;
   let now, future;
 
   beforeEach(async () => {
@@ -27,6 +27,7 @@ describe("CampaignInterface", () => {
         now,
         future,
         "https://example.com/",
+        link,
         { from: owner })
   })
 
@@ -48,7 +49,7 @@ describe("CampaignInterface", () => {
       try {
         await Campaign.new(
             this.abctoken.address, "campaign info cid", "recipients cid", 100000, alice,
-            future, now, "https://example.com/", { from: owner }
+            future, now, "https://example.com/", link, { from: owner }
         )
         assert.fail()
       } catch(error) {
@@ -58,7 +59,7 @@ describe("CampaignInterface", () => {
       try {
         await Campaign.new(
             this.abctoken.address, "campaign info cid", "recipients cid", 100000, alice,
-            now, now, "https://example.com/", { from: owner }
+            now, now, "https://example.com/", link, { from: owner }
           )
           assert.fail()
         } catch(error) {
