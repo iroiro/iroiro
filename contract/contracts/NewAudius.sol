@@ -2,10 +2,13 @@
 pragma solidity ^0.6.0;
 
 import "./NewInterfaces.sol";
+import "contracts/SafeMath64.sol";
+import "./SafeMath64.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract AudiusFollowersDistributer is DistributerInterface {
     function createCampaign(
-        address token,
+        address payable token,
         address tokenSender,
         string memory campaignInfoCid,
         string memory recipientsCid,
@@ -44,13 +47,15 @@ contract AudiusFollowersDistributer is DistributerInterface {
 }
 
 contract AudiusFollowersCampaign is CampaignInterface {
+    using SafeMath64 for uint64;
+
     uint64 public nextUserId = 1;
     mapping(address => uint64) userIdList;
     mapping(address => bool) claimedUserList;
     mapping(bytes32 => bool) private claimKeyHashList;
 
     constructor(
-        address _token,
+        address payable _token,
         string memory _campaignInfoCid,
         string memory _recipientsCid,
         uint256 _claimAmount,
@@ -59,6 +64,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         uint256 _endDate,
         string memory _baseURL
     ) public {
+        token = _token;
         campaignInfoCid = _campaignInfoCid;
         recipientsCid = _recipientsCid;
         claimAmount = _claimAmount;
@@ -80,13 +86,13 @@ contract AudiusFollowersCampaign is CampaignInterface {
     }
 
     // TODO Logic could be changed
-    function claim(address token) external override {
+    function claim() external override {
         require(isClaimable(), "Token is not claimable");
         require(!claimedUserList[msg.sender], "Already claimed");
 
         claimedUserList[msg.sender] = true;
         ERC20 erc20 = ERC20(token);
-        token.transfer(msg.sender, claimAmount);
+        erc20.transfer(refundDestination, claimAmount);
 
         emit Claim(claimAmount);
     }
@@ -98,8 +104,9 @@ contract AudiusFollowersCampaign is CampaignInterface {
     function requestCheckingIsClaimable(
         address _oracle,
         bytes32 _jobId,
-        uint256 fee
+        uint256 fee,
     // TODO Add other arguments for actual request
+        string memory userAddress
     ) external returns (bytes32 requestId) {
         uint64 userId;
         if (userIdList[msg.sender] == 0) {
@@ -111,7 +118,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         }
 
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
-        request.add("cid", followersHash);
+        request.add("cid", recipientsCid);
         request.add("userAddress", userAddress);
 
         return sendChainlinkRequestTo(_oracle, request, fee);

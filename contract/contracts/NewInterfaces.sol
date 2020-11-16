@@ -31,7 +31,7 @@ contract DistributerInterface {
     }
 
     function createCampaign(
-        address token,
+        address payable token,
         address tokenHolder, // Not only TokenHolder contract address but include creator address
         string memory campaignInfoCid,
         string memory recipientsCid,
@@ -65,7 +65,7 @@ contract CampaignInterface is ChainlinkClient {
 
     enum Status {Active, Cancelled, Ended}
 
-    address token;
+    address payable token;
     string campaignInfoCid; // Contains campaign name and description as JSON
     string recipientsCid; // Contains recipients value as JSON
     // TODO Consider a gap between actual JSON elements and claim amounts.
@@ -77,14 +77,14 @@ contract CampaignInterface is ChainlinkClient {
     string baseURL;
     Status status = Status.Active;
 
-    function cancelCampaign() external override {
+    function cancelCampaign() external {
         require(block.timestamp < startDate, "Campaign is already started");
         status = Status.Cancelled;
 
         emit UpdateStatus(Status.Cancelled);
     }
 
-    function endCampaign() external override {
+    function endCampaign() external {
         require(endDate < block.timestamp, "Campaign is not ended yet");
         status = Status.Ended;
         ERC20 erc20 = ERC20(token);
@@ -94,14 +94,10 @@ contract CampaignInterface is ChainlinkClient {
     }
 
     // Check msg.sender is claimable
-    function isClaimable(address token) virtual external view returns (bool) {}
+    function isClaimable() virtual external view returns (bool) {}
 
     // Claim tokens
-    function claim(address token) virtual external {}
-
-    function cancelCampaign() virtual external {}
-
-    function endCampaign() virtual external {}
+    function claim() virtual external {}
 
     // This function should be overloaded because arguments could be added for each campaigns
     // Request to Chainlink for checking claimability
