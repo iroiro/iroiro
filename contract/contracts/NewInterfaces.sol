@@ -22,6 +22,7 @@ contract DistributerInterface {
     // function updateTokenHolder(address newTokenHolder) external; // onlyOwner
 }
 
+// TODO Inherit ChainlinkClient
 contract CampaignInterface {
     // TODO Add events
 
@@ -31,7 +32,7 @@ contract CampaignInterface {
     string recipientsCid; // Contains recipients value as JSON
     // TODO Consider a gap between actual JSON elements and claim amounts.
     uint256 claimAmount;
-    uint32 claimedNum;
+    uint32 claimedNum = 0;
     address refundDestination; // Use when campaign is cancelled
     uint256 startDate;
     uint256 endDate;
