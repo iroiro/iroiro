@@ -6,8 +6,7 @@ import "./NewInterfaces.sol";
 contract AudiusFollowersDistributer is DistributerInterface {
     function createCampaign(
         address token,
-    // TODO Update arg name to `tokenSender`
-        address tokenHolder,
+        address tokenSender,
         string memory campaignInfoCid,
         string memory recipientsCid,
         uint32 recipientsNum,
@@ -15,9 +14,9 @@ contract AudiusFollowersDistributer is DistributerInterface {
         uint256 endDate,
         string memory baseURL
     ) public override {
-        // TODO Update checking TokenHolder logic with token issuance phase
-        require(msg.sender == tokenHolder, "Token holder must match to msg.sender");
-        uint256 allowance = getAllowanceOf(token, tokenHolder);
+        // TODO Update checking tokenSender logic with token issuance phase
+        require(msg.sender == tokenSender, "Token holder must match to msg.sender");
+        uint256 allowance = getAllowanceOf(token, tokenSender);
         require(allowance > 0, "No token is approved to transfer");
         require(allowance > recipientsNum, "Token amount is not enough to distribute");
 
@@ -27,12 +26,12 @@ contract AudiusFollowersDistributer is DistributerInterface {
             campaignInfoCid,
             recipientsCid,
             claimAmount,
-            tokenHolder,
+            tokenSender,
             startDate,
             endDate,
             baseURL
         );
-        transferToken(token, tokenHolder, address(campaign), allowance);
+        transferToken(token, tokenSender, address(campaign), allowance);
 
         emit CreateCampaign(
             token,

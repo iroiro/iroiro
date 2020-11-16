@@ -17,7 +17,6 @@ contract DistributerInterface {
     );
 
     string name;
-    address tokenHolder;
 
     function getAllowanceOf(address token, address owner) internal view returns (uint256) {
         ERC20 erc20 = ERC20(token);
