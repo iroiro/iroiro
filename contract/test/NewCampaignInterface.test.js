@@ -30,16 +30,41 @@ describe("CampaignInterface", () => {
         { from: owner })
   })
 
-  it("has a state variables", async() => {
-    expect(await this.campaign.token()).to.be.equal(this.abctoken.address)
-    expect(await this.campaign.campaignInfoCid()).to.be.equal("campaign info cid")
-    expect(await this.campaign.recipientsCid()).to.be.equal("recipients cid")
-    expect((await this.campaign.claimAmount()).toString()).to.be.equal("100000")
-    expect((await this.campaign.claimedNum()).toString()).to.be.equal("0")
-    expect(await this.campaign.refundDestination()).to.be.equal(alice)
-    expect(await this.campaign.startDate()).to.be.bignumber.equal(now)
-    expect(await this.campaign.endDate()).to.be.bignumber.equal(future)
-    expect(await this.campaign.baseURL()).to.be.equal("https://example.com/")
-    expect((await this.campaign.status()).toString()).to.be.equal("0")
+  describe("constructor", async () => {
+    it("has a state variables", async() => {
+      expect(await this.campaign.token()).to.be.equal(this.abctoken.address)
+      expect(await this.campaign.campaignInfoCid()).to.be.equal("campaign info cid")
+      expect(await this.campaign.recipientsCid()).to.be.equal("recipients cid")
+      expect((await this.campaign.claimAmount()).toString()).to.be.equal("100000")
+      expect((await this.campaign.claimedNum()).toString()).to.be.equal("0")
+      expect(await this.campaign.refundDestination()).to.be.equal(alice)
+      expect(await this.campaign.startDate()).to.be.bignumber.equal(now)
+      expect(await this.campaign.endDate()).to.be.bignumber.equal(future)
+      expect(await this.campaign.baseURL()).to.be.equal("https://example.com/")
+      expect((await this.campaign.status()).toString()).to.be.equal("0")
+    })
+
+    it("throws an error if start date is greater than or equal to end date", async () => {
+      try {
+        await Campaign.new(
+            this.abctoken.address, "campaign info cid", "recipients cid", 100000, alice,
+            future, now, "https://example.com/", { from: owner }
+        )
+        assert.fail()
+      } catch(error) {
+        expect(error.reason).to.equal("Start data must be less than end date")
+        assert(true)
+      }
+      try {
+        await Campaign.new(
+            this.abctoken.address, "campaign info cid", "recipients cid", 100000, alice,
+            now, now, "https://example.com/", { from: owner }
+          )
+          assert.fail()
+        } catch(error) {
+          expect(error.reason).to.equal("Start data must be less than end date")
+          assert(true)
+        }
+    })
   })
 })

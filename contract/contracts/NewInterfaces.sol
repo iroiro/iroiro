@@ -91,6 +91,8 @@ contract CampaignInterface is ChainlinkClient {
         uint256 _endDate,
         string memory _baseURL
     ) public {
+        require(_startDate < _endDate, "Start data must be less than end date");
+
         token = _token;
         campaignInfoCid = _campaignInfoCid;
         recipientsCid = _recipientsCid;
