@@ -16,11 +16,13 @@ contract DistributerInterface {
         uint256 endDate
     );
 
-    constructor(string memory _name) public {
+    constructor(string memory _name, address _link) public {
         name = _name;
+        link = _link;
     }
 
     string public name;
+    address public link;
     uint256 public nextCampaignId = 1;
     mapping(uint256 => address) public campaignList;
 
@@ -91,7 +93,8 @@ contract CampaignInterface is ChainlinkClient {
         address _refundDestination,
         uint256 _startDate,
         uint256 _endDate,
-        string memory _baseURL
+        string memory _baseURL,
+        address _link
     ) public {
         require(_startDate < _endDate, "Start data must be less than end date");
 
@@ -103,6 +106,11 @@ contract CampaignInterface is ChainlinkClient {
         startDate = _startDate;
         endDate = _endDate;
         baseURL = _baseURL;
+        if (_link == address(0)) {
+            setPublicChainlinkToken();
+        } else {
+            setChainlinkToken(_link);
+        }
     }
 
     function cancelCampaign() external {

@@ -7,7 +7,8 @@ import "./SafeMath64.sol";
 
 // TODO move to Audius dir
 contract AudiusFollowersDistributer is DistributerInterface {
-    constructor (string memory _name) public DistributerInterface(_name) {}
+    constructor (string memory _name, address _link) public
+    DistributerInterface(_name, _link) {}
 
     function createCampaign(
         address payable token,
@@ -34,7 +35,8 @@ contract AudiusFollowersDistributer is DistributerInterface {
             tokenSender,
             startDate,
             endDate,
-            baseURL
+            baseURL,
+            link
         );
         transferToken(token, tokenSender, address(campaign), allowance);
         campaignList[nextCampaignId] = address(campaign);
@@ -54,8 +56,8 @@ contract AudiusFollowersCampaign is CampaignInterface {
     using SafeMath64 for uint64;
 
     uint64 public nextUserId = 1;
-    mapping(address => uint64) userIdList;
-    mapping(address => bool) claimedUserList;
+    mapping(address => uint64) public userIdList;
+    mapping(address => bool) public claimedUserList;
     mapping(bytes32 => bool) private claimKeyHashList;
 
     // TODO Integrate with parent constructor
@@ -67,7 +69,8 @@ contract AudiusFollowersCampaign is CampaignInterface {
         address _refundDestination,
         uint256 _startDate,
         uint256 _endDate,
-        string memory _baseURL
+        string memory _baseURL,
+        address _link
     ) public CampaignInterface(
         _token,
         _campaignInfoCid,
@@ -76,7 +79,8 @@ contract AudiusFollowersCampaign is CampaignInterface {
         _refundDestination,
         _startDate,
         _endDate,
-        _baseURL
+        _baseURL,
+        _link
     ) {}
 
     function generateClaimKey(uint64 userId) public pure returns (uint256){
