@@ -63,6 +63,7 @@ contract DistributerInterface {
     // function updateTokenHolder(address newTokenHolder) external; // onlyOwner
 }
 
+// TODO add only owner
 contract CampaignInterface is ChainlinkClient {
     event Claim(
         uint256 amount
@@ -116,6 +117,8 @@ contract CampaignInterface is ChainlinkClient {
     function cancelCampaign() external {
         require(block.timestamp < startDate, "Campaign is already started");
         status = Status.Cancelled;
+        ERC20 erc20 = ERC20(token);
+        erc20.transfer(refundDestination, erc20.balanceOf(address(this)));
 
         emit UpdateStatus(Status.Cancelled);
     }
