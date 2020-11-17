@@ -19,7 +19,8 @@ dataSources:
         - CreateToken
       abis:
         - name: TokenFactory
-          file: ../contracts/src/abis/TokenFactory.json
+          file: contract/build/contracts/TokenFactory.json
+
       eventHandlers:
         - event: CreateToken(indexed address,indexed address,string,string,uint256,uint8,uint8,bool,uint8,bool)
           handler: handleCreateToken
@@ -39,7 +40,7 @@ templates:
         - FanToken
       abis:
         - name: FanToken
-          file: ../contracts/src/abis/FanToken.json
+          file: contract/build/contracts/FanToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
