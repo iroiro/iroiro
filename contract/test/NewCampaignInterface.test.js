@@ -1,5 +1,5 @@
 const {accounts, contract} = require("@openzeppelin/test-environment")
-const { BN, constants, time } = require("@openzeppelin/test-helpers")
+const { BN, constants, expectEvent, expectRevert, time } = require("@openzeppelin/test-helpers")
 const {assert, expect} = require("chai")
 
 const Campaign = contract.fromArtifact("CampaignInterface")
@@ -69,35 +69,123 @@ describe("CampaignInterface", () => {
     })
   })
 
-  xdescribe("cancelCampaign", () => {
-    it("fail if current date is greather than or equal to start date", async () => {
-
-    })
+  describe("cancelCampaign", () => {
+    let now, oneweeklater, twoweeklater, campaign
     describe("success case", () => {
-      it("update status to cancelled", async() => {
+      beforeEach(async () => {
+        oneweeklater = (await time.latest()).add(time.duration.weeks(1))
+        twoweeklater = future.add(time.duration.weeks(1))
+        campaign = await Campaign.new(
+            this.abctoken.address, "campaign info cid", "recipients cid", 100000, owner,
+            oneweeklater, twoweeklater, "https://example.com/", link,
+            { from: owner })
+        this.abctoken.transfer(campaign.address, 1000000, { from: owner })
+        expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(1000000))
+        expect(await this.abctoken.balanceOf(owner)).to.be.bignumber.equal(new BN(999000000))
+      })
 
+      it("update status to cancelled", async() => {
+        await campaign.cancelCampaign({ from: owner })
+        expect(await campaign.status()).to.be.bignumber.equal(new BN(1))
       })
       it("emits event", async() => {
-
+        const receipt = await campaign.cancelCampaign({ from: owner })
+        expectEvent(receipt, "UpdateStatus", {
+          status: new BN(1)
+        })
       })
       it("transfer token to refund destination", async() => {
+        await campaign.cancelCampaign({ from: owner })
+        expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(0))
+        expect(await this.abctoken.balanceOf(owner)).to.be.bignumber.equal(new BN(1000000000))
+      })
+    })
+
+    describe("error case", () => {
+      beforeEach(async () => {
+        now = await time.latest()
+        oneweeklater = now.add(time.duration.weeks(1))
+        campaign = await Campaign.new(
+            this.abctoken.address, "campaign info cid", "recipients cid", 100000, owner,
+            now, oneweeklater, "https://example.com/", link,
+            { from: owner })
+        this.abctoken.transfer(campaign.address, 1000000, { from: owner })
+        expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(1000000))
+        expect(await this.abctoken.balanceOf(owner)).to.be.bignumber.equal(new BN(999000000))
+      })
+
+      it("fail if current date is greather than or equal to start date", async () => {
+        expectRevert(
+            campaign.cancelCampaign({ from: owner }),
+            "Campaign is already started"
+        )
+      })
+
+      xit("fail if non owner is trying to cancel", async() => {
 
       })
     })
   })
 
-  xdescribe("refundRemainingTokens", () => {
-    it("fail if current date is less than or equal to start date", async () => {
+  describe("refundRemainingTokens", () => {
+    let now, oneweeklater, twoweeklater, campaign
+    describe("error case", () => {
+      beforeEach(async () => {
+        now = await time.latest()
+        oneweeklater = now.add(time.duration.weeks(1))
+        campaign = await Campaign.new(
+            this.abctoken.address, "campaign info cid", "recipients cid", 100000, owner,
+            now, oneweeklater, "https://example.com/", link,
+            { from: owner })
+        this.abctoken.transfer(campaign.address, 1000000, { from: owner })
+        expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(1000000))
+        expect(await this.abctoken.balanceOf(owner)).to.be.bignumber.equal(new BN(999000000))
+      })
 
+      it("fail if current date is less than or equal to start date", async () => {
+        try {
+          await campaign.refundRemainingTokens({ from: owner })
+          assert.fail()
+        } catch(error) {
+          expect(error.reason).to.equal("Campaign is not ended yet")
+          assert(true)
+        }
+      })
     })
+
     describe("success case", () => {
+      beforeEach(async () => {
+        now = await time.latest()
+        oneweeklater = now.add(time.duration.weeks(1))
+        campaign = await Campaign.new(
+            this.abctoken.address, "campaign info cid", "recipients cid", 100000, owner,
+            now, oneweeklater, "https://example.com/", link,
+            { from: owner })
+        this.abctoken.transfer(campaign.address, 1000000, { from: owner })
+        expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(1000000))
+        expect(await this.abctoken.balanceOf(owner)).to.be.bignumber.equal(new BN(999000000))
+        time.increase(time.duration.weeks(2))
+      })
+
       it("update status to ended", async () => {
-
+        await campaign.refundRemainingTokens({ from: owner })
+        expect(await campaign.status()).to.be.bignumber.equal(new BN(2))
       })
+
       it("emits event", async () => {
-
+        const receipt = await campaign.refundRemainingTokens({ from: owner })
+        expectEvent(receipt, "UpdateStatus", {
+          status: new BN(2)
+        })
       })
+
       it("transfer token to refund destination", async() => {
+        await campaign.refundRemainingTokens({ from: owner })
+        expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(0))
+        expect(await this.abctoken.balanceOf(owner)).to.be.bignumber.equal(new BN(1000000000))
+      })
+
+      xit("fail if non owner is trying to cancel", async() => {
 
       })
     })
