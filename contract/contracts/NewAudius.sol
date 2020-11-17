@@ -41,6 +41,7 @@ contract AudiusFollowersDistributer is DistributerInterface {
         transferToken(token, tokenSender, address(campaign), allowance);
         campaignList[nextCampaignId] = address(campaign);
         nextCampaignId = nextCampaignId.add(1);
+        campaign.transferOwnership(msg.sender);
 
         emit CreateCampaign(
             token,

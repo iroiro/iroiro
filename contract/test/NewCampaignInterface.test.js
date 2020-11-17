@@ -121,8 +121,14 @@ describe("CampaignInterface", () => {
         )
       })
 
-      xit("fail if non owner is trying to cancel", async() => {
-
+      it("fail if non owner is trying to cancel", async() => {
+        try {
+          await campaign.cancelCampaign({ from: alice })
+          assert.fail()
+        } catch(error) {
+          expect(error.reason).to.equal("Ownable: caller is not the owner")
+          assert(true)
+        }
       })
     })
   })
@@ -185,8 +191,14 @@ describe("CampaignInterface", () => {
         expect(await this.abctoken.balanceOf(owner)).to.be.bignumber.equal(new BN(1000000000))
       })
 
-      xit("fail if non owner is trying to cancel", async() => {
-
+      it("fail if non owner is trying to cancel", async() => {
+        try {
+          await campaign.refundRemainingTokens({ from: alice })
+          assert.fail()
+        } catch(error) {
+          expect(error.reason).to.equal("Ownable: caller is not the owner")
+          assert(true)
+        }
       })
     })
   })

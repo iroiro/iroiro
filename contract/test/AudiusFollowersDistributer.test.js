@@ -3,6 +3,7 @@ const {BN, constants, expectEvent, time} = require("@openzeppelin/test-helpers")
 const {assert, expect} = require("chai")
 
 const Distributer = contract.fromArtifact("AudiusFollowersDistributer")
+const Campaign = contract.fromArtifact("AudiusFollowersCampaign")
 const FanToken = contract.fromArtifact("FanToken")
 
 describe("AudiusFollowersDistributer", () => {
@@ -90,6 +91,11 @@ describe("AudiusFollowersDistributer", () => {
 
             it("increment next campaign id", async () => {
                 expect((await this.distributer.nextCampaignId()).toString()).to.equal("2")
+            })
+
+            it("transfers ownership to msg.sender", async () => {
+                const campaign = await Campaign.at(campaignAddress)
+                expect(await campaign.owner()).to.equal(owner)
             })
 
             it("emits event", async () => {
