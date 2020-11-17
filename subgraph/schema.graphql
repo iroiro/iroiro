@@ -15,6 +15,7 @@ type Token @entity {
 type Creator @entity {
   id: ID!
   tokens: [Token!]! @derivedFrom(field: "creator")
+  campaigns: [Campaign!]! @deribedFrom(field: "creator")
 }
 
 type Account @entity {
@@ -28,4 +29,39 @@ type AccountToken @entity {
   account: Account!
   balance: BigInt!
   token: Token! @derivedFrom(field: "accountTokens")
+}
+
+type Distributer @entity {
+  id: ID!
+#  campaigns: [Campaign!]! @derivedFrom(field: "")
+}
+
+type Campaign @entity {
+  id: ID!
+#  token: String!
+#  startDate: BigInt!
+#  endDate: BigInt!
+#  creator: Creator!
+#  campaignInfoCid: String!
+#  recipientsCid: String!
+#    claimAmount: BitInt!
+#  claimedNum: Int!
+#  status: Int!
+#  claimedAddresses: [String!]!
+#  claimableAddresses: [String!]
+}
+
+type Claim @entity {
+  id: ID!
+#  account: Account
+#  token:
+#  amount
+}
+
+type Donate @entity {
+  id: ID!
+#  from:
+#  to:
+#  token
+#    amount
 }
