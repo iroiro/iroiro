@@ -14,9 +14,8 @@ class App extends Component {
       <div>
         <Router>
           <div>
-            <Route exact path='/' component={TopPage}/>
+            <Route exact path='/' component={ExplorePage}/>
             <Route path='/create' component={CreateTokenPage}/>
-            <Route path='/explore' component={ExplorePage}/>
             <Route path='/dashboard' component={DashboardPage}/>
             <Route path='/token/:address' component={TokenDetailPage}/>
             <Route path='/audius-token' component={WithdrawAudiusPage}/>
