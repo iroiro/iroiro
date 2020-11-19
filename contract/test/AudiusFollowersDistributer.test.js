@@ -16,7 +16,7 @@ describe("AudiusFollowersDistributer", () => {
     const recipientsNum = 100
 
     beforeEach(async () => {
-        this.distributer = await Distributer.new("Audius Test Distributer", link, {from: owner})
+        this.distributer = await Distributer.new("distributer info cid", link, {from: owner})
         this.abctoken = await FanToken.new(
             "ABCToken", "ABC", 1000000000, owner, 5, owner, 50, 5, {from: owner}
         )

@@ -17,12 +17,12 @@ contract DistributerInterface {
         uint256 endDate
     );
 
-    constructor(string memory _name, address _link) public {
-        name = _name;
+    constructor(string memory _distributerInfoCid, address _link) public {
+        distributerInfoCid = _distributerInfoCid;
         link = _link;
     }
 
-    string public name;
+    string public distributerInfoCid;
     address public link;
     uint256 public nextCampaignId = 1;
     mapping(uint256 => address) public campaignList;

@@ -9,7 +9,7 @@ describe("DistributerInterface", () => {
   const [owner, alice, link] = accounts;
 
   beforeEach(async () => {
-    this.distributer = await Distributer.new("Test Distributer", link, { from: owner })
+    this.distributer = await Distributer.new("distributer info cid", link, { from: owner })
     this.abctoken = await FanToken.new(
         "ABCToken", "ABC", 1000000000, owner, 5, owner, 50, 5, {from: owner}
     )
@@ -19,7 +19,7 @@ describe("DistributerInterface", () => {
   })
 
   it("has a name", async() => {
-    expect(await this.distributer.name()).to.equal("Test Distributer")
+    expect(await this.distributer.distributerInfoCid()).to.equal("distributer info cid")
   })
 
   it("has link address", async() => {

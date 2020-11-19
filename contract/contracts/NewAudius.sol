@@ -7,8 +7,8 @@ import "./SafeMath64.sol";
 
 // TODO move to Audius dir
 contract AudiusFollowersDistributer is DistributerInterface {
-    constructor (string memory _name, address _link) public
-    DistributerInterface(_name, _link) {}
+    constructor (string memory _distributerInfoCid, address _link) public
+    DistributerInterface(_distributerInfoCid, _link) {}
 
     function createCampaign(
         address payable token,
