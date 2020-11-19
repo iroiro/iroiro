@@ -22,6 +22,8 @@ type Account @entity {
   id: ID!
   tokens: [AccountToken!]! @derivedFrom(field: "account")
   claims: [Claim!]! @derivedFrom(field: "account")
+  # TODO: Disabled for this phase
+  #  donates: [Donate!]! @derivedFrom(field: "account")
 }
 
 type AccountToken @entity {
@@ -53,6 +55,7 @@ type Campaign @entity {
 }
 
 type Claim @entity {
+  " Equals to: <accountAddress>-<campaignAddress>"
   id: ID!
   account: Account!
   campaign: Campaign!
@@ -61,6 +64,7 @@ type Claim @entity {
 }
 
 type Donate @entity {
+  " Equals to: <accountAddress>-<timestamp>"
   id: ID!
   from: Account!
   to: Creator!
