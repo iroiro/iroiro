@@ -107,7 +107,7 @@ templates:
         - name: AudiusFollowersCampaign
           file: ../contract/build/contracts/AudiusFollowersCampaign.json
       eventHandlers:
-        - event: Claim(indexed address,uint256)
+        - event: Claim(indexed address)
           handler: handleClaim
         - event: UpdateStatus(uint8)
           handler: handleUpdateStatus

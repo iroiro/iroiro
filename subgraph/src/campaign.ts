@@ -1,5 +1,10 @@
 import {Claim, Campaign} from "./types/schema";
-import {Claim as ClaimEvent, UpdateStatus} from "./types/templates/AudiusFollowersCampaign/AudiusFollowersCampaign";
+import {
+    AudiusFollowersCampaign,
+    Claim as ClaimEvent,
+    UpdateStatus
+} from "./types/templates/AudiusFollowersCampaign/AudiusFollowersCampaign";
+import {log} from "@graphprotocol/graph-ts/index";
 
 export function handleClaim(event: ClaimEvent): void {
     let accountId = event.transaction.from.toHexString()
@@ -12,8 +17,13 @@ export function handleClaim(event: ClaimEvent): void {
 
     claim.account = event.params.to.toHexString()
     claim.campaign = event.address.toHexString()
-    // TODO replace with calling contract
-    claim.amount = event.params.amount
+    let campaignContract = AudiusFollowersCampaign.bind(event.address)
+    let callClaimAmount = campaignContract.try_claimAmount()
+    if (callClaimAmount.reverted) {
+        log.warning("Claim amount not found. Campaign: {}", [campaignId])
+    } else {
+        claim.amount = callClaimAmount.value
+    }
 
     claim.save()
 }
