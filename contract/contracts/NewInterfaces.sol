@@ -46,8 +46,7 @@ contract DistributerInterface {
         string memory recipientsCid,
         uint32 recipientsNum,
         uint256 startDate,
-        uint256 endDate,
-        string memory baseURL
+        uint256 endDate
     ) virtual external {}
 
     function transferToken(
@@ -83,7 +82,6 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     address public refundDestination; // Use when campaign is cancelled
     uint256 public startDate;
     uint256 public endDate;
-    string public baseURL;
     Status public status = Status.Active;
 
     constructor(
@@ -94,7 +92,6 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         address _refundDestination,
         uint256 _startDate,
         uint256 _endDate,
-        string memory _baseURL,
         address _link
     ) public {
         require(_startDate < _endDate, "Start data must be less than end date");
@@ -106,7 +103,6 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         refundDestination = _refundDestination;
         startDate = _startDate;
         endDate = _endDate;
-        baseURL = _baseURL;
         if (_link == address(0)) {
             setPublicChainlinkToken();
         } else {

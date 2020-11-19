@@ -26,7 +26,6 @@ describe("CampaignInterface", () => {
         alice,
         now,
         future,
-        "https://example.com/",
         link,
         { from: owner })
   })
@@ -41,7 +40,6 @@ describe("CampaignInterface", () => {
       expect(await this.campaign.refundDestination()).to.be.equal(alice)
       expect(await this.campaign.startDate()).to.be.bignumber.equal(now)
       expect(await this.campaign.endDate()).to.be.bignumber.equal(future)
-      expect(await this.campaign.baseURL()).to.be.equal("https://example.com/")
       expect((await this.campaign.status()).toString()).to.be.equal("0")
     })
 
@@ -49,7 +47,7 @@ describe("CampaignInterface", () => {
       try {
         await Campaign.new(
             this.abctoken.address, "campaign info cid", "recipients cid", 100000, alice,
-            future, now, "https://example.com/", link, { from: owner }
+            future, now, link, { from: owner }
         )
         assert.fail()
       } catch(error) {
@@ -59,7 +57,7 @@ describe("CampaignInterface", () => {
       try {
         await Campaign.new(
             this.abctoken.address, "campaign info cid", "recipients cid", 100000, alice,
-            now, now, "https://example.com/", link, { from: owner }
+            now, now, link, { from: owner }
           )
           assert.fail()
         } catch(error) {
@@ -77,7 +75,7 @@ describe("CampaignInterface", () => {
         twoweeklater = future.add(time.duration.weeks(1))
         campaign = await Campaign.new(
             this.abctoken.address, "campaign info cid", "recipients cid", 100000, owner,
-            oneweeklater, twoweeklater, "https://example.com/", link,
+            oneweeklater, twoweeklater, link,
             { from: owner })
         this.abctoken.transfer(campaign.address, 1000000, { from: owner })
         expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(1000000))
@@ -107,7 +105,7 @@ describe("CampaignInterface", () => {
         oneweeklater = now.add(time.duration.weeks(1))
         campaign = await Campaign.new(
             this.abctoken.address, "campaign info cid", "recipients cid", 100000, owner,
-            now, oneweeklater, "https://example.com/", link,
+            now, oneweeklater, link,
             { from: owner })
         this.abctoken.transfer(campaign.address, 1000000, { from: owner })
         expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(1000000))
@@ -141,7 +139,7 @@ describe("CampaignInterface", () => {
         oneweeklater = now.add(time.duration.weeks(1))
         campaign = await Campaign.new(
             this.abctoken.address, "campaign info cid", "recipients cid", 100000, owner,
-            now, oneweeklater, "https://example.com/", link,
+            now, oneweeklater, link,
             { from: owner })
         this.abctoken.transfer(campaign.address, 1000000, { from: owner })
         expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(1000000))
@@ -165,7 +163,7 @@ describe("CampaignInterface", () => {
         oneweeklater = now.add(time.duration.weeks(1))
         campaign = await Campaign.new(
             this.abctoken.address, "campaign info cid", "recipients cid", 100000, owner,
-            now, oneweeklater, "https://example.com/", link,
+            now, oneweeklater, link,
             { from: owner })
         this.abctoken.transfer(campaign.address, 1000000, { from: owner })
         expect(await this.abctoken.balanceOf(campaign.address)).to.be.bignumber.equal(new BN(1000000))

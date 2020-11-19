@@ -14,7 +14,6 @@ describe("AudiusFollowersCampaign", () => {
     const campaignInfoCid = "campaign info cid"
     const recipientsCid = "recipients cid"
     const recipientsNum = 100
-    const baseURL = "https://example.com/"
 
     beforeEach(async () => {
         this.distributer = await Distributer.new("Audius Test Distributer", link, {from: owner})
@@ -28,7 +27,7 @@ describe("AudiusFollowersCampaign", () => {
         future = now.add(time.duration.weeks(1))
         await this.abctoken.approve(this.distributer.address, 100, {from: owner})
         receipt = await this.distributer.createCampaign(
-            this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future, baseURL,
+            this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future,
             {from: owner}
         )
         campaignAddress = await this.distributer.campaignList(1)

@@ -17,8 +17,7 @@ contract AudiusFollowersDistributer is DistributerInterface {
         string memory recipientsCid,
         uint32 recipientsNum,
         uint256 startDate,
-        uint256 endDate,
-        string memory baseURL
+        uint256 endDate
     ) public override {
         // TODO Update checking tokenSender logic with token issuance phase
         require(msg.sender == tokenSender, "Token holder must match to msg.sender");
@@ -35,7 +34,6 @@ contract AudiusFollowersDistributer is DistributerInterface {
             tokenSender,
             startDate,
             endDate,
-            baseURL,
             link
         );
         transferToken(token, tokenSender, address(campaign), allowance);
@@ -70,7 +68,6 @@ contract AudiusFollowersCampaign is CampaignInterface {
         address _refundDestination,
         uint256 _startDate,
         uint256 _endDate,
-        string memory _baseURL,
         address _link
     ) public CampaignInterface(
         _token,
@@ -80,7 +77,6 @@ contract AudiusFollowersCampaign is CampaignInterface {
         _refundDestination,
         _startDate,
         _endDate,
-        _baseURL,
         _link
     ) {}
 
