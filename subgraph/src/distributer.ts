@@ -1,6 +1,7 @@
 import {log} from "@graphprotocol/graph-ts";
 import {Campaign, Creator, Distributer} from "./types/schema";
 import {CreateCampaign} from "./types/AudiusFollowersDistributer/AudiusFollowersDistributer";
+import {AudiusFollowersCampaign} from "./types/templates/AudiusFollowersCampaign/AudiusFollowersCampaign";
 
 export function handleCreateCampaign(event: CreateCampaign): void {
     let distributerId = event.address.toHexString()
@@ -26,7 +27,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     campaign.token = event.params.token.toHexString()
     campaign.creator = event.params.creator.toHexString()
 
-    let campaignContract = Campaign.bind(event.params.campaign)
+    let campaignContract = AudiusFollowersCampaign.bind(event.params.campaign)
     let callStartDate = campaignContract.try_startDate()
     if (callStartDate.reverted) {
         log.warning("Start date not found. Campaign: {}", [campaignId])
@@ -55,7 +56,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     if (callCampaignInfoCid.reverted) {
         log.warning("Campaign info cid not found. Campaign: {}", [campaignId])
     } else {
-        campaign.campaignInfoCid = callRecipientsCid.value
+        campaign.campaignInfoCid = callCampaignInfoCid.value
     }
     let callRecipientsCid = campaignContract.try_recipientsCid()
     if (callRecipientsCid.reverted) {
