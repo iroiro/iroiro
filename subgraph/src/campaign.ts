@@ -34,5 +34,14 @@ export function handleUpdateStatus(event: UpdateStatus): void {
   if (campaign == null) {
     campaign = new Campaign(campaignId);
   }
+
+  let campaignContract = AudiusFollowersCampaign.bind(event.address);
+  let callStatus = campaignContract.try_status();
+  if (callStatus.reverted) {
+    log.warning("Status not found. Campaign: {}", [campaignId]);
+  } else {
+    campaign.status = callStatus.value;
+  }
+
   campaign.save();
 }

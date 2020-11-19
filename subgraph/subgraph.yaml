@@ -109,6 +109,6 @@ templates:
       eventHandlers:
         - event: Claim(indexed address)
           handler: handleClaim
-        - event: UpdateStatus(uint8)
+        - event: UpdateStatus()
           handler: handleUpdateStatus
       file: ./src/campaign.ts
