@@ -3,7 +3,7 @@ import { Box, Flex, Modal, Button, Card, Heading, Text, Link } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TokenList from "../../organisms/TokenList";
 import { Web3Props } from "../../../interfaces";
-import { ACTIONS, ExplorePageState } from "../../pages/ExplorePage";
+import { ExplorePageState } from "../../pages/ExplorePage";
 
 export interface ExportPageTemplateProps extends Web3Props {
   readonly loading: boolean;
@@ -28,7 +28,7 @@ const ExplorePageTemplate = ({
         <Link
           my={"auto"}
           fontSize="3"
-          onClick={() => dispatch({ type: ACTIONS.OPEN_MODAL })}
+          onClick={() => dispatch({ type: "open_modal" })}
         >
           + Add new token
         </Link>
@@ -45,7 +45,7 @@ const ExplorePageTemplate = ({
               right={0}
               mt={3}
               mr={3}
-              onClick={() => dispatch({ type: ACTIONS.CLOSE_MODAL })}
+              onClick={() => dispatch({ type: "close_modal" })}
             />
 
             <Box p={4} mb={3}>
@@ -60,9 +60,7 @@ const ExplorePageTemplate = ({
               borderColor={"#E8E8E8"}
               justifyContent={"flex-end"}
             >
-              <Button.Outline
-                onClick={() => dispatch({ type: ACTIONS.CLOSE_MODAL })}
-              >
+              <Button.Outline onClick={() => dispatch({ type: "close_modal" })}>
                 Cancel
               </Button.Outline>
               <Button ml={3}>Add</Button>
