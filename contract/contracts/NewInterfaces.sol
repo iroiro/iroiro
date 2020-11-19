@@ -17,12 +17,12 @@ contract DistributerInterface {
         uint256 endDate
     );
 
-    constructor(string memory _name, address _link) public {
-        name = _name;
+    constructor(string memory _distributerInfoCid, address _link) public {
+        distributerInfoCid = _distributerInfoCid;
         link = _link;
     }
 
-    string public name;
+    string public distributerInfoCid;
     address public link;
     uint256 public nextCampaignId = 1;
     mapping(uint256 => address) public campaignList;
@@ -46,8 +46,7 @@ contract DistributerInterface {
         string memory recipientsCid,
         uint32 recipientsNum,
         uint256 startDate,
-        uint256 endDate,
-        string memory baseURL
+        uint256 endDate
     ) virtual external {}
 
     function transferToken(
@@ -83,8 +82,18 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     address public refundDestination; // Use when campaign is cancelled
     uint256 public startDate;
     uint256 public endDate;
-    string public baseURL;
     Status public status = Status.Active;
+
+    modifier inTime() {
+        require(startDate <= block.timestamp, "Campaign is not started yet");
+        require(block.timestamp < endDate, "Campaign is ended. ");
+        _;
+    }
+
+    modifier mustBeActive() {
+        require(status == Status.Active, "Campaign is not active");
+        _;
+    }
 
     constructor(
         address payable _token,
@@ -94,7 +103,6 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         address _refundDestination,
         uint256 _startDate,
         uint256 _endDate,
-        string memory _baseURL,
         address _link
     ) public {
         require(_startDate < _endDate, "Start data must be less than end date");
@@ -106,7 +114,6 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         refundDestination = _refundDestination;
         startDate = _startDate;
         endDate = _endDate;
-        baseURL = _baseURL;
         if (_link == address(0)) {
             setPublicChainlinkToken();
         } else {

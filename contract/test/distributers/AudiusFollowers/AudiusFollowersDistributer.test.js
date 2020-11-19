@@ -14,10 +14,9 @@ describe("AudiusFollowersDistributer", () => {
     const campaignInfoCid = "campaign info cid"
     const recipientsCid = "recipients cid"
     const recipientsNum = 100
-    const baseURL = "https://example.com/"
 
     beforeEach(async () => {
-        this.distributer = await Distributer.new("Audius Test Distributer", link, {from: owner})
+        this.distributer = await Distributer.new("distributer info cid", link, {from: owner})
         this.abctoken = await FanToken.new(
             "ABCToken", "ABC", 1000000000, owner, 5, owner, 50, 5, {from: owner}
         )
@@ -32,7 +31,7 @@ describe("AudiusFollowersDistributer", () => {
         it("throws an error if msg.sender is not matched to token sender", async () => {
             try {
                 await this.distributer.createCampaign(
-                    this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future, baseURL,
+                    this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future,
                     {from: alice}
                 )
                 assert.fail()
@@ -45,7 +44,7 @@ describe("AudiusFollowersDistributer", () => {
         it("throws an error if there is no allowance", async () => {
             try {
                 await this.distributer.createCampaign(
-                    this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future, baseURL,
+                    this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future,
                     {from: owner}
                 )
                 assert.fail()
@@ -59,7 +58,7 @@ describe("AudiusFollowersDistributer", () => {
             await this.abctoken.approve(this.distributer.address, 99, {from: owner})
             try {
                 await this.distributer.createCampaign(
-                    this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future, baseURL,
+                    this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future,
                     {from: owner}
                 )
                 assert.fail()
@@ -74,7 +73,7 @@ describe("AudiusFollowersDistributer", () => {
             beforeEach(async () => {
                 await this.abctoken.approve(this.distributer.address, 100, {from: owner})
                 receipt = await this.distributer.createCampaign(
-                    this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future, baseURL,
+                    this.abctoken.address, owner, campaignInfoCid, recipientsCid, recipientsNum, now, future,
                     {from: owner}
                 )
                 campaignAddress = await this.distributer.campaignList(1)

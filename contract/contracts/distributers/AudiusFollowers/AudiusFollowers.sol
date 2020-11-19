@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import "./NewInterfaces.sol";
+import "../../NewInterfaces.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "./SafeMath64.sol";
+import "../../SafeMath64.sol";
 
-// TODO move to Audius dir
 contract AudiusFollowersDistributer is DistributerInterface {
-    constructor (string memory _name, address _link) public
-    DistributerInterface(_name, _link) {}
+    constructor (string memory _distributerInfoCid, address _link) public
+    DistributerInterface(_distributerInfoCid, _link) {}
 
     function createCampaign(
         address payable token,
@@ -17,8 +16,7 @@ contract AudiusFollowersDistributer is DistributerInterface {
         string memory recipientsCid,
         uint32 recipientsNum,
         uint256 startDate,
-        uint256 endDate,
-        string memory baseURL
+        uint256 endDate
     ) public override {
         // TODO Update checking tokenSender logic with token issuance phase
         require(msg.sender == tokenSender, "Token holder must match to msg.sender");
@@ -35,7 +33,6 @@ contract AudiusFollowersDistributer is DistributerInterface {
             tokenSender,
             startDate,
             endDate,
-            baseURL,
             link
         );
         transferToken(token, tokenSender, address(campaign), allowance);
@@ -70,7 +67,6 @@ contract AudiusFollowersCampaign is CampaignInterface {
         address _refundDestination,
         uint256 _startDate,
         uint256 _endDate,
-        string memory _baseURL,
         address _link
     ) public CampaignInterface(
         _token,
@@ -80,7 +76,6 @@ contract AudiusFollowersCampaign is CampaignInterface {
         _refundDestination,
         _startDate,
         _endDate,
-        _baseURL,
         _link
     ) {}
 
@@ -103,7 +98,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
     }
 
     // TODO Logic could be changed
-    function claim() external override {
+    function claim() external override mustBeActive inTime {
         require(isClaimable(), "Token is not claimable");
         require(!claimedUserList[msg.sender], "Already claimed");
 
