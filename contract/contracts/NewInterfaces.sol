@@ -68,8 +68,7 @@ contract DistributerInterface {
 
 contract CampaignInterface is ChainlinkClient, Ownable {
     event Claim(
-        address indexed to,
-        uint256 amount
+        address indexed to
     );
     event UpdateStatus(
         Status status

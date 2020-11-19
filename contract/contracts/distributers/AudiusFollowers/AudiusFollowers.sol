@@ -109,7 +109,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         ERC20 erc20 = ERC20(token);
         erc20.transfer(refundDestination, claimAmount);
 
-        emit Claim(msg.sender, claimAmount);
+        emit Claim(msg.sender);
     }
 
     function fulfill(bytes32 _requestId, bytes32 data) public recordChainlinkFulfillment(_requestId) {
