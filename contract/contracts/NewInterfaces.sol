@@ -84,6 +84,12 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     uint256 public endDate;
     Status public status = Status.Active;
 
+    modifier inTime() {
+        require(startDate <= block.timestamp, "Campaign is not started yet");
+        require(block.timestamp < endDate, "Campaign is ended. ");
+        _;
+    }
+
     modifier mustBeActive() {
         require(status == Status.Active, "Campaign is not active");
         _;

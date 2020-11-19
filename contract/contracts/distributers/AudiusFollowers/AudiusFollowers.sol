@@ -98,7 +98,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
     }
 
     // TODO Logic could be changed
-    function claim() external override {
+    function claim() external override mustBeActive inTime {
         require(isClaimable(), "Token is not claimable");
         require(!claimedUserList[msg.sender], "Already claimed");
 
@@ -119,7 +119,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         uint256 fee,
     // TODO Add other arguments for actual request
         string memory userAddress
-    ) external mustBeActive returns (bytes32 requestId) {
+    ) external returns (bytes32 requestId) {
         uint64 userId;
         if (userIdList[msg.sender] == 0) {
             userId = nextUserId;
