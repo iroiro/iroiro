@@ -46,9 +46,9 @@ type Campaign @entity {
   creator: Creator!
   campaignInfoCid: String!
   recipientsCid: String!
-#  claimAmount: BigInt!
-#  claimedNum: Int!
-#  status: Int!
+  claimAmount: BigInt!
+  claimedNum: Int!
+  status: Int!
 #  claimedAddresses: [String!]!
 #  claimableAddresses: [String!]
 }
