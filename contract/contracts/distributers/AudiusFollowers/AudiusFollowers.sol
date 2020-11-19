@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import "./NewInterfaces.sol";
+import "../../NewInterfaces.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "./SafeMath64.sol";
+import "../../SafeMath64.sol";
 
-// TODO move to Audius dir
 contract AudiusFollowersDistributer is DistributerInterface {
     constructor (string memory _distributerInfoCid, address _link) public
     DistributerInterface(_distributerInfoCid, _link) {}

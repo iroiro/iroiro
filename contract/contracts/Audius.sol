@@ -3,11 +3,11 @@ pragma solidity ^0.6.0;
 
 import "./interfaces.sol";
 import "./FanToken.sol";
+import "./SafeMath64.sol";
 import "./TokenFactory.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "contracts/SafeMath64.sol";
 
 // Owner must be TokenFactory
 contract Audius is AudiusInterface, ChainlinkClient, Ownable {
