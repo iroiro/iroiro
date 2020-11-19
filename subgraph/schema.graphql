@@ -3,11 +3,11 @@ type Token @entity {
   creator: Creator! # address
   name: String! # string
   symbol: String!
-  totalSupply: BigInt!,
-  decimals: Int,
-  creatorTokenRatio: Int,
-  isTotalSupplyFixed: Boolean,
-  lockupPeriod: Int,
+  totalSupply: BigInt!
+  decimals: Int
+  creatorTokenRatio: Int
+  isTotalSupplyFixed: Boolean
+  lockupPeriod: Int
   enableStakeToToken: Boolean
   accountTokens: [AccountToken!]!
 }
@@ -50,8 +50,8 @@ type Campaign @entity {
   claimedNum: Int!
   status: Int!
   claims: [Claim!]! @derivedFrom(field: "campaign")
-#  claimedAddresses: [String!]!
-#  claimableAddresses: [String!]
+  #  claimedAddresses: [String!]!
+  #  claimableAddresses: [String!]
 }
 
 type Claim @entity {

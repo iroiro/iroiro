@@ -14,5 +14,8 @@
     "create-local": "node_modules/.bin/graph create --node http://localhost:8020/ TART-tokyo/fan-stock",
     "remove-local": "node_modules/.bin/graph remove --node http://localhost:8020/ TART-tokyo/fan-stock",
     "deploy-local": "node_modules/.bin/graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 TART-tokyo/fan-stock"
+  },
+  "devDependencies": {
+    "prettier": "2.1.2"
   }
 }
