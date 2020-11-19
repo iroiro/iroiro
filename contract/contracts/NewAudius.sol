@@ -120,7 +120,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         uint256 fee,
     // TODO Add other arguments for actual request
         string memory userAddress
-    ) external returns (bytes32 requestId) {
+    ) external mustBeActive returns (bytes32 requestId) {
         uint64 userId;
         if (userIdList[msg.sender] == 0) {
             userId = nextUserId;

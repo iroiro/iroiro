@@ -84,6 +84,11 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     uint256 public endDate;
     Status public status = Status.Active;
 
+    modifier mustBeActive() {
+        require(status == Status.Active, "Campaign is not active");
+        _;
+    }
+
     constructor(
         address payable _token,
         string memory _campaignInfoCid,
