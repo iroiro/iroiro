@@ -10,7 +10,10 @@ contract DistributerInterface {
     using SafeMath for uint256;
 
     event CreateCampaign(
-        address token,
+        address indexed campaign,
+        address indexed token,
+        address indexed creator,
+        string campaignInfoCid,
         string recipientsCid,
         uint32 recipientsNum,
         uint256 startDate,
@@ -65,6 +68,7 @@ contract DistributerInterface {
 
 contract CampaignInterface is ChainlinkClient, Ownable {
     event Claim(
+        address indexed to,
         uint256 amount
     );
     event UpdateStatus(

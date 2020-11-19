@@ -41,7 +41,10 @@ contract AudiusFollowersDistributer is DistributerInterface {
         campaign.transferOwnership(msg.sender);
 
         emit CreateCampaign(
+            address(campaign),
             token,
+            msg.sender,
+            campaignInfoCid,
             recipientsCid,
             recipientsNum,
             startDate,
@@ -106,7 +109,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         ERC20 erc20 = ERC20(token);
         erc20.transfer(refundDestination, claimAmount);
 
-        emit Claim(claimAmount);
+        emit Claim(msg.sender, claimAmount);
     }
 
     function fulfill(bytes32 _requestId, bytes32 data) public recordChainlinkFulfillment(_requestId) {
