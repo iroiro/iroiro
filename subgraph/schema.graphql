@@ -49,6 +49,7 @@ type Campaign @entity {
   claimAmount: BigInt!
   claimedNum: Int!
   status: Int!
+  claims: [Claim!]! @derivedFrom(field: "campaign")
 #  claimedAddresses: [String!]!
 #  claimableAddresses: [String!]
 }
