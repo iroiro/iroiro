@@ -45,7 +45,7 @@ dataSources:
         - name: AudiusFollowersDistributer
           file: ../contract/build/contracts/AudiusFollowersDistributer.json
       eventHandlers:
-        - event: CreateCampaign(indexed address,indexed address,indexed address,string,string,uint32,uint256,uint256)
+        - event: CreateCampaign(indexed address,indexed address,indexed address)
           handler: handleCreateCampaign
       file: ./src/distributer.ts
   - kind: ethereum/contract
