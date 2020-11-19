@@ -11,5 +11,10 @@ export function handleDonate(event: DonateEvent): void {
         donate = new Donate(donateId)
     }
 
+    donate.from = event.params.from.toHexString()
+    donate.to = event.params.to.toHexString()
+    donate.token = event.params.token.toHexString()
+    donate.amount = event.params.amount
+
     donate.save()
 }
