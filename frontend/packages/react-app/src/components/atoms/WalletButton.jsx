@@ -1,21 +1,29 @@
-import { Button } from "rimble-ui"
-import { logoutOfWeb3Modal } from "../../utils/web3Modal"
-import React from "react"
+import { Button } from "rimble-ui";
+import { logoutOfWeb3Modal } from "../../utils/web3Modal";
+import React, { useContext } from "react";
+import { AppContext, useUpdateWeb3 } from "../../App";
 
-const WalletButton = ({provider, loadWeb3Modal}) => (
+const WalletButton = () => {
+  const appContext = useContext(AppContext);
+  const stateContext = appContext.state;
+  const stateDispatch = appContext.dispatch;
+  const showWeb3Modal = useUpdateWeb3();
+
+  return (
     <Button.Outline
       mainColor="#333"
       mr={4}
       onClick={() => {
-        if (!provider) {
-          loadWeb3Modal();
+        if (!stateContext.provider) {
+          showWeb3Modal();
         } else {
           logoutOfWeb3Modal();
         }
       }}
     >
-      {!provider ? "Connect Wallet" : "Disconnect Wallet"}
+      {!stateContext.provider ? "Connect Wallet" : "Disconnect Wallet"}
     </Button.Outline>
-  )
+  );
+};
 
-export default WalletButton
+export default WalletButton;

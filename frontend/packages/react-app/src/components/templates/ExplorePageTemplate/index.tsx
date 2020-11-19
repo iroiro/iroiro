@@ -2,24 +2,21 @@ import React from "react";
 import { Box, Flex, Modal, Button, Card, Heading, Text, Link } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TokenList from "../../organisms/TokenList";
-import { Web3Props } from "../../../interfaces";
 import { ExplorePageState } from "../../pages/ExplorePage";
 
-export interface ExportPageTemplateProps extends Web3Props {
+export interface ExportPageTemplateProps {
   readonly loading: boolean;
   readonly state: ExplorePageState;
   dispatch({}: object): void;
 }
 
 const ExplorePageTemplate = ({
-  provider,
-  loadWeb3Modal,
   loading,
   state,
   dispatch,
 }: ExportPageTemplateProps) => (
   <div>
-    <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal} />
+    <AppHeader />
     <Box m={"auto"} my={5} width={[9 / 10, 3 / 4]}>
       <TokenList tokens={state.tokens} loading={loading} />
 

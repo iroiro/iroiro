@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState, useReducer } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useReducer,
+  // useContext,
+} from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { web3Modal } from "../../utils/web3Modal";
 import ExplorePageTemplate from "../templates/ExplorePageTemplate";
@@ -6,6 +12,7 @@ import { GET_TOKENS_BALANCE_USER_HOLDS } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { ethers } from "ethers";
 import { TokenBalanceUserHolds, UserToken } from "../../interfaces";
+// import { AppContext } from "../../App";
 
 export type ACTIONS =
   | { type: "open_modal" }
@@ -52,6 +59,10 @@ function reducer(state: ExplorePageState, action: ACTIONS) {
 const initialState = { isOpen: false, tokens: [] };
 
 const ExplorePage = () => {
+  // const appContext = useContext(AppContext);
+  // const stateContext = appContext.state;
+  // const stateDispatch = appContext.dispatch;
+
   const [provider, setProvider] = useState<Web3Provider>();
   const [walletAddress, setWalletAddress] = useState("");
   const [getTokensBalance, { loading, error, data }] = useLazyQuery<
@@ -104,13 +115,7 @@ const ExplorePage = () => {
   }, [provider, setWalletAddress]);
 
   return (
-    <ExplorePageTemplate
-      provider={provider}
-      loadWeb3Modal={loadWeb3Modal}
-      loading={loading}
-      state={state}
-      dispatch={dispatch}
-    />
+    <ExplorePageTemplate loading={loading} state={state} dispatch={dispatch} />
   );
 };
 

@@ -42,14 +42,12 @@ const state: ExplorePageState = {
 
 export const Default = Template.bind({});
 Default.args = {
-  loadWeb3Modal: () => {},
   state,
   loading: false,
 };
 
 export const NoTokens = Template.bind({});
 NoTokens.args = {
-  loadWeb3Modal: () => {},
   state: {
     tokens: [],
     isOpen: false,
@@ -59,7 +57,6 @@ NoTokens.args = {
 
 export const Loading = Template.bind({});
 Loading.args = {
-  loadWeb3Modal: () => {},
   state: {
     tokens: [],
     isOpen: false,
