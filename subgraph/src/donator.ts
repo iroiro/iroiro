@@ -1,6 +1,7 @@
 import {Donate as DonateEvent} from "./types/Donator/Donator";
 import {Donate} from "./types/schema";
 
+// TODO: Implementing Donator is in pending
 export function handleDonate(event: DonateEvent): void {
     let fromAddress = event.params.from.toHexString()
     let timestamp = event.block.timestamp.toString()
