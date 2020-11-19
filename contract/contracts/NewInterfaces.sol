@@ -65,9 +65,8 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     event Claim(
         address indexed to
     );
-    event UpdateStatus(
-        Status status
-    );
+    // TODO Remove arg
+    event UpdateStatus();
 
     enum Status {Active, Cancelled, Ended}
 
@@ -125,7 +124,7 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         ERC20 erc20 = ERC20(token);
         erc20.transfer(refundDestination, erc20.balanceOf(address(this)));
 
-        emit UpdateStatus(Status.Cancelled);
+        emit UpdateStatus();
     }
 
     function refundRemainingTokens() external onlyOwner {
@@ -134,7 +133,7 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         ERC20 erc20 = ERC20(token);
         erc20.transfer(refundDestination, erc20.balanceOf(address(this)));
 
-        emit UpdateStatus(Status.Ended);
+        emit UpdateStatus();
     }
 
     // Check msg.sender is claimable
