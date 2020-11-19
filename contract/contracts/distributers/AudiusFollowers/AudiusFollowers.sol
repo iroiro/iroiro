@@ -43,12 +43,7 @@ contract AudiusFollowersDistributer is DistributerInterface {
         emit CreateCampaign(
             address(campaign),
             token,
-            msg.sender,
-            campaignInfoCid,
-            recipientsCid,
-            recipientsNum,
-            startDate,
-            endDate
+            msg.sender
         );
     }
 }

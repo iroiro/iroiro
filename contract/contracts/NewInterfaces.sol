@@ -12,12 +12,7 @@ contract DistributerInterface {
     event CreateCampaign(
         address indexed campaign,
         address indexed token,
-        address indexed creator,
-        string campaignInfoCid,
-        string recipientsCid,
-        uint32 recipientsNum,
-        uint256 startDate,
-        uint256 endDate
+        address indexed creator
     );
 
     constructor(string memory _distributerInfoCid, address _link) public {
