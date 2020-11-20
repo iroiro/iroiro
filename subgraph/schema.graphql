@@ -42,6 +42,7 @@ enum CheckRequestStatus {
 }
 
 type CheckRequest @entity {
+  " Equals to: <campaignAddress>-<requestId>"
   id: ID!
   account: Account!
   campaign: Campaign!
