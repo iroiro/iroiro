@@ -1,17 +1,3 @@
-type Token @entity {
-  id: ID!
-  creator: Creator! # address
-  name: String! # string
-  symbol: String!
-  totalSupply: BigInt!
-  decimals: Int
-  creatorTokenRatio: Int
-  isTotalSupplyFixed: Boolean
-  lockupPeriod: Int
-  enableStakeToToken: Boolean
-  accountTokens: [AccountToken!]!
-}
-
 type Creator @entity {
   id: ID!
   tokens: [Token!]! @derivedFrom(field: "creator")
@@ -24,14 +10,6 @@ type Account @entity {
   claims: [Claim!]! @derivedFrom(field: "account")
   # TODO: Disabled for this phase
   #  donates: [Donate!]! @derivedFrom(field: "account")
-}
-
-type AccountToken @entity {
-  # Token id and account id contat by '-'
-  id: ID!
-  account: Account!
-  balance: BigInt!
-  token: Token! @derivedFrom(field: "accountTokens")
 }
 
 type Distributer @entity {
@@ -72,3 +50,29 @@ type Donate @entity {
   token: String!
   amount: BigInt!
 }
+
+# Following types are deprected but remaining for compatibility.
+# Could be deleted in the future.
+
+type Token @entity {
+  id: ID!
+  creator: Creator! # address
+  name: String! # string
+  symbol: String!
+  totalSupply: BigInt!
+  decimals: Int
+  creatorTokenRatio: Int
+  isTotalSupplyFixed: Boolean
+  lockupPeriod: Int
+  enableStakeToToken: Boolean
+  accountTokens: [AccountToken!]!
+}
+
+type AccountToken @entity {
+  # Token id and account id contat by '-'
+  id: ID!
+  account: Account!
+  balance: BigInt!
+  token: Token! @derivedFrom(field: "accountTokens")
+}
+
