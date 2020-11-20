@@ -21,6 +21,7 @@ contract DistributerInterface {
     }
 
     string public distributerInfoCid;
+    // TODO: Add features updatable or whitelist
     address public link;
     uint256 public nextCampaignId = 1;
     mapping(uint256 => address) public campaignList;
