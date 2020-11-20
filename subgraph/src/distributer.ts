@@ -1,5 +1,6 @@
 import { log } from "@graphprotocol/graph-ts";
 import { Campaign, Creator, Distributer } from "./types/schema";
+import { AudiusFollowersCampaign as CampaignTemplate } from "./types/templates";
 import { CreateCampaign } from "./types/AudiusFollowersDistributer/AudiusFollowersDistributer";
 import { AudiusFollowersCampaign } from "./types/templates/AudiusFollowersCampaign/AudiusFollowersCampaign";
 
@@ -9,14 +10,12 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   if (distributer == null) {
     distributer = new Distributer(distributerId);
   }
-  distributer.save();
 
   let creatorId = event.params.creator.toHexString();
   let creator = Creator.load(creatorId);
   if (creator == null) {
     creator = new Creator(creatorId);
   }
-  creator.save();
 
   let campaignId = event.params.campaign.toHexString();
   let campaign = Campaign.load(campaignId);
@@ -72,4 +71,8 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   }
 
   campaign.save();
+  distributer.save();
+  creator.save();
+
+  CampaignTemplate.create(event.params.campaign)
 }

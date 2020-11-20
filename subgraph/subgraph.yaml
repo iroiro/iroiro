@@ -44,6 +44,8 @@ dataSources:
       abis:
         - name: AudiusFollowersDistributer
           file: ../contract/build/contracts/AudiusFollowersDistributer.json
+        - name: AudiusFollowersCampaign
+          file: ../contract/build/contracts/AudiusFollowersCampaign.json
       eventHandlers:
         - event: CreateCampaign(indexed address,indexed address,indexed address)
           handler: handleCreateCampaign

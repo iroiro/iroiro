@@ -1,7 +1,7 @@
 type Creator @entity {
   id: ID!
   tokens: [Token!]! @derivedFrom(field: "creator")
-  campaigns: [Campaign!]! @deribedFrom(field: "creator")
+  campaigns: [Campaign!]! @derivedFrom(field: "creator")
 }
 
 type Account @entity {
