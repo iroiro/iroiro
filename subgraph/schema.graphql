@@ -43,14 +43,15 @@ type Campaign @entity {
   id: ID!
   distributer: Distributer!
   token: String!
-  startDate: BigInt!
-  endDate: BigInt!
+  startDate: BigInt
+  endDate: BigInt
+  "Campaign creator not only token creator"
   creator: Creator!
-  campaignInfoCid: String!
-  recipientsCid: String!
-  claimAmount: BigInt!
-  claimedNum: Int!
-  status: Int!
+  campaignInfoCid: String
+  recipientsCid: String
+  claimAmount: BigInt
+  claimedNum: Int
+  status: Int
   claims: [Claim!]! @derivedFrom(field: "campaign")
 }
 
@@ -60,7 +61,7 @@ type Claim @entity {
   account: Account!
   campaign: Campaign!
   token: String!
-  amount: BigInt!
+  amount: BigInt
 }
 
 type Donate @entity {
