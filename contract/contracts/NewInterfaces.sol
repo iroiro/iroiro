@@ -137,7 +137,7 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     }
 
     // Check msg.sender is claimable
-    function isClaimable() virtual external view returns (bool) {}
+    function isClaimable(address user) virtual external view returns (bool) {}
 
     // Claim tokens
     function claim() virtual external {}
