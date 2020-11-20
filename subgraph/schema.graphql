@@ -7,6 +7,7 @@ type Creator @entity {
 type Account @entity {
   id: ID!
   tokens: [AccountToken!]! @derivedFrom(field: "account")
+  checkReuqest: [CheckRequest!]! @derivedFrom(field: "account")
   claims: [Claim!]! @derivedFrom(field: "account")
   # TODO: Disabled for this phase
   #  donates: [Donate!]! @derivedFrom(field: "account")
@@ -31,6 +32,21 @@ type Campaign @entity {
   claimedNum: Int
   status: Int
   claims: [Claim!]! @derivedFrom(field: "campaign")
+  checkRequests: [CheckRequest!]! @derivedFrom(field: "campaign")
+}
+
+enum CheckRequestStatus {
+  IN_PROGRESS
+  FULFILLED
+  CANCELLED
+}
+
+type CheckRequest @entity {
+  id: ID!
+  account: Account!
+  campaign: Campaign!
+  status: CheckRequestStatus!
+  result: Boolean
 }
 
 type Claim @entity {

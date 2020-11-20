@@ -107,6 +107,12 @@ templates:
         - name: AudiusFollowersCampaign
           file: ../contract/build/contracts/AudiusFollowersCampaign.json
       eventHandlers:
+        - event: ChainlinkRequested(indexed bytes32)
+          handler: handleChainlinkRequested
+        - event: ChainlinkFulfilled(indexed bytes32)
+          handler: handleChainlinkFulfilled
+        - event: ChainlinkCancelled(indexed bytes32)
+          handler: handleChanlinkCancelled
         - event: Claim(indexed address)
           handler: handleClaim
         - event: UpdateStatus()

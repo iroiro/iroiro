@@ -1,10 +1,10 @@
-import { Claim, Campaign } from "./types/schema";
+import {Claim, Campaign, CheckRequest} from "./types/schema";
 import {
-  AudiusFollowersCampaign,
+  AudiusFollowersCampaign, ChainlinkCancelled, ChainlinkFulfilled, ChainlinkRequested,
   Claim as ClaimEvent,
   UpdateStatus,
 } from "./types/templates/AudiusFollowersCampaign/AudiusFollowersCampaign";
-import { log } from "@graphprotocol/graph-ts/index";
+import { Address, log } from "@graphprotocol/graph-ts/index";
 
 export function handleClaim(event: ClaimEvent): void {
   let accountId = event.transaction.from.toHexString();
@@ -44,4 +44,51 @@ export function handleUpdateStatus(event: UpdateStatus): void {
   }
 
   campaign.save();
+}
+
+export function handleChainlinkRequested(event: ChainlinkRequested): void {
+  let campaignId = event.address.toHexString()
+  let requestId = event.params.id.toHexString()
+  let checkRequestId = campaignId.concat('-').concat(requestId)
+  let checkRequest = CheckRequest.load(checkRequestId)
+  if (checkRequest == null) {
+    checkRequest = new CheckRequest(checkRequestId)
+  }
+  checkRequest.account = event.transaction.from.toHexString()
+  checkRequest.campaign = event.address.toHexString()
+  checkRequest.status = "IN_PROGRESS"
+  checkRequest.save()
+}
+
+export function handleChainlinkFulfilled(event: ChainlinkFulfilled): void {
+  let campaignId = event.address.toHexString()
+  let requestId = event.params.id.toHexString()
+  let checkRequestId = campaignId.concat('-').concat(requestId)
+  let checkRequest = CheckRequest.load(checkRequestId)
+  if (checkRequest == null) {
+    checkRequest = new CheckRequest(checkRequestId)
+  }
+  checkRequest.status = "FULFILLED"
+
+  let campaignContract = AudiusFollowersCampaign.bind(event.address);
+  let callIsClaimable = campaignContract.try_isClaimable(Address.fromString(checkRequest.account))
+  if (callIsClaimable.reverted) {
+    log.warning("Status not found. Campaign: {}", [campaignId]);
+  } else {
+    checkRequest.result = callIsClaimable.value;
+  }
+
+  checkRequest.save()
+}
+
+export function handleChanlinkCancelled(event: ChainlinkCancelled): void {
+  let campaignId = event.address.toHexString()
+  let requestId = event.params.id.toHexString()
+  let checkRequestId = campaignId.concat('-').concat(requestId)
+  let checkRequest = CheckRequest.load(checkRequestId)
+  if (checkRequest == null) {
+    checkRequest = new CheckRequest(checkRequestId)
+  }
+  checkRequest.status = "CANCELLED"
+  checkRequest.save()
 }
