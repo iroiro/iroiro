@@ -91,4 +91,3 @@ type AccountToken @entity {
   balance: BigInt!
   token: Token! @derivedFrom(field: "accountTokens")
 }
-
