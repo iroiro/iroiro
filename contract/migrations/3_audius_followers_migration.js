@@ -3,6 +3,7 @@ const AudiusFollowersDistributer = artifacts.require("AudiusFollowersDistributer
 const {LinkToken} = require('@chainlink/contracts/truffle/v0.4/LinkToken')
 const {Oracle} = require('@chainlink/contracts/truffle/v0.6/Oracle')
 
+// TODO: Set info cid
 const distributerInfoCids = {
   kovan: "",
   cldev: "",
