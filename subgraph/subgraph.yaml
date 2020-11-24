@@ -50,28 +50,29 @@ dataSources:
         - event: CreateCampaign(indexed address,indexed address,indexed address)
           handler: handleCreateCampaign
       file: ./src/distributer.ts
-  - kind: ethereum/contract
-    name: Donator
-    network: ropsten
-    # network: mainnet # This is for local graph node
-    source:
-      address: "0xe9ef9C49a9903C3CD8Ed99ffA82c3932a4Fd7B7b" # TokenFactory contract address on ropsten
-      # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
-      abi: Donator
-      startBlock: 8924976 # Comment out this line for local graph node
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Donate
-      abis:
-        - name: Donator
-          file: ../contract/build/contracts/NewDonator.json
-      eventHandlers:
-        - event: Donate(address,address,address,uint256)
-          handler: handleDonate
-      file: ./src/donator.ts
+# TODO Not deployed in this phase.
+#  - kind: ethereum/contract
+#    name: Donator
+#    network: ropsten
+#    # network: mainnet # This is for local graph node
+#    source:
+#      address: "0xe9ef9C49a9903C3CD8Ed99ffA82c3932a4Fd7B7b" # TokenFactory contract address on ropsten
+#      # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
+#      abi: Donator
+#      startBlock: 8924976 # Comment out this line for local graph node
+#    mapping:
+#      kind: ethereum/events
+#      apiVersion: 0.0.4
+#      language: wasm/assemblyscript
+#      entities:
+#        - Donate
+#      abis:
+#        - name: Donator
+#          file: ../contract/build/contracts/NewDonator.json
+#      eventHandlers:
+#        - event: Donate(address,address,address,uint256)
+#          handler: handleDonate
+#      file: ./src/donator.ts
 templates:
   - kind: ethereum/contract
     name: FanToken
