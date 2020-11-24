@@ -6,6 +6,7 @@ const TokenFactory = artifacts.require("TokenFactory")
 const {LinkToken} = require('@chainlink/contracts/truffle/v0.4/LinkToken')
 const {Oracle} = require('@chainlink/contracts/truffle/v0.6/Oracle')
 
+// TODO: Deprecated contracts migration, will be removed
 module.exports = async (deployer, network, [defaultAccount]) => {
   let vesting, staking
   await deployer.deploy(Vesting).then(instance => {

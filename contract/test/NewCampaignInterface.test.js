@@ -88,9 +88,7 @@ describe("CampaignInterface", () => {
       })
       it("emits event", async() => {
         const receipt = await campaign.cancelCampaign({ from: owner })
-        expectEvent(receipt, "UpdateStatus", {
-          status: new BN(1)
-        })
+        expectEvent(receipt, "UpdateStatus")
       })
       it("transfer token to refund destination", async() => {
         await campaign.cancelCampaign({ from: owner })
@@ -178,9 +176,7 @@ describe("CampaignInterface", () => {
 
       it("emits event", async () => {
         const receipt = await campaign.refundRemainingTokens({ from: owner })
-        expectEvent(receipt, "UpdateStatus", {
-          status: new BN(2)
-        })
+        expectEvent(receipt, "UpdateStatus")
       })
 
       it("transfer token to refund destination", async() => {
