@@ -1,11 +1,9 @@
-import React from "react"
-import { Box } from "rimble-ui"
-import Index from "../molecules/AppHeader"
-import TokenAudius from "../organisms/TokenAudius"
+import React from "react";
+import { Box } from "rimble-ui";
+import Index from "../molecules/AppHeader";
+import TokenAudius from "../organisms/TokenAudius";
 
-const WithdrawAudiusPageTemplate = ({ 
-  provider,
-  loadWeb3Modal,
+const WithdrawAudiusPageTemplate = ({
   libs,
   myAccount,
   isSigningIn,
@@ -25,8 +23,8 @@ const WithdrawAudiusPageTemplate = ({
   tokenInfo,
 }) => (
   <div>
-    <Index provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <Box m={"auto"} my={5} width={[4/5, 3/4]} >
+    <Index />
+    <Box m={"auto"} my={5} width={[4 / 5, 3 / 4]}>
       <TokenAudius
         libs={libs}
         myAccount={myAccount}
@@ -48,6 +46,6 @@ const WithdrawAudiusPageTemplate = ({
       />
     </Box>
   </div>
-)
+);
 
-export default WithdrawAudiusPageTemplate
+export default WithdrawAudiusPageTemplate;

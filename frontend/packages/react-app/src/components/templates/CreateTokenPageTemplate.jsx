@@ -1,11 +1,9 @@
 import React from "react";
-import Index from "../molecules/AppHeader"
-import CreatTokenForm from "../organisms/CreateTokenForm"
-import { Box } from "rimble-ui"
+import Index from "../molecules/AppHeader";
+import CreatTokenForm from "../organisms/CreateTokenForm";
+import { Box } from "rimble-ui";
 
 const CreateTokenPageTemplate = ({
-  provider,
-  loadWeb3Modal,
   handleSubmit,
   nameInput,
   nameValue,
@@ -25,8 +23,8 @@ const CreateTokenPageTemplate = ({
   stakingCheckboxValue,
 }) => (
   <div>
-    <Index provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <Box m={"auto"} my={5} width={[3/4, 1/2, 1/3]} >
+    <Index />
+    <Box m={"auto"} my={5} width={[3 / 4, 1 / 2, 1 / 3]}>
       <CreatTokenForm
         handleSubmit={handleSubmit}
         nameInput={nameInput}
@@ -48,6 +46,6 @@ const CreateTokenPageTemplate = ({
       />
     </Box>
   </div>
-)
+);
 
-export default CreateTokenPageTemplate
+export default CreateTokenPageTemplate;

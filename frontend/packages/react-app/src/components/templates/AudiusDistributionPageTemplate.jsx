@@ -1,14 +1,12 @@
 import React from "react";
-import { Box } from "rimble-ui"
+import { Box } from "rimble-ui";
 import Index from "../molecules/AppHeader";
 import AudiusDistribution from "../organisms/AudiusDistribution";
 
 const TopPageTemplate = ({
-  provider,
-  loadWeb3Modal,
   libs,
   audius,
-  audiusFollowers, 
+  audiusFollowers,
   isAudiusSigningIn,
   emailRef,
   passwordRef,
@@ -21,8 +19,8 @@ const TopPageTemplate = ({
   addAudiusList,
 }) => (
   <div>
-    <Index provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <Box m={"auto"} my={5} width={[4/5, 3/4]} >
+    <Index />
+    <Box m={"auto"} my={5} width={[4 / 5, 3 / 4]}>
       <AudiusDistribution
         libs={libs}
         audius={audius}
@@ -40,6 +38,6 @@ const TopPageTemplate = ({
       />
     </Box>
   </div>
-)
+);
 
-export default TopPageTemplate
+export default TopPageTemplate;
