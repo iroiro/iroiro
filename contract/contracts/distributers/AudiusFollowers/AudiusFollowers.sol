@@ -41,11 +41,9 @@ contract AudiusFollowersDistributer is DistributerInterface {
         campaign.transferOwnership(msg.sender);
 
         emit CreateCampaign(
+            address(campaign),
             token,
-            recipientsCid,
-            recipientsNum,
-            startDate,
-            endDate
+            msg.sender
         );
     }
 }
@@ -84,12 +82,12 @@ contract AudiusFollowersCampaign is CampaignInterface {
         // 1 as true
     }
 
-    function isClaimable() public view override returns (bool) {
-        uint64 userId = userIdList[msg.sender];
+    function isClaimable(address user) public view override returns (bool) {
+        uint64 userId = userIdList[user];
         if (userId == 0) {
             return false;
         }
-        if (claimedUserList[msg.sender]) {
+        if (claimedUserList[user]) {
             return false;
         }
         uint256 claimKey = generateClaimKey(userId);
@@ -99,14 +97,14 @@ contract AudiusFollowersCampaign is CampaignInterface {
 
     // TODO Logic could be changed
     function claim() external override mustBeActive inTime {
-        require(isClaimable(), "Token is not claimable");
+        require(isClaimable(msg.sender), "Token is not claimable");
         require(!claimedUserList[msg.sender], "Already claimed");
 
         claimedUserList[msg.sender] = true;
         ERC20 erc20 = ERC20(token);
         erc20.transfer(refundDestination, claimAmount);
 
-        emit Claim(claimAmount);
+        emit Claim(msg.sender);
     }
 
     function fulfill(bytes32 _requestId, bytes32 data) public recordChainlinkFulfillment(_requestId) {
@@ -135,4 +133,6 @@ contract AudiusFollowersCampaign is CampaignInterface {
 
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
+
+    // TODO Add cancelling chainlink request
 }

@@ -42,7 +42,7 @@ describe("AudiusFollowersCampaign", () => {
 
     describe("isClaimable", () => {
         it("returns false if user is is not registered", async () => {
-            expect(await this.campaign.isClaimable({from: owner})).to.equal(false)
+            expect(await this.campaign.isClaimable(owner, {from: owner})).to.equal(false)
         })
 
         xit("returns false if user already claimed", async () => {

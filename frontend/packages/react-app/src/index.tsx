@@ -10,6 +10,7 @@ import { ThemeProvider } from "styled-components";
 // You should replace this url with your own and put it into a .env file
 // See all subgraphs: https://thegraph.com/explorer/
 const client = new ApolloClient({
+  // TODO Update url to iroiro
   uri: "https://api.thegraph.com/subgraphs/name/tart-tokyo/fan-stock",
 });
 

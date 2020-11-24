@@ -10,11 +10,9 @@ contract DistributerInterface {
     using SafeMath for uint256;
 
     event CreateCampaign(
-        address token,
-        string recipientsCid,
-        uint32 recipientsNum,
-        uint256 startDate,
-        uint256 endDate
+        address indexed campaign,
+        address indexed token,
+        address indexed creator
     );
 
     constructor(string memory _distributerInfoCid, address _link) public {
@@ -23,6 +21,7 @@ contract DistributerInterface {
     }
 
     string public distributerInfoCid;
+    // TODO: Add features updatable or whitelist
     address public link;
     uint256 public nextCampaignId = 1;
     mapping(uint256 => address) public campaignList;
@@ -65,11 +64,10 @@ contract DistributerInterface {
 
 contract CampaignInterface is ChainlinkClient, Ownable {
     event Claim(
-        uint256 amount
+        address indexed to
     );
-    event UpdateStatus(
-        Status status
-    );
+    // TODO Remove arg
+    event UpdateStatus();
 
     enum Status {Active, Cancelled, Ended}
 
@@ -127,7 +125,7 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         ERC20 erc20 = ERC20(token);
         erc20.transfer(refundDestination, erc20.balanceOf(address(this)));
 
-        emit UpdateStatus(Status.Cancelled);
+        emit UpdateStatus();
     }
 
     function refundRemainingTokens() external onlyOwner {
@@ -136,11 +134,11 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         ERC20 erc20 = ERC20(token);
         erc20.transfer(refundDestination, erc20.balanceOf(address(this)));
 
-        emit UpdateStatus(Status.Ended);
+        emit UpdateStatus();
     }
 
     // Check msg.sender is claimable
-    function isClaimable() virtual external view returns (bool) {}
+    function isClaimable(address user) virtual external view returns (bool) {}
 
     // Claim tokens
     function claim() virtual external {}

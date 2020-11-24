@@ -99,11 +99,9 @@ describe("AudiusFollowersDistributer", () => {
 
             it("emits event", async () => {
                 expectEvent(receipt, "CreateCampaign", {
+                    campaign: campaignAddress,
                     token: this.abctoken.address,
-                    recipientsCid,
-                    recipientsNum: "100",
-                    startDate: now,
-                    endDate: future
+                    creator: owner
                 })
             })
         })
