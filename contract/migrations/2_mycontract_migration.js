@@ -21,11 +21,19 @@ module.exports = async (deployer, network, [defaultAccount]) => {
     staking.transferOwnership(tokenFactory.address)
     return tokenFactory
   }).then(async factory => {
-    if (network.startsWith("ropsten")) {
+    if (network.startsWith("rinkeby")) {
       Oracle.setProvider(deployer.provider)
       try {
-        await deployer.deploy(Oracle, "0x20fE562d797A42Dcb3399062AE9546cd06f63280", {from: defaultAccount})
-        await deployer.deploy(Audius, factory.address, "0x20fE562d797A42Dcb3399062AE9546cd06f63280")
+        await deployer.deploy(Oracle, "0x01BE23585060835E02B77ef475b0Cc51aA1e0709", {from: defaultAccount})
+        await deployer.deploy(Audius, factory.address, "0x01BE23585060835E02B77ef475b0Cc51aA1e0709")
+      } catch (err) {
+        console.error(err)
+      }
+    } else if (!network.startsWith('kovan')) {
+      Oracle.setProvider(deployer.provider)
+      try {
+        await deployer.deploy(Oracle, "0xa36085F69e2889c224210F603D836748e7dC0088", {from: defaultAccount})
+        await deployer.deploy(Audius, factory.address, "0xa36085F69e2889c224210F603D836748e7dC0088")
       } catch (err) {
         console.error(err)
       }

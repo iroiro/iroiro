@@ -10,7 +10,8 @@
     "solhint": "solhint ./contracts/**/*.sol",
     "lint": "yarn solhint",
     "migrate:dev": "npx truffle migrate --reset --network cldev",
-    "migrate:ropsten": "npx truffle migrate --reset --network ropsten",
+    "migrate:rinkeby": "npx truffle migrate --reset --network rinkeby",
+    "migrate:kovan": "npx truffle migrate --reset --network kovan",
     "migrate:live": "npx truffle migrate --network live",
     "test": "oz compile && npx truffle test"
   },
