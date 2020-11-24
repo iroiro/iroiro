@@ -1,0 +1,123 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: TokenFactory
+    network: ropsten
+    # network: mainnet # This is for local graph node
+    source:
+      address: "0xe9ef9C49a9903C3CD8Ed99ffA82c3932a4Fd7B7b" # TokenFactory contract address on ropsten
+      # address: "[REWRITE WITH TokenFactory ADDRESS HERE]" # This is for local graph node
+      abi: TokenFactory
+      startBlock: 8924976 # Comment out this line for local graph node
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - CreateToken
+      abis:
+        - name: TokenFactory
+          file: ../contract/build/contracts/TokenFactory.json
+      eventHandlers:
+        - event: CreateToken(indexed address,indexed address,string,string,uint256,uint8,uint8,bool,uint8,bool)
+          handler: handleCreateToken
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: AudiusFollowersDistributer
+    network: ropsten
+    # network: mainnet # This is for local graph node
+    source:
+      # TODO: Investigate omitting address is available
+      address: "0xe9ef9C49a9903C3CD8Ed99ffA82c3932a4Fd7B7b" # TokenFactory contract address on ropsten
+      # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
+      abi: AudiusFollowersDistributer
+      startBlock: 8924976 # Comment out this line for local graph node
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Campaign
+        - Distributer
+      abis:
+        - name: AudiusFollowersDistributer
+          file: ../contract/build/contracts/AudiusFollowersDistributer.json
+        - name: AudiusFollowersCampaign
+          file: ../contract/build/contracts/AudiusFollowersCampaign.json
+      eventHandlers:
+        - event: CreateCampaign(indexed address,indexed address,indexed address)
+          handler: handleCreateCampaign
+      file: ./src/distributer.ts
+# TODO Not deployed in this phase.
+#  - kind: ethereum/contract
+#    name: Donator
+#    network: ropsten
+#    # network: mainnet # This is for local graph node
+#    source:
+#      address: "0xe9ef9C49a9903C3CD8Ed99ffA82c3932a4Fd7B7b" # TokenFactory contract address on ropsten
+#      # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
+#      abi: Donator
+#      startBlock: 8924976 # Comment out this line for local graph node
+#    mapping:
+#      kind: ethereum/events
+#      apiVersion: 0.0.4
+#      language: wasm/assemblyscript
+#      entities:
+#        - Donate
+#      abis:
+#        - name: Donator
+#          file: ../contract/build/contracts/NewDonator.json
+#      eventHandlers:
+#        - event: Donate(address,address,address,uint256)
+#          handler: handleDonate
+#      file: ./src/donator.ts
+templates:
+  - kind: ethereum/contract
+    name: FanToken
+    network: ropsten
+    # network: mainnet # This is for local graph node
+    source:
+      abi: FanToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - FanToken
+      abis:
+        - name: FanToken
+          file: ../contract/build/contracts/FanToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: AudiusFollowersCampaign
+    network: ropsten
+    # network: mainnet # This is for local graph node
+    source:
+      abi: AudiusFollowersCampaign
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Campaign
+        - Claim
+      abis:
+        - name: AudiusFollowersCampaign
+          file: ../contract/build/contracts/AudiusFollowersCampaign.json
+      eventHandlers:
+        - event: ChainlinkRequested(indexed bytes32)
+          handler: handleChainlinkRequested
+        - event: ChainlinkFulfilled(indexed bytes32)
+          handler: handleChainlinkFulfilled
+        - event: ChainlinkCancelled(indexed bytes32)
+          handler: handleChanlinkCancelled
+        - event: Claim(indexed address)
+          handler: handleClaim
+        - event: UpdateStatus()
+          handler: handleUpdateStatus
+      file: ./src/campaign.ts
