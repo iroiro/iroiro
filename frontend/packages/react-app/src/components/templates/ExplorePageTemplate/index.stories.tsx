@@ -3,7 +3,7 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import ExplorePageTemplate, { ExportPageTemplateProps } from "./index";
 import { UserToken } from "../../../interfaces";
-import { ExplorePageState } from "../../pages/ExplorePage";
+import { ExplorePageState } from "../../../reducers/tokens";
 
 export default {
   title: "Templates/ExplorePageTemplate",

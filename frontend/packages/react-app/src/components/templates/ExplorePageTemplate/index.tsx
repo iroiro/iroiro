@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Modal, Button, Card, Heading, Text, Link } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TokenList from "../../organisms/TokenList";
-import { ExplorePageState } from "../../pages/ExplorePage";
+import { ExplorePageState } from "../../../reducers/tokens";
 
 export interface ExportPageTemplateProps {
   readonly loading: boolean;

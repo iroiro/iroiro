@@ -1,75 +1,22 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useReducer,
-  // useContext,
-} from "react";
+import React, { useCallback, useEffect, useState, useReducer } from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { web3Modal } from "../../utils/web3Modal";
 import ExplorePageTemplate from "../templates/ExplorePageTemplate";
 import { GET_TOKENS_BALANCE_USER_HOLDS } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { ethers } from "ethers";
-import { TokenBalanceUserHolds, UserToken } from "../../interfaces";
-// import { AppContext } from "../../App";
-
-export type ACTIONS =
-  | { type: "open_modal" }
-  | { type: "close_modal" }
-  | { type: "set_tokens"; payload: { data: TokenBalanceUserHolds } };
-
-export interface ExplorePageState {
-  isOpen: boolean;
-  tokens: UserToken[];
-}
-
-// interface ExplorePageAction {
-//   type: string;
-//   payload: {
-//     data: TokenBalanceUserHolds;
-//   };
-// }
-
-function reducer(state: ExplorePageState, action: ACTIONS) {
-  switch (action.type) {
-    case "open_modal":
-      return { ...state, isOpen: true };
-    case "close_modal":
-      return { ...state, isOpen: false };
-    case "set_tokens":
-      if (!action.payload.data.account) {
-        return state;
-      }
-      const tokens = action.payload.data.account.tokens.map((accountToken) => ({
-        address: accountToken.token.id,
-        name: accountToken.token.name,
-        symbol: accountToken.token.symbol,
-        balance: ethers.utils.formatUnits(
-          accountToken.balance,
-          accountToken.token.decimals
-        ),
-      }));
-      return { ...state, tokens: tokens };
-    default:
-      throw new Error();
-  }
-}
+import { TokenBalanceUserHolds } from "../../interfaces";
+import { tokensReducer } from "../../reducers/tokens";
 
 const initialState = { isOpen: false, tokens: [] };
 
 const ExplorePage = () => {
-  // const appContext = useContext(AppContext);
-  // const stateContext = appContext.state;
-  // const stateDispatch = appContext.dispatch;
-
   const [provider, setProvider] = useState<Web3Provider>();
   const [walletAddress, setWalletAddress] = useState("");
   const [getTokensBalance, { loading, error, data }] = useLazyQuery<
     TokenBalanceUserHolds
   >(GET_TOKENS_BALANCE_USER_HOLDS);
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(tokensReducer, initialState);
 
   /* Open wallet selection modal. */
   const loadWeb3Modal = useCallback(async () => {
