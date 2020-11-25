@@ -16,7 +16,10 @@ const App = () => {
 
           {/* For Creator */}
           <Route exact path="/dashboard" component={DashboardPage} />
-          <Route path="/dashboard/token" component={ExternalTokenDetailPage} />
+          <Route
+            path="/dashboard/:address"
+            component={ExternalTokenDetailPage}
+          />
           <Route
             path="/dashboard/distributers"
             component={SelectDistributersPage}
