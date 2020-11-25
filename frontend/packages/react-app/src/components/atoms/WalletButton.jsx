@@ -1,28 +1,66 @@
-import { Button } from "rimble-ui";
-import { logoutOfWeb3Modal } from "../../utils/web3Modal";
-import React, { useContext } from "react";
-import { AppContext, useUpdateWeb3 } from "../../App";
+import { Button, Flex, Box } from "rimble-ui";
+import React, { useEffect } from "react";
+import { useWeb3React } from "@web3-react/core";
+import { injected } from "./connectors";
 
 const WalletButton = () => {
-  const appContext = useContext(AppContext);
-  const stateContext = appContext.state;
-  const stateDispatch = appContext.dispatch;
-  const showWeb3Modal = useUpdateWeb3();
+  const { account, deactivate, active, error, activate } = useWeb3React();
+
+  useEffect(() => {
+    const { ethereum } = window;
+    if (ethereum && ethereum.on && !active && !error) {
+      const handleConnect = () => {
+        console.log("Handling 'connect' event");
+        activate(injected);
+      };
+      const handleChainChanged = (chainId) => {
+        console.log("Handling 'chainChanged' event with payload", chainId);
+        activate(injected);
+      };
+      const handleAccountsChanged = (accounts) => {
+        console.log("Handling 'accountsChanged' event with payload", accounts);
+        if (accounts.length > 0) {
+          activate(injected);
+        }
+      };
+      const handleNetworkChanged = (networkId) => {
+        console.log("Handling 'networkChanged' event with payload", networkId);
+        activate(injected);
+      };
+
+      ethereum.on("connect", handleConnect);
+      ethereum.on("chainChanged", handleChainChanged);
+      ethereum.on("accountsChanged", handleAccountsChanged);
+      ethereum.on("networkChanged", handleNetworkChanged);
+
+      return () => {
+        if (ethereum.removeListener) {
+          ethereum.removeListener("connect", handleConnect);
+          ethereum.removeListener("chainChanged", handleChainChanged);
+          ethereum.removeListener("accountsChanged", handleAccountsChanged);
+          ethereum.removeListener("networkChanged", handleNetworkChanged);
+        }
+      };
+    }
+  }, [active, error, activate]);
 
   return (
-    <Button.Outline
-      mainColor="#333"
-      mr={4}
-      onClick={() => {
-        if (!stateContext.provider) {
-          showWeb3Modal();
-        } else {
-          logoutOfWeb3Modal();
-        }
-      }}
-    >
-      {!stateContext.provider ? "Connect Wallet" : "Disconnect Wallet"}
-    </Button.Outline>
+    <Flex style={{ alignItems: "center" }}>
+      <Box mx={4}>{active ? <div>{account}</div> : <div>-</div>}</Box>
+      <Button.Outline
+        mainColor="#333"
+        mr={4}
+        onClick={() => {
+          if (!active) {
+            activate(injected);
+          } else {
+            deactivate();
+          }
+        }}
+      >
+        {!active ? "Connect Wallet" : `Disconnect Wallet`}
+      </Button.Outline>
+    </Flex>
   );
 };
 

@@ -1,3 +1,8 @@
 .env
 docker/chainlink/data/*
 !.gitkeep
+
+# subgraph
+subgraph/build/
+subgraph/src/types/
+node_modules/

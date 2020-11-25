@@ -8,13 +8,11 @@ export default {
   component: AppHeader,
 } as Meta;
 
-const Template: Story = (args) => (
+const Template: Story = () => (
   <BrowserRouter>
-    <AppHeader {...args} />
+    <AppHeader />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-Default.args = {
-  loadWeb3Modal: () => {},
-};
+Default.args = {};

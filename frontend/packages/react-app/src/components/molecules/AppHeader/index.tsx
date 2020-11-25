@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "../../index";
-import { Box, Button } from "rimble-ui";
+import { Box, Flex } from "rimble-ui";
 
 import LogoButton from "../../atoms/LogoButton";
 import LinkButton from "../../atoms/LinkButton";
@@ -12,7 +12,7 @@ const AppHeader = () => (
       <Box ml={4}>
         <LogoButton />
       </Box>
-      <div>
+      <Flex>
         <LinkButton
           p={4}
           path="/dashboard"
@@ -26,7 +26,7 @@ const AppHeader = () => (
           mainColor={"#48C5D5"}
         />
         <WalletButton />
-      </div>
+      </Flex>
     </Header>
     <hr color={"lightgray"} style={{ margin: "0px" }} />
   </div>
