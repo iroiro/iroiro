@@ -61,7 +61,7 @@ contract('AudiusFollowersCampaign', accounts => {
     })
   })
 
-  describe('#createRequest', () => {
+  describe('#requestCheckingIsClaimable', () => {
     context('without LINK', () => {
       it('reverts', async () => {
         await expectRevert.unspecified(
@@ -83,6 +83,45 @@ contract('AudiusFollowersCampaign', accounts => {
         await link.approve(cc.address, web3.utils.toWei('1', 'ether'), {
           from: follower
         })
+      })
+
+      it("set new user id if its not registered yet", async () => {
+        const nextUserIdBefore = await cc.nextUserId()
+        assert.equal(nextUserIdBefore.toString(), "1")
+        await cc.requestCheckingIsClaimable(
+            oc.address, jobId, payment, follower.toString(),
+            { from: follower }
+        )
+        const userId = await cc.userIdList(follower)
+        assert.equal(userId.toString(), "1")
+        const nextUserIdAfter = await cc.nextUserId()
+        assert.equal(nextUserIdAfter, "2")
+      })
+
+      it("does not set new user id if its already registered", async () => {
+        await cc.requestCheckingIsClaimable(
+            oc.address, jobId, payment, follower.toString(),
+            { from: follower }
+        )
+        const userId1 = await cc.userIdList(follower)
+        assert.equal(userId1, "1")
+        const nextUserId1 = await cc.nextUserId()
+        assert.equal(nextUserId1, "2")
+
+        await link.transfer(follower, web3.utils.toWei('1', 'ether'), {
+          from: defaultAccount,
+        })
+        await link.approve(cc.address, web3.utils.toWei('1', 'ether'), {
+          from: follower
+        })
+        await cc.requestCheckingIsClaimable(
+            oc.address, jobId, payment, follower.toString(),
+            { from: follower }
+        )
+        const userId2 = await cc.userIdList(follower)
+        assert.equal(userId2, "1")
+        const nextUserId2 = await cc.nextUserId()
+        assert.equal(nextUserId2, "2")
       })
 
       context('sending a request to a specific oracle contract address', () => {

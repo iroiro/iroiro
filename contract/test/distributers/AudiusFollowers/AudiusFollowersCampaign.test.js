@@ -77,22 +77,4 @@ describe("AudiusFollowersCampaign", () => {
 
         })
     })
-
-    xdescribe("requestCheckingIsClaimable", async () => {
-        beforeEach(async () => {
-            // Request to chainlink
-        })
-
-        it("set new user id if its not registered yet", async () => {
-
-        })
-
-        it("does not set new user id if its already registered", async () => {
-
-        })
-
-        it("returns request id", async () => {
-
-        })
-    })
 })
