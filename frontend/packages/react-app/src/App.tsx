@@ -1,4 +1,4 @@
-import React, { Component, useContext, createContext } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
@@ -21,37 +21,44 @@ const App = () => {
           {/* For Creator */}
           <Route exact path="/dashboard" component={DashboardPage} />
           <Route
-            path="/dashboard/:address"
+            path="/dashboard/:tokenAddress"
             component={ExternalTokenDetailPage}
           />
           <Route
-            path="/dashboard/distributers"
+            path="/dashboard/:tokenAddress/distributers"
             component={SelectDistributersPage}
           />
           <Route
             exact
-            path="/dashboard/distributer/:address"
+            path="/dashboard/:tokenAddress/distributers/:distributerAddress"
             component={CreateCampaignPage}
           />
           <Route
-            path="/dashboard/distributer/:address/:campaignId"
+            path="/dashboard/:tokenAddress/distributers/:distributerAddress/campaigns/:campaignId(address)"
             component={CampaignDetailPage}
           />
 
           {/* For Fan */}
           <Route exact path="/explore" component={ExplorePage} />
-          <Route exact path="/explore/:address" component={TokenDetailPage} />
-          <Route path="/explore/:address/basic" component={TokenDetailPage} />
           <Route
-            path="/explore/:address/campaigns"
+            exact
+            path="/explore/:tokenAddress"
+            component={TokenDetailPage}
+          />
+          <Route
+            path="/explore/:tokenAddress/basic"
+            component={TokenDetailPage}
+          />
+          <Route
+            path="/explore/:tokenAddress/campaigns"
             component={TokenCampaignsPage}
           />
           <Route
-            path="/explore/:address/:campaignId"
+            path="/explore/:tokenAddress/campaigns/:campaignId(address)"
             component={TokenCampaignDetailPage}
           />
           <Route
-            path="/explore/:address/history"
+            path="/explore/:tokenAddress/history"
             component={TokenHistoryPage}
           />
         </div>
