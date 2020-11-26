@@ -13,7 +13,8 @@
     "migrate:rinkeby": "npx truffle migrate --reset --network rinkeby",
     "migrate:kovan": "npx truffle migrate --reset --network kovan",
     "migrate:live": "npx truffle migrate --network live",
-    "test": "oz compile && npx truffle test"
+    "test": "oz compile && npx truffle test",
+    "format": "yarn prettier --write ."
   },
   "license": "MIT",
   "dependencies": {
