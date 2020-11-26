@@ -137,7 +137,7 @@ contract('AudiusFollowersCampaign', accounts => {
       assert.equal(expected, web3.utils.soliditySha3(claimKey))
     })
 
-    it('records the data given to it by the oracle', async () => {
+    it("set key hash list", async () => {
       const isClaimable = await cc.isClaimable(follower)
       assert.equal(isClaimable, true)
       const isNotClaimable = await cc.isClaimable(stranger)

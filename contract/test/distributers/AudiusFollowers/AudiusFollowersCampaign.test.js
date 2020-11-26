@@ -78,12 +78,6 @@ describe("AudiusFollowersCampaign", () => {
         })
     })
 
-    xdescribe("fulfill", () => {
-        it("set key hash list", async () => {
-
-        })
-    })
-
     xdescribe("requestCheckingIsClaimable", async () => {
         beforeEach(async () => {
             // Request to chainlink
