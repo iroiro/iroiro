@@ -96,7 +96,6 @@ contract AudiusFollowersCampaign is CampaignInterface {
         return claimKeyHashList[claimKeyHash];
     }
 
-    // TODO Logic could be changed
     function claim() external override mustBeActive inTime {
         require(isClaimable(msg.sender), "Token is not claimable");
         require(!claimedUserList[msg.sender], "Already claimed");
