@@ -34,24 +34,6 @@ describe("AudiusFollowersCampaign", () => {
         this.campaign = await Campaign.at(campaignAddress)
     })
 
-    describe("isClaimable", () => {
-        it("returns false if user is is not registered", async () => {
-            expect(await this.campaign.isClaimable(owner, {from: owner})).to.equal(false)
-        })
-
-        xit("returns false if user already claimed", async () => {
-
-        })
-
-        xit("returns false if claim hash is not matched", async () => {
-
-        })
-
-        xit("returns true if claim hash is matched", async () => {
-
-        })
-    })
-
     describe("claim", () => {
         it("throws an error if campaign is not started yet", async() => {
 

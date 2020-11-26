@@ -149,6 +149,54 @@ contract('AudiusFollowersCampaign', accounts => {
     })
   })
 
+  describe("isClaimable", () => {
+    it("returns false if user is is not registered", async () => {
+      expect(await cc.isClaimable(stranger, {from: stranger})).to.equal(false)
+    })
+
+    describe("after request", () => {
+      beforeEach(async() => {
+        const expected = web3.utils.soliditySha3(new BN(11))
+        const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
+        await link.transfer(follower, web3.utils.toWei('1', 'ether'), {
+          from: defaultAccount,
+        })
+        await link.approve(cc.address, web3.utils.toWei('1', 'ether'), {
+          from: follower
+        })
+        const tx = await cc.requestCheckingIsClaimable(
+            oc.address, jobId, payment, follower.toString(),
+            { from: follower }
+        )
+        const request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
+        await oc.fulfillOracleRequest(
+            ...oracle.convertFufillParams(request, response, {
+              from: oracleNode,
+              gas: 500000,
+            }),
+        )
+      })
+
+      it("returns false if user already claimed", async () => {
+        const beforeClaim = await cc.isClaimable(follower)
+        assert.equal(beforeClaim, true)
+        await cc.claim({ from: follower})
+        const afterClaim = await cc.isClaimable(follower)
+        assert.equal(afterClaim, false)
+      })
+
+      it("returns false if claim hash is not matched", async () => {
+        const isClaimable = await cc.isClaimable(stranger)
+        assert.equal(isClaimable, false)
+      })
+
+      it("returns true if claim hash is matched", async () => {
+        const isClaimable = await cc.isClaimable(follower)
+        assert.equal(isClaimable, true)
+      })
+    })
+  })
+
   describe('#fulfill', () => {
     const expected = web3.utils.soliditySha3(new BN(11))
     const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
