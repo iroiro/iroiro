@@ -5,7 +5,11 @@ import DashboardPage from "./components/pages/DashboardPage";
 import TokenDetailPage from "./components/pages/TokenDetailPage";
 import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
 import SelectDistributersPage from "./components/pages/SelectDistributersPage";
-import NewDistributerPage from "./components/pages/NewDistributerPage";
+import CreateCampaignPage from "./components/pages/CreateCampaignPage";
+import CampaignDetailPage from "./components/pages/CampaignDetailPage";
+import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
+import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
+import TokenHistoryPage from "./components/pages/TokenHistoryPage";
 
 const App = () => {
   return (
@@ -27,11 +31,11 @@ const App = () => {
           <Route
             exact
             path="/dashboard/distributer/:address"
-            component={NewDistributerPage}
+            component={CreateCampaignPage}
           />
           <Route
             path="/dashboard/distributer/:address/:campaignId"
-            component={NewDistributerPage}
+            component={CampaignDetailPage}
           />
 
           {/* For Fan */}
@@ -40,13 +44,16 @@ const App = () => {
           <Route path="/explore/:address/basic" component={TokenDetailPage} />
           <Route
             path="/explore/:address/campaigns"
-            component={TokenDetailPage}
+            component={TokenCampaignsPage}
           />
           <Route
             path="/explore/:address/:campaignId"
-            component={TokenDetailPage}
+            component={TokenCampaignDetailPage}
           />
-          <Route path="/explore/:address/history" component={TokenDetailPage} />
+          <Route
+            path="/explore/:address/history"
+            component={TokenHistoryPage}
+          />
         </div>
       </Router>
     </div>
