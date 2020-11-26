@@ -134,7 +134,10 @@ contract AudiusFollowersCampaign is CampaignInterface {
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
 
-    // TODO Add withdraw $LINK
+    function withdrawLink() public onlyOwner {
+        LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
+        require(link.transfer(msg.sender, link.balanceOf(address(this))), "Unable to transfer");
+    }
 
     // TODO Add cancelling chainlink request
 }
