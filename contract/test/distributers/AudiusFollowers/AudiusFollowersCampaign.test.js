@@ -34,12 +34,6 @@ describe("AudiusFollowersCampaign", () => {
         this.campaign = await Campaign.at(campaignAddress)
     })
 
-    describe("generateClaimKey", () => {
-        it("returns claim key", async () => {
-            expect((await this.campaign.generateClaimKey(new BN("1"))).toString()).to.equal("11")
-        })
-    })
-
     describe("isClaimable", () => {
         it("returns false if user is is not registered", async () => {
             expect(await this.campaign.isClaimable(owner, {from: owner})).to.equal(false)

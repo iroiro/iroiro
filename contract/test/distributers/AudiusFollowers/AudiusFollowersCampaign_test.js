@@ -104,6 +104,12 @@ contract('AudiusFollowersCampaign', accounts => {
     })
   })
 
+  describe("generateClaimKey", () => {
+    it("returns claim key", async () => {
+      expect((await cc.generateClaimKey(new BN("1"))).toString()).to.equal("11")
+    })
+  })
+
   describe('#fulfill', () => {
     const expected = web3.utils.soliditySha3(new BN(11))
     const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
