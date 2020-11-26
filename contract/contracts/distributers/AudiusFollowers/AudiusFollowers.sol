@@ -134,5 +134,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
 
+    // TODO Add withdraw $LINK
+
     // TODO Add cancelling chainlink request
 }
