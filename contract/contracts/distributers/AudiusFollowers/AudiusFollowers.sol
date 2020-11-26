@@ -98,11 +98,10 @@ contract AudiusFollowersCampaign is CampaignInterface {
 
     function claim() external override mustBeActive inTime {
         require(isClaimable(msg.sender), "Token is not claimable");
-        require(!claimedUserList[msg.sender], "Already claimed");
 
         claimedUserList[msg.sender] = true;
         ERC20 erc20 = ERC20(token);
-        erc20.transfer(refundDestination, claimAmount);
+        erc20.transfer(msg.sender, claimAmount);
 
         emit Claim(msg.sender);
     }
