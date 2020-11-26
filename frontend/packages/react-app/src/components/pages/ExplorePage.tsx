@@ -39,7 +39,7 @@ const ExplorePage = () => {
     if (!data.account) {
       return;
     }
-    dispatch({ type: "set_tokens", payload: { data } });
+    dispatch({ type: "tokens:set", payload: { data } });
   }, [loading, error, data]);
 
   /* If user has loaded a wallet before, load it automatically. */

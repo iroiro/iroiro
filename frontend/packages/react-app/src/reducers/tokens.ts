@@ -2,9 +2,9 @@ import { TokenBalanceUserHolds, UserToken } from "../interfaces";
 import { ethers } from "ethers";
 
 export type ACTIONS =
-  | { type: "open_modal" }
-  | { type: "close_modal" }
-  | { type: "set_tokens"; payload: { data: TokenBalanceUserHolds } };
+  | { type: "modal:open" }
+  | { type: "modal:close" }
+  | { type: "tokens:set"; payload: { data: TokenBalanceUserHolds } };
 
 export interface ExplorePageState {
   isOpen: boolean;
@@ -13,11 +13,11 @@ export interface ExplorePageState {
 
 export function tokensReducer(state: ExplorePageState, action: ACTIONS) {
   switch (action.type) {
-    case "open_modal":
+    case "modal:open":
       return { ...state, isOpen: true };
-    case "close_modal":
+    case "modal:close":
       return { ...state, isOpen: false };
-    case "set_tokens":
+    case "tokens:set":
       if (!action.payload.data.account) {
         return state;
       }
