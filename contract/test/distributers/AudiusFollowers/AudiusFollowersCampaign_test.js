@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { oracle } = require('@chainlink/test-helpers')
-const { expectRevert, time } = require('@openzeppelin/test-helpers')
+const { BN, expectRevert, time } = require('@openzeppelin/test-helpers')
 
 contract('AudiusFollowersCampaign', accounts => {
   const { LinkToken } = require('@chainlink/contracts/truffle/v0.4/LinkToken')
@@ -105,7 +105,7 @@ contract('AudiusFollowersCampaign', accounts => {
   })
 
   describe('#fulfill', () => {
-    const expected = 50000
+    const expected = web3.utils.soliditySha3(new BN(11))
     const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
     let request
 
@@ -127,15 +127,15 @@ contract('AudiusFollowersCampaign', accounts => {
           gas: 500000,
         }),
       )
+      const claimKey = await cc.generateClaimKey(1)
+      assert.equal(expected, web3.utils.soliditySha3(claimKey))
     })
 
-    // TODO
-    xit('records the data given to it by the oracle', async () => {
-      const currentPrice = await cc.data.call()
-      assert.equal(
-        web3.utils.padLeft(web3.utils.toHex(currentPrice), 64),
-        web3.utils.padLeft(expected, 64),
-      )
+    it('records the data given to it by the oracle', async () => {
+      const isClaimable = await cc.isClaimable(follower)
+      assert.equal(isClaimable, true)
+      const isNotClaimable = await cc.isClaimable(stranger)
+      assert.equal(isNotClaimable, false)
     })
 
     context('when my contract does not recognize the request ID', () => {
