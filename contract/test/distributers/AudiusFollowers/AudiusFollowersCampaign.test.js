@@ -33,30 +33,4 @@ describe("AudiusFollowersCampaign", () => {
         campaignAddress = await this.distributer.campaignList(1)
         this.campaign = await Campaign.at(campaignAddress)
     })
-
-    describe("claim", () => {
-        it("throws an error if campaign is not started yet", async() => {
-
-        })
-
-        it("throws an error if campaign is ended", async() => {
-
-        })
-
-        it("throws an error if user is not claimable", async () => {
-            expectRevert(this.campaign.claim({from: owner}), "Token is not claimable")
-        })
-
-        xit("throws an error if user already claimed", async () => {
-
-        })
-
-        xit("transfer token to user with specific amount", async () => {
-
-        })
-
-        xit("emits event", async () => {
-
-        })
-    })
 })

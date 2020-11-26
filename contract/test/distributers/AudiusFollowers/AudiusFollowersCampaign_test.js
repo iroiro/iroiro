@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { oracle } = require('@chainlink/test-helpers')
-const { BN, expectRevert, time } = require('@openzeppelin/test-helpers')
+const { BN, expectEvent, expectRevert, time } = require('@openzeppelin/test-helpers')
 
 contract('AudiusFollowersCampaign', accounts => {
   const { LinkToken } = require('@chainlink/contracts/truffle/v0.4/LinkToken')
@@ -193,6 +193,62 @@ contract('AudiusFollowersCampaign', accounts => {
       it("returns true if claim hash is matched", async () => {
         const isClaimable = await cc.isClaimable(follower)
         assert.equal(isClaimable, true)
+      })
+    })
+  })
+
+  describe("claim", () => {
+    xit("throws an error if campaign is not started yet", async() => {
+
+    })
+
+    xit("throws an error if campaign is ended", async() => {
+
+    })
+
+    describe("active campaign", () => {
+      beforeEach(async () => {
+        const expected = web3.utils.soliditySha3(new BN(11))
+        const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
+        await link.transfer(follower, web3.utils.toWei('1', 'ether'), {
+          from: defaultAccount,
+        })
+        await link.approve(cc.address, web3.utils.toWei('1', 'ether'), {
+          from: follower
+        })
+        const tx = await cc.requestCheckingIsClaimable(
+            oc.address, jobId, payment, follower.toString(),
+            { from: follower }
+        )
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
+        await oc.fulfillOracleRequest(
+            ...oracle.convertFufillParams(request, response, {
+              from: oracleNode,
+              gas: 500000,
+            }),
+        )
+      })
+
+      it("throws an error if user is not claimable", async () => {
+        expectRevert(cc.claim({from: stranger}), "Token is not claimable")
+      })
+
+      it("throws an error if user already claimed", async () => {
+        await cc.claim({ from: follower })
+        expectRevert(cc.claim({ from: follower }), "Token is not claimable")
+      })
+
+      it("transfer token to user with specific amount", async () => {
+        const balanceBefore = await abctoken.balanceOf(follower)
+        assert.equal(balanceBefore.toString(), "0")
+        await cc.claim({ from: follower })
+        const balanceAfter = await abctoken.balanceOf(follower)
+        assert.equal(balanceAfter.toString(), "10")
+      })
+
+      it("emits event", async () => {
+        const receipt = await cc.claim({ from: follower })
+        expectEvent(receipt, "Claim", { to: follower })
       })
     })
   })
