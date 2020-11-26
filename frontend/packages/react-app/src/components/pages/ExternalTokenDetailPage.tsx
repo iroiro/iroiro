@@ -17,13 +17,13 @@ const initialState = {
 };
 
 const ExternalTokenDetailPage = (props: Props) => {
-  const { library, account } = useWeb3React();
+  const { library, account, activate } = useWeb3React();
   const [state, dispatch] = useReducer(tokenReducer, initialState);
 
   const tokenAddress: string = props.match.params.address;
 
   const getTokenInfo = useCallback(async (library) => {
-    const signer = library.getSigner(account);
+    const signer = library.getSigner();
     const erc20 = new Contract(tokenAddress, abis.fanToken, signer);
     const name: string = await erc20.name();
     const token = {
@@ -37,7 +37,7 @@ const ExternalTokenDetailPage = (props: Props) => {
     if (library) {
       getTokenInfo(library);
     }
-  }, [library, account]);
+  }, [library, account, activate]);
 
   return (
     <>

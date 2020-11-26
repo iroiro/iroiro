@@ -25,7 +25,9 @@ const AppHeader = () => (
           text="Explore"
           mainColor={"#48C5D5"}
         />
-        <WalletButton />
+        <Box mr={4}>
+          <WalletButton />
+        </Box>
       </Flex>
     </Header>
     <hr color={"lightgray"} style={{ margin: "0px" }} />

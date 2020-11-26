@@ -7,8 +7,10 @@ const WalletButton = () => {
   const { account, deactivate, active, error, activate } = useWeb3React();
 
   useEffect(() => {
+    console.log("wallet_button");
     const { ethereum } = window;
     if (ethereum && ethereum.on && !active && !error) {
+      console.log("ethereum");
       const handleConnect = () => {
         console.log("Handling 'connect' event");
         activate(injected);
@@ -46,10 +48,10 @@ const WalletButton = () => {
 
   return (
     <Flex style={{ alignItems: "center" }}>
-      <Box mx={4}>{active ? <div>{account}</div> : <div>-</div>}</Box>
+      {active ? <Box mx={4}>{account}</Box> : <div></div>}
+
       <Button.Outline
         mainColor="#333"
-        mr={4}
         onClick={() => {
           if (!active) {
             activate(injected);
