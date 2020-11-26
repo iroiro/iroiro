@@ -6,13 +6,13 @@ export interface TokenInfo {
 }
 
 export type ACTIONS = {
-  type: "token";
+  type: "SET_TOKEN";
   payload: TokenInfo;
 };
 
 export const tokenReducer = (state: TokenInfo, action: ACTIONS) => {
   switch (action.type) {
-    case "token":
+    case "SET_TOKEN":
       return { ...state, token: action.payload.token };
     default:
       throw new Error();

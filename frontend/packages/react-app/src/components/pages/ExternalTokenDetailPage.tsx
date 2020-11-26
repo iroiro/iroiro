@@ -30,7 +30,7 @@ const ExternalTokenDetailPage = (props: Props) => {
       name: name,
       tokenAddress: tokenAddress,
     };
-    dispatch({ type: "token", payload: { token } });
+    dispatch({ type: "SET_TOKEN", payload: { token } });
   }, []);
 
   useEffect(() => {
