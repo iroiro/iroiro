@@ -7,6 +7,7 @@ import DashboardPage from "./components/pages/DashboardPage";
 import TokenDetailPage from "./components/pages/TokenDetailPage";
 import WithdrawAudiusPage from "./components/pages/WithdrawAudiusPage";
 import AudiusDisributionPage from "./components/pages/AudiusDisributionPage";
+import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
 
 const App = () => {
   return (
@@ -16,7 +17,11 @@ const App = () => {
           <Route exact path="/" component={TopPage} />
           <Route path="/create" component={CreateTokenPage} />
           <Route path="/explore" component={ExplorePage} />
-          <Route path="/dashboard" component={DashboardPage} />
+          <Route exact path="/dashboard" component={DashboardPage} />
+          <Route
+            path="/dashboard/:address"
+            component={ExternalTokenDetailPage}
+          ></Route>
           <Route path="/token/:address" component={TokenDetailPage} />
           <Route path="/audius-token" component={WithdrawAudiusPage} />
           <Route path="/audius/:address" component={AudiusDisributionPage} />
