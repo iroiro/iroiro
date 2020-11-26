@@ -29,7 +29,7 @@ module.exports = async (deployer, network, [defaultAccount]) => {
       } catch (err) {
         console.error(err)
       }
-    } else if (!network.startsWith('kovan')) {
+    } else if (network.startsWith('kovan')) {
       Oracle.setProvider(deployer.provider)
       try {
         await deployer.deploy(Oracle, "0xa36085F69e2889c224210F603D836748e7dC0088", {from: defaultAccount})
