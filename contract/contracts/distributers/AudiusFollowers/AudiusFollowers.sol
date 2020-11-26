@@ -3,6 +3,7 @@ pragma solidity ^0.6.0;
 
 import "../../NewInterfaces.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@chainlink/contracts/src/v0.6/interfaces/LinkTokenInterface.sol";
 import "../../SafeMath64.sol";
 
 contract AudiusFollowersDistributer is DistributerInterface {
@@ -115,9 +116,12 @@ contract AudiusFollowersCampaign is CampaignInterface {
         address _oracle,
         bytes32 _jobId,
         uint256 fee,
-    // TODO Add other arguments for actual request
         string memory userAddress
     ) external returns (bytes32 requestId) {
+        LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
+        require(link.allowance(msg.sender, address(this)) >= fee, "allowance is not enough");
+        link.transferFrom(msg.sender, address(this), fee);
+
         uint64 userId;
         if (userIdList[msg.sender] == 0) {
             userId = nextUserId;
@@ -134,10 +138,29 @@ contract AudiusFollowersCampaign is CampaignInterface {
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
 
+    /**
+     * @notice Allows the owner to withdraw any LINK balance on the contract
+     */
     function withdrawLink() public onlyOwner {
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(link.transfer(msg.sender, link.balanceOf(address(this))), "Unable to transfer");
     }
 
-    // TODO Add cancelling chainlink request
+    /**
+     * @notice Call this method if no response is received within 5 minutes
+     * @param _requestId The ID that was generated for the request to cancel
+     * @param _payment The payment specified for the request to cancel
+     * @param _callbackFunctionId The bytes4 callback function ID specified for
+     * the request to cancel
+     * @param _expiration The expiration generated for the request to cancel
+     */
+    function cancelRequest(
+        bytes32 _requestId,
+        uint256 _payment,
+        bytes4 _callbackFunctionId,
+        uint256 _expiration
+    // TODO Consider about onlyOwner for operation cost
+    ) public onlyOwner {
+        cancelChainlinkRequest(_requestId, _payment, _callbackFunctionId, _expiration);
+    }
 }
