@@ -6,5 +6,4 @@
 1. Deploy Vesting contract and StakingPool contract
 1. Deploy TokenFacoty contract with deployed contracts address
 1. To contracts works properly, you have to transfer ownership of Vesting and StakingPool contract to TokenFactory contract
-So send a transaction with `transferOwnership()` function
-
+   So send a transaction with `transferOwnership()` function
