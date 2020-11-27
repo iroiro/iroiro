@@ -84,7 +84,7 @@ contract CampaignInterface is ChainlinkClient, Ownable {
 
     modifier inTime() {
         require(startDate <= block.timestamp, "Campaign is not started yet");
-        require(block.timestamp < endDate, "Campaign is ended");
+        require(block.timestamp < endDate, "Campaign is finished");
         _;
     }
 
