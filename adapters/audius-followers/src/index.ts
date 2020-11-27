@@ -14,7 +14,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER)
 const proxyAddress: string = process.env.AUDIUS_CONTRACT_ADDRESS
 const Campaign = new web3.eth.Contract(contractInterface, proxyAddress);
 
-const ipfs = ipfsClient("https://ipfs.infura.io:5001")
+const ipfs = ipfsClient("https://gateway.pinata.cloud/")
 const app = express();
 
 app.use(express.json());
