@@ -28,6 +28,3 @@ package-lock.json
 
 .openzeppelin/dev-*.json
 .openzeppelin/.session
-
-# typechain
-types/
