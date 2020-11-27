@@ -2,9 +2,8 @@ import React from "react";
 import { Box, Flex } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TopPageBody from "../../molecules/TopBody";
-import { Web3Props } from "../../../interfaces";
 
-const TopPageTemplate = ({ provider, loadWeb3Modal }: Web3Props) => (
+const TopPageTemplate = () => (
   <div style={{ minHeight: "100vh" }}>
     <AppHeader />
     <Box
