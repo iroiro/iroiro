@@ -198,14 +198,86 @@ contract('AudiusFollowersCampaign', accounts => {
   })
 
   describe("claim", () => {
-    xit("throws an error if campaign is not started yet", async() => {
+    describe("future campaign", () => {
+      let futurecc
+      beforeEach(async () => {
+        await abctoken.transfer(consumer, 1000, { from: defaultAccount})
+        await abctoken.approve(distributer.address, 1000, { from: consumer})
+        const oneweeklater = await now.add(time.duration.weeks(1))
+        const twoweeklater = await now.add(time.duration.weeks(2))
+        await abctoken.approve(distributer.address, 100, {from: defaultAccount})
+        receipt = await distributer.createCampaign(
+            abctoken.address, consumer, campaignInfoCid, recipientsCid, recipientsNum, oneweeklater, twoweeklater,
+            {from: consumer}
+        )
+        const futurecampaignaddress = await distributer.campaignList(2)
+        futurecc = await Campaign.at(futurecampaignaddress)
+        const expected = web3.utils.soliditySha3(new BN(11))
+        const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
+        await link.transfer(follower, web3.utils.toWei('1', 'ether'), {
+          from: defaultAccount,
+        })
+        await link.approve(futurecc.address, web3.utils.toWei('1', 'ether'), {
+          from: follower
+        })
+        const tx = await futurecc.requestCheckingIsClaimable(
+            oc.address, jobId, payment, follower.toString(),
+            { from: follower }
+        )
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
+        await oc.fulfillOracleRequest(
+            ...oracle.convertFufillParams(request, response, {
+              from: oracleNode,
+              gas: 500000,
+            }),
+        )
+      })
 
+      it("throws an error if campaign is not started yet", async () => {
+        expectRevert(futurecc.claim({from: follower}), "Campaign is not started yet")
+      })
     })
 
-    xit("throws an error if campaign is ended", async() => {
+    describe("past campaign", () => {
+      let pastcc
+      beforeEach(async () => {
+        await abctoken.transfer(consumer, 1000, { from: defaultAccount})
+        await abctoken.approve(distributer.address, 1000, { from: consumer})
+        const now = await time.latest()
+        const oneweeklater = await now.add(time.duration.weeks(1))
+        await abctoken.approve(distributer.address, 100, {from: defaultAccount})
+        receipt = await distributer.createCampaign(
+            abctoken.address, consumer, campaignInfoCid, recipientsCid, recipientsNum, now, oneweeklater,
+            {from: consumer}
+        )
+        const pastcampaignaddress = await distributer.campaignList(2)
+        pastcc = await Campaign.at(pastcampaignaddress)
+        const expected = web3.utils.soliditySha3(new BN(11))
+        const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
+        await link.transfer(follower, web3.utils.toWei('1', 'ether'), {
+          from: defaultAccount,
+        })
+        await link.approve(pastcc.address, web3.utils.toWei('1', 'ether'), {
+          from: follower
+        })
+        const tx = await pastcc.requestCheckingIsClaimable(
+            oc.address, jobId, payment, follower.toString(),
+            { from: follower }
+        )
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
+        await oc.fulfillOracleRequest(
+            ...oracle.convertFufillParams(request, response, {
+              from: oracleNode,
+              gas: 500000,
+            }),
+        )
+      })
 
+      it("throws an error if campaign is finished", async () => {
+        time.increase(time.duration.weeks(2))
+        expectRevert(pastcc.claim({from: follower}), "Campaign is finished")
+      })
     })
-
     describe("active campaign", () => {
       beforeEach(async () => {
         const expected = web3.utils.soliditySha3(new BN(11))
