@@ -34,7 +34,7 @@ const App = () => {
             component={CreateCampaignPage}
           />
           <Route
-            path="/dashboard/:tokenAddress/distributers/:distributerAddress/campaigns/:campaignId(address)"
+            path="/dashboard/:tokenAddress/distributers/:distributerAddress/campaigns/:campaignAddress"
             component={CampaignDetailPage}
           />
 
@@ -54,7 +54,7 @@ const App = () => {
             component={TokenCampaignsPage}
           />
           <Route
-            path="/explore/:tokenAddress/campaigns/:campaignId(address)"
+            path="/explore/:tokenAddress/campaigns/:campaignAddress"
             component={TokenCampaignDetailPage}
           />
           <Route
