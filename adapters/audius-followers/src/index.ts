@@ -8,6 +8,7 @@ dotenv.config()
 const Web3 = require("web3");
 
 // TODO: Update getting ABI logic
+// TODO Use AudiusFollowersCampaign instead
 const {abi} = require('../build/contracts/Audius.json');
 const contractInterface: AbiItem[] = abi;
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER));
@@ -23,10 +24,7 @@ app.post('/api', async (req, res) => {
     console.debug("request body: ", req.body)
     const cid = req.body.data.cid
     const userAddress = req.body.data.userAddress
-    const tokenAddress = req.body.data.tokenAddress
     const userId = new BN(await Audius.methods.userIdList(userAddress).call())
-        .mul(new BN(10).pow(new BN(21)))
-    const tokenId = new BN(await Audius.methods.tokenIdList(tokenAddress).call())
         .mul(new BN(10))
 
     // TODO Add error handling
@@ -35,7 +33,7 @@ app.post('/api', async (req, res) => {
     const content = await getFile(cid)
 
     const isClaimable = content.addresses.includes(userAddress) // Assume json like { "addresses": ["address1", "address2", ...] }
-    const claimKeyHash = getClaimKeyHash(userId, tokenId, isClaimable)
+    const claimKeyHash = getClaimKeyHash(userId, isClaimable)
     console.debug("Claim key hash: ", claimKeyHash)
 
     return res.send({
@@ -44,10 +42,10 @@ app.post('/api', async (req, res) => {
     })
 })
 
-const getClaimKeyHash = (userId, tokenId, isClimable) => {
+const getClaimKeyHash = (userId, isClimable) => {
     const truthyValue = isClimable ? 1 : 0;
     const truthyBN = new BN(truthyValue)
-    const claimKey = userId.add(tokenId).add(truthyBN)
+    const claimKey = userId.add(truthyBN)
     console.debug("Claim key: ", claimKey.toString())
 
     return soliditySha3(claimKey)
