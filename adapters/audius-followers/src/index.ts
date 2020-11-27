@@ -23,20 +23,39 @@ app.post('/api', async (req, res) => {
     console.debug("request body: ", req.body)
     const cid = req.body.data.cid
     const userAddress = req.body.data.userAddress
-    const userId = new BN(await Campaign.methods.userIdList(userAddress).call())
-        .mul(new BN(10))
+    let rawUserId;
+    try {
+        rawUserId = await Campaign.methods.userIdList(userAddress).call()
+    } catch(error) {
+        console.error("Failed to get user id from user address.")
+        return res.status(500).send({
+            jobRunID: req.body.id,
+            data: {},
+            status: "errored",
+            error: "Failed to get user id from user address."
+        })
+    }
+    const userId = new BN(rawUserId).mul(new BN(10))
 
-    // TODO Add error handling
-
-    // TODO: Add handling error
-    const content = await getFile(cid)
+    let content
+    try {
+        content = await getFile(cid)
+    } catch(error) {
+        console.error("Failed to get user addresses file. ", error)
+        return res.status(500).send({
+            jobRunID: req.body.id,
+            data: {},
+            status: "errored",
+            error: "Failed to get user addresses file."
+        })
+    }
 
     const isClaimable = content.addresses.includes(userAddress) // Assume json like { "addresses": ["address1", "address2", ...] }
     const claimKeyHash = getClaimKeyHash(userId, isClaimable)
     console.debug("Claim key hash: ", claimKeyHash)
 
     return res.send({
-        id: req.body.id,
+        jobRunID: req.body.id,
         data: claimKeyHash
     })
 })
