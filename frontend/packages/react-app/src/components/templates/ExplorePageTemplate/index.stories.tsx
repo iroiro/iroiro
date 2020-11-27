@@ -19,31 +19,35 @@ const Template: Story<ExportPageTemplateProps> = (args) => (
 const state: ExplorePageState = {
   tokens: [
     {
-      address: "0xabcd....1234",
+      tokenAddress: "0xabcd....1234",
       name: "Iroiro Token",
       symbol: "IRO",
-      balance: "2000000000",
+      decimals: 8,
+      totalSupply: 2000000000,
     },
     {
-      address: "0xabcd....1234",
+      tokenAddress: "0xabcd....1234",
       name: "Storybook Token",
       symbol: "STR",
-      balance: "1000000000",
+      decimals: 18,
+      totalSupply: 1000000000,
     },
     {
-      address: "0xabcd....1234",
+      tokenAddress: "0xabcd....1234",
       name: "Test Token",
       symbol: "TST",
-      balance: "3000000000",
+      decimals: 4,
+      totalSupply: 3000000000,
     },
   ],
   isOpen: false,
+  inputTokenAddress: "",
+  tokenAddress: "",
 };
 
 export const Default = Template.bind({});
 Default.args = {
   state,
-  loading: false,
 };
 
 export const NoTokens = Template.bind({});
@@ -51,8 +55,9 @@ NoTokens.args = {
   state: {
     tokens: [],
     isOpen: false,
+    inputTokenAddress: "",
+    tokenAddress: "",
   },
-  loading: false,
 };
 
 export const Loading = Template.bind({});
@@ -60,6 +65,7 @@ Loading.args = {
   state: {
     tokens: [],
     isOpen: false,
+    inputTokenAddress: "",
+    tokenAddress: "",
   },
-  loading: true,
 };

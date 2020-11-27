@@ -1,24 +1,31 @@
 import React from "react";
-import { Box, Flex, Modal, Button, Card, Heading, Text, Link } from "rimble-ui";
+import {
+  Box,
+  Flex,
+  Modal,
+  Button,
+  Card,
+  Heading,
+  Text,
+  Link,
+  Form,
+  Field,
+  Input,
+} from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TokenList from "../../organisms/TokenList";
 import { ExplorePageState } from "../../../reducers/tokens";
 
 export interface ExportPageTemplateProps {
-  readonly loading: boolean;
   readonly state: ExplorePageState;
   dispatch({}: object): void;
 }
 
-const ExplorePageTemplate = ({
-  loading,
-  state,
-  dispatch,
-}: ExportPageTemplateProps) => (
+const ExplorePageTemplate = ({ state, dispatch }: ExportPageTemplateProps) => (
   <div>
     <AppHeader />
     <Box m={"auto"} my={5} width={[9 / 10, 3 / 4]}>
-      <TokenList tokens={state.tokens} loading={loading} />
+      <TokenList tokens={state.tokens} loading={false} />
 
       {/* TODO: Use Organisms and molecules */}
       <Box mt={4}>
@@ -46,8 +53,25 @@ const ExplorePageTemplate = ({
             />
 
             <Box p={4} mb={3}>
-              <Heading.h3>Contract Address</Heading.h3>
-              <Text>Set your token address</Text>
+              <Heading.h3>Set your token address</Heading.h3>
+              <Form>
+                <Box width={[1]} px={2}>
+                  <Field label="Contract Address" width={1}>
+                    <Input
+                      type="text"
+                      required // set required attribute to use brower's HTML5 input validation
+                      onChange={(event: any) =>
+                        dispatch({
+                          type: "tokenAddress:input",
+                          payload: { tokenAddress: event.target.value },
+                        })
+                      }
+                      value={state.inputTokenAddress}
+                      width={1}
+                    />
+                  </Field>
+                </Box>
+              </Form>
             </Box>
 
             <Flex
@@ -60,7 +84,12 @@ const ExplorePageTemplate = ({
               <Button.Outline onClick={() => dispatch({ type: "modal:close" })}>
                 Cancel
               </Button.Outline>
-              <Button ml={3}>Add</Button>
+              <Button
+                ml={3}
+                onClick={() => dispatch({ type: "tokenAddress:add" })}
+              >
+                Add
+              </Button>
             </Flex>
           </Card>
         </Modal>

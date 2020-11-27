@@ -12,62 +12,62 @@ const DashboardPage = () => {
   const [provider, setProvider] = useState();
   const [tokens, setTokensAddress] = useState([]);
   const [walletAddress, setWalletAddress] = useState("");
-  const [getCreatorTokens, { loading, error, data }] = useLazyQuery(
-    GET_CREATOR_TOKENS
-  );
+  // const [getCreatorTokens, { loading, error, data }] = useLazyQuery(
+  //   GET_CREATOR_TOKENS
+  // );
 
   const loadWeb3Modal = useCallback(async () => {
     const newProvider = await web3Modal.connect();
     setProvider(new Web3Provider(newProvider));
   }, []);
 
-  useEffect(() => {
-    if (walletAddress !== "") {
-      getCreatorTokens({
-        variables: { id: walletAddress.toLowerCase() },
-      });
-    }
-  }, [walletAddress, getCreatorTokens]);
+  // useEffect(() => {
+  //   if (walletAddress !== "") {
+  //     getCreatorTokens({
+  //       variables: { id: walletAddress.toLowerCase() },
+  //     });
+  //   }
+  // }, [walletAddress, getCreatorTokens]);
 
-  useEffect(() => {
-    if (loading || error || !data) {
-      return;
-    }
-    const f = async () => {
-      const signer = await provider.getSigner();
-      const staking = new Contract(addresses.Staking, abis.staking, signer);
-      const vesting = new Contract(addresses.Vesting, abis.vesting, signer);
-      if (!data.creator) {
-        return;
-      }
-      const tmpTokens = await Promise.all(
-        data.creator.tokens.map(async (creatorToken) => {
-          const vestingAmount = await vesting.remainingAmount(creatorToken.id);
-          const redeemableAmount = await vesting.redeemableAmount(
-            creatorToken.id
-          );
-          const isStakingPaused = await staking.tokensStakingPaused(
-            creatorToken.id
-          );
-          const decimals = creatorToken.decimals;
-          return {
-            address: creatorToken.id,
-            name: creatorToken.name,
-            symbol: creatorToken.symbol,
-            vestingAmount: ethers.utils.formatUnits(vestingAmount, decimals),
-            redeemableAmount: ethers.utils.formatUnits(
-              redeemableAmount,
-              decimals
-            ),
-            // isStakingPaused: !creatorToken.enableStakeToToken // TODO Fix staking status from subgraph is not updated
-            isStakingPaused: isStakingPaused,
-          };
-        })
-      );
-      setTokensAddress(tmpTokens);
-    };
-    f();
-  }, [loading, error, data, setTokensAddress]);
+  // useEffect(() => {
+  //   if (loading || error || !data) {
+  //     return;
+  //   }
+  //   const f = async () => {
+  //     const signer = await provider.getSigner();
+  //     const staking = new Contract(addresses.Staking, abis.staking, signer);
+  //     const vesting = new Contract(addresses.Vesting, abis.vesting, signer);
+  //     if (!data.creator) {
+  //       return;
+  //     }
+  //     const tmpTokens = await Promise.all(
+  //       data.creator.tokens.map(async (creatorToken) => {
+  //         const vestingAmount = await vesting.remainingAmount(creatorToken.id);
+  //         const redeemableAmount = await vesting.redeemableAmount(
+  //           creatorToken.id
+  //         );
+  //         const isStakingPaused = await staking.tokensStakingPaused(
+  //           creatorToken.id
+  //         );
+  //         const decimals = creatorToken.decimals;
+  //         return {
+  //           address: creatorToken.id,
+  //           name: creatorToken.name,
+  //           symbol: creatorToken.symbol,
+  //           vestingAmount: ethers.utils.formatUnits(vestingAmount, decimals),
+  //           redeemableAmount: ethers.utils.formatUnits(
+  //             redeemableAmount,
+  //             decimals
+  //           ),
+  //           // isStakingPaused: !creatorToken.enableStakeToToken // TODO Fix staking status from subgraph is not updated
+  //           isStakingPaused: isStakingPaused,
+  //         };
+  //       })
+  //     );
+  //     setTokensAddress(tmpTokens);
+  //   };
+  //   f();
+  // }, [loading, error, data, setTokensAddress]);
 
   useEffect(() => {
     if (web3Modal.cachedProvider) {

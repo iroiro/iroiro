@@ -1,55 +1,58 @@
-import * as React from 'react';
-import {Story, Meta} from '@storybook/react/types-6-0'
-import {BrowserRouter} from "react-router-dom";
-import TokenList, {TokenListProps} from "./index";
-import {UserToken} from "../../../interfaces";
+import * as React from "react";
+import { Story, Meta } from "@storybook/react/types-6-0";
+import { BrowserRouter } from "react-router-dom";
+import TokenList, { TokenListProps } from "./index";
+import { TokenBasic } from "../../../interfaces";
 
 export default {
-    title: "Molecules/TokenList",
-    component: TokenList
-} as Meta
+  title: "Molecules/TokenList",
+  component: TokenList,
+} as Meta;
 
 const Template: Story<TokenListProps> = (args) => (
-    <BrowserRouter>
-        <TokenList {...args} />
-    </BrowserRouter>
-)
+  <BrowserRouter>
+    <TokenList {...args} />
+  </BrowserRouter>
+);
 
-const tokens: UserToken[] = [
-    {
-        address: "0xabcd....1234",
-        name: "Iroiro Token",
-        symbol: "IRO",
-        balance: "2000000000"
-    },
-    {
-        address: "0xabcd....1234",
-        name: "Storybook Token",
-        symbol: "STR",
-        balance: "1000000000"
-    },
-    {
-        address: "0xabcd....1234",
-        name: "Test Token",
-        symbol: "TST",
-        balance: "3000000000"
-    }
-]
+const tokens: TokenBasic[] = [
+  {
+    tokenAddress: "0xabcd....1234",
+    name: "Iroiro Token",
+    symbol: "IRO",
+    decimals: 18,
+    totalSupply: 2000000000,
+  },
+  {
+    tokenAddress: "0xabcd....1234",
+    name: "Storybook Token",
+    symbol: "STR",
+    decimals: 4,
+    totalSupply: 1000000000,
+  },
+  {
+    tokenAddress: "0xabcd....1234",
+    name: "Test Token",
+    symbol: "TST",
+    decimals: 8,
+    totalSupply: 3000000000,
+  },
+];
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
-    tokens,
-    loading: false
-}
+  tokens,
+  loading: false,
+};
 
-export const NoTokens = Template.bind({})
+export const NoTokens = Template.bind({});
 NoTokens.args = {
-    tokens: [],
-    loading: false
-}
+  tokens: [],
+  loading: false,
+};
 
-export const Loading = Template.bind({})
+export const Loading = Template.bind({});
 Loading.args = {
-    tokens: [],
-    loading: true
-}
+  tokens: [],
+  loading: true,
+};

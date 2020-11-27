@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Heading, Loader, Text, Box } from "rimble-ui";
 import TokenListItem from "../../molecules/TokenListItem";
-import { UserToken } from "../../../interfaces";
+import { TokenBasic } from "../../../interfaces";
 // import { Link } from "react-router-dom";
 
 export interface TokenListProps {
-  readonly tokens: UserToken[];
+  readonly tokens: TokenBasic[];
   readonly loading: boolean;
 }
 
@@ -19,9 +19,9 @@ const TokenList = ({ tokens, loading }: TokenListProps) => (
       <Box>
         {tokens.map((token) => (
           <TokenListItem
-            key={token.address}
+            key={token.tokenAddress}
             name={token.name}
-            address={token.address}
+            address={token.tokenAddress}
           />
         ))}
       </Box>
