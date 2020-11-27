@@ -8,12 +8,11 @@ dotenv.config()
 const Web3 = require("web3");
 
 // TODO: Update getting ABI logic
-// TODO Use AudiusFollowersCampaign instead
-const {abi} = require('../build/contracts/Audius.json');
+const {abi} = require('../build/contracts/AudiusFollowersCampaign.json');
 const contractInterface: AbiItem[] = abi;
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER));
 const proxyAddress: string = process.env.AUDIUS_CONTRACT_ADDRESS
-const Audius = new web3.eth.Contract(contractInterface, proxyAddress);
+const Campaign = new web3.eth.Contract(contractInterface, proxyAddress);
 
 const ipfs = ipfsClient("https://ipfs.infura.io:5001")
 const app = express();
@@ -24,7 +23,7 @@ app.post('/api', async (req, res) => {
     console.debug("request body: ", req.body)
     const cid = req.body.data.cid
     const userAddress = req.body.data.userAddress
-    const userId = new BN(await Audius.methods.userIdList(userAddress).call())
+    const userId = new BN(await Campaign.methods.userIdList(userAddress).call())
         .mul(new BN(10))
 
     // TODO Add error handling
