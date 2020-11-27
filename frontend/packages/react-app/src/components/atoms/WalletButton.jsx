@@ -1,14 +1,21 @@
 import { Button, Flex, Box } from "rimble-ui";
 import React, { useEffect } from "react";
-import { useWeb3React } from "@web3-react/core";
+import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { injected } from "./connectors";
 
 const WalletButton = () => {
   const { account, deactivate, active, error, activate } = useWeb3React();
+  const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
+  if (isUnsupportedChainIdError) {
+    alert(
+      "Currently we only supports Rikneby network. Please change your network to Rinkeby."
+    );
+  }
 
   useEffect(() => {
     const { ethereum } = window;
     if (ethereum && ethereum.on && !active && !error) {
+      console.log("ethereum");
       const handleConnect = () => {
         console.log("Handling 'connect' event");
         activate(injected);
@@ -46,10 +53,10 @@ const WalletButton = () => {
 
   return (
     <Flex style={{ alignItems: "center" }}>
-      <Box mx={4}>{active ? <div>{account}</div> : <div>-</div>}</Box>
+      {active ? <Box mx={4}>{account}</Box> : <div></div>}
+
       <Button.Outline
         mainColor="#333"
-        mr={4}
         onClick={() => {
           if (!active) {
             activate(injected);

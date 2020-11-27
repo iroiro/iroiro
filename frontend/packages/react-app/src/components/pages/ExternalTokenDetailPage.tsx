@@ -1,9 +1,49 @@
-import React from "react";
+import React, { useEffect, useCallback, useReducer } from "react";
+import { RouteComponentProps } from "react-router-dom";
+import { tokenReducer } from "../../reducers/token";
+import { useWeb3React } from "@web3-react/core";
+import { Contract } from "@ethersproject/contracts";
+// @ts-ignore
+import { abis } from "@project/contracts";
+import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
 
-interface Props {}
+interface Props extends RouteComponentProps<{ address: string }> {}
+
+const initialState = {
+  token: {
+    name: "",
+    tokenAddress: "",
+  },
+};
 
 const ExternalTokenDetailPage = (props: Props) => {
-  return <>ExternalTokenDetailPage!!!</>;
+  const { library, account, activate } = useWeb3React();
+  const [state, dispatch] = useReducer(tokenReducer, initialState);
+
+  const tokenAddress: string = props.match.params.address;
+
+  const getTokenInfo = useCallback(async (library) => {
+    const signer = library.getSigner();
+    const erc20 = new Contract(tokenAddress, abis.fanToken, signer);
+    const name: string = await erc20.name();
+    const token = {
+      name: name,
+      tokenAddress: tokenAddress,
+    };
+    dispatch({ type: "token:set", payload: { token } });
+  }, []);
+
+  useEffect(() => {
+    if (library) {
+      getTokenInfo(library);
+    }
+  }, [library, account, activate]);
+
+  return (
+    <>
+      <ExternalTokenDetailPageTemplate state={state} />
+    </>
+  );
 };
 
 export default ExternalTokenDetailPage;

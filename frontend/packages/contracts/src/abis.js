@@ -2,7 +2,7 @@ import erc20Abi from "./abis/erc20.json";
 import ownableAbi from "./abis/ownable.json";
 import tokenFactoryAbi from "./abis/TokenFactory.json";
 import fanTokenAbi from "./abis/FanToken.json";
-import stakingAbi from "./abis/Staking.json"
+import stakingAbi from "./abis/Staking.json";
 import vestingAbi from "./abis/Vesting.json";
 import audiusAbi from "./abis/Audius.json";
 
