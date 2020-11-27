@@ -13,11 +13,20 @@ module.exports = {
       port: 7545,
       network_id: "*",
     },
-    ropsten: {
+    rinkeby: {
       provider: () => {
         return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL);
       },
-      network_id: "3",
+      network_id: "4",
+      // ~~Necessary due to https://github.com/trufflesuite/truffle/issues/1971~~
+      // Necessary due to https://github.com/trufflesuite/truffle/issues/3008
+      skipDryRun: true,
+    },
+    kovan: {
+      provider: () => {
+        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL);
+      },
+      network_id: "42",
       // ~~Necessary due to https://github.com/trufflesuite/truffle/issues/1971~~
       // Necessary due to https://github.com/trufflesuite/truffle/issues/3008
       skipDryRun: true,
