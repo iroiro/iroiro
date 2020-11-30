@@ -1,12 +1,12 @@
 const web3 = require("web3");
-const AudiusFollowersDistributer = artifacts.require(
-  "AudiusFollowersDistributer"
+const AudiusFollowersDistributor = artifacts.require(
+  "AudiusFollowersDistributor"
 );
 const { LinkToken } = require("@chainlink/contracts/truffle/v0.4/LinkToken");
 const { Oracle } = require("@chainlink/contracts/truffle/v0.6/Oracle");
 
 // TODO: Set info cid
-const distributerInfoCids = {
+const distributorInfoCids = {
   kovan: "",
   cldev: "",
   live: "",
@@ -22,8 +22,8 @@ module.exports = async (deployer, network, [defaultAccount]) => {
         { from: defaultAccount }
       );
       await deployer.deploy(
-        AudiusFollowersDistributer,
-        distributerInfoCids["kovan"],
+        AudiusFollowersDistributor,
+        distributorInfoCids["kovan"],
         "0x01BE23585060835E02B77ef475b0Cc51aA1e0709"
       );
     } catch (err) {
@@ -38,8 +38,8 @@ module.exports = async (deployer, network, [defaultAccount]) => {
         { from: defaultAccount }
       );
       await deployer.deploy(
-        AudiusFollowersDistributer,
-        distributerInfoCids["kovan"],
+        AudiusFollowersDistributor,
+        distributorInfoCids["kovan"],
         "0xa36085F69e2889c224210F603D836748e7dC0088"
       );
     } catch (err) {
@@ -56,8 +56,8 @@ module.exports = async (deployer, network, [defaultAccount]) => {
         from: defaultAccount,
       });
       await deployer.deploy(
-        AudiusFollowersDistributer,
-        distributerInfoCids[network],
+        AudiusFollowersDistributor,
+        distributorInfoCids[network],
         LinkToken.address
       );
     } catch (err) {
@@ -67,8 +67,8 @@ module.exports = async (deployer, network, [defaultAccount]) => {
     // For live networks, use the 0 address to allow the ChainlinkRegistry
     // contract automatically retrieve the correct address for you
     await deployer.deploy(
-      AudiusFollowersDistributer,
-      distributerInfoCids["live"],
+      AudiusFollowersDistributor,
+      distributorInfoCids["live"],
       "0x0000000000000000000000000000000000000000"
     );
   }

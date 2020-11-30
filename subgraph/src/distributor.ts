@@ -1,14 +1,14 @@
 import { log } from "@graphprotocol/graph-ts";
-import { Campaign, Creator, Distributer } from "./types/schema";
+import { Campaign, Creator, Distributor } from "./types/schema";
 import { AudiusFollowersCampaign as CampaignTemplate } from "./types/templates";
-import { CreateCampaign } from "./types/AudiusFollowersDistributer/AudiusFollowersDistributer";
+import { CreateCampaign } from "./types/AudiusFollowersDistributor/AudiusFollowersDistributor";
 import { AudiusFollowersCampaign } from "./types/templates/AudiusFollowersCampaign/AudiusFollowersCampaign";
 
 export function handleCreateCampaign(event: CreateCampaign): void {
-  let distributerId = event.address.toHexString();
-  let distributer = Distributer.load(distributerId);
-  if (distributer == null) {
-    distributer = new Distributer(distributerId);
+  let distributorId = event.address.toHexString();
+  let distributor = Distributor.load(distributorId);
+  if (distributor == null) {
+    distributor = new Distributor(distributorId);
   }
 
   let creatorId = event.params.creator.toHexString();
@@ -22,7 +22,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   if (campaign == null) {
     campaign = new Campaign(campaignId);
   }
-  campaign.distributer = event.address.toHexString();
+  campaign.distributor = event.address.toHexString();
   campaign.token = event.params.token.toHexString();
   campaign.creator = event.params.creator.toHexString();
 
@@ -71,7 +71,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   }
 
   campaign.save();
-  distributer.save();
+  distributor.save();
   creator.save();
 
   CampaignTemplate.create(event.params.campaign)

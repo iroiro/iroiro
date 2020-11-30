@@ -7,11 +7,11 @@ const {
 } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
-const Distributer = contract.fromArtifact("AudiusFollowersDistributer");
+const Distributor = contract.fromArtifact("AudiusFollowersDistributor");
 const Campaign = contract.fromArtifact("AudiusFollowersCampaign");
 const FanToken = contract.fromArtifact("FanToken");
 
-describe("AudiusFollowersDistributer", () => {
+describe("AudiusFollowersDistributor", () => {
   const [owner, alice, link] = accounts;
 
   let now, future;
@@ -21,7 +21,7 @@ describe("AudiusFollowersDistributer", () => {
   const recipientsNum = 100;
 
   beforeEach(async () => {
-    this.distributer = await Distributer.new("distributer info cid", link, {
+    this.distributor = await Distributor.new("distributor info cid", link, {
       from: owner,
     });
     this.abctoken = await FanToken.new(
@@ -53,7 +53,7 @@ describe("AudiusFollowersDistributer", () => {
   describe("createCampaign", () => {
     it("throws an error if msg.sender is not matched to token sender", async () => {
       try {
-        await this.distributer.createCampaign(
+        await this.distributor.createCampaign(
           this.abctoken.address,
           owner,
           campaignInfoCid,
@@ -72,7 +72,7 @@ describe("AudiusFollowersDistributer", () => {
 
     it("throws an error if there is no allowance", async () => {
       try {
-        await this.distributer.createCampaign(
+        await this.distributor.createCampaign(
           this.abctoken.address,
           owner,
           campaignInfoCid,
@@ -90,11 +90,11 @@ describe("AudiusFollowersDistributer", () => {
     });
 
     it("throws an error if allowance is not enough to recipients", async () => {
-      await this.abctoken.approve(this.distributer.address, 99, {
+      await this.abctoken.approve(this.distributor.address, 99, {
         from: owner,
       });
       try {
-        await this.distributer.createCampaign(
+        await this.distributor.createCampaign(
           this.abctoken.address,
           owner,
           campaignInfoCid,
@@ -116,10 +116,10 @@ describe("AudiusFollowersDistributer", () => {
     describe("success case", () => {
       let campaignAddress, receipt;
       beforeEach(async () => {
-        await this.abctoken.approve(this.distributer.address, 100, {
+        await this.abctoken.approve(this.distributor.address, 100, {
           from: owner,
         });
-        receipt = await this.distributer.createCampaign(
+        receipt = await this.distributor.createCampaign(
           this.abctoken.address,
           owner,
           campaignInfoCid,
@@ -129,7 +129,7 @@ describe("AudiusFollowersDistributer", () => {
           future,
           { from: owner }
         );
-        campaignAddress = await this.distributer.campaignList(1);
+        campaignAddress = await this.distributor.campaignList(1);
         console.debug("Campaign Address: ", campaignAddress);
       });
 
@@ -144,7 +144,7 @@ describe("AudiusFollowersDistributer", () => {
       });
 
       it("increment next campaign id", async () => {
-        expect((await this.distributer.nextCampaignId()).toString()).to.equal(
+        expect((await this.distributor.nextCampaignId()).toString()).to.equal(
           "2"
         );
       });
