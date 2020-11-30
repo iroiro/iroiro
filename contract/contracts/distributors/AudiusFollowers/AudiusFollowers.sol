@@ -113,8 +113,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
     function requestCheckingIsClaimable(
         address _oracle,
         bytes32 _jobId,
-        uint256 fee,
-        string memory userAddress
+        uint256 fee
     ) external returns (bytes32 requestId) {
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(link.allowance(msg.sender, address(this)) >= fee, "allowance is not enough");
@@ -131,7 +130,8 @@ contract AudiusFollowersCampaign is CampaignInterface {
 
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
         request.add("cid", recipientsCid);
-        request.add("userAddress", userAddress);
+        request.addBytes("userAddress", abi.encodePacked(msg.sender));
+        request.addBytes("campaignAddress", abi.encodePacked(address(this)));
 
         return sendChainlinkRequestTo(_oracle, request, fee);
     }
