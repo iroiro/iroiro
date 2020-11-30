@@ -16,8 +16,6 @@ const Web3 = require("web3");
 const {abi} = require('../build/contracts/AudiusFollowersCampaign.json');
 const contractInterface: AbiItem[] = abi;
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER));
-const proxyAddress: string = process.env.AUDIUS_CONTRACT_ADDRESS
-const Campaign: AudiusFollowersCampaign = new web3.eth.Contract(contractInterface, proxyAddress);
 
 const ipfs = ipfsClient("https://gateway.pinata.cloud/")
 const app = express();
@@ -28,6 +26,9 @@ app.post('/api', async (req, res) => {
     console.debug("request body: ", req.body)
     const cid: string = req.body.data.cid
     const userAddress: string = req.body.data.userAddress
+    const proxyAddress: string = req.body.data.campaignAddress
+    const Campaign: AudiusFollowersCampaign = new web3.eth.Contract(contractInterface, proxyAddress);
+
     let rawUserId: string
     try {
         rawUserId = await Campaign.methods.userIdList(userAddress).call()
