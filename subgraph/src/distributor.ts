@@ -74,5 +74,5 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   distributor.save();
   creator.save();
 
-  CampaignTemplate.create(event.params.campaign)
+  CampaignTemplate.create(event.params.campaign);
 }
