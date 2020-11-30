@@ -13,14 +13,14 @@ type Account @entity {
   #  donates: [Donate!]! @derivedFrom(field: "account")
 }
 
-type Distributer @entity {
+type Distributor @entity {
   id: ID!
-  campaigns: [Campaign!]! @derivedFrom(field: "distributer")
+  campaigns: [Campaign!]! @derivedFrom(field: "distributor")
 }
 
 type Campaign @entity {
   id: ID!
-  distributer: Distributer!
+  distributor: Distributor!
   token: String!
   startDate: BigInt
   endDate: BigInt

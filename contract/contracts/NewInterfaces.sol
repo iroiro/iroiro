@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract DistributerInterface {
+contract DistributorInterface {
     using SafeMath for uint256;
 
     event CreateCampaign(
@@ -15,12 +15,12 @@ contract DistributerInterface {
         address indexed creator
     );
 
-    constructor(string memory _distributerInfoCid, address _link) public {
-        distributerInfoCid = _distributerInfoCid;
+    constructor(string memory _distributorInfoCid, address _link) public {
+        distributorInfoCid = _distributorInfoCid;
         link = _link;
     }
 
-    string public distributerInfoCid;
+    string public distributorInfoCid;
     // TODO: Add features updatable or whitelist
     address public link;
     uint256 public nextCampaignId = 1;

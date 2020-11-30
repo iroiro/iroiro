@@ -6,9 +6,9 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.6/interfaces/LinkTokenInterface.sol";
 import "../../SafeMath64.sol";
 
-contract AudiusFollowersDistributer is DistributerInterface {
-    constructor (string memory _distributerInfoCid, address _link) public
-    DistributerInterface(_distributerInfoCid, _link) {}
+contract AudiusFollowersDistributor is DistributorInterface {
+    constructor (string memory _distributorInfoCid, address _link) public
+    DistributorInterface(_distributorInfoCid, _link) {}
 
     function createCampaign(
         address payable token,

@@ -2,14 +2,14 @@ const { accounts, contract } = require("@openzeppelin/test-environment");
 const { constants } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
-const Distributer = contract.fromArtifact("DistributerInterface");
+const Distributor = contract.fromArtifact("DistributorInterface");
 const FanToken = contract.fromArtifact("FanToken");
 
-describe("DistributerInterface", () => {
+describe("DistributorInterface", () => {
   const [owner, alice, link] = accounts;
 
   beforeEach(async () => {
-    this.distributer = await Distributer.new("distributer info cid", link, {
+    this.distributor = await Distributor.new("distributor info cid", link, {
       from: owner,
     });
     this.abctoken = await FanToken.new(
@@ -37,12 +37,12 @@ describe("DistributerInterface", () => {
   });
 
   it("has a name", async () => {
-    expect(await this.distributer.distributerInfoCid()).to.equal(
-      "distributer info cid"
+    expect(await this.distributor.distributorInfoCid()).to.equal(
+      "distributor info cid"
     );
   });
 
   it("has link address", async () => {
-    expect(await this.distributer.link()).to.equal(link);
+    expect(await this.distributor.link()).to.equal(link);
   });
 });

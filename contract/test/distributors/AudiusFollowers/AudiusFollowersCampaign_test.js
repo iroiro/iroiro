@@ -6,7 +6,7 @@ const { BN, expectEvent, expectRevert, time } = require('@openzeppelin/test-help
 contract.skip('AudiusFollowersCampaign', accounts => {
   const { LinkToken } = require('@chainlink/contracts/truffle/v0.4/LinkToken')
   const { Oracle } = require('@chainlink/contracts/truffle/v0.6/Oracle')
-  const Distributer = artifacts.require('AudiusFollowersDistributer.sol')
+  const Distributor = artifacts.require('AudiusFollowersDistributor.sol')
   const Campaign = artifacts.require('AudiusFollowersCampaign.sol')
   const FanToken = artifacts.require('FanToken.sol')
 
@@ -30,7 +30,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
   // Represents 1 LINK for testnet requests
   const payment = web3.utils.toWei('1')
 
-  let link, oc, cc, distributer, campaign, abctoken, xyztoken, now, future
+  let link, oc, cc, distributor, campaign, abctoken, xyztoken, now, future
 
   const campaignInfoCid = "campaign info cid"
   const recipientsCid = "recipients cid"
@@ -39,7 +39,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
   beforeEach(async () => {
     link = await LinkToken.new({ from: defaultAccount })
     oc = await Oracle.new(link.address, { from: defaultAccount })
-    distributer = await Distributer.new("Audius Test Distributer", link.address, {from: defaultAccount})
+    distributor = await Distributor.new("Audius Test Distributor", link.address, {from: defaultAccount})
     abctoken = await FanToken.new(
         "ABCToken", "ABC", 1000000000, defaultAccount, 5, defaultAccount, 50, 5, {from: defaultAccount}
     )
@@ -47,15 +47,15 @@ contract.skip('AudiusFollowersCampaign', accounts => {
         "XYZToken", "XYZ", 1000000000, defaultAccount, 5, defaultAccount, 50, 5, {from: defaultAccount}
     )
     await abctoken.transfer(consumer, 1000, { from: defaultAccount})
-    await abctoken.approve(distributer.address, 1000, { from: consumer})
+    await abctoken.approve(distributor.address, 1000, { from: consumer})
     now = await time.latest()
     future = now.add(time.duration.weeks(4))
-    await abctoken.approve(distributer.address, 100, {from: defaultAccount})
-    receipt = await distributer.createCampaign(
+    await abctoken.approve(distributor.address, 100, {from: defaultAccount})
+    receipt = await distributor.createCampaign(
         abctoken.address, consumer, campaignInfoCid, recipientsCid, recipientsNum, now, future,
         {from: consumer}
     )
-    campaignAddress = await distributer.campaignList(1)
+    campaignAddress = await distributor.campaignList(1)
     cc = await Campaign.at(campaignAddress)
     await oc.setFulfillmentPermission(oracleNode, true, {
       from: defaultAccount,
@@ -203,15 +203,15 @@ contract.skip('AudiusFollowersCampaign', accounts => {
       let futurecc
       beforeEach(async () => {
         await abctoken.transfer(consumer, 1000, { from: defaultAccount})
-        await abctoken.approve(distributer.address, 1000, { from: consumer})
+        await abctoken.approve(distributor.address, 1000, { from: consumer})
         const oneweeklater = await now.add(time.duration.weeks(1))
         const twoweeklater = await now.add(time.duration.weeks(2))
-        await abctoken.approve(distributer.address, 100, {from: defaultAccount})
-        receipt = await distributer.createCampaign(
+        await abctoken.approve(distributor.address, 100, {from: defaultAccount})
+        receipt = await distributor.createCampaign(
             abctoken.address, consumer, campaignInfoCid, recipientsCid, recipientsNum, oneweeklater, twoweeklater,
             {from: consumer}
         )
-        const futurecampaignaddress = await distributer.campaignList(2)
+        const futurecampaignaddress = await distributor.campaignList(2)
         futurecc = await Campaign.at(futurecampaignaddress)
         const expected = web3.utils.soliditySha3(new BN(11))
         const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
@@ -243,15 +243,15 @@ contract.skip('AudiusFollowersCampaign', accounts => {
       let pastcc
       beforeEach(async () => {
         await abctoken.transfer(consumer, 1000, { from: defaultAccount})
-        await abctoken.approve(distributer.address, 1000, { from: consumer})
+        await abctoken.approve(distributor.address, 1000, { from: consumer})
         const now = await time.latest()
         const oneweeklater = await now.add(time.duration.weeks(1))
-        await abctoken.approve(distributer.address, 100, {from: defaultAccount})
-        receipt = await distributer.createCampaign(
+        await abctoken.approve(distributor.address, 100, {from: defaultAccount})
+        receipt = await distributor.createCampaign(
             abctoken.address, consumer, campaignInfoCid, recipientsCid, recipientsNum, now, oneweeklater,
             {from: consumer}
         )
-        const pastcampaignaddress = await distributer.campaignList(2)
+        const pastcampaignaddress = await distributor.campaignList(2)
         pastcc = await Campaign.at(pastcampaignaddress)
         const expected = web3.utils.soliditySha3(new BN(11))
         const response = web3.utils.padLeft(web3.utils.toHex(expected), 64)
