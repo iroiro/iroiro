@@ -1,4 +1,3 @@
-const web3 = require("web3");
 const AudiusFollowersDistributor = artifacts.require(
   "AudiusFollowersDistributor"
 );
@@ -7,6 +6,7 @@ const { Oracle } = require("@chainlink/contracts/truffle/v0.6/Oracle");
 
 // TODO: Set info cid
 const distributorInfoCids = {
+  rinkeby: "",
   kovan: "",
   cldev: "",
   live: "",
@@ -14,13 +14,7 @@ const distributorInfoCids = {
 
 module.exports = async (deployer, network, [defaultAccount]) => {
   if (network.startsWith("rinkeby")) {
-    Oracle.setProvider(deployer.provider);
     try {
-      await deployer.deploy(
-        Oracle,
-        "0x01BE23585060835E02B77ef475b0Cc51aA1e0709",
-        { from: defaultAccount }
-      );
       await deployer.deploy(
         AudiusFollowersDistributor,
         distributorInfoCids["kovan"],
@@ -30,13 +24,7 @@ module.exports = async (deployer, network, [defaultAccount]) => {
       console.error(err);
     }
   } else if (network.startsWith("kovan")) {
-    Oracle.setProvider(deployer.provider);
     try {
-      await deployer.deploy(
-        Oracle,
-        "0xa36085F69e2889c224210F603D836748e7dC0088",
-        { from: defaultAccount }
-      );
       await deployer.deploy(
         AudiusFollowersDistributor,
         distributorInfoCids["kovan"],
