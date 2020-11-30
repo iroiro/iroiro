@@ -28,7 +28,7 @@ dataSources:
           handler: handleCreateToken
       file: ./src/mapping.ts
   - kind: ethereum/contract
-    name: AudiusFollowersDistributer
+    name: AudiusFollowersDistributor
     network: rinkeby
 #    network: kovan
 #    network: mainnet # This is for local graph node
@@ -37,7 +37,7 @@ dataSources:
       address: "0x56EBe77Df926A63b3d6C080f5B1b08cce430e433" # TokenFactory contract address on rinkeby
 #      address: "0x02e00DD6c22223B7d459aB472C947544f1619921" # TokenFactory contract address on kovan
       # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
-      abi: AudiusFollowersDistributer
+      abi: AudiusFollowersDistributor
       startBlock: 7602293 # for Rinkeby. Comment out this line for local graph node
 #      startBlock: 22251048 # for Kovan. Comment out this line for local graph node
     mapping:
@@ -46,16 +46,16 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Campaign
-        - Distributer
+        - Distributor
       abis:
-        - name: AudiusFollowersDistributer
-          file: ../contract/build/contracts/AudiusFollowersDistributer.json
+        - name: AudiusFollowersDistributor
+          file: ../contract/build/contracts/AudiusFollowersDistributor.json
         - name: AudiusFollowersCampaign
           file: ../contract/build/contracts/AudiusFollowersCampaign.json
       eventHandlers:
         - event: CreateCampaign(indexed address,indexed address,indexed address)
           handler: handleCreateCampaign
-      file: ./src/distributer.ts
+      file: ./src/distributor.ts
 # TODO Not deployed in this phase.
 #  - kind: ethereum/contract
 #    name: Donator

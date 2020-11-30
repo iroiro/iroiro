@@ -20,7 +20,9 @@ const AppHeader = () => (
           mainColor={"itblue"}
         />
         <LinkButton p={4} path="/explore" text="Explore" mainColor={"itred"} />
-        <WalletButton />
+        <Box mr={4}>
+          <WalletButton />
+        </Box>
       </Flex>
     </Header>
     <hr color={"lightgray"} style={{ margin: "0px" }} />

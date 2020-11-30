@@ -5,4 +5,7 @@ docker/chainlink/data/*
 # subgraph
 subgraph/build/
 subgraph/src/types/
-node_modules/ 
+node_modules/
+
+# typechain
+types/
