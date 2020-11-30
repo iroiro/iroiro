@@ -1,29 +1,29 @@
 import React from "react";
-import { Box, Link, Heading, Text } from "rimble-ui";
+import { Box, Heading, Text } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
-import TokenList from "../../organisms/TokenList";
 import { TokenListState } from "../../../reducers/tokens";
+import TokenList from "../../organisms/TokenList";
 import SetTokenModal from "../../organisms/SetTokenModal";
 import AddNewToken from "../../atoms/AddNewToken";
 
-export interface ExplorePageTemplateProps {
+export interface DashboardPageTemplateProps {
   readonly color: string;
   readonly state: TokenListState;
   dispatch({}: object): void;
 }
 
-const ExplorePageTemplate = ({
+const DashboardPageTemplate = ({
   color,
   state,
   dispatch,
-}: ExplorePageTemplateProps) => (
+}: DashboardPageTemplateProps) => (
   <div>
     <AppHeader />
     <Box m={"auto"} my={5} width={[3 / 4, 1 / 2]}>
-      <Heading as={"h1"}>Token Explorer</Heading>
+      <Heading as={"h1"}>Token Distribution Dashboard</Heading>
       <Text>
-        Check the status of the tokens you have been distributed and information
-        on the campaign.
+        You can create a token distribution campaign. Let's set the tokens to be
+        distributed and create a campaign.
       </Text>
       <TokenList color={color} tokens={state.tokens} loading={false} />
       <AddNewToken color={color} dispatch={dispatch} />
@@ -32,4 +32,4 @@ const ExplorePageTemplate = ({
   </div>
 );
 
-export default ExplorePageTemplate;
+export default DashboardPageTemplate;

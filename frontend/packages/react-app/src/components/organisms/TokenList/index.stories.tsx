@@ -5,7 +5,7 @@ import TokenList, { TokenListProps } from "./index";
 import { TokenBasic } from "../../../interfaces";
 
 export default {
-  title: "Molecules/TokenList",
+  title: "Organisms/TokenList",
   component: TokenList,
 } as Meta;
 

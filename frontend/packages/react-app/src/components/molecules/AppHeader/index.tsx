@@ -17,14 +17,9 @@ const AppHeader = () => (
           p={4}
           path="/dashboard"
           text="Dashboard"
-          mainColor={"#E25E89"}
+          mainColor={"itblue"}
         />
-        <LinkButton
-          p={4}
-          path="/explore"
-          text="Explore"
-          mainColor={"#48C5D5"}
-        />
+        <LinkButton p={4} path="/explore" text="Explore" mainColor={"itred"} />
         <WalletButton />
       </Flex>
     </Header>

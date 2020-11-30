@@ -9,14 +9,14 @@ export type ACTIONS =
   | { type: "tokenAddress:add" }
   | { type: "tokens:getlocal" };
 
-export interface ExplorePageState {
+export interface TokenListState {
   isOpen: boolean;
   tokens: TokenBasic[];
   tokenAddress: string;
   inputTokenAddress: string;
 }
 
-export function tokensReducer(state: ExplorePageState, action: ACTIONS) {
+export function tokensReducer(state: TokenListState, action: ACTIONS) {
   switch (action.type) {
     case "modal:open":
       return { ...state, isOpen: true };
