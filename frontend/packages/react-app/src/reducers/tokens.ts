@@ -14,6 +14,8 @@ export interface TokenListState {
   tokens: TokenBasic[];
   tokenAddress: string;
   inputTokenAddress: string;
+  type: string;
+  color: string;
 }
 
 export function tokensReducer(state: TokenListState, action: ACTIONS) {

@@ -9,6 +9,8 @@ const initialState = {
   tokens: [],
   tokenAddress: "",
   inputTokenAddress: "",
+  type: "explore",
+  color: "itred",
 };
 
 const ExplorePage = () => {
@@ -25,9 +27,7 @@ const ExplorePage = () => {
     }
   }, [library, state.tokenAddress]);
 
-  return (
-    <ExplorePageTemplate color="itred" state={state} dispatch={dispatch} />
-  );
+  return <ExplorePageTemplate state={state} dispatch={dispatch} />;
 };
 
 export default ExplorePage;

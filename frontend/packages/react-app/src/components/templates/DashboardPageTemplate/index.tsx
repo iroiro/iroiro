@@ -7,13 +7,11 @@ import SetTokenModal from "../../organisms/SetTokenModal";
 import AddNewToken from "../../atoms/AddNewToken";
 
 export interface DashboardPageTemplateProps {
-  readonly color: string;
   readonly state: TokenListState;
   dispatch({}: object): void;
 }
 
 const DashboardPageTemplate = ({
-  color,
   state,
   dispatch,
 }: DashboardPageTemplateProps) => (
@@ -25,9 +23,9 @@ const DashboardPageTemplate = ({
         You can create a token distribution campaign. Let's set the tokens to be
         distributed and create a campaign.
       </Text>
-      <TokenList color={color} tokens={state.tokens} loading={false} />
-      <AddNewToken color={color} dispatch={dispatch} />
-      <SetTokenModal color={color} state={state} dispatch={dispatch} />
+      <TokenList state={state} />
+      <AddNewToken color={state.color} dispatch={dispatch} />
+      <SetTokenModal state={state} dispatch={dispatch} />
     </Box>
   </div>
 );

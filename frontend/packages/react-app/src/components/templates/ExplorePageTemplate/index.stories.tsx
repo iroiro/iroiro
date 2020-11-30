@@ -42,6 +42,8 @@ const state: TokenListState = {
   isOpen: false,
   inputTokenAddress: "",
   tokenAddress: "",
+  type: "explore",
+  color: "itblue",
 };
 
 export const Default = Template.bind({});
@@ -56,6 +58,8 @@ NoTokens.args = {
     isOpen: false,
     inputTokenAddress: "",
     tokenAddress: "",
+    type: "explore",
+    color: "itred",
   },
 };
 
@@ -66,5 +70,7 @@ Loading.args = {
     isOpen: false,
     inputTokenAddress: "",
     tokenAddress: "",
+    type: "explore",
+    color: "itred",
   },
 };

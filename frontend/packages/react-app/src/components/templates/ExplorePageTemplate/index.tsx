@@ -7,16 +7,11 @@ import SetTokenModal from "../../organisms/SetTokenModal";
 import AddNewToken from "../../atoms/AddNewToken";
 
 export interface ExplorePageTemplateProps {
-  readonly color: string;
   readonly state: TokenListState;
   dispatch({}: object): void;
 }
 
-const ExplorePageTemplate = ({
-  color,
-  state,
-  dispatch,
-}: ExplorePageTemplateProps) => (
+const ExplorePageTemplate = ({ state, dispatch }: ExplorePageTemplateProps) => (
   <div>
     <AppHeader />
     <Box m={"auto"} my={5} width={[3 / 4, 1 / 2]}>
@@ -25,9 +20,9 @@ const ExplorePageTemplate = ({
         Check the status of the tokens you have been distributed and information
         on the campaign.
       </Text>
-      <TokenList color={color} tokens={state.tokens} loading={false} />
-      <AddNewToken color={color} dispatch={dispatch} />
-      <SetTokenModal color={color} state={state} dispatch={dispatch} />
+      <TokenList state={state} />
+      <AddNewToken color={state.color} dispatch={dispatch} />
+      <SetTokenModal state={state} dispatch={dispatch} />
     </Box>
   </div>
 );

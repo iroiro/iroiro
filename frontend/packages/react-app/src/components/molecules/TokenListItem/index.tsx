@@ -1,24 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Card, Flex, Text } from "rimble-ui";
+import { Card, Flex, Text } from "rimble-ui";
 
 export interface TokenListItemProps {
-  readonly color: string;
   readonly name: string;
   readonly address: string;
+  readonly color: string;
+  readonly type: string;
 }
 
-const TokenListItem = ({ color, name, address }: TokenListItemProps) => (
+const TokenListItem = ({ name, address, type, color }: TokenListItemProps) => (
   <Card color="black" mb={1}>
     <Flex
       m={1}
       style={{ justifyContent: "space-between", alignItems: "center" }}
     >
-      <Link to={`/token/${address}`} style={{ textDecoration: "none" }}>
-        <Text fontSize="3" fontWeight="bold" color={color}>
-          {name}
-        </Text>
-      </Link>
+      {type === "dashboard" && (
+        <Link to={`/dashboard/${address}`} style={{ textDecoration: "none" }}>
+          <Text fontSize="3" fontWeight="bold" color={color}>
+            {name}
+          </Text>
+        </Link>
+      )}
+      {type === "explore" && (
+        <Link to={`/explore/${address}`} style={{ textDecoration: "none" }}>
+          <Text fontSize="3" fontWeight="bold" color={color}>
+            {name}
+          </Text>
+        </Link>
+      )}
     </Flex>
   </Card>
 );

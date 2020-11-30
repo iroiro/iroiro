@@ -16,5 +16,5 @@ const Template: Story<AddNewTokenProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  color: "isblue",
+  color: "itblue",
 };

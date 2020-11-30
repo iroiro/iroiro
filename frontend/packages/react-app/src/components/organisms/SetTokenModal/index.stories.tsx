@@ -21,6 +21,8 @@ const state: TokenListState = {
   isOpen: true,
   inputTokenAddress: "0xc6fDe3FD2Cc2b173aEC24cc3f267cb3Cd78a26B7",
   tokenAddress: "",
+  type: "dashboard",
+  color: "itblue",
 };
 
 export const Default = Template.bind({});
@@ -35,5 +37,7 @@ NoInput.args = {
     isOpen: true,
     inputTokenAddress: "",
     tokenAddress: "",
+    type: "dashboard",
+    color: "itblue",
   },
 };

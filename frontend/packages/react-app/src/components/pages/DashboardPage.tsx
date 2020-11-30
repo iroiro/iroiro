@@ -9,6 +9,8 @@ const initialState = {
   tokens: [],
   tokenAddress: "",
   inputTokenAddress: "",
+  type: "dashboard",
+  color: "itblue",
 };
 
 const DashboardPage = () => {
@@ -25,7 +27,7 @@ const DashboardPage = () => {
     }
   }, [library, state.tokenAddress]);
 
-  return <Dashboard color="itblue" state={state} dispatch={dispatch} />;
+  return <Dashboard state={state} dispatch={dispatch} />;
 };
 
 export default DashboardPage;

@@ -3,11 +3,7 @@ import { Heading, Modal, Card, Button, Box, Flex } from "rimble-ui";
 import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
 import AddressFormInput from "../../molecules/AddressFormInput";
 
-const SetTokenModal = ({
-  color,
-  state,
-  dispatch,
-}: ExplorePageTemplateProps) => (
+const SetTokenModal = ({ state, dispatch }: ExplorePageTemplateProps) => (
   <Modal isOpen={state.isOpen}>
     <Card width={"420px"} p={0}>
       <Button.Text
@@ -24,7 +20,7 @@ const SetTokenModal = ({
 
       <Box p={4} mb={3}>
         <Heading.h3>Set your token address</Heading.h3>
-        <AddressFormInput color={""} state={state} dispatch={dispatch} />
+        <AddressFormInput state={state} dispatch={dispatch} />
       </Box>
 
       <Flex
@@ -35,13 +31,13 @@ const SetTokenModal = ({
         justifyContent={"flex-end"}
       >
         <Button.Outline
-          mainColor={color}
+          mainColor={state.color}
           onClick={() => dispatch({ type: "modal:close" })}
         >
           Cancel
         </Button.Outline>
         <Button
-          mainColor={color}
+          mainColor={state.color}
           ml={3}
           onClick={() => dispatch({ type: "tokenAddress:add" })}
         >
