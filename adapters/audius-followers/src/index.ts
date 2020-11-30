@@ -6,8 +6,9 @@ import dotenv from "dotenv"
 import {AudiusFollowersCampaign} from "../../../types/AudiusFollowersCampaign";
 dotenv.config()
 
-interface UserAddresses {
-    readonly addresses: string[]
+interface Recipients {
+    readonly type: string
+    readonly targets: string[]
 }
 
 const Web3 = require("web3");
@@ -43,7 +44,7 @@ app.post('/api', async (req, res) => {
     }
     const userId: BN = new BN(rawUserId).mul(new BN(10))
 
-    let content: UserAddresses
+    let content: Recipients
     try {
         content = await getFile(cid)
     } catch(error) {
@@ -56,7 +57,7 @@ app.post('/api', async (req, res) => {
         })
     }
 
-    const isClaimable: boolean = content.addresses.includes(userAddress) // Assume json like { "addresses": ["address1", "address2", ...] }
+    const isClaimable: boolean = content.targets.includes(userAddress)
     const claimKeyHash: string = getClaimKeyHash(userId, isClaimable)
     console.debug("Claim key hash: ", claimKeyHash)
 
@@ -75,7 +76,7 @@ const getClaimKeyHash = (userId: BN, isClimable: boolean): string => {
     return soliditySha3(claimKey)
 }
 
-const getFile = async (cid: string): Promise<UserAddresses> => {
+const getFile = async (cid: string): Promise<Recipients> => {
     for await (const file of ipfs.get(cid)) {
         if (!file.content) {
             continue;
