@@ -4,6 +4,7 @@ import {AbiItem, soliditySha3} from "web3-utils"
 import BN from "bn.js"
 import dotenv from "dotenv"
 import {AudiusFollowersCampaign} from "../../../types/AudiusFollowersCampaign";
+import {AudiusFollowersDistributer} from "../../../types/AudiusFollowersDistributer";
 dotenv.config()
 
 interface Recipients {
@@ -14,9 +15,13 @@ interface Recipients {
 const Web3 = require("web3");
 
 // TODO: Update getting ABI logic
-const {abi} = require('../build/contracts/AudiusFollowersCampaign.json');
-const contractInterface: AbiItem[] = abi;
+const DistributorContract = require('../build/contracts/AudiusFollowersDistributor.json');
+const distributorInterface: AbiItem[] = DistributorContract.abi;
+const distributorAddress: string = process.env.DISTRIBUTOR_ADDRESS;
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER));
+const Distributor: AudiusFollowersDistributer = new web3.eth.Contract(distributorInterface, distributorAddress);
+const CampaignContract = require('../build/contracts/AudiusFollowersCampaign.json');
+const campaignInterface: AbiItem[] = CampaignContract.abi;
 
 const ipfs = ipfsClient("https://gateway.pinata.cloud/")
 const app = express();
@@ -27,9 +32,25 @@ app.post('/api', async (req, res) => {
     console.debug("request body: ", req.body)
     const cid: string = req.body.data.cid
     const userAddress: string = req.body.data.userAddress
-    const proxyAddress: string = req.body.data.campaignAddress
-    const Campaign: AudiusFollowersCampaign = new web3.eth.Contract(contractInterface, proxyAddress);
+    const campaignId: BN = new BN(req.body.data.campaignId.toString())
 
+    let campaignAddress: string
+    try {
+        campaignAddress = await Distributor.methods.campaignList(campaignId.toString()).call()
+        if (campaignAddress === "0x0000000000000000000000000000000000000000") {
+            throw new Error("Campaign is not exists.")
+        }
+    } catch(error) {
+        console.error("Failed to get campaign address from campaign id.", error)
+        return res.status(500).send({
+            jobRunID: req.body.id,
+            data: {},
+            status: "errored",
+            error: "Failed to get campaign from campaign id."
+        })
+    }
+
+    const Campaign: AudiusFollowersCampaign = new web3.eth.Contract(campaignInterface, campaignAddress);
     let rawUserId: string
     try {
         rawUserId = await Campaign.methods.userIdList(userAddress).call()
@@ -47,6 +68,9 @@ app.post('/api', async (req, res) => {
     let content: Recipients
     try {
         content = await getFile(cid)
+        if (!Array.isArray(content.targets)) {
+            throw new Error("File does not contains target field.")
+        }
     } catch(error) {
         console.error("Failed to get user addresses file. ", error)
         return res.status(500).send({
