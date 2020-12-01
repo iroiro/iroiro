@@ -34,11 +34,11 @@ dataSources:
     #    network: mainnet # This is for local graph node
     source:
       # TODO: Investigate omitting address is available
-      address: "0x04B27b8602150F70F8FbE83f55FB2F71B0737D40" # TokenFactory contract address on rinkeby
-      #      address: "0x02e00DD6c22223B7d459aB472C947544f1619921" # TokenFactory contract address on kovan
+      address: "0x48889fecA4574810e5a5B30b6b93146a837500Fb" # AudiusFollowersDistributor contract address on rinkeby
+      #      address: "0x02e00DD6c22223B7d459aB472C947544f1619921" # AudiusFollowersDistributor contract address on kovan
       # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
       abi: AudiusFollowersDistributor
-      startBlock: 7602293 # for Rinkeby. Comment out this line for local graph node
+      startBlock: 7643514  # for Rinkeby. Comment out this line for local graph node
     #      startBlock: 22251048 # for Kovan. Comment out this line for local graph node
     mapping:
       kind: ethereum/events
