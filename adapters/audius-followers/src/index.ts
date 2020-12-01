@@ -4,7 +4,7 @@ import {AbiItem, soliditySha3} from "web3-utils"
 import BN from "bn.js"
 import dotenv from "dotenv"
 import {AudiusFollowersCampaign} from "../../../types/AudiusFollowersCampaign";
-import {AudiusFollowersDistributer} from "../../../types/AudiusFollowersDistributer";
+import {AudiusFollowersDistributor} from "../../../types/AudiusFollowersDistributor";
 dotenv.config()
 
 interface Recipients {
@@ -19,7 +19,7 @@ const DistributorContract = require('../build/contracts/AudiusFollowersDistribut
 const distributorInterface: AbiItem[] = DistributorContract.abi;
 const distributorAddress: string = process.env.DISTRIBUTOR_ADDRESS;
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER));
-const Distributor: AudiusFollowersDistributer = new web3.eth.Contract(distributorInterface, distributorAddress);
+const Distributor: AudiusFollowersDistributor = new web3.eth.Contract(distributorInterface, distributorAddress);
 const CampaignContract = require('../build/contracts/AudiusFollowersCampaign.json');
 const campaignInterface: AbiItem[] = CampaignContract.abi;
 
