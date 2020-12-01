@@ -6,8 +6,9 @@ import dotenv from "dotenv"
 import {AudiusFollowersCampaign} from "../../../types/AudiusFollowersCampaign";
 dotenv.config()
 
-interface UserAddresses {
-    readonly addresses: string[]
+interface Recipients {
+    readonly type: string
+    readonly targets: string[]
 }
 
 const Web3 = require("web3");
@@ -16,8 +17,6 @@ const Web3 = require("web3");
 const {abi} = require('../build/contracts/AudiusFollowersCampaign.json');
 const contractInterface: AbiItem[] = abi;
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER));
-const proxyAddress: string = process.env.AUDIUS_CONTRACT_ADDRESS
-const Campaign: AudiusFollowersCampaign = new web3.eth.Contract(contractInterface, proxyAddress);
 
 const ipfs = ipfsClient("https://gateway.pinata.cloud/")
 const app = express();
@@ -28,6 +27,9 @@ app.post('/api', async (req, res) => {
     console.debug("request body: ", req.body)
     const cid: string = req.body.data.cid
     const userAddress: string = req.body.data.userAddress
+    const proxyAddress: string = req.body.data.campaignAddress
+    const Campaign: AudiusFollowersCampaign = new web3.eth.Contract(contractInterface, proxyAddress);
+
     let rawUserId: string
     try {
         rawUserId = await Campaign.methods.userIdList(userAddress).call()
@@ -42,7 +44,7 @@ app.post('/api', async (req, res) => {
     }
     const userId: BN = new BN(rawUserId).mul(new BN(10))
 
-    let content: UserAddresses
+    let content: Recipients
     try {
         content = await getFile(cid)
     } catch(error) {
@@ -55,7 +57,7 @@ app.post('/api', async (req, res) => {
         })
     }
 
-    const isClaimable: boolean = content.addresses.includes(userAddress) // Assume json like { "addresses": ["address1", "address2", ...] }
+    const isClaimable: boolean = content.targets.includes(userAddress)
     const claimKeyHash: string = getClaimKeyHash(userId, isClaimable)
     console.debug("Claim key hash: ", claimKeyHash)
 
@@ -74,7 +76,7 @@ const getClaimKeyHash = (userId: BN, isClimable: boolean): string => {
     return soliditySha3(claimKey)
 }
 
-const getFile = async (cid: string): Promise<UserAddresses> => {
+const getFile = async (cid: string): Promise<Recipients> => {
     for await (const file of ipfs.get(cid)) {
         if (!file.content) {
             continue;
