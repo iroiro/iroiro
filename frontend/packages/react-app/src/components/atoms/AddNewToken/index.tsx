@@ -1,9 +1,10 @@
 import React from "react";
 import { Box, Link } from "rimble-ui";
+import { ACTIONS } from "../../../reducers/tokens";
 
 export interface AddNewTokenProps {
   color: string;
-  dispatch({}: object): void;
+  dispatch: React.Dispatch<ACTIONS>;
 }
 
 const AddNewToken = ({ color, dispatch }: AddNewTokenProps) => (

@@ -2,13 +2,13 @@ import React from "react";
 import { Box, Link, Heading, Text } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TokenList from "../../organisms/TokenList";
-import { TokenListState } from "../../../reducers/tokens";
+import { TokenListState, ACTIONS } from "../../../reducers/tokens";
 import SetTokenModal from "../../organisms/SetTokenModal";
 import AddNewToken from "../../atoms/AddNewToken";
 
 export interface ExplorePageTemplateProps {
   readonly state: TokenListState;
-  dispatch({}: object): void;
+  dispatch: React.Dispatch<ACTIONS>;
 }
 
 const ExplorePageTemplate = ({ state, dispatch }: ExplorePageTemplateProps) => (

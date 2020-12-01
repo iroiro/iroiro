@@ -1,14 +1,14 @@
 import React from "react";
 import { Box, Heading, Text } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
-import { TokenListState } from "../../../reducers/tokens";
+import { TokenListState, ACTIONS } from "../../../reducers/tokens";
 import TokenList from "../../organisms/TokenList";
 import SetTokenModal from "../../organisms/SetTokenModal";
 import AddNewToken from "../../atoms/AddNewToken";
 
 export interface DashboardPageTemplateProps {
   readonly state: TokenListState;
-  dispatch({}: object): void;
+  dispatch: React.Dispatch<ACTIONS>;
 }
 
 const DashboardPageTemplate = ({
