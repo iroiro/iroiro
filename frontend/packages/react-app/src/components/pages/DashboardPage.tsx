@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from "react";
-import ExplorePageTemplate from "../templates/ExplorePageTemplate";
+import Dashboard from "../templates/DashboardPageTemplate";
 import { tokensReducer } from "../../reducers/tokens";
 import { useWeb3React } from "@web3-react/core";
 import { getTokenInfo } from "../../utils/getTokenInfo";
@@ -9,11 +9,11 @@ const initialState = {
   tokens: [],
   tokenAddress: "",
   inputTokenAddress: "",
-  type: "explore",
-  color: "itred",
+  type: "dashboard",
+  color: "itblue",
 };
 
-const ExplorePage = () => {
+const DashboardPage = () => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokensReducer, initialState);
 
@@ -27,7 +27,7 @@ const ExplorePage = () => {
     }
   }, [library, state.tokenAddress]);
 
-  return <ExplorePageTemplate state={state} dispatch={dispatch} />;
+  return <Dashboard state={state} dispatch={dispatch} />;
 };
 
-export default ExplorePage;
+export default DashboardPage;

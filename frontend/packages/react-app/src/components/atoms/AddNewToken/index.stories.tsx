@@ -1,20 +1,20 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
+import AddNewToken, { AddNewTokenProps } from "./index";
 import { BrowserRouter } from "react-router-dom";
-import TopPageTemplate from "./index";
 
 export default {
-  title: "Templates/TopPageTemplate",
-  component: TopPageTemplate,
+  title: "Atoms/AddNewToken",
+  component: AddNewToken,
 } as Meta;
 
-const Template: Story = (args) => (
+const Template: Story<AddNewTokenProps> = (args) => (
   <BrowserRouter>
-    <TopPageTemplate {...args} />
+    <AddNewToken {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  loadWeb3Modal: () => {},
+  color: "itblue",
 };

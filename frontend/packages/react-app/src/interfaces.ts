@@ -1,34 +1,42 @@
 // TODO Update type
-import {Web3Provider} from "@ethersproject/providers";
+import { Web3Provider } from "@ethersproject/providers";
 
 export interface Web3Props {
-    readonly provider: Web3Provider | undefined
-    readonly loadWeb3Modal: () => void
+  readonly provider: Web3Provider | undefined;
+  readonly loadWeb3Modal: () => void;
 }
 
 export interface UserToken {
-    readonly address: string
-    readonly name: string
-    readonly symbol: string
-    readonly balance: string
+  readonly address: string;
+  readonly name: string;
+  readonly symbol: string;
+  readonly balance: string;
 }
 
 export interface Token {
-    readonly id: string
-    readonly name: string
-    readonly symbol: string
-    readonly decimals: number
+  readonly id: string;
+  readonly name: string;
+  readonly symbol: string;
+  readonly decimals: number;
 }
 
 export interface AccountToken {
-    readonly token: Token
-    readonly balance: string
+  readonly token: Token;
+  readonly balance: string;
 }
 
 export interface Account {
-    readonly tokens: AccountToken[]
+  readonly tokens: AccountToken[];
 }
 
 export interface TokenBalanceUserHolds {
-    readonly account: Account
+  readonly account: Account;
+}
+
+export interface TokenBasic {
+  readonly tokenAddress: string;
+  readonly name: string;
+  readonly symbol: string;
+  readonly decimals: number;
+  readonly totalSupply: number;
 }

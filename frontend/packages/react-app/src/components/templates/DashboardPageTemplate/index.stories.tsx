@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import ExplorePageTemplate, { ExplorePageTemplateProps } from "./index";
+import DashboardPageTemplate, { DashboardPageTemplateProps } from "./index";
 import { TokenListState } from "../../../reducers/tokens";
 
 export default {
-  title: "Templates/ExplorePageTemplate",
-  component: ExplorePageTemplate,
+  title: "Templates/DashboardPageTemplate",
+  component: DashboardPageTemplate,
 } as Meta;
 
-const Template: Story<ExplorePageTemplateProps> = (args) => (
+const Template: Story<DashboardPageTemplateProps> = (args) => (
   <BrowserRouter>
-    <ExplorePageTemplate {...args} />
+    <DashboardPageTemplate {...args} />
   </BrowserRouter>
 );
 
@@ -42,7 +42,7 @@ const state: TokenListState = {
   isOpen: false,
   inputTokenAddress: "",
   tokenAddress: "",
-  type: "explore",
+  type: "dashboard",
   color: "itblue",
 };
 
@@ -58,8 +58,8 @@ NoTokens.args = {
     isOpen: false,
     inputTokenAddress: "",
     tokenAddress: "",
-    type: "explore",
-    color: "itred",
+    type: "dashboard",
+    color: "itblue",
   },
 };
 
@@ -70,7 +70,7 @@ Loading.args = {
     isOpen: false,
     inputTokenAddress: "",
     tokenAddress: "",
-    type: "explore",
-    color: "itred",
+    type: "dashboard",
+    color: "itblue",
   },
 };
