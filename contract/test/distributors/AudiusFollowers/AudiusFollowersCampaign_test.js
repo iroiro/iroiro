@@ -86,6 +86,20 @@ contract.skip('AudiusFollowersCampaign', accounts => {
         })
       })
 
+      it("throw an error if empty user address is passed", async () => {
+        const nextUserIdBefore = await cc.nextUserId()
+        assert.equal(nextUserIdBefore.toString(), "1")
+        try {
+          await cc.requestCheckingIsClaimable(
+              oc.address, jobId, payment, { from: follower }
+          )
+          assert.fail()
+        } catch(error) {
+          assert.equal(error.reason, "User address shouldn't be empty")
+          assert(true)
+        }
+      })
+
       it("set new user id if its not registered yet", async () => {
         const nextUserIdBefore = await cc.nextUserId()
         assert.equal(nextUserIdBefore.toString(), "1")

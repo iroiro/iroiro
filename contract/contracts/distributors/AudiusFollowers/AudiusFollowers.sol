@@ -119,6 +119,10 @@ contract AudiusFollowersCampaign is CampaignInterface {
         uint256 fee,
         string memory userAddress
     ) external returns (bytes32 requestId) {
+        require(
+            keccak256(abi.encodePacked(userAddress)) != keccak256(abi.encodePacked("")),
+            "User address shouldn't be empty"
+        );
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(link.allowance(msg.sender, address(this)) >= fee, "allowance is not enough");
         link.transferFrom(msg.sender, address(this), fee);
