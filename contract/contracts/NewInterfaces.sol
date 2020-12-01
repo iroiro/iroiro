@@ -74,6 +74,7 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     address payable public token;
     string public campaignInfoCid; // Contains campaign name and description as JSON
     string public recipientsCid; // Contains recipients value as JSON
+    uint256 public campaignId;
     // TODO Consider a gap between actual JSON elements and claim amounts.
     uint256 public claimAmount;
     uint32 public claimedNum = 0;
@@ -97,6 +98,7 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         address payable _token,
         string memory _campaignInfoCid,
         string memory _recipientsCid,
+        uint256 _campaignId,
         uint256 _claimAmount,
         address _refundDestination,
         uint256 _startDate,
@@ -108,6 +110,7 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         token = _token;
         campaignInfoCid = _campaignInfoCid;
         recipientsCid = _recipientsCid;
+        campaignId = _campaignId;
         claimAmount = _claimAmount;
         refundDestination = _refundDestination;
         startDate = _startDate;

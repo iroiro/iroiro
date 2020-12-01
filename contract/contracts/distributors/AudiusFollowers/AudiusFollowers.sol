@@ -30,6 +30,7 @@ contract AudiusFollowersDistributor is DistributorInterface {
             token,
             campaignInfoCid,
             recipientsCid,
+            nextCampaignId,
             claimAmount,
             tokenSender,
             startDate,
@@ -62,6 +63,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         address payable _token,
         string memory _campaignInfoCid,
         string memory _recipientsCid,
+        uint256 _campaignId,
         uint256 _claimAmount,
         address _refundDestination,
         uint256 _startDate,
@@ -71,6 +73,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         _token,
         _campaignInfoCid,
         _recipientsCid,
+        _campaignId,
         _claimAmount,
         _refundDestination,
         _startDate,
@@ -113,8 +116,13 @@ contract AudiusFollowersCampaign is CampaignInterface {
     function requestCheckingIsClaimable(
         address _oracle,
         bytes32 _jobId,
-        uint256 fee
+        uint256 fee,
+        string memory userAddress
     ) external returns (bytes32 requestId) {
+        require(
+            keccak256(abi.encodePacked(userAddress)) != keccak256(abi.encodePacked("")),
+            "User address shouldn't be empty"
+        );
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(link.allowance(msg.sender, address(this)) >= fee, "allowance is not enough");
         link.transferFrom(msg.sender, address(this), fee);
@@ -130,8 +138,8 @@ contract AudiusFollowersCampaign is CampaignInterface {
 
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
         request.add("cid", recipientsCid);
-        request.addBytes("userAddress", abi.encodePacked(msg.sender));
-        request.addBytes("campaignAddress", abi.encodePacked(address(this)));
+        request.add("userAddress", userAddress);
+        request.addUint("campaignId", campaignId);
 
         return sendChainlinkRequestTo(_oracle, request, fee);
     }

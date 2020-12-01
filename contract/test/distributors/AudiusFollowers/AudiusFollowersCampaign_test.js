@@ -67,7 +67,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
       it('reverts', async () => {
         await expectRevert.unspecified(
           cc.requestCheckingIsClaimable(
-            oc.address, jobId, payment,
+            oc.address, jobId, payment, follower.toString(),
             { from: follower }
           ),
         )
@@ -86,11 +86,25 @@ contract.skip('AudiusFollowersCampaign', accounts => {
         })
       })
 
+      it("throw an error if empty user address is passed", async () => {
+        const nextUserIdBefore = await cc.nextUserId()
+        assert.equal(nextUserIdBefore.toString(), "1")
+        try {
+          await cc.requestCheckingIsClaimable(
+              oc.address, jobId, payment, { from: follower }
+          )
+          assert.fail()
+        } catch(error) {
+          assert.equal(error.reason, "User address shouldn't be empty")
+          assert(true)
+        }
+      })
+
       it("set new user id if its not registered yet", async () => {
         const nextUserIdBefore = await cc.nextUserId()
         assert.equal(nextUserIdBefore.toString(), "1")
         await cc.requestCheckingIsClaimable(
-            oc.address, jobId, payment,
+            oc.address, jobId, payment, follower.toString(),
             { from: follower }
         )
         const userId = await cc.userIdList(follower)
@@ -101,7 +115,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
 
       it("does not set new user id if its already registered", async () => {
         await cc.requestCheckingIsClaimable(
-            oc.address, jobId, payment,
+            oc.address, jobId, payment, follower.toString(),
             { from: follower }
         )
         const userId1 = await cc.userIdList(follower)
@@ -116,7 +130,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
           from: follower
         })
         await cc.requestCheckingIsClaimable(
-            oc.address, jobId, payment,
+            oc.address, jobId, payment, follower.toString(),
             { from: follower }
         )
         const userId2 = await cc.userIdList(follower)
@@ -128,7 +142,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
       context('sending a request to a specific oracle contract address', () => {
         it('triggers a log event in the new Oracle contract', async () => {
           const tx = await cc.requestCheckingIsClaimable(
-              oc.address, jobId, payment,
+              oc.address, jobId, payment, follower.toString(),
               { from: follower }
           )
           request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
@@ -166,7 +180,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
           from: follower
         })
         const tx = await cc.requestCheckingIsClaimable(
-            oc.address, jobId, payment,
+            oc.address, jobId, payment, follower.toString(),
             { from: follower }
         )
         const request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
@@ -222,7 +236,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
           from: follower
         })
         const tx = await futurecc.requestCheckingIsClaimable(
-            oc.address, jobId, payment,
+            oc.address, jobId, payment, follower.toString(),
             { from: follower }
         )
         request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
@@ -262,7 +276,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
           from: follower
         })
         const tx = await pastcc.requestCheckingIsClaimable(
-            oc.address, jobId, payment,
+            oc.address, jobId, payment, follower.toString(),
             { from: follower }
         )
         request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
@@ -291,7 +305,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
           from: follower
         })
         const tx = await cc.requestCheckingIsClaimable(
-            oc.address, jobId, payment,
+            oc.address, jobId, payment, follower.toString(),
             { from: follower }
         )
         request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
@@ -340,7 +354,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
         from: follower
       })
       const tx = await cc.requestCheckingIsClaimable(
-          oc.address, jobId, payment,
+          oc.address, jobId, payment, follower.toString(),
           { from: follower }
       )
       request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])
@@ -399,7 +413,7 @@ contract.skip('AudiusFollowersCampaign', accounts => {
         from: follower
       })
       const tx = await cc.requestCheckingIsClaimable(
-          oc.address, jobId, payment,
+          oc.address, jobId, payment, follower.toString(),
           { from: follower }
       )
       request = oracle.decodeRunRequest(tx.receipt.rawLogs[4])

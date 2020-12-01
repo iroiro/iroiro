@@ -44,6 +44,7 @@ describe("CampaignInterface", () => {
       this.abctoken.address,
       "campaign info cid",
       "recipients cid",
+      1,
       100000,
       alice,
       now,
@@ -60,6 +61,9 @@ describe("CampaignInterface", () => {
         "campaign info cid"
       );
       expect(await this.campaign.recipientsCid()).to.be.equal("recipients cid");
+      expect((await this.campaign.campaignId()).toString()).to.be.equal(
+          "1"
+      );
       expect((await this.campaign.claimAmount()).toString()).to.be.equal(
         "100000"
       );
@@ -76,6 +80,7 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
+          1,
           100000,
           alice,
           future,
@@ -93,6 +98,7 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
+          1,
           100000,
           alice,
           now,
@@ -118,6 +124,7 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
+          1,
           100000,
           owner,
           oneweeklater,
@@ -161,6 +168,7 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
+          1,
           100000,
           owner,
           now,
@@ -206,6 +214,7 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
+          1,
           100000,
           owner,
           now,
@@ -241,6 +250,7 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
+          1,
           100000,
           owner,
           now,
