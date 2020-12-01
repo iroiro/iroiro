@@ -20,6 +20,7 @@ Dashboard.args = {
   color: "itblue",
   name: "Sample Token",
   address: "0x",
+  type: "dashboard",
 };
 
 export const Explore = Template.bind({});
@@ -27,4 +28,5 @@ Explore.args = {
   color: "itred",
   name: "Sample Token",
   address: "0x",
+  type: "explore",
 };
