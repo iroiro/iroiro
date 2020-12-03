@@ -1,11 +1,6 @@
 import * as React from "react";
 import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-
-export interface CampaignInformation {
-  readonly name: string;
-  readonly description: string;
-  readonly image?: string;
-}
+import { CampaignInformation } from "../../../interfaces";
 
 export interface TokenCampaignCardProps {
   readonly campaignInformation: CampaignInformation;
