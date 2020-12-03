@@ -1,22 +1,4 @@
-// import { TokenBasic } from "../interfaces";
-
-export interface CampaignInfo {
-  claimAmount: string;
-  distributor: {
-    id: string;
-  };
-  id: string;
-  status: Number;
-  campaignInfoCid: string;
-  campaignMetadata: CampaignMetadata;
-  startDate: string;
-}
-
-export interface CampaignMetadata {
-  name: string;
-  description: string;
-  image: string;
-}
+import { CampaignInfo } from "../interfaces";
 
 export type ACTIONS =
   | {
@@ -36,6 +18,7 @@ export const campaignReducer = (state: CampaignInfo[], action: ACTIONS) => {
       }
       return action.payload.data;
     case "campaignMetadata:set":
+      console.log(action.payload.data);
       return action.payload.data;
     default:
       throw new Error();

@@ -4,11 +4,7 @@ import { tokenReducer } from "../../reducers/token";
 import { campaignReducer } from "../../reducers/campaign";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { CampaignInfo, CampaignMetadata } from "../../reducers/campaign";
-// import { useWeb3React } from "@web3-react/core";
-// import { Contract } from "@ethersproject/contracts";
-// @ts-ignore
-// import { abis } from "@project/contracts";
+import { CampaignInfo } from "../../interfaces";
 import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
 
 interface Props extends RouteComponentProps<{ tokenAddress: string }> {}

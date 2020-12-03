@@ -1,11 +1,4 @@
-import { TokenBasic } from "../interfaces";
-
-export interface TokenInfo {
-  token: {
-    name: string;
-    tokenAddress: string;
-  };
-}
+import { TokenBasic, TokenInfo } from "../interfaces";
 
 export type ACTIONS = {
   type: "token:getLocal";
