@@ -1,17 +1,7 @@
 import * as React from "react";
-import { TokenBasic } from "../../../interfaces";
-import {
-  Card,
-  CardContent,
-  Container,
-  Link,
-  Typography,
-} from "@material-ui/core";
+import { TokenInformationState } from "../../../interfaces";
+import { Card, CardContent, Typography } from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
-
-export interface TokenInformationState {
-  token: TokenBasic;
-}
 
 export interface BasicTokenInformationProps {
   readonly state: TokenInformationState;
