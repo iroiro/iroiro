@@ -5,7 +5,6 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 
 export interface EtherscanLinkProps {
   readonly address: string;
-  readonly network: string;
 }
 
 // TODO enable switch network, url regard to address type
