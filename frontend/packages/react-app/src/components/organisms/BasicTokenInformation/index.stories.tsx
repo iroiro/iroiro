@@ -25,6 +25,7 @@ const state: TokenInformationState = {
   },
   campaigns: [],
   campaignInformationList: [],
+  userBalance: "1234500000",
 };
 
 export const Default = Template.bind({});
@@ -38,5 +39,6 @@ Loading.args = {
     token: undefined,
     campaigns: [],
     campaignInformationList: [],
+    userBalance: "",
   },
 };
