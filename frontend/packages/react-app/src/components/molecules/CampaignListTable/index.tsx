@@ -37,7 +37,9 @@ const CampaignListTable = ({
                 )}
                 {/* TODO: あとで正確な数字にする */}
                 <td>{campaign.claimAmount}</td>
-                <td>{campaign.startDate}</td>
+                <td>
+                  {new Date(parseInt(campaign.startDate)).toLocaleDateString()}
+                </td>
               </tr>
             ))}
         </tbody>
