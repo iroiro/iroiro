@@ -31,7 +31,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   if (callStartDate.reverted) {
     log.warning("Start date not found. Campaign: {}", [campaignId]);
   } else {
-    campaign.endDate = callStartDate.value;
+    campaign.startDate = callStartDate.value;
   }
   let callEndDate = campaignContract.try_endDate();
   if (callEndDate.reverted) {
