@@ -61,10 +61,18 @@ export const GET_ACCOUNT_TOKEN = gql`
   }
 `;
 
-export const GET_DISTRIBUTERS = gql`
-  {
-    distributers {
+export const GET_CAMPAIGNS = gql`
+  query getCampaigns($creator: ID!, $token: String!) {
+    campaigns(where: { creator: $creator, token: $token }) {
       id
+      token
+      distributor {
+        id
+      }
+      campaignInfoCid
+      startDate
+      claimAmount
+      status
     }
   }
 `;

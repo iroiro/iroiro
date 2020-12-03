@@ -1,12 +1,13 @@
 // This address points to a dummy ERC20 contract deployed on Ethereum Mainnet,
 // Goerli, Kovan, Rinkeby and Ropsten. Replace it with your smart contracts.
 const addresses = {
-  Migrations: "0x360469c0ADCFE983781b51A32588FD7e628541A8",
-  TokenFactory: "0xe9ef9C49a9903C3CD8Ed99ffA82c3932a4Fd7B7b",
-  Staking: "0x0f570e9BA9E93562F0825FF6ee5e4Cfe2E879a90",
-  Vesting: "0xed995179CCB31193165946F17e06c9b1E2C90132",
-  Audius: "0x908E2C021d2465bb4570559dF30a02dde71d318F",
-  Oracle: "0x9e89dBFeF0EC02f2DEe5F988cE732740FBEDEbb2"
+  Migrations: "0x3da835E1c3778B40a256E260D2A4fd31b676f2eb",
+  TokenFactory: "0x12E9153D1e8036C4F197F3Edf4f73707d3c77E98",
+  Staking: "0x09F303C3Bd47161Ea735d49491b42076f8DA8E28",
+  Vesting: "0x886D4Aa23a93FeB8252B47e2BA9Fab7C078Faebe",
+  Audius: "0x4273503fc36E02004C6FEb242253046Bc2d59870",
+  Oracle: "0x80041A05d87a9355e154460c6Aba3dB589F44793",
+  AudiusFollowersDistributor: "0x48889fecA4574810e5a5B30b6b93146a837500Fb",
 };
 
 export default addresses;
