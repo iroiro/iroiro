@@ -1,5 +1,6 @@
 // TODO Update type
 import { Web3Provider } from "@ethersproject/providers";
+import { CampaignInformation } from "./components/molecules/TokenCampaignCard";
 
 export interface Web3Props {
   readonly provider: Web3Provider | undefined;
@@ -39,4 +40,43 @@ export interface TokenBasic {
   readonly symbol: string;
   readonly decimals: number;
   readonly totalSupply: number;
+}
+
+export interface Distributor {
+  // TODO Add fields
+}
+
+export interface Creator {
+  // TODO Add fields
+}
+
+export interface Claim {
+  // TODO Add fields
+}
+
+export interface CheckRequest {
+  // TODO Add fields
+}
+
+export interface Campaign {
+  readonly id: string;
+  readonly distributor: Distributor;
+  readonly token: string;
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly creator: Creator;
+  readonly campaignInfoCid: string;
+  readonly recipientsCid: string;
+  readonly claimAmount: string;
+  readonly claimedNum: number;
+  readonly status: number;
+  readonly claims: Claim[];
+  readonly checkRequests: CheckRequest[];
+}
+
+// TODO Move to page reducer
+export interface TokenInformationState {
+  token?: TokenBasic;
+  campaigns: Campaign[];
+  campaignInformationList: CampaignInformation[];
 }
