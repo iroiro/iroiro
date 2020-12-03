@@ -16,6 +16,7 @@ const Template: Story<TokenCampaignsProps> = (args) => (
 );
 
 const campaign = {
+  address: "",
   name: "A campaign",
   description: "This is a campaign.",
 };
@@ -30,6 +31,7 @@ const state: TokenInformationState = {
   },
   campaigns: [],
   campaignInformationList: [campaign, campaign, campaign],
+  userBalance: "",
 };
 
 export const Default = Template.bind({});

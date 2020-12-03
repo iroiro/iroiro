@@ -8,10 +8,9 @@ export interface TokenCampaignDetailProps {
 }
 
 const TokenCampaignDetail = ({
-  state: { token, campaigns, campaignInformationList },
+  state: { campaigns, campaignInformationList },
   campaignAddress,
 }: TokenCampaignDetailProps) => {
-  console.debug(campaignAddress, campaigns, campaignInformationList);
   const campaign = campaigns.find(
     (campaign) => campaign.id === campaignAddress
   );
@@ -19,7 +18,6 @@ const TokenCampaignDetail = ({
     (info) => info.address === campaignAddress
   );
 
-  console.debug(campaign, campaignInformation);
   if (!campaign || !campaignInformation) {
     return (
       <div>
