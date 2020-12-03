@@ -74,6 +74,7 @@ export interface Campaign {
 }
 
 export interface CampaignInformation {
+  readonly address: string;
   readonly name: string;
   readonly description: string;
   readonly image?: string;
