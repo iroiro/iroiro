@@ -6,6 +6,7 @@ import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { CampaignInfo } from "../../interfaces";
 import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
+import { useWeb3React } from "@web3-react/core";
 
 interface Props extends RouteComponentProps<{ tokenAddress: string }> {}
 
@@ -19,6 +20,7 @@ const tokenInitialState = {
 const campaignsInitialState = new Array<CampaignInfo>();
 
 const ExternalTokenDetailPage = (props: Props) => {
+  const { active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const [tokenState, tokenDispatch] = useReducer(
     tokenReducer,
@@ -83,6 +85,7 @@ const ExternalTokenDetailPage = (props: Props) => {
   return (
     <>
       <ExternalTokenDetailPageTemplate
+        active={active}
         tokenState={tokenState}
         campaignsState={campaignsState}
       />

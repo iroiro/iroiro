@@ -2,16 +2,22 @@ import React from "react";
 import { useWeb3React } from "@web3-react/core";
 import { Box } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
-import { TokenAndCampaignProps } from "../../../interfaces";
+import { TokenInfo, CampaignInfo } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import Container from "../../atoms/Container";
 import CampaignList from "../../organisms/CampaignList";
 
+export interface ExternalTokenDetailPageTemplateProps {
+  readonly active: boolean;
+  readonly tokenState: TokenInfo;
+  readonly campaignsState: CampaignInfo[];
+}
+
 const ExternalTokenDetailPageTemplate = ({
+  active,
   tokenState,
   campaignsState,
-}: TokenAndCampaignProps) => {
-  const { active } = useWeb3React();
+}: ExternalTokenDetailPageTemplateProps) => {
   return (
     <>
       <AppHeader />
