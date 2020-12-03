@@ -40,3 +40,33 @@ export interface TokenBasic {
   readonly decimals: number;
   readonly totalSupply: number;
 }
+
+export interface CampaignInfo {
+  claimAmount: string;
+  distributor: {
+    id: string;
+  };
+  id: string;
+  status: Number;
+  campaignInfoCid: string;
+  campaignMetadata: CampaignMetadata;
+  startDate: string;
+}
+
+export interface CampaignMetadata {
+  name: string;
+  description: string;
+  image: string;
+}
+
+export interface TokenInfo {
+  token: {
+    name: string;
+    tokenAddress: string;
+  };
+}
+
+export interface TokenAndCampaignProps {
+  readonly tokenState: TokenInfo;
+  readonly campaignsState: CampaignInfo[];
+}

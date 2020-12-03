@@ -1,47 +1,94 @@
 import React, { useEffect, useCallback, useReducer } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { tokenReducer } from "../../reducers/token";
-import { useWeb3React } from "@web3-react/core";
-import { Contract } from "@ethersproject/contracts";
-// @ts-ignore
-import { abis } from "@project/contracts";
+import { campaignReducer } from "../../reducers/campaign";
+import { GET_CAMPAIGNS } from "../../graphql/subgraph";
+import { useLazyQuery } from "@apollo/react-hooks";
+import { CampaignInfo } from "../../interfaces";
 import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
+import { useWeb3React } from "@web3-react/core";
 
-interface Props extends RouteComponentProps<{ address: string }> {}
+interface Props extends RouteComponentProps<{ tokenAddress: string }> {}
 
-const initialState = {
+const tokenInitialState = {
   token: {
     name: "",
     tokenAddress: "",
   },
 };
 
+const campaignsInitialState = new Array<CampaignInfo>();
+
 const ExternalTokenDetailPage = (props: Props) => {
-  const { library, account, activate } = useWeb3React();
-  const [state, dispatch] = useReducer(tokenReducer, initialState);
+  const { active } = useWeb3React();
+  const tokenAddress = props.match.params.tokenAddress;
+  const [tokenState, tokenDispatch] = useReducer(
+    tokenReducer,
+    tokenInitialState
+  );
+  const [campaignsState, campaignDispatch] = useReducer(
+    campaignReducer,
+    campaignsInitialState
+  );
+  const [getCampaigns, { loading, error, data }] = useLazyQuery(GET_CAMPAIGNS);
 
-  const tokenAddress: string = props.match.params.address;
+  const getLocalToken = useCallback(() => {
+    tokenDispatch({
+      type: "token:getLocal",
+      payload: { tokenAddress: tokenAddress },
+    });
+  }, [tokenAddress]);
 
-  const getTokenInfo = useCallback(async (library) => {
-    const signer = library.getSigner();
-    const erc20 = new Contract(tokenAddress, abis.fanToken, signer);
-    const name: string = await erc20.name();
-    const token = {
-      name: name,
-      tokenAddress: tokenAddress,
-    };
-    dispatch({ type: "token:set", payload: { token } });
+  const getCampaignMetadata = useCallback(async (campaigns) => {
+    for (let i = 0; i < campaigns.length; i++) {
+      const cid = campaigns[i].campaignInfoCid;
+      const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      campaigns[i].campaignMetadata = data;
+    }
+    campaignDispatch({
+      type: "campaignMetadata:set",
+      payload: { data: campaigns },
+    });
   }, []);
 
   useEffect(() => {
-    if (library) {
-      getTokenInfo(library);
+    getLocalToken();
+  }, [getLocalToken]);
+
+  useEffect(() => {
+    // TODO: After made campaign creation function, change dinamic value
+    getCampaigns({
+      variables: {
+        creator: "0x84d800dae0bdb31a4de9918782bffcc8d041c1b8",
+        token: tokenAddress.toLowerCase(),
+      },
+    });
+  }, [tokenAddress, tokenState, getCampaigns]);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      campaignDispatch({
+        type: "campaign:get",
+        payload: { data: data.campaigns },
+      });
     }
-  }, [library, account, activate]);
+  }, [tokenAddress, data]);
+
+  useEffect(() => {
+    if (campaignsState.length > 0) {
+      getCampaignMetadata(campaignsState);
+    }
+  }, [campaignsState, getCampaignMetadata]);
 
   return (
     <>
-      <ExternalTokenDetailPageTemplate state={state} />
+      <ExternalTokenDetailPageTemplate
+        active={active}
+        tokenState={tokenState}
+        campaignsState={campaignsState}
+      />
     </>
   );
 };

@@ -1,32 +1,41 @@
 import React from "react";
 import { useWeb3React } from "@web3-react/core";
-import { Box, Text } from "rimble-ui";
+import { Box } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
-import { TokenInfo } from "../../../reducers/token";
+import { TokenInfo, CampaignInfo } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
+import Container from "../../atoms/Container";
+import CampaignList from "../../organisms/CampaignList";
 
-interface ExternalTokenDetailPageTemplateProps {
-  readonly state: TokenInfo;
+export interface ExternalTokenDetailPageTemplateProps {
+  readonly active: boolean;
+  readonly tokenState: TokenInfo;
+  readonly campaignsState: CampaignInfo[];
 }
 
 const ExternalTokenDetailPageTemplate = ({
-  state,
+  active,
+  tokenState,
+  campaignsState,
 }: ExternalTokenDetailPageTemplateProps) => {
-  const { active } = useWeb3React();
   return (
-    <div>
+    <>
       <AppHeader />
-      {active ? (
-        <Box m={"auto"} my={5} width={[4 / 5, 3 / 4]}>
-          <Text>{state.token.name}</Text>
-          <Text>{state.token.tokenAddress}</Text>
-        </Box>
-      ) : (
-        <Box>
-          <WalletConnect />
-        </Box>
-      )}
-    </div>
+      <Container>
+        {!active ? (
+          <Box>
+            <WalletConnect />
+          </Box>
+        ) : (
+          <Box>
+            <CampaignList
+              tokenState={tokenState}
+              campaignsState={campaignsState}
+            />
+          </Box>
+        )}
+      </Container>
+    </>
   );
 };
 
