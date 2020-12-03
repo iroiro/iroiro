@@ -15,6 +15,7 @@ type Account @entity {
 
 type Distributor @entity {
   id: ID!
+  distributorCid: String
   campaigns: [Campaign!]! @derivedFrom(field: "distributor")
 }
 

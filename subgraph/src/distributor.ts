@@ -1,7 +1,10 @@
 import { log } from "@graphprotocol/graph-ts";
 import { Campaign, Creator, Distributor } from "./types/schema";
 import { AudiusFollowersCampaign as CampaignTemplate } from "./types/templates";
-import { CreateCampaign } from "./types/AudiusFollowersDistributor/AudiusFollowersDistributor";
+import {
+  AudiusFollowersDistributor,
+  CreateCampaign,
+} from "./types/AudiusFollowersDistributor/AudiusFollowersDistributor";
 import { AudiusFollowersCampaign } from "./types/templates/AudiusFollowersCampaign/AudiusFollowersCampaign";
 
 export function handleCreateCampaign(event: CreateCampaign): void {
@@ -9,6 +12,13 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   let distributor = Distributor.load(distributorId);
   if (distributor == null) {
     distributor = new Distributor(distributorId);
+  }
+  let distributorContract = AudiusFollowersDistributor.bind(event.address);
+  let callDistributorCid = distributorContract.try_distributorInfoCid();
+  if (callDistributorCid.reverted) {
+    log.warning("Distributor cid not found. Campaign: {}", [distributorId]);
+  } else {
+    distributor.distributorCid = callDistributorCid.value;
   }
 
   let creatorId = event.params.creator.toHexString();
