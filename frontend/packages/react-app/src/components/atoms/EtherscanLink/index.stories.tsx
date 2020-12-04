@@ -14,7 +14,20 @@ const Template: Story<EtherscanLinkProps> = (args) => (
   </BrowserRouter>
 );
 
-export const Default = Template.bind({});
-Default.args = {
+export const User = Template.bind({});
+User.args = {
+  type: "user",
+  address: "0x0000000000000000000000000000000000000000",
+};
+
+export const Token = Template.bind({});
+Token.args = {
+  type: "token",
   address: "0x01BE23585060835E02B77ef475b0Cc51aA1e0709",
+};
+
+export const NoAddress = Template.bind({});
+NoAddress.args = {
+  type: "user",
+  address: "",
 };
