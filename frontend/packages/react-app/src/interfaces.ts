@@ -1,5 +1,6 @@
 // TODO Update type
 import { Web3Provider } from "@ethersproject/providers";
+import { EventData } from "web3-eth-contract";
 
 export interface Web3Props {
   readonly provider: Web3Provider | undefined;
@@ -80,6 +81,12 @@ export interface CampaignInformation {
   readonly image?: string;
 }
 
+export interface Activity {
+  name: string;
+  timestamp: string;
+  amount: string;
+}
+
 // TODO Move to page reducer
 export interface TokenInformationState {
   token?: TokenBasic;
@@ -88,7 +95,9 @@ export interface TokenInformationState {
   campaignAddress?: string;
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
-  // TODO: tmp
   userAddress?: string;
   userBalance?: string;
+  activities: Activity[];
+  // TODO: define with chart
+  // balances: Balances[];
 }

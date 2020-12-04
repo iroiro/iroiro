@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import TokenCampaigns, { TokenCampaignsProps } from "./index";
 import { tokenInformationState } from "../../../utils/mockData";
+import UserActivities, { UserActivitiesProps } from "./index";
 
 export default {
-  title: "Organisms/TokenCampaigns",
-  component: TokenCampaigns,
+  title: "Organisms/UserActivities",
+  component: UserActivities,
 } as Meta;
 
-const Template: Story<TokenCampaignsProps> = (args) => (
+const Template: Story<UserActivitiesProps> = (args) => (
   <BrowserRouter>
-    <TokenCampaigns {...args} />
+    <UserActivities {...args} />
   </BrowserRouter>
 );
 
@@ -20,7 +20,7 @@ Default.args = {
   state: tokenInformationState,
 };
 
-export const NoCampaigns = Template.bind({});
-NoCampaigns.args = {
-  state: { ...tokenInformationState, campaignInformationList: [] },
+export const NoActivities = Template.bind({});
+NoActivities.args = {
+  state: { ...tokenInformationState, activities: [] },
 };
