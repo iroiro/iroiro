@@ -76,3 +76,12 @@ export const GET_CAMPAIGNS = gql`
     }
   }
 `;
+
+export const GET_DISTRIBUTORS = gql`
+  {
+    distributors {
+      id
+      distributorCid
+    }
+  }
+`;
