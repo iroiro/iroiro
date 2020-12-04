@@ -21,3 +21,11 @@ export const Default = Template.bind({});
 Default.args = {
   state: tokenInformationState,
 };
+
+export const Campaigns = Template.bind({});
+Campaigns.args = {
+  state: {
+    ...tokenInformationState,
+    campaignAddress: undefined,
+  },
+};

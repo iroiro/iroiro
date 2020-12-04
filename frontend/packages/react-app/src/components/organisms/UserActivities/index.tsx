@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { TokenInformationState } from "../../../interfaces";
 import UserActivityCard from "../../molecules/UserActivityCard";
 
@@ -10,8 +10,8 @@ export interface UserActivitiesProps {
 const UserActivities = ({
   state: { activities, token },
 }: UserActivitiesProps) => (
-  <div>
-    <Typography variant="h4" component="h3">
+  <>
+    <Typography variant="h5" component="h3">
       Activities
     </Typography>
     {activities.length === 0 ? (
@@ -23,7 +23,7 @@ const UserActivities = ({
         ))}
       </>
     )}
-  </div>
+  </>
 );
 
 export default UserActivities;

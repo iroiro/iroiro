@@ -21,7 +21,7 @@ const EtherscanLink = ({ type, address }: EtherscanLinkProps) => {
       : `https://rinkeby.etherscan.io/token/${address}`;
 
   return (
-    <Typography>
+    <Typography align="center">
       <Link href={link}>
         View on Etherscan
         <FontAwesomeIcon icon={faExternalLinkAlt} />

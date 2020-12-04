@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Card, CardContent, Typography } from "@material-ui/core";
+import { Button, Card, CardContent, Grid, Typography } from "@material-ui/core";
 
 export interface TokenRequestCardProps {
   isApproved: boolean;

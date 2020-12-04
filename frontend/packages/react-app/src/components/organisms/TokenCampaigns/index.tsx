@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import TokenCampaignCard from "../../molecules/TokenCampaignCard";
 import { TokenInformationState } from "../../../interfaces";
 
@@ -10,10 +10,7 @@ export interface TokenCampaignsProps {
 const TokenCampaigns = ({
   state: { campaignInformationList },
 }: TokenCampaignsProps) => (
-  <div>
-    <Typography variant="h4" component="h3">
-      Campaigns
-    </Typography>
+  <Grid container spacing={4} direction="column">
     {campaignInformationList.length === 0 ? (
       <Typography>No campaigns for this Token yet.</Typography>
     ) : (
@@ -23,7 +20,7 @@ const TokenCampaigns = ({
         ))}
       </>
     )}
-  </div>
+  </Grid>
 );
 
 export default TokenCampaigns;

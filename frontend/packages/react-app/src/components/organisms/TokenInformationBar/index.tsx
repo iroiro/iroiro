@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TokenInformationState } from "../../../interfaces";
-import { Box } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
 
 export interface TokenInformationBarProps {
@@ -11,21 +11,21 @@ const TokenInformationBar = ({
   state: { token, userAddress, userBalance },
 }: TokenInformationBarProps) => (
   <div>
-    <Box display="flex" flexDirection="row" p={1} m={1}>
-      <Box p={1}>{!!token?.name ? token.name : "Loading token name..."}</Box>
-      <Box p={1}>
-        <Box component="span" display="block" p={1} m={1}>
-          Your Balance
-        </Box>
-        <Box component="span" display="block" p={1} m={1}>
+    <Grid container spacing={5}>
+      <Grid item xs>
+        {!!token?.name ? token.name : "Loading token name..."}
+      </Grid>
+      <Grid item xs>
+        <Typography>Your Balance</Typography>
+        <Typography>
           {!!userBalance ? userBalance : "Loading balnce..."}{" "}
           {!!token?.symbol && token.symbol}
-        </Box>
-      </Box>
-      <Box p={1}>
+        </Typography>
+      </Grid>
+      <Grid item xs>
         <EtherscanLink type="user" address={userAddress} />
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   </div>
 );
 

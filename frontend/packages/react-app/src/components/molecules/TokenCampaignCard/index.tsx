@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  Typography,
+} from "@material-ui/core";
 import { CampaignInformation } from "../../../interfaces";
 
 export interface TokenCampaignCardProps {
@@ -8,16 +14,18 @@ export interface TokenCampaignCardProps {
 
 const TokenCampaignCard = ({ campaignInformation }: TokenCampaignCardProps) => {
   return (
-    <Card>
-      <CardHeader title={campaignInformation.name} />
-      <CardContent>
-        {campaignInformation && (
-          <Typography>
-            description: {campaignInformation.description}
-          </Typography>
-        )}
-      </CardContent>
-    </Card>
+    <Grid item key={campaignInformation.address} xs={12}>
+      <Card>
+        <CardHeader title={campaignInformation.name} />
+        <CardContent>
+          {campaignInformation && (
+            <Typography>
+              description: {campaignInformation.description}
+            </Typography>
+          )}
+        </CardContent>
+      </Card>
+    </Grid>
   );
 };
 

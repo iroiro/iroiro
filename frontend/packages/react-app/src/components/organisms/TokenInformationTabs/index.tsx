@@ -2,6 +2,8 @@ import * as React from "react";
 import {
   AppBar,
   Box,
+  Container,
+  Grid,
   makeStyles,
   Tab,
   Tabs,
@@ -17,6 +19,7 @@ import TokenClaimCard from "../../molecules/TokenClaimCard";
 import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
 import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
 import UserActivities from "../UserActivities";
+import TokenDetailCampaignPanel from "../TokenCampaignDetailPanel";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
@@ -57,6 +60,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  chart: {
+    paddingTop: theme.spacing(6),
+  },
 }));
 
 export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
@@ -75,6 +81,8 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
           value={value}
           onChange={handleChange}
           aria-label="simple tabs example"
+          scrollButtons="auto"
+          centered
         >
           <Tab label="Basic" {...a11yProps(0)} />
           <Tab label="Campaigns" {...a11yProps(1)} />
@@ -83,39 +91,44 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
           <Tab label="User History" {...a11yProps(4)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        <BasicTokenInformation state={state} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {!!state.campaignAddress ? (
-          <>
-            <TokenCampaignDetail
+      <Container maxWidth="sm">
+        <TabPanel value={value} index={0}>
+          <BasicTokenInformation state={state} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          {!!state.campaignAddress ? (
+            <TokenDetailCampaignPanel
               state={state}
               campaignAddress={state.campaignAddress}
-            />
-            <TokenRequestCard
               isApproved={state.isTokenApproved}
               isRequested={state.isTokenRequested}
-            />
-            <TokenClaimCard
               isClaimable={state.isCampaignClaimable}
               isClaimed={state.isCampaignClaimed}
             />
-          </>
-        ) : (
-          <TokenCampaigns state={state} />
-        )}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Coming soon...
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Coming soon...
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        <UserActivities state={state} />
-        <BalanceHistoryChart balances={state.balances} />
-      </TabPanel>
+          ) : (
+            <TokenCampaigns state={state} />
+          )}
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          Coming soon...
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          Coming soon...
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          <Grid container spacing={4} direction="column">
+            <UserActivities state={state} />
+          </Grid>
+          <Grid
+            container
+            spacing={4}
+            direction="column"
+            className={classes.chart}
+          >
+            <BalanceHistoryChart balances={state.balances} />
+          </Grid>
+        </TabPanel>
+      </Container>
     </div>
   );
 }
