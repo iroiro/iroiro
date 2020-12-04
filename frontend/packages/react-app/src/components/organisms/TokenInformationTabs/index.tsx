@@ -14,7 +14,7 @@ import TokenCampaigns from "../TokenCampaigns";
 import TokenCampaignDetail from "../TokenCampaignDetail";
 import TokenRequestCard from "../../molecules/CheckRequestCard";
 import TokenClaimCard from "../../molecules/TokenClaimCard";
-import { TokenInformationTemplateProps } from "../../templates/TokenDetailTemplate";
+import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
