@@ -1,18 +1,24 @@
 import * as React from "react";
 import { Button, Card, CardContent, Typography } from "@material-ui/core";
-import { TokenInformationState } from "../../../interfaces";
 
-export interface TokenClaimCardProps {}
+export interface TokenClaimCardProps {
+  isClaimable: boolean;
+  isClaimed: boolean;
+}
 
-const TokenClaimCard = ({}: TokenClaimCardProps) => {
+const TokenClaimCard = ({ isClaimable, isClaimed }: TokenClaimCardProps) => {
+  if (!isClaimable && !isClaimed) {
+    return null;
+  }
+
   return (
     <Card>
       <CardContent>
         <Typography>
           Send a check request to see whether you are eligible for to claim.
         </Typography>
-        <Button variant="contained" color="primary">
-          Claim
+        <Button variant="contained" color="primary" disabled={isClaimed}>
+          {isClaimed ? "Claimed" : "Claim"}
         </Button>
       </CardContent>
     </Card>

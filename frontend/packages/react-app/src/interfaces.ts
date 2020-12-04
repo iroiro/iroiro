@@ -86,6 +86,8 @@ export interface TokenInformationState {
   campaigns: Campaign[];
   campaignInformationList: CampaignInformation[];
   campaignAddress?: string;
+  isCampaignClaimable: boolean;
+  isCampaignClaimed: boolean;
   // TODO: tmp
   userAddress?: string;
   userBalance?: string;
