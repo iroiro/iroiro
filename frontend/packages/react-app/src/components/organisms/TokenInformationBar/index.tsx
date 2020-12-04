@@ -18,7 +18,8 @@ const TokenInformationBar = ({
           Your Balance
         </Box>
         <Box component="span" display="block" p={1} m={1}>
-          {!!userBalance && userBalance} {!!token?.symbol && token.symbol}
+          {!!userBalance ? userBalance : "Loading balnce..."}{" "}
+          {!!token?.symbol && token.symbol}
         </Box>
       </Box>
       <Box p={1}>
