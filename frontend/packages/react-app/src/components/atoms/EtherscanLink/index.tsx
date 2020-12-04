@@ -6,7 +6,7 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 type AddressTypes = "user" | "token";
 
 export interface EtherscanLinkProps {
-  readonly type?: AddressTypes;
+  readonly type: AddressTypes;
   readonly address?: string;
 }
 

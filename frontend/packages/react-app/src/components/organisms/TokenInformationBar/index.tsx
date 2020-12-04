@@ -8,21 +8,21 @@ export interface TokenInformationBarProps {
 }
 
 const TokenInformationBar = ({
-  state: { token, userBalance },
+  state: { token, userAddress, userBalance },
 }: TokenInformationBarProps) => (
   <div>
     <Box display="flex" flexDirection="row" p={1} m={1}>
-      <Box p={1}>{token.name}</Box>
+      <Box p={1}>{!!token?.name ? token.name : "Loading token name..."}</Box>
       <Box p={1}>
         <Box component="span" display="block" p={1} m={1}>
           Your Balance
         </Box>
         <Box component="span" display="block" p={1} m={1}>
-          {userBalance} {token.symbol}
+          {!!userBalance && userBalance} {!!token?.symbol && token.symbol}
         </Box>
       </Box>
       <Box p={1}>
-        <EtherscanLink address={token.tokenAddress} />
+        <EtherscanLink type="user" address={userAddress} />
       </Box>
     </Box>
   </div>

@@ -37,6 +37,7 @@ export const tokenInformationState: TokenInformationState = {
     campaignInformation,
     campaignInformation,
   ],
+  userAddress: "0x0000000000000000000000000000000000000000",
   userBalance: "1234500000",
   campaignAddress: "0xcampaign...1234",
 };
