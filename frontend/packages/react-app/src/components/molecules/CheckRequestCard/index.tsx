@@ -2,13 +2,13 @@ import * as React from "react";
 import { Button, Card, CardContent, Typography } from "@material-ui/core";
 
 export interface TokenRequestCardProps {
-  tokenApproved: boolean;
-  requested: boolean;
+  isApproved: boolean;
+  isRequested: boolean;
 }
 
 const TokenRequestCard = ({
-  tokenApproved,
-  requested,
+  isApproved,
+  isRequested,
 }: TokenRequestCardProps) => {
   return (
     <Card>
@@ -16,13 +16,13 @@ const TokenRequestCard = ({
         <Typography>
           Send a check request to see whether you are eligible for to claim.
         </Typography>
-        <Button variant="contained" color="primary" disabled={tokenApproved}>
+        <Button variant="contained" color="primary" disabled={isApproved}>
           Approve $LINK
         </Button>
         <Button
           variant="contained"
           color="primary"
-          disabled={tokenApproved && requested}
+          disabled={isApproved && isRequested}
         >
           Check request
         </Button>

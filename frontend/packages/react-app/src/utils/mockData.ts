@@ -60,6 +60,8 @@ export const tokenInformationState: TokenInformationState = {
     decimals: 18,
     totalSupply: 2000000000,
   },
+  isTokenApproved: true,
+  isTokenRequested: false,
   campaigns: [campaign, campaign, campaign],
   campaignInformationList: [
     campaignInformation,
@@ -86,6 +88,28 @@ export const tokenInformationState: TokenInformationState = {
       name: "Transfer",
       timestamp: "1612137600",
       amount: "300",
+    },
+  ],
+  balances: [
+    {
+      timestamp: 1577836800000,
+      balance: "100",
+    },
+    {
+      timestamp: 1580515200000,
+      balance: "200",
+    },
+    {
+      timestamp: 1583020800000,
+      balance: "300",
+    },
+    {
+      timestamp: 1585699200000,
+      balance: "400",
+    },
+    {
+      timestamp: 1588291200000,
+      balance: "300",
     },
   ],
 };

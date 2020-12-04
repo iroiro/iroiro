@@ -87,9 +87,16 @@ export interface Activity {
   amount: string;
 }
 
+export interface Balance {
+  timestamp: number;
+  balance: string;
+}
+
 // TODO Move to page reducer
 export interface TokenInformationState {
   token?: TokenBasic;
+  isTokenApproved: boolean;
+  isTokenRequested: boolean;
   campaigns: Campaign[];
   campaignInformationList: CampaignInformation[];
   campaignAddress?: string;
@@ -98,6 +105,5 @@ export interface TokenInformationState {
   userAddress?: string;
   userBalance?: string;
   activities: Activity[];
-  // TODO: define with chart
-  // balances: Balances[];
+  balances: Balance[];
 }

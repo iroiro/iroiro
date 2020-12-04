@@ -15,6 +15,8 @@ import TokenCampaignDetail from "../TokenCampaignDetail";
 import TokenRequestCard from "../../molecules/CheckRequestCard";
 import TokenClaimCard from "../../molecules/TokenClaimCard";
 import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
+import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
+import UserActivities from "../UserActivities";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
@@ -91,8 +93,14 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
               state={state}
               campaignAddress={state.campaignAddress}
             />
-            <TokenRequestCard />
-            <TokenClaimCard />
+            <TokenRequestCard
+              isApproved={state.isTokenApproved}
+              isRequested={state.isTokenRequested}
+            />
+            <TokenClaimCard
+              isClaimable={state.isCampaignClaimable}
+              isClaimed={state.isCampaignClaimed}
+            />
           </>
         ) : (
           <TokenCampaigns state={state} />
@@ -105,7 +113,8 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
         Coming soon...
       </TabPanel>
       <TabPanel value={value} index={4}>
-        User History
+        <UserActivities state={state} />
+        <BalanceHistoryChart balances={state.balances} />
       </TabPanel>
     </div>
   );
