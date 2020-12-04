@@ -85,6 +85,7 @@ export interface TokenInformationState {
   token?: TokenBasic;
   campaigns: Campaign[];
   campaignInformationList: CampaignInformation[];
+  campaignAddress?: string;
   // TODO: tmp
   userBalance: string;
 }
