@@ -25,9 +25,9 @@ const BasicTokenInformation = ({
         ) : (
           <Typography>Loading Token information...</Typography>
         )}
+        {!!token && <EtherscanLink type="token" address={token.tokenAddress} />}
       </CardContent>
     </Card>
-    {!!token && <EtherscanLink address={token.tokenAddress} />}
   </div>
 );
 
