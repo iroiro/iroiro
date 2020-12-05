@@ -1,20 +1,17 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import DepositTokenForm, { NumberProps } from "./index";
+import SetupCampaign from "./index";
 
 export default {
-  title: "Molecules/DepositTokenForm",
-  component: DepositTokenForm,
+  title: "Organisms/SetupCampaign",
+  component: SetupCampaign,
 } as Meta;
 
-const Template: Story<NumberProps> = (args) => (
+const Template: Story = () => (
   <BrowserRouter>
-    <DepositTokenForm {...args} />
+    <SetupCampaign />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-Default.args = {
-  m: 4,
-};

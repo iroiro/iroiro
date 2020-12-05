@@ -1,7 +1,11 @@
 import React from "react";
 import { Box, Text, Table, Button, Form, Input } from "rimble-ui";
 
-const DepositTokenForm = (m: number) => (
+export interface NumberProps {
+  readonly m: number;
+}
+
+const DepositTokenForm = ({ m }: NumberProps) => (
   <Box mt={m}>
     <Text fontSize={3} fontWeight="bold">
       1. Deposit your tokens

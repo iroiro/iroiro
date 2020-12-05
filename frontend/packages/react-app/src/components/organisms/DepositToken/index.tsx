@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Box, Flex, Text } from "rimble-ui";
+import { Card, Box } from "rimble-ui";
 import { AccountToken } from "../../../interfaces";
 import DepositTokenForm from "../../molecules/DepositTokenForm";
 import TokenBalance from "../../molecules/TokenBalance";
@@ -9,10 +9,10 @@ export interface TokenInfo {
 }
 
 const DepositToken = ({ tokenInfo }: TokenInfo) => (
-  <Card>
+  <Card mt={2}>
     <Box m={"auto"} width={[3 / 4]}>
       <TokenBalance tokenInfo={tokenInfo} />
-      <DepositTokenForm mt={4} />
+      <DepositTokenForm m={4} />
     </Box>
   </Card>
 );

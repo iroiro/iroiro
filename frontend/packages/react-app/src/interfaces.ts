@@ -51,6 +51,8 @@ export interface CampaignInfo {
   campaignInfoCid: string;
   campaignMetadata: CampaignMetadata;
   startDate: string;
+  claimed: number;
+  depositAmount: string;
 }
 
 export interface CampaignMetadata {
