@@ -10,17 +10,30 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
+import styled from "styled-components";
+import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 
 export interface TokenCampaignDetailProps {
   readonly state: TokenInformationState;
   readonly campaignAddress: string;
 }
 
+// TODO Integrate styled-components theme
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     padding: theme.spacing(3),
   },
 }));
+
+const RelativeContainer = styled.div`
+  position: relative;
+`;
+
+const AbsoluteChip = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
 
 const TokenCampaignDetail = ({
   state: { campaigns },
@@ -43,16 +56,25 @@ const TokenCampaignDetail = ({
   return (
     <Grid container spacing={5}>
       <Grid item xs={12}>
-        <Paper className={classes.container}>
-          <Typography variant="h4" component="h2">
-            {campaign.campaignMetadata.name}
-          </Typography>
-          <Typography>Name: {campaign.campaignMetadata.description}</Typography>
-          <Typography>
-            Start Date:{" "}
-            {new Date(parseInt(campaign.startDate) * 1000).toLocaleDateString()}
-          </Typography>
-        </Paper>
+        <RelativeContainer>
+          <AbsoluteChip>
+            <CampaignStatusChip status={campaign.status} />
+          </AbsoluteChip>
+          <Paper className={classes.container}>
+            <Typography variant="h4" component="h2">
+              {campaign.campaignMetadata.name}
+            </Typography>
+            <Typography>
+              Name: {campaign.campaignMetadata.description}
+            </Typography>
+            <Typography>
+              Start Date:{" "}
+              {new Date(
+                parseInt(campaign.startDate) * 1000
+              ).toLocaleDateString()}
+            </Typography>
+          </Paper>
+        </RelativeContainer>
       </Grid>
     </Grid>
   );

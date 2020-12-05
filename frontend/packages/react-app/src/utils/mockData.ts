@@ -68,7 +68,17 @@ export const tokenInformationState: TokenInformationState = {
   },
   isTokenApproved: true,
   isTokenRequested: false,
-  campaigns: [campaign, campaign, campaign],
+  campaigns: [
+    campaign,
+    {
+      ...campaign,
+      status: 1,
+    },
+    {
+      ...campaign,
+      status: 2,
+    },
+  ],
   isCampaignClaimable: false,
   isCampaignClaimed: false,
   userAddress: "0x0000000000000000000000000000000000000000",

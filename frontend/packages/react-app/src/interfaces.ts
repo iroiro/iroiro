@@ -68,7 +68,7 @@ export interface CampaignInfo {
   readonly recipientsCid: string;
   readonly claimAmount: string;
   readonly claimedNum: number;
-  readonly status: Number;
+  readonly status: number;
   readonly claims: Claim[];
   readonly checkRequests: CheckRequest[];
   readonly campaignMetadata: CampaignMetadata;
