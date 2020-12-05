@@ -19,9 +19,7 @@ const TokenCampaignCard = ({ campaignInformation }: TokenCampaignCardProps) => {
         <CardHeader title={campaignInformation.name} />
         <CardContent>
           {campaignInformation && (
-            <Typography>
-              description: {campaignInformation.description}
-            </Typography>
+            <Typography>{campaignInformation.description}</Typography>
           )}
         </CardContent>
       </Card>

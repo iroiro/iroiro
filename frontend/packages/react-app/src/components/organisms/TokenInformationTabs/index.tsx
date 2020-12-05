@@ -82,6 +82,7 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
           onChange={handleChange}
           aria-label="simple tabs example"
           scrollButtons="auto"
+          indicatorColor="primary"
           centered
         >
           <Tab label="Basic" {...a11yProps(0)} />
@@ -117,15 +118,12 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
         </TabPanel>
         <TabPanel value={value} index={4}>
           <Grid container spacing={4} direction="column">
-            <UserActivities state={state} />
-          </Grid>
-          <Grid
-            container
-            spacing={4}
-            direction="column"
-            className={classes.chart}
-          >
-            <BalanceHistoryChart balances={state.balances} />
+            <Grid item xs={12}>
+              <UserActivities state={state} />
+            </Grid>
+            <Grid item xs={12}>
+              <BalanceHistoryChart balances={state.balances} />
+            </Grid>
           </Grid>
         </TabPanel>
       </Container>

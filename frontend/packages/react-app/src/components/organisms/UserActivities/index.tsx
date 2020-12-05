@@ -14,15 +14,19 @@ const UserActivities = ({
     <Typography variant="h5" component="h3">
       Activities
     </Typography>
-    {activities.length === 0 ? (
-      <Typography>No activities for this Token yet.</Typography>
-    ) : (
-      <>
-        {activities.map((activity) => (
-          <UserActivityCard activity={activity} token={token} />
-        ))}
-      </>
-    )}
+    <Grid container spacing={4} direction="column">
+      {activities.length === 0 ? (
+        <Typography>No activities for this Token yet.</Typography>
+      ) : (
+        <>
+          {activities.map((activity) => (
+            <Grid item xs={12}>
+              <UserActivityCard activity={activity} token={token} />
+            </Grid>
+          ))}
+        </>
+      )}
+    </Grid>
   </>
 );
 
