@@ -29,7 +29,6 @@ NotFound.args = {
     ...tokenInformationState,
     token: undefined,
     campaigns: [],
-    campaignInformationList: [],
     userBalance: "",
   },
 };

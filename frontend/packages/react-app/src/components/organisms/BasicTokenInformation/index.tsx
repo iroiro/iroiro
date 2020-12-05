@@ -1,12 +1,6 @@
 import * as React from "react";
 import { TokenInformationState } from "../../../interfaces";
-import {
-  Card,
-  CardContent,
-  Container,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Card, CardContent, makeStyles, Typography } from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
 
 const useStyles = makeStyles((theme) => ({

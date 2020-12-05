@@ -22,5 +22,5 @@ Default.args = {
 
 export const NoCampaigns = Template.bind({});
 NoCampaigns.args = {
-  state: { ...tokenInformationState, campaignInformationList: [] },
+  state: { ...tokenInformationState },
 };

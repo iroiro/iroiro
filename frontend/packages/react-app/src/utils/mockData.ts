@@ -1,9 +1,21 @@
-import { Campaign, TokenInformationState } from "../interfaces";
+import {
+  CampaignInfo,
+  CampaignMetadata,
+  TokenInformationState,
+} from "../interfaces";
 import { EventData } from "web3-eth-contract";
 
-export const campaign: Campaign = {
+export const campaignMetadata: CampaignMetadata = {
+  name: "A Campaign",
+  description: "This is a test campaign",
+  image: "",
+};
+
+export const campaign: CampaignInfo = {
   id: "0xcampaign...1234",
-  distributor: {},
+  distributor: {
+    id: "0xdistributor...1234",
+  },
   token: "0xtoken...1234",
   startDate: "1612137600",
   endDate: "1612137600",
@@ -15,13 +27,7 @@ export const campaign: Campaign = {
   status: 0,
   claims: [],
   checkRequests: [],
-};
-
-export const campaignInformation = {
-  address: "0xcampaign...1234",
-  name: "A Campaign",
-  description: "This is a test campaign",
-  image: "",
+  campaignMetadata: campaignMetadata,
 };
 
 // from: https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#id41
@@ -63,11 +69,6 @@ export const tokenInformationState: TokenInformationState = {
   isTokenApproved: true,
   isTokenRequested: false,
   campaigns: [campaign, campaign, campaign],
-  campaignInformationList: [
-    campaignInformation,
-    campaignInformation,
-    campaignInformation,
-  ],
   isCampaignClaimable: false,
   isCampaignClaimed: false,
   userAddress: "0x0000000000000000000000000000000000000000",

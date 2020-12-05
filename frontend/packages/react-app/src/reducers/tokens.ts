@@ -45,11 +45,9 @@ export function tokensReducer(state: TokenListState, action: ACTIONS) {
       const tokensData = JSON.parse(tokensInfo) as TokenBasic[];
 
       if (tokensData !== null) {
-        const result = tokensData.filter((token) => {
-          if (token.tokenAddress.indexOf(state.inputTokenAddress) !== -1) {
-            return true;
-          }
-        });
+        const result = tokensData.filter(
+          (token) => token.tokenAddress.indexOf(state.inputTokenAddress) !== -1
+        );
         if (result.length > 0) {
           return { ...state, inputTokenAddress: "", isOpen: false };
         }

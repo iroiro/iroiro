@@ -6,20 +6,20 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import { CampaignInformation } from "../../../interfaces";
+import { CampaignInfo } from "../../../interfaces";
 
 export interface TokenCampaignCardProps {
-  readonly campaignInformation: CampaignInformation;
+  readonly campaign: CampaignInfo;
 }
 
-const TokenCampaignCard = ({ campaignInformation }: TokenCampaignCardProps) => {
+const TokenCampaignCard = ({ campaign }: TokenCampaignCardProps) => {
   return (
-    <Grid item key={campaignInformation.address} xs={12}>
+    <Grid item key={campaign.id} xs={12}>
       <Card>
-        <CardHeader title={campaignInformation.name} />
+        <CardHeader title={campaign.campaignMetadata.name} />
         <CardContent>
-          {campaignInformation && (
-            <Typography>{campaignInformation.description}</Typography>
+          {campaign.campaignMetadata && (
+            <Typography>{campaign.campaignMetadata.description}</Typography>
           )}
         </CardContent>
       </Card>

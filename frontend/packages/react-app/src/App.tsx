@@ -21,10 +21,12 @@ const App = () => {
           {/* For Creator */}
           <Route exact path="/dashboard" component={DashboardPage} />
           <Route
+            exact
             path="/dashboard/:tokenAddress"
             component={ExternalTokenDetailPage}
           />
           <Route
+            exact
             path="/dashboard/:tokenAddress/distributors"
             component={SelectDistributorsPage}
           />
@@ -34,6 +36,7 @@ const App = () => {
             component={CreateCampaignPage}
           />
           <Route
+            exact
             path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
             component={CampaignDetailPage}
           />

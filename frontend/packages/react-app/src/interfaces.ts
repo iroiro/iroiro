@@ -1,6 +1,5 @@
 // TODO Update type
 import { Web3Provider } from "@ethersproject/providers";
-import { EventData } from "web3-eth-contract";
 
 export interface Web3Props {
   readonly provider: Web3Provider | undefined;
@@ -43,7 +42,7 @@ export interface TokenBasic {
 }
 
 export interface Distributor {
-  // TODO Add fields
+  id: string;
 }
 
 export interface Creator {
@@ -58,7 +57,7 @@ export interface CheckRequest {
   // TODO Add fields
 }
 
-export interface Campaign {
+export interface CampaignInfo {
   readonly id: string;
   readonly distributor: Distributor;
   readonly token: string;
@@ -69,16 +68,16 @@ export interface Campaign {
   readonly recipientsCid: string;
   readonly claimAmount: string;
   readonly claimedNum: number;
-  readonly status: number;
+  readonly status: Number;
   readonly claims: Claim[];
   readonly checkRequests: CheckRequest[];
+  readonly campaignMetadata: CampaignMetadata;
 }
 
-export interface CampaignInformation {
-  readonly address: string;
+export interface CampaignMetadata {
   readonly name: string;
   readonly description: string;
-  readonly image?: string;
+  readonly image: string;
 }
 
 export interface Activity {
@@ -97,8 +96,7 @@ export interface TokenInformationState {
   token?: TokenBasic;
   isTokenApproved: boolean;
   isTokenRequested: boolean;
-  campaigns: Campaign[];
-  campaignInformationList: CampaignInformation[];
+  campaigns: CampaignInfo[];
   campaignAddress?: string;
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
@@ -106,4 +104,16 @@ export interface TokenInformationState {
   userBalance?: string;
   activities: Activity[];
   balances: Balance[];
+}
+
+export interface TokenInfo {
+  token: {
+    name: string;
+    tokenAddress: string;
+  };
+}
+
+export interface TokenAndCampaignProps {
+  readonly tokenState: TokenInfo;
+  readonly campaignsState: CampaignInfo[];
 }

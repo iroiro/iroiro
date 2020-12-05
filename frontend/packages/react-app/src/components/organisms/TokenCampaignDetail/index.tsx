@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const TokenCampaignDetail = ({
-  state: { campaigns, campaignInformationList },
+  state: { campaigns },
   campaignAddress,
 }: TokenCampaignDetailProps) => {
   const classes = useStyles();
@@ -31,11 +31,8 @@ const TokenCampaignDetail = ({
   const campaign = campaigns.find(
     (campaign) => campaign.id === campaignAddress
   );
-  const campaignInformation = campaignInformationList.find(
-    (info) => info.address === campaignAddress
-  );
 
-  if (!campaign || !campaignInformation) {
+  if (!campaign) {
     return (
       <div>
         <Typography>Campaign not found.</Typography>
@@ -48,9 +45,9 @@ const TokenCampaignDetail = ({
       <Grid item xs={12}>
         <Paper className={classes.container}>
           <Typography variant="h4" component="h2">
-            {campaignInformation.name}
+            {campaign.campaignMetadata.name}
           </Typography>
-          <Typography>Name: {campaignInformation.description}</Typography>
+          <Typography>Name: {campaign.campaignMetadata.description}</Typography>
           <Typography>
             Start Date:{" "}
             {new Date(parseInt(campaign.startDate) * 1000).toLocaleDateString()}

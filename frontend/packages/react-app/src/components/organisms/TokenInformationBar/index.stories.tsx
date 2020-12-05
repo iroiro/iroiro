@@ -26,6 +26,5 @@ Loading.args = {
     ...tokenInformationState,
     token: undefined,
     campaigns: [],
-    campaignInformationList: [],
   },
 };

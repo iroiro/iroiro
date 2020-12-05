@@ -7,16 +7,14 @@ export interface TokenCampaignsProps {
   readonly state: TokenInformationState;
 }
 
-const TokenCampaigns = ({
-  state: { campaignInformationList },
-}: TokenCampaignsProps) => (
+const TokenCampaigns = ({ state: { campaigns } }: TokenCampaignsProps) => (
   <Grid container spacing={4} direction="column">
-    {campaignInformationList.length === 0 ? (
+    {campaigns.length === 0 ? (
       <Typography>No campaigns for this Token yet.</Typography>
     ) : (
       <>
-        {campaignInformationList.map((info) => (
-          <TokenCampaignCard campaignInformation={info} />
+        {campaigns.map((campaign) => (
+          <TokenCampaignCard campaign={campaign} />
         ))}
       </>
     )}

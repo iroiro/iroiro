@@ -14,12 +14,12 @@ const AppHeader = () => (
       </Box>
       <Flex>
         <LinkButton
-          p={4}
+          m={4}
           path="/dashboard"
           text="Dashboard"
           mainColor={"itblue"}
         />
-        <LinkButton p={4} path="/explore" text="Explore" mainColor={"itred"} />
+        <LinkButton m={4} path="/explore" text="Explore" mainColor={"itred"} />
         <Box mr={4}>
           <WalletButton />
         </Box>
