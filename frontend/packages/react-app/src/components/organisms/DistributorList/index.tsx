@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "rimble-ui";
 import { Distributor } from "../../../interfaces";
-// import DistributorListItem from "../../molecules/DistributorListItem";
+import DistributorListItem from "../../molecules/DistributorListItem";
 
 export interface Distributors {
   readonly distributors: Distributor[];
@@ -11,7 +11,7 @@ export interface Distributors {
 const DistributorList = ({ distributors, tokenAddress }: Distributors) => {
   return (
     <Box>
-      {/* {distributors.length > 0 ? (
+      {distributors.length > 0 ? (
         distributors.map((distributor) => (
           <DistributorListItem
             key={distributor.id}
@@ -21,7 +21,7 @@ const DistributorList = ({ distributors, tokenAddress }: Distributors) => {
         ))
       ) : (
         <div>No Disributor</div>
-      )} */}
+      )}
     </Box>
   );
 };
