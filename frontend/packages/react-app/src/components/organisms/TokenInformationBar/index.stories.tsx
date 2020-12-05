@@ -23,6 +23,7 @@ Default.args = {
 export const Loading = Template.bind({});
 Loading.args = {
   state: {
+    ...tokenInformationState,
     token: undefined,
     campaigns: [],
     campaignInformationList: [],

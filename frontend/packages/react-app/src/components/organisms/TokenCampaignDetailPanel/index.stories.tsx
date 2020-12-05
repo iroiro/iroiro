@@ -26,6 +26,7 @@ Default.args = {
 export const NotFound = Template.bind({});
 NotFound.args = {
   state: {
+    ...tokenInformationState,
     token: undefined,
     campaigns: [],
     campaignInformationList: [],

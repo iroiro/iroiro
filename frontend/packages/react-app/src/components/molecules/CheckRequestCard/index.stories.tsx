@@ -16,18 +16,18 @@ const Template: Story<TokenRequestCardProps> = (args) => (
 
 export const NoApprove = Template.bind({});
 NoApprove.args = {
-  tokenApproved: false,
-  requested: false,
+  isApproved: false,
+  isRequested: false,
 };
 
 export const Approved = Template.bind({});
 Approved.args = {
-  tokenApproved: true,
-  requested: false,
+  isApproved: true,
+  isRequested: false,
 };
 
 export const Requested = Template.bind({});
 Requested.args = {
-  tokenApproved: true,
-  requested: true,
+  isApproved: true,
+  isRequested: true,
 };

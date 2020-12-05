@@ -18,6 +18,7 @@
     "@apollo/react-hooks": "^3.1.5",
     "@audius/hedgehog": "^1.0.8",
     "@audius/libs": "^1.0.1",
+    "@babel/helper-regex": "^7.10.5",
     "@ethersproject/contracts": "^5.0.1",
     "@ethersproject/providers": "^5.0.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",

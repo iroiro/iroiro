@@ -17,7 +17,9 @@ const Template: Story<TokenCampaignCardProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   campaignInformation: {
+    address: "",
     name: "A campaign",
     description: "This is a campaign.",
+    image: "",
   },
 };
