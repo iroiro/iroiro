@@ -70,3 +70,20 @@ export interface TokenAndCampaignProps {
   readonly tokenState: TokenInfo;
   readonly campaignsState: CampaignInfo[];
 }
+
+export interface Distributor {
+  id: string;
+  distributorCid: string;
+  distributorMetadata: DistributorMetadata;
+}
+
+export interface DistributorMetadata {
+  name: string;
+  description: string;
+  image: string;
+}
+
+export interface Target {
+  readonly handle: string;
+  readonly wallet: string;
+}
