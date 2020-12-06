@@ -1,5 +1,4 @@
 import React from "react";
-import { useWeb3React } from "@web3-react/core";
 import { Box } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import { TokenInfo, CampaignInfo } from "../../../interfaces";

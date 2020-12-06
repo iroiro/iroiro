@@ -41,22 +41,69 @@ export interface TokenBasic {
   readonly totalSupply: number;
 }
 
-export interface CampaignInfo {
-  claimAmount: string;
-  distributor: {
-    id: string;
-  };
+export interface Distributor {
   id: string;
-  status: Number;
-  campaignInfoCid: string;
-  campaignMetadata: CampaignMetadata;
-  startDate: string;
+}
+
+export interface Creator {
+  // TODO Add fields
+}
+
+export interface Claim {
+  // TODO Add fields
+}
+
+export interface CheckRequest {
+  // TODO Add fields
+}
+
+export interface CampaignInfo {
+  readonly id: string;
+  readonly distributor: Distributor;
+  readonly token: string;
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly creator: Creator;
+  readonly campaignInfoCid: string;
+  readonly recipientsCid: string;
+  readonly claimAmount: string;
+  readonly claimedNum: number;
+  readonly status: number;
+  readonly claims: Claim[];
+  readonly checkRequests: CheckRequest[];
+  readonly campaignMetadata: CampaignMetadata;
 }
 
 export interface CampaignMetadata {
+  readonly name: string;
+  readonly description: string;
+  readonly image: string;
+}
+
+export interface Activity {
   name: string;
-  description: string;
-  image: string;
+  timestamp: string;
+  amount: string;
+}
+
+export interface Balance {
+  timestamp: number;
+  balance: string;
+}
+
+// TODO Move to page reducer
+export interface TokenInformationState {
+  token?: TokenBasic;
+  isTokenApproved: boolean;
+  isTokenRequested: boolean;
+  campaigns: CampaignInfo[];
+  campaignAddress?: string;
+  isCampaignClaimable: boolean;
+  isCampaignClaimed: boolean;
+  userAddress?: string;
+  userBalance?: string;
+  activities: Activity[];
+  balances: Balance[];
 }
 
 export interface TokenInfo {
