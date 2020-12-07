@@ -20,6 +20,22 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
 
   useEffect(() => {
     const f = async () => {
+      if (library === undefined) {
+        return;
+      }
+      const address = await library.getSigner().getAddress();
+      dispatch({
+        type: "userAddress:set",
+        payload: {
+          address,
+        },
+      });
+    };
+    f();
+  }, [library, dispatch]);
+
+  useEffect(() => {
+    const f = async () => {
       const token = await getTokenInfo(library, tokenAddress);
       if (token === undefined) {
         return;

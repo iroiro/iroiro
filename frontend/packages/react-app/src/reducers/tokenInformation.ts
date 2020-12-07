@@ -8,6 +8,12 @@ export type TokenInformationAction =
       };
     }
   | {
+      type: "userAddress:set";
+      payload: {
+        address: string;
+      };
+    }
+  | {
       type: "userBalance:set";
       payload: {
         balance: string;
@@ -25,6 +31,11 @@ export const tokenInformationReducer = (
         token: {
           ...action.payload.token,
         },
+      };
+    case "userAddress:set":
+      return {
+        ...state,
+        userAddress: action.payload.address,
       };
     case "userBalance:set":
       return {
