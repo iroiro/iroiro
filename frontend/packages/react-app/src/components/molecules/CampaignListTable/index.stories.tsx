@@ -31,6 +31,13 @@ const campaignsState: CampaignInfo[] = [
     id: "0xcc22b3199013627708d05fedf9b854bd7706a156",
     distributor: {
       id: "0x48889feca4574810e5a5b30b6b93146a837500fb",
+      distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
+      distributorMetadata: {
+        name: "Audius Followers Distributor",
+        description:
+          "This distributer enables creators to distributes tokens for their followers on Auduis.",
+        image: "https://example.com/distributerimage.jpg",
+      },
     },
     token: "",
     startDate: "20201212",
@@ -54,6 +61,13 @@ const campaignsState: CampaignInfo[] = [
     id: "0xcc22b3199013627708d05fedf9b854bd7706a156",
     distributor: {
       id: "0x48889feca4574810e5a5b30b6b93146a837500fb",
+      distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
+      distributorMetadata: {
+        name: "Audius Followers Distributor",
+        description:
+          "This distributer enables creators to distributes tokens for their followers on Auduis.",
+        image: "https://example.com/distributerimage.jpg",
+      },
     },
     token: "",
     startDate: "20201212",
@@ -77,6 +91,13 @@ const campaignsState: CampaignInfo[] = [
     id: "0xcc22b3199013627708d05fedf9b854bd7706a156",
     distributor: {
       id: "0x48889feca4574810e5a5b30b6b93146a837500fb",
+      distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
+      distributorMetadata: {
+        name: "Audius Followers Distributor",
+        description:
+          "This distributer enables creators to distributes tokens for their followers on Auduis.",
+        image: "https://example.com/distributerimage.jpg",
+      },
     },
     token: "",
     startDate: "20201212",

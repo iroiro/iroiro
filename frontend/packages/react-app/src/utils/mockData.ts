@@ -15,6 +15,13 @@ export const campaign: CampaignInfo = {
   id: "0xcampaign...1234",
   distributor: {
     id: "0xdistributor...1234",
+    distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
+    distributorMetadata: {
+      name: "Audius Followers Distributor",
+      description:
+        "This distributer enables creators to distributes tokens for their followers on Auduis.",
+      image: "https://example.com/distributerimage.jpg",
+    },
   },
   token: "0xtoken...1234",
   startDate: "1612137600",

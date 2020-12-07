@@ -41,10 +41,6 @@ export interface TokenBasic {
   readonly totalSupply: number;
 }
 
-export interface Distributor {
-  id: string;
-}
-
 export interface Creator {
   // TODO Add fields
 }
