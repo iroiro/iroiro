@@ -8,14 +8,10 @@ import {
   Tab,
   Tabs,
   Theme,
-  Typography,
 } from "@material-ui/core";
 import TokenInformationBar from "../TokenInformationBar";
 import BasicTokenInformation from "../BasicTokenInformation";
 import TokenCampaigns from "../TokenCampaigns";
-import TokenCampaignDetail from "../TokenCampaignDetail";
-import TokenRequestCard from "../../molecules/CheckRequestCard";
-import TokenClaimCard from "../../molecules/TokenClaimCard";
 import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
 import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
 import UserActivities from "../UserActivities";
@@ -106,7 +102,7 @@ export function TokenInformationTabs({
               isClaimed={state.isCampaignClaimed}
             />
           ) : (
-            <TokenCampaigns state={state} />
+            <TokenCampaigns state={state} dispatch={dispatch} />
           )}
         </TabPanel>
         <TabPanel value={value} index={2}>

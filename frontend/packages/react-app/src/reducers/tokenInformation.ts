@@ -14,6 +14,12 @@ export type TokenInformationAction =
       };
     }
   | {
+      type: "campaignAddress:set";
+      payload: {
+        campaignAddress: string;
+      };
+    }
+  | {
       type: "userAddress:set";
       payload: {
         address: string;
@@ -42,6 +48,11 @@ export const tokenInformationReducer = (
       return {
         ...state,
         campaigns: action.payload.campaigns,
+      };
+    case "campaignAddress:set":
+      return {
+        ...state,
+        campaignAddress: action.payload.campaignAddress,
       };
     case "userAddress:set":
       return {
