@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from "react";
 import ExplorePageTemplate from "../templates/ExplorePageTemplate";
 import { tokensReducer } from "../../reducers/tokens";
 import { useWeb3React } from "@web3-react/core";
-import { getTokenInfo } from "../../utils/getTokenInfo";
+import { getTokenInfo } from "../../utils/web3";
 
 const initialState = {
   isOpen: false,

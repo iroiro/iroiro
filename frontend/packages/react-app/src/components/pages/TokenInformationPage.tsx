@@ -7,7 +7,7 @@ import {
   tokenInformationReducer,
 } from "../../reducers/tokenInformation";
 import { useParams, RouteComponentProps } from "react-router-dom";
-import { getTokenInfo } from "../../utils/getTokenInfo";
+import { getTokenInfo } from "../../utils/web3";
 
 interface Params {
   tokenAddress: string;
