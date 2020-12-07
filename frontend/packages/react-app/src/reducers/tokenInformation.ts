@@ -1,10 +1,16 @@
-import { TokenBasic, TokenInformationState } from "../interfaces";
+import { CampaignInfo, TokenBasic, TokenInformationState } from "../interfaces";
 
 export type TokenInformationAction =
   | {
       type: "token:set";
       payload: {
         token: TokenBasic;
+      };
+    }
+  | {
+      type: "campaigns:set";
+      payload: {
+        campaigns: CampaignInfo[];
       };
     }
   | {
@@ -31,6 +37,11 @@ export const tokenInformationReducer = (
         token: {
           ...action.payload.token,
         },
+      };
+    case "campaigns:set":
+      return {
+        ...state,
+        campaigns: action.payload.campaigns,
       };
     case "userAddress:set":
       return {

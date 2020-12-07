@@ -8,6 +8,9 @@ import {
 } from "../../reducers/tokenInformation";
 import { useParams, RouteComponentProps } from "react-router-dom";
 import { getTokenInfo, getWalletBalance } from "../../utils/web3";
+import { useLazyQuery } from "@apollo/react-hooks";
+import { GET_CAMPAIGNS } from "../../graphql/subgraph";
+import { CampaignInfo, CampaignMetadata } from "../../interfaces";
 
 interface Params {
   tokenAddress: string;
@@ -17,6 +20,7 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokenInformationReducer, initialState);
   const { tokenAddress } = useParams<Params>();
+  const [getCampaigns, { loading, error, data }] = useLazyQuery(GET_CAMPAIGNS);
 
   useEffect(() => {
     const f = async () => {
@@ -58,6 +62,46 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
     };
     f();
   }, [library, state.token?.tokenAddress]);
+
+  useEffect(() => {
+    // TODO: After made campaign creation function, change dynamic value
+    getCampaigns({
+      variables: {
+        creator: "0x84d800dae0bdb31a4de9918782bffcc8d041c1b8",
+        token: tokenAddress.toLowerCase(),
+      },
+    });
+  }, [tokenAddress, getCampaigns]);
+
+  useEffect(() => {
+    const f = async () => {
+      if (!tokenAddress) {
+        return;
+      }
+      if (data === undefined) {
+        return;
+      }
+      const rawCampaigns = data.campaigns;
+      const campaigns: CampaignInfo[] = await Promise.all(
+        rawCampaigns.map(async (rawCampaign: CampaignInfo) => {
+          const cid = rawCampaign.campaignInfoCid;
+          const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          const campaign: CampaignInfo = Object.assign<
+            CampaignInfo,
+            { campaignMetadata: CampaignMetadata }
+          >(rawCampaign, { campaignMetadata: data });
+          return campaign;
+        })
+      );
+      dispatch({
+        type: "campaigns:set",
+        payload: { campaigns: campaigns },
+      });
+    };
+    f();
+  }, [tokenAddress, data]);
 
   return <TokenInformationTemplate state={state} dispatch={dispatch} />;
 };
