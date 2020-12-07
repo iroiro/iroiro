@@ -25,7 +25,7 @@ export interface CampaignStatusChipProps {
   readonly status: number;
 }
 
-const CampaignStatusChip = ({ status }: CampaignStatusChipProps) => {
+const CampaignStatusChip: React.FC<CampaignStatusChipProps> = ({ status }) => {
   const chipProps = chipPropsList[status];
 
   return <Chip label={chipProps.text} color={chipProps.color} size="small" />;

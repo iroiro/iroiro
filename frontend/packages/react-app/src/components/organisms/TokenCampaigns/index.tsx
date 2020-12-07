@@ -14,7 +14,7 @@ const TokenCampaigns = ({ state: { campaigns } }: TokenCampaignsProps) => (
     ) : (
       <>
         {campaigns.map((campaign) => (
-          <TokenCampaignCard campaign={campaign} />
+          <TokenCampaignCard key={campaign.id} campaign={campaign} />
         ))}
       </>
     )}

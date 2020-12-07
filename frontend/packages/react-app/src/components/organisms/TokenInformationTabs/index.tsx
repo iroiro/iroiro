@@ -13,9 +13,6 @@ import {
 import TokenInformationBar from "../TokenInformationBar";
 import BasicTokenInformation from "../BasicTokenInformation";
 import TokenCampaigns from "../TokenCampaigns";
-import TokenCampaignDetail from "../TokenCampaignDetail";
-import TokenRequestCard from "../../molecules/CheckRequestCard";
-import TokenClaimCard from "../../molecules/TokenClaimCard";
 import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
 import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
 import UserActivities from "../UserActivities";
@@ -65,11 +62,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
+export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
+  state,
+}: TokenInformationTemplateProps) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     setValue(newValue);
   };
 
@@ -97,7 +96,9 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
           <BasicTokenInformation state={state} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {!!state.campaignAddress ? (
+          {!state.campaignAddress ? (
+            <TokenCampaigns state={state} />
+          ) : (
             <TokenDetailCampaignPanel
               state={state}
               campaignAddress={state.campaignAddress}
@@ -106,8 +107,6 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
               isClaimable={state.isCampaignClaimable}
               isClaimed={state.isCampaignClaimed}
             />
-          ) : (
-            <TokenCampaigns state={state} />
           )}
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -129,6 +128,6 @@ export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
       </Container>
     </div>
   );
-}
+};
 
 export default TokenInformationTabs;

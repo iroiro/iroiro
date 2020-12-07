@@ -1,15 +1,6 @@
 import * as React from "react";
 import { TokenInformationState } from "../../../interfaces";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  makeStyles,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import { Grid, makeStyles, Paper, Theme, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 

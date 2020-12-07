@@ -45,17 +45,17 @@ export interface Distributor {
   id: string;
 }
 
-export interface Creator {
-  // TODO Add fields
-}
-
-export interface Claim {
-  // TODO Add fields
-}
-
-export interface CheckRequest {
-  // TODO Add fields
-}
+// export interface Creator {
+//   // TODO Add fields
+// }
+//
+// export interface Claim {
+//   // TODO Add fields
+// }
+//
+// export interface CheckRequest {
+//   // TODO Add fields
+// }
 
 export interface CampaignInfo {
   readonly id: string;

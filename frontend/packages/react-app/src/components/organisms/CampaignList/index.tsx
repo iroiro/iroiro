@@ -4,10 +4,10 @@ import { TokenAndCampaignProps } from "../../../interfaces";
 import LinkButton from "../../atoms/LinkButton";
 import CampaignListTable from "../../molecules/CampaignListTable";
 
-const CampaignList = ({
+const CampaignList: React.FC<TokenAndCampaignProps> = ({
   tokenState,
   campaignsState,
-}: TokenAndCampaignProps) => {
+}) => {
   return (
     <>
       <Flex style={{ alignItems: "center", justifyContent: "space-between" }}>

@@ -3,7 +3,6 @@ import {
   CampaignMetadata,
   TokenInformationState,
 } from "../interfaces";
-import { EventData } from "web3-eth-contract";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
