@@ -38,7 +38,7 @@ export interface TokenBasic {
   readonly name: string;
   readonly symbol: string;
   readonly decimals: number;
-  readonly totalSupply: number;
+  readonly totalSupply: string;
 }
 
 export interface Creator {

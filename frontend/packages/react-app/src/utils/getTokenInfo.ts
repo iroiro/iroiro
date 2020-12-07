@@ -19,7 +19,7 @@ export const getTokenInfo = async (
     name: name,
     symbol: symbol,
     decimals: decimals,
-    totalSupply: totalSupply,
+    totalSupply: totalSupply.toString(),
   };
   dispatch({ type: "token:set", payload: { data: token } });
 };

@@ -65,7 +65,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function TokenInformationTabs({ state }: TokenInformationTemplateProps) {
+export function TokenInformationTabs({
+  state,
+  dispatch,
+}: TokenInformationTemplateProps) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 

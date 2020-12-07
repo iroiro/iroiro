@@ -71,7 +71,7 @@ export const tokenInformationState: TokenInformationState = {
     name: "Iroiro Token",
     symbol: "IRO",
     decimals: 18,
-    totalSupply: 2000000000,
+    totalSupply: "2000000000",
   },
   isTokenApproved: true,
   isTokenRequested: false,
