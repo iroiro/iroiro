@@ -19,10 +19,21 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   const { tokenAddress } = useParams<Params>();
 
   useEffect(() => {
-    if (library && tokenAddress !== "") {
-      getTokenInfo(dispatch, library, tokenAddress);
-    }
+    const f = async () => {
+      const token = await getTokenInfo(library, tokenAddress);
+      if (token === undefined) {
+        return;
+      }
+      dispatch({ type: "token:set", payload: { token } });
+    };
+    f();
   }, [library, tokenAddress]);
+
+  useEffect(() => {
+    if (!library || tokenAddress === "") {
+      return;
+    }
+  });
 
   return <TokenInformationTemplate state={state} dispatch={dispatch} />;
 };

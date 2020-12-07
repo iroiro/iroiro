@@ -22,9 +22,14 @@ const ExplorePage = () => {
   }, []);
 
   useEffect(() => {
-    if (library && state.tokenAddress !== "") {
-      getTokenInfo(dispatch, library, state.tokenAddress);
-    }
+    const f = async () => {
+      const token = await getTokenInfo(library, state.tokenAddress);
+      if (token === undefined) {
+        return;
+      }
+      dispatch({ type: "token:set", payload: { token } });
+    };
+    f();
   }, [library, state.tokenAddress]);
 
   return <ExplorePageTemplate state={state} dispatch={dispatch} />;

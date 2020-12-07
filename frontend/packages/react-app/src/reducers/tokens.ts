@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 export type ACTIONS =
   | { type: "modal:open" }
   | { type: "modal:close" }
-  | { type: "token:set"; payload: { data: TokenBasic } }
+  | { type: "token:set"; payload: { token: TokenBasic } }
   | { type: "tokenAddress:input"; payload: { tokenAddress: "" } }
   | { type: "tokenAddress:add" }
   | { type: "tokens:getlocal" };
@@ -25,7 +25,7 @@ export function tokensReducer(state: TokenListState, action: ACTIONS) {
     case "modal:close":
       return { ...state, isOpen: false };
     case "token:set":
-      state.tokens.push(action.payload.data);
+      state.tokens.push(action.payload.token);
       window.localStorage.setItem("tokens", JSON.stringify(state.tokens));
       return { ...state, tokenAddress: "", tokens: state.tokens };
     case "tokenAddress:input":

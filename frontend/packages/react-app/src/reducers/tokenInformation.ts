@@ -3,7 +3,7 @@ import { TokenBasic, TokenInformationState } from "../interfaces";
 export type TokenInformationAction = {
   type: "token:set";
   payload: {
-    data: TokenBasic;
+    token: TokenBasic;
   };
 };
 
@@ -16,7 +16,7 @@ export const tokenInformationReducer = (
       return {
         ...state,
         token: {
-          ...action.payload.data,
+          ...action.payload.token,
         },
       };
     default:
