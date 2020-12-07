@@ -7,7 +7,7 @@ import {
   tokenInformationReducer,
 } from "../../reducers/tokenInformation";
 import { useParams, RouteComponentProps } from "react-router-dom";
-import { getTokenInfo } from "../../utils/web3";
+import { getTokenInfo, getWalletBalance } from "../../utils/web3";
 
 interface Params {
   tokenAddress: string;
@@ -30,10 +30,18 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   }, [library, tokenAddress]);
 
   useEffect(() => {
-    if (!library || tokenAddress === "") {
-      return;
-    }
-  });
+    const f = async () => {
+      const balance = await getWalletBalance(
+        library,
+        state.token?.tokenAddress ?? ""
+      );
+      if (balance === undefined) {
+        return;
+      }
+      dispatch({ type: "userBalance:set", payload: { balance } });
+    };
+    f();
+  }, [library, state.token?.tokenAddress]);
 
   return <TokenInformationTemplate state={state} dispatch={dispatch} />;
 };

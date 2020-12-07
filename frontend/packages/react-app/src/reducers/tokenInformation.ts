@@ -1,11 +1,18 @@
 import { TokenBasic, TokenInformationState } from "../interfaces";
 
-export type TokenInformationAction = {
-  type: "token:set";
-  payload: {
-    token: TokenBasic;
-  };
-};
+export type TokenInformationAction =
+  | {
+      type: "token:set";
+      payload: {
+        token: TokenBasic;
+      };
+    }
+  | {
+      type: "userBalance:set";
+      payload: {
+        balance: string;
+      };
+    };
 
 export const tokenInformationReducer = (
   state: TokenInformationState,
@@ -18,6 +25,11 @@ export const tokenInformationReducer = (
         token: {
           ...action.payload.token,
         },
+      };
+    case "userBalance:set":
+      return {
+        ...state,
+        userBalance: action.payload.balance,
       };
     default:
       return state;
