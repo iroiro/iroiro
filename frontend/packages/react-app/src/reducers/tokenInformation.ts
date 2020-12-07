@@ -20,6 +20,9 @@ export type TokenInformationAction =
       };
     }
   | {
+      type: "campaignAddress:remove";
+    }
+  | {
       type: "userAddress:set";
       payload: {
         address: string;
@@ -53,6 +56,11 @@ export const tokenInformationReducer = (
       return {
         ...state,
         campaignAddress: action.payload.campaignAddress,
+      };
+    case "campaignAddress:remove":
+      return {
+        ...state,
+        campaignAddress: undefined,
       };
     case "userAddress:set":
       return {
