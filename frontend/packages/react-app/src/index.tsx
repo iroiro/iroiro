@@ -8,6 +8,8 @@ import { ThemeProvider } from "styled-components";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import customTheme from "./theme/rinble-ui-theme";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+import muiTheme from "../src/theme/mui-theme";
 
 const getLibrary = (provider: any): Web3Provider => {
   const library = new Web3Provider(provider);
@@ -24,11 +26,13 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <ThemeProvider theme={customTheme}>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <App />
-      </Web3ReactProvider>
-    </ThemeProvider>
+    <MuiThemeProvider theme={muiTheme}>
+      <ThemeProvider theme={customTheme}>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <App />
+        </Web3ReactProvider>
+      </ThemeProvider>
+    </MuiThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );
