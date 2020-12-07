@@ -92,6 +92,7 @@ export interface TokenInformationState {
   token?: TokenBasic;
   isTokenApproved: boolean;
   isTokenRequested: boolean;
+  isTokenCheckFinished: boolean;
   campaigns: CampaignInfo[];
   campaignAddress?: string;
   isCampaignClaimable: boolean;

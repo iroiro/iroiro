@@ -81,6 +81,7 @@ export const initialState: TokenInformationState = {
   token: undefined,
   isTokenApproved: false,
   isTokenRequested: false,
+  isTokenCheckFinished: false,
   campaigns: [],
   campaignAddress: undefined,
   isCampaignClaimable: false,

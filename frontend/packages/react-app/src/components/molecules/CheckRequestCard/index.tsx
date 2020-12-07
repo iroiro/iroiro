@@ -55,7 +55,7 @@ const TokenRequestCard = ({
             <Button
               variant="contained"
               color="primary"
-              disabled={isApproved && isRequested}
+              disabled={!isApproved || isRequested}
             >
               Check request
             </Button>

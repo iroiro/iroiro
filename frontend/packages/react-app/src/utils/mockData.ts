@@ -73,8 +73,9 @@ export const tokenInformationState: TokenInformationState = {
     decimals: 18,
     totalSupply: "2000000000",
   },
-  isTokenApproved: true,
+  isTokenApproved: false,
   isTokenRequested: false,
+  isTokenCheckFinished: false, // TODO: Replace with subgraph response
   campaigns: [
     campaign,
     {

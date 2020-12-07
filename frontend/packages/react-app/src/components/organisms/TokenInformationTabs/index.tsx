@@ -96,14 +96,7 @@ export function TokenInformationTabs({
         </TabPanel>
         <TabPanel value={value} index={1}>
           {!!state.campaignAddress ? (
-            <TokenDetailCampaignPanel
-              state={state}
-              campaignAddress={state.campaignAddress}
-              isApproved={state.isTokenApproved}
-              isRequested={state.isTokenRequested}
-              isClaimable={state.isCampaignClaimable}
-              isClaimed={state.isCampaignClaimed}
-            />
+            <TokenDetailCampaignPanel state={state} />
           ) : (
             <TokenCampaigns state={state} dispatch={dispatch} />
           )}
