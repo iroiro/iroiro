@@ -38,7 +38,7 @@ const TokenInformationBar = ({
           <Typography variant="h6">
             {!!userBalance && !!token
               ? getBalanceDevidedByDecimals(userBalance, token.decimals)
-              : "Loading balnce..."}
+              : "Loading balance..."}
             {" $"}
             {!!token?.symbol && token.symbol}
           </Typography>
