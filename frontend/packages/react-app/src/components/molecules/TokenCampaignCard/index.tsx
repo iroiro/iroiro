@@ -28,7 +28,7 @@ const AbsoluteChip = styled.div`
   right: 10px;
 `;
 
-const TokenCampaignCard = ({ campaign, dispatch }: TokenCampaignCardProps) => {
+const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({ campaign, dispatch }) => {
   const onClickDetail = () => {
     dispatch({
       type: "campaignAddress:set",

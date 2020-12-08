@@ -14,12 +14,12 @@ const BtnWrapper = styled.div`
   margin-top: 4px;
 `;
 
-const TokenClaimCard = ({
+const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
   symbol,
   claimAmount,
   isClaimable,
   isClaimed,
-}: TokenClaimCardProps) => {
+}) => {
   const text = isClaimable
     ? "You can claim token."
     : "We are sorry but you can not claim token.";

@@ -21,6 +21,6 @@ export const campaignReducer = (state: CampaignInfo[], action: ACTIONS) => {
       console.log(action.payload.data);
       return action.payload.data;
     default:
-      throw new Error();
+      return state;
   }
 };

@@ -1,8 +1,6 @@
 import React from "react";
 
-interface Props {}
-
-const TokenHistoryPage = (props: Props) => {
+const TokenHistoryPage = () => {
   return <>TokenHistoryPage!!!</>;
 };
 

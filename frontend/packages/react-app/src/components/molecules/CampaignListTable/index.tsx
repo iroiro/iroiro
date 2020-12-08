@@ -3,10 +3,10 @@ import { Table, Text, Box } from "rimble-ui";
 import { Link } from "react-router-dom";
 import { TokenAndCampaignProps } from "../../../interfaces";
 
-const CampaignListTable = ({
+const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
   tokenState,
   campaignsState,
-}: TokenAndCampaignProps) => (
+}) => (
   <>
     {campaignsState.length > 0 ? (
       <Table>

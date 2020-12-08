@@ -30,14 +30,15 @@ export function tokensReducer(state: TokenListState, action: ACTIONS) {
       return { ...state, tokenAddress: "", tokens: state.tokens };
     case "tokenAddress:input":
       return { ...state, inputTokenAddress: action.payload.tokenAddress };
-    case "tokens:getlocal":
+    case "tokens:getlocal": {
       const tokensJson = window.localStorage.getItem("tokens") as string;
       let tokens = JSON.parse(tokensJson) as TokenBasic[];
       if (tokens === null) {
         tokens = [];
       }
       return { ...state, tokens: tokens };
-    case "tokenAddress:add":
+    }
+    case "tokenAddress:add": {
       if (!ethers.utils.isAddress(state.inputTokenAddress)) {
         return { ...state, inputTokenAddress: "", isOpen: false };
       }
@@ -59,6 +60,7 @@ export function tokensReducer(state: TokenListState, action: ACTIONS) {
         tokenAddress: state.inputTokenAddress,
         isOpen: false,
       };
+    }
     default:
       throw new Error();
   }

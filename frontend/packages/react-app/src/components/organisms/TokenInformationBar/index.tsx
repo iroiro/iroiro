@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const TokenInformationBar = ({
+const TokenInformationBar: React.FC<TokenInformationBarProps> = ({
   state: { token, userAddress, userBalance },
 }: TokenInformationBarProps) => {
   const classes = useStyles();
@@ -30,7 +30,7 @@ const TokenInformationBar = ({
       <Grid container spacing={5}>
         <Grid item xs>
           <Typography variant="h4" component="h1">
-            {!!token?.name ? token.name : "Loading token name..."}
+            {!token?.name ? "Loading token name..." : token.name}
           </Typography>
         </Grid>
         <Grid item xs>

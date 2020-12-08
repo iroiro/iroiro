@@ -64,7 +64,7 @@ export function TokenInformationTabs({
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     if (newValue !== 1) {
       dispatch({ type: "campaignAddress:remove" });
     }
@@ -95,10 +95,10 @@ export function TokenInformationTabs({
           <BasicTokenInformation state={state} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {!!state.campaignAddress ? (
-            <TokenDetailCampaignPanel state={state} />
-          ) : (
+          {!state.campaignAddress ? (
             <TokenCampaigns state={state} dispatch={dispatch} />
+          ) : (
+            <TokenDetailCampaignPanel state={state} />
           )}
         </TabPanel>
         <TabPanel value={value} index={2}>

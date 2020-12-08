@@ -7,9 +7,9 @@ export type ACTIONS = {
 
 export const tokenReducer = (state: TokenInfo, action: ACTIONS) => {
   switch (action.type) {
-    case "token:getLocal":
+    case "token:getLocal": {
       const tokensJson = window.localStorage.getItem("tokens") as string;
-      let tokens = JSON.parse(tokensJson) as TokenBasic[];
+      const tokens = JSON.parse(tokensJson) as TokenBasic[];
       if (tokens === null) {
         return state;
       }
@@ -27,6 +27,7 @@ export const tokenReducer = (state: TokenInfo, action: ACTIONS) => {
         };
       }
       return { ...state };
+    }
     default:
       throw new Error();
   }

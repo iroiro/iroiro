@@ -3,12 +3,15 @@ import { Box } from "rimble-ui";
 import { Distributor } from "../../../interfaces";
 import DistributorListItem from "../../molecules/DistributorListItem";
 
-export interface Distributors {
+export interface DistributorsProps {
   readonly distributors: Distributor[];
   readonly tokenAddress: string;
 }
 
-const DistributorList = ({ distributors, tokenAddress }: Distributors) => {
+const DistributorList: React.FC<DistributorsProps> = ({
+  distributors,
+  tokenAddress,
+}) => {
   return (
     <Box>
       {distributors.length > 0 ? (

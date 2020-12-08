@@ -2,7 +2,10 @@ import * as React from "react";
 import { Form, Input, Field, Box } from "rimble-ui";
 import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
 
-const AddressFormInput = ({ state, dispatch }: ExplorePageTemplateProps) => (
+const AddressFormInput: React.FC<ExplorePageTemplateProps> = ({
+  state,
+  dispatch,
+}) => (
   <Form>
     <Box width={[1]} px={2}>
       <Field label="Contract Address" width={1}>

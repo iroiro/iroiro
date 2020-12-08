@@ -1,8 +1,6 @@
 import React from "react";
 
-interface Props {}
-
-const TokenCampaignsPage = (props: Props) => {
+const TokenCampaignsPage: React.FC = () => {
   return <>TokenCampaignsPage!!!</>;
 };
 

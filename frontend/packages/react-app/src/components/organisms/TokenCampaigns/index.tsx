@@ -1,15 +1,20 @@
 import * as React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import TokenCampaignCard from "../../molecules/TokenCampaignCard";
-import { TokenInformationState } from "../../../interfaces";
 import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
+import { TokenInformationState } from "../../../interfaces";
+import { Dispatch } from "react";
+import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
-export interface TokenCampaignsProps extends TokenInformationTemplateProps {}
+export interface TokenCampaignsProps extends TokenInformationTemplateProps {
+  state: TokenInformationState;
+  dispatch: Dispatch<TokenInformationAction>;
+}
 
-const TokenCampaigns = ({
+const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
   state: { campaigns },
   dispatch,
-}: TokenCampaignsProps) => (
+}) => (
   <Grid container spacing={4} direction="column">
     {campaigns.length === 0 ? (
       <Typography>No campaigns for this Token yet.</Typography>
