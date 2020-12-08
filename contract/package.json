@@ -15,8 +15,9 @@
     "migrate:live": "npx truffle migrate --network live",
     "test": "oz compile && npx truffle test",
     "format": "yarn prettier --write .",
-    "generate-types": "typechain --target=web3-v1 'build/contracts/*.json' --outDir=../types/",
-    "postinstall": "yarn compile && yarn generate-types"
+    "generate-types:web3": "typechain --target=web3-v1 'build/contracts/*.json' --outDir=../types/web3",
+    "generate-types:ethers": "typechain --target=ethers-v5 'build/contracts/*.json' --outDir=../types/ethers",
+    "postinstall": "yarn compile && yarn generate-types:web3 && yarn generate-types:ethers"
   },
   "license": "MIT",
   "dependencies": {
@@ -31,6 +32,7 @@
     "@chainlink/test-helpers": "0.0.5",
     "@openzeppelin/test-environment": "^0.1.5",
     "@openzeppelin/test-helpers": "^0.5.6",
+    "@typechain/ethers-v5": "^5.0.0",
     "@typechain/web3-v1": "^1.0.0",
     "chai": "^4.2.0",
     "depcheck": "^0.9.1",
