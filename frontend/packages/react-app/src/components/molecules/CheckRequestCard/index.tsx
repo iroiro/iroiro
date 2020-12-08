@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const TokenRequestCard = ({
+const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
   isApproved,
   isRequested,
-}: TokenRequestCardProps) => {
+}) => {
   const classes = useStyles();
 
   return (

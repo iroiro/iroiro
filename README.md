@@ -58,3 +58,9 @@ However, followers could be tons of people and saving all followers address on c
 So we use IPFS to save that information as JSON.
 After that when DApp user want to withdraw a creator token, he sends withdraw request transaction to contract, and then contract request a Chainlink to check a user's address is contained in that JSON file, finally Chainlink fulfill address existent status to contract.
 
+## How to develop 
+
+### Frontend 
+
+1. To generate contract types, run `yarn` on `contracts/` dir. 
+When command finished, `types/` dir is generated on a root dir.

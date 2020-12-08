@@ -6,7 +6,10 @@ export interface TokenClaimCardProps {
   isClaimed: boolean;
 }
 
-const TokenClaimCard = ({ isClaimable, isClaimed }: TokenClaimCardProps) => {
+const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
+  isClaimable,
+  isClaimed,
+}) => {
   if (!isClaimable && !isClaimed) {
     return null;
   }

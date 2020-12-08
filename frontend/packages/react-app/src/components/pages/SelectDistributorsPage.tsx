@@ -5,13 +5,11 @@ import { GET_DISTRIBUTORS } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { Distributor } from "../../interfaces";
 
-interface Props extends RouteComponentProps<{ tokenAddress: string }> {}
-
-const SelectDistributorsPage = (props: Props) => {
+const SelectDistributorsPage: React.FC<RouteComponentProps<{
+  tokenAddress: string;
+}>> = (props) => {
   const tokenAddress = props.match.params.tokenAddress;
-  const [getDistributors, { loading, error, data }] = useLazyQuery(
-    GET_DISTRIBUTORS
-  );
+  const [getDistributors, { data }] = useLazyQuery(GET_DISTRIBUTORS);
   const [distributors, setDistributors] = useState<Distributor[]>([]);
 
   const getDistributorMetadata = useCallback(async (distributors) => {
@@ -19,8 +17,7 @@ const SelectDistributorsPage = (props: Props) => {
       const cid = distributors[i].distributorCid;
       const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
       const response = await fetch(url);
-      const data = await response.json();
-      distributors[i].distributorMetadata = data;
+      distributors[i].distributorMetadata = await response.json();
     }
     setDistributors(distributors);
     console.log(distributors);

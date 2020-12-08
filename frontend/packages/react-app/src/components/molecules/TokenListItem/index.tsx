@@ -9,7 +9,12 @@ export interface TokenListItemProps {
   readonly type: string;
 }
 
-const TokenListItem = ({ name, address, type, color }: TokenListItemProps) => (
+const TokenListItem: React.FC<TokenListItemProps> = ({
+  name,
+  address,
+  type,
+  color,
+}) => (
   <Card color="black" mb={1}>
     <Flex
       m={1}

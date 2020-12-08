@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Link, Heading, Text } from "rimble-ui";
+import { Box, Heading, Text } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TokenList from "../../organisms/TokenList";
 import { TokenListState, ACTIONS } from "../../../reducers/tokens";
@@ -11,7 +11,10 @@ export interface ExplorePageTemplateProps {
   dispatch: React.Dispatch<ACTIONS>;
 }
 
-const ExplorePageTemplate = ({ state, dispatch }: ExplorePageTemplateProps) => (
+const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
+  state,
+  dispatch,
+}) => (
   <div>
     <AppHeader />
     <Box m={"auto"} my={5} width={[3 / 4, 1 / 2]}>

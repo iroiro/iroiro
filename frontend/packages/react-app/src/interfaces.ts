@@ -55,15 +55,15 @@ export interface DistributorMetadata {
 }
 
 export interface Creator {
-  // TODO Add fields
+  id: string;
 }
 
 export interface Claim {
-  // TODO Add fields
+  id: string;
 }
 
 export interface CheckRequest {
-  // TODO Add fields
+  id: string;
 }
 
 export interface CampaignInfo {

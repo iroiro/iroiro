@@ -8,10 +8,10 @@ export interface DistributorProps {
   readonly tokenAddress: string;
 }
 
-const DistributorListItem = ({
+const DistributorListItem: React.FC<DistributorProps> = ({
   distributor,
   tokenAddress,
-}: DistributorProps) => {
+}) => {
   return (
     <Card key={distributor.id}>
       {"distributorMetadata" in distributor && (

@@ -19,7 +19,7 @@ const Template: Story<ExternalTokenDetailPageTemplateProps> = (args) => (
 );
 
 const campaignsState: CampaignInfo[] = [campaign, campaign, campaign];
-
+        
 export const Default = Template.bind({});
 Default.args = {
   active: true,

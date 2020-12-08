@@ -16,23 +16,23 @@ export interface BasicTokenInformationProps {
   readonly state: TokenInformationState;
 }
 
-const BasicTokenInformation = ({
+const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
   state: { token },
-}: BasicTokenInformationProps) => {
+}) => {
   const classes = useStyles();
 
   return (
     <div>
       <Card>
         <CardContent>
-          {!!token ? (
+          {!token ? (
+            <Typography>Loading Token information...</Typography>
+          ) : (
             <>
               <Typography>Name: {token.name}</Typography>
               <Typography>Symbol: {token.symbol}</Typography>
               <Typography>Total Supply: {token.totalSupply}</Typography>
             </>
-          ) : (
-            <Typography>Loading Token information...</Typography>
           )}
         </CardContent>
       </Card>

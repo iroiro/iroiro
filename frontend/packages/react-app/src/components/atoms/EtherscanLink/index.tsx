@@ -11,7 +11,7 @@ export interface EtherscanLinkProps {
 }
 
 // TODO enable switch network, url regard to address type
-const EtherscanLink = ({ type, address }: EtherscanLinkProps) => {
+const EtherscanLink: React.FC<EtherscanLinkProps> = ({ type, address }) => {
   if (!address) {
     return null;
   }

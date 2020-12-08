@@ -7,9 +7,9 @@ export interface UserActivitiesProps {
   readonly state: TokenInformationState;
 }
 
-const UserActivities = ({
+const UserActivities: React.FC<UserActivitiesProps> = ({
   state: { activities, token },
-}: UserActivitiesProps) => (
+}) => (
   <>
     <Typography variant="h5" component="h3">
       Activities
@@ -20,7 +20,7 @@ const UserActivities = ({
       ) : (
         <>
           {activities.map((activity) => (
-            <Grid item xs={12}>
+            <Grid key={activity.timestamp} item xs={12}>
               <UserActivityCard activity={activity} token={token} />
             </Grid>
           ))}

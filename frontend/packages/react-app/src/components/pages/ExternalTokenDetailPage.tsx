@@ -8,8 +8,6 @@ import { CampaignInfo } from "../../interfaces";
 import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
 import { useWeb3React } from "@web3-react/core";
 
-interface Props extends RouteComponentProps<{ tokenAddress: string }> {}
-
 const tokenInitialState = {
   token: {
     name: "",
@@ -19,7 +17,9 @@ const tokenInitialState = {
 
 const campaignsInitialState = new Array<CampaignInfo>();
 
-const ExternalTokenDetailPage = (props: Props) => {
+const ExternalTokenDetailPage: React.FC<RouteComponentProps<{
+  tokenAddress: string;
+}>> = (props) => {
   const { active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const [tokenState, tokenDispatch] = useReducer(
@@ -30,7 +30,7 @@ const ExternalTokenDetailPage = (props: Props) => {
     campaignReducer,
     campaignsInitialState
   );
-  const [getCampaigns, { loading, error, data }] = useLazyQuery(GET_CAMPAIGNS);
+  const [getCampaigns, { data }] = useLazyQuery(GET_CAMPAIGNS);
 
   const getLocalToken = useCallback(() => {
     tokenDispatch({
@@ -44,8 +44,7 @@ const ExternalTokenDetailPage = (props: Props) => {
       const cid = campaigns[i].campaignInfoCid;
       const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
       const response = await fetch(url);
-      const data = await response.json();
-      campaigns[i].campaignMetadata = data;
+      campaigns[i].campaignMetadata = await response.json();
     }
     campaignDispatch({
       type: "campaignMetadata:set",

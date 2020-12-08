@@ -6,7 +6,7 @@ import LogoButton from "../../atoms/LogoButton";
 import LinkButton from "../../atoms/LinkButton";
 import WalletButton from "../../atoms/WalletButton";
 
-const AppHeader = () => (
+const AppHeader: React.FC = () => (
   <div>
     <Header>
       <Box ml={4}>

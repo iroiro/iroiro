@@ -7,13 +7,13 @@ export interface TokenListProps {
   readonly state: TokenListState;
 }
 
-const TokenList = ({ state }: TokenListProps) => (
+const TokenList: React.FC<TokenListProps> = ({ state }) => (
   <div>
     <Heading as={"h2"} mt={5}>
       Token List
     </Heading>
     {state.tokens.length === 0 ? (
-      <Text>You don't have any tokens</Text>
+      <Text>You don`&apos;`t have any tokens</Text>
     ) : (
       <Box>
         {state.tokens.map((token) => (

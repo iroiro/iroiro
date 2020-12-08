@@ -1,7 +1,8 @@
 import { Web3Provider } from "@ethersproject/providers";
-import { Contract } from "@ethersproject/contracts";
-// @ts-ignore
-import { abis } from "@project/contracts";
+import {
+  FanToken,
+  FanToken__factory as FanTokenFactory,
+} from "../../../../../types/ethers";
 
 export const getTokenInfo = async (
   dispatch: any,
@@ -9,11 +10,11 @@ export const getTokenInfo = async (
   tokenAddress: string
 ) => {
   const signer = library.getSigner();
-  const erc20 = new Contract(tokenAddress, abis.fanToken, signer);
-  const name = (await erc20.name()) as string;
-  const symbol = (await erc20.symbol()) as string;
-  const decimals = (await erc20.decimals()) as number;
-  const totalSupply = (await erc20.totalSupply()) as number;
+  const erc20: FanToken = FanTokenFactory.connect(tokenAddress, signer);
+  const name = await erc20.name();
+  const symbol = await erc20.symbol();
+  const decimals = await erc20.decimals();
+  const totalSupply = await erc20.totalSupply();
   const token = {
     tokenAddress: tokenAddress,
     name: name,

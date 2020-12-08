@@ -7,7 +7,7 @@ export interface AddNewTokenProps {
   dispatch: React.Dispatch<ACTIONS>;
 }
 
-const AddNewToken = ({ color, dispatch }: AddNewTokenProps) => (
+const AddNewToken: React.FC<AddNewTokenProps> = ({ color, dispatch }) => (
   <Box mt={4} style={{ textAlign: "center" }}>
     <Link
       my={"auto"}
