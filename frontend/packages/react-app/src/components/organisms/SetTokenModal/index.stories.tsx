@@ -3,7 +3,7 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import SetTokenModal from "./index";
 import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
-import { TokenListState } from "../../../reducers/tokens";
+import { tokenListState } from "../../../utils/mockData";
 
 export default {
   title: "Organisms/SetTokenModal",
@@ -16,23 +16,15 @@ const Template: Story<ExplorePageTemplateProps> = (args) => (
   </BrowserRouter>
 );
 
-const state: TokenListState = {
-  tokens: [],
-  isOpen: true,
-  inputTokenAddress: "0xc6fDe3FD2Cc2b173aEC24cc3f267cb3Cd78a26B7",
-  tokenAddress: "",
-  type: "dashboard",
-  color: "itblue",
-};
-
 export const Default = Template.bind({});
 Default.args = {
-  state,
+  state: tokenListState,
 };
 
 export const NoInput = Template.bind({});
 NoInput.args = {
   state: {
+    ...tokenListState,
     tokens: [],
     isOpen: true,
     inputTokenAddress: "",

@@ -43,6 +43,15 @@ export interface TokenBasic {
 
 export interface Distributor {
   id: string;
+  depositAmount: string;
+  distributorCid: string;
+  distributorMetadata: DistributorMetadata;
+}
+
+export interface DistributorMetadata {
+  name: string;
+  description: string;
+  image: string;
 }
 
 export interface Creator {
@@ -72,6 +81,7 @@ export interface CampaignInfo {
   readonly claims: Claim[];
   readonly checkRequests: CheckRequest[];
   readonly campaignMetadata: CampaignMetadata;
+  readonly claimed: number;
 }
 
 export interface CampaignMetadata {
@@ -118,14 +128,7 @@ export interface TokenAndCampaignProps {
   readonly campaignsState: CampaignInfo[];
 }
 
-export interface Distributor {
-  id: string;
-  distributorCid: string;
-  distributorMetadata: DistributorMetadata;
-}
-
-export interface DistributorMetadata {
-  name: string;
-  description: string;
-  image: string;
+export interface Target {
+  readonly handle: string;
+  readonly wallet: string;
 }

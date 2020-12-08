@@ -2,7 +2,13 @@ import {
   CampaignInfo,
   CampaignMetadata,
   TokenInformationState,
+  Target,
+  Distributor,
+  TokenInfo,
+  AccountToken,
 } from "../interfaces";
+import { TokenListState } from "../reducers/tokens";
+import { EventData } from "web3-eth-contract";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -10,32 +16,39 @@ export const campaignMetadata: CampaignMetadata = {
   image: "",
 };
 
+export const distributor: Distributor = {
+  id: "0x48889feca4574810e5a5b30b6b93146a837500fb",
+  distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
+  distributorMetadata: {
+    name: "Audius Followers Distributor",
+    description:
+      "This distributer enables creators to distributes tokens for their followers on Auduis.",
+    image: "https://example.com/distributerimage.jpg",
+  },
+  depositAmount: "100000",
+};
+
 export const campaign: CampaignInfo = {
-  id: "0xcampaign...1234",
-  distributor: {
-    id: "0xdistributor...1234",
-    distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
-    distributorMetadata: {
-      name: "Audius Followers Distributor",
-      description:
-        "This distributer enables creators to distributes tokens for their followers on Auduis.",
-      image: "https://example.com/distributerimage.jpg",
-    },
+  campaignInfoCid: "QmYdUkdEgQtn4viySEQie51JAwrC3xTyDqDbdWXWEwAz5J",
+  campaignMetadata: {
+    name: "Audiusフォロワーさん向けトークン配布キャンペーン！",
+    description:
+      "Audiusアカウントのフォロワーの方へトークンを配布します。手順はXXX...",
+    image: "https://example.com/campaignimage.jpg",
   },
-  token: "0xtoken...1234",
-  startDate: "1612137600",
-  endDate: "1612137600",
-  creator: {
-    id: "",
-  },
-  campaignInfoCid: "cid",
-  recipientsCid: "",
-  claimAmount: "100",
-  claimedNum: 10,
+  claimAmount: "0",
+  distributor: distributor,
+  id: "0xcc22b3199013627708d05fedf9b854bd7706a156",
+  startDate: "20201212",
   status: 0,
+  claimed: 10,
+  token: "",
+  endDate: "",
+  creator: "",
+  recipientsCid: "",
+  claimedNum: 100,
   claims: [],
   checkRequests: [],
-  campaignMetadata: campaignMetadata,
 };
 
 export const tokenInformationState: TokenInformationState = {
@@ -103,4 +116,78 @@ export const tokenInformationState: TokenInformationState = {
       balance: "300",
     },
   ],
+};
+
+export const distributionTargets: Target[] = [
+  {
+    handle: "sample user",
+    wallet: "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
+  },
+  {
+    handle: "username sample user",
+    wallet: "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
+  },
+  {
+    handle: "sample",
+    wallet: "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
+  },
+  {
+    handle: "username sample user",
+    wallet: "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
+  },
+  {
+    handle: "sample user",
+    wallet: "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
+  },
+];
+
+export const tokenAddress: string =
+  "0xD92E713d051C37EbB2561803a3b5FBAbc4962431";
+
+export const tokenState: TokenInfo = {
+  token: {
+    name: "TestUsdtToken",
+    tokenAddress: "0xD92E713d051C37EbB2561803a3b5FBAbc4962431",
+  },
+};
+
+export const tokenInfo: AccountToken = {
+  token: {
+    id: "0xD92E713d051C37EbB2561803a3b5FBAbc4962431",
+    name: "TestUsdtToken",
+    symbol: "TUSDT",
+    decimals: 18,
+  },
+  balance: "8888888",
+};
+
+export const tokenListState: TokenListState = {
+  tokens: [
+    {
+      tokenAddress: "0xabcd....1234",
+      name: "Iroiro Token",
+      symbol: "IRO",
+      decimals: 8,
+      totalSupply: 2000000000,
+    },
+    {
+      tokenAddress: "0xabcd....1234",
+      name: "Storybook Token",
+      symbol: "STR",
+      decimals: 18,
+      totalSupply: 1000000000,
+    },
+    {
+      tokenAddress: "0xabcd....1234",
+      name: "Test Token",
+      symbol: "TST",
+      decimals: 4,
+      totalSupply: 3000000000,
+    },
+  ],
+  isOpen: false,
+  inputTokenAddress: "",
+  tokenAddress: "",
+  type: "dashboard",
+  color: "itblue",
 };
