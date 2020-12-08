@@ -4,18 +4,21 @@ import { Target } from "../../../interfaces";
 import DistributionTargetList from "../../molecules/DistributionTargetList";
 
 export interface TargetsProps {
-  readonly targets: Target[];
+  readonly distributionTargets: Target[];
   readonly targetNumber: number;
 }
 
-const DistributionTargets = ({ targets, targetNumber }: TargetsProps) => (
+const DistributionTargets = ({
+  distributionTargets,
+  targetNumber,
+}: TargetsProps) => (
   <Card>
     <Flex style={{ justifyContent: "space-between", alignItems: "center" }}>
       <Heading as={"h3"}>Audius Followers list</Heading>
       <Text>Total users: {targetNumber}</Text>
     </Flex>
 
-    <DistributionTargetList targets={targets} />
+    <DistributionTargetList distributionTargets={distributionTargets} />
   </Card>
 );
 

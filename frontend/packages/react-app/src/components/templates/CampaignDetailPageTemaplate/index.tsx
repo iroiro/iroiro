@@ -22,7 +22,10 @@ const CampaignDetailPageTemaplate = ({
     <AppHeader />
     <Container>
       <Heading as={"h1"}>Audius Follower Campaign</Heading>
-      <DistributionTargets targets={targets} targetNumber={targetNumber} />
+      <DistributionTargets
+        distributionTargets={targets}
+        targetNumber={targetNumber}
+      />
       <CampaignDetail campaignInfo={campaignInfo} />
       <Box mt={4} style={{ textAlign: "center" }}>
         <Button.Outline size="small" m="auto" mainColor="danger">

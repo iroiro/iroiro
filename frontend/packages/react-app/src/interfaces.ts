@@ -43,12 +43,15 @@ export interface TokenBasic {
 
 export interface Distributor {
   id: string;
-  status: Number;
-  campaignInfoCid: string;
-  campaignMetadata: CampaignMetadata;
-  startDate: string;
-  claimed: number;
   depositAmount: string;
+  distributorCid: string;
+  distributorMetadata: DistributorMetadata;
+}
+
+export interface DistributorMetadata {
+  name: string;
+  description: string;
+  image: string;
 }
 
 export interface Creator {
@@ -78,6 +81,7 @@ export interface CampaignInfo {
   readonly claims: Claim[];
   readonly checkRequests: CheckRequest[];
   readonly campaignMetadata: CampaignMetadata;
+  readonly claimed: number;
 }
 
 export interface CampaignMetadata {
@@ -127,4 +131,13 @@ export interface TokenAndCampaignProps {
 export interface Target {
   readonly handle: string;
   readonly wallet: string;
+}
+
+export interface TokenListState {
+  isOpen: boolean;
+  tokens: TokenBasic[];
+  tokenAddress: string;
+  inputTokenAddress: string;
+  type: string;
+  color: string;
 }

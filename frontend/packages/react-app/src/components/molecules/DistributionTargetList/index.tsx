@@ -3,12 +3,12 @@ import { Box, Text, Table } from "rimble-ui";
 import { Target } from "../../../interfaces";
 
 export interface TargetsProps {
-  readonly targets: Target[];
+  readonly distributionTargets: Target[];
 }
 
-const DistributionTargetList = ({ targets }: TargetsProps) => (
+const DistributionTargetList = ({ distributionTargets }: TargetsProps) => (
   <>
-    {targets.length > 0 ? (
+    {distributionTargets.length > 0 ? (
       <Table>
         <thead>
           <tr>
@@ -17,7 +17,7 @@ const DistributionTargetList = ({ targets }: TargetsProps) => (
           </tr>
         </thead>
         <tbody>
-          {targets.map((target) => (
+          {distributionTargets.map((target) => (
             <tr key={target.wallet}>
               <td>{target.handle}</td>
               <td>{target.wallet}</td>

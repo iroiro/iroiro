@@ -3,7 +3,7 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import AddressFormInput from "./index";
 import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
-import { TokenListState } from "../../../reducers/tokens";
+import { TokenListState } from "../../../interfaces";
 
 export default {
   title: "Molecules/AddressFormInput",

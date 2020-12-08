@@ -26,7 +26,7 @@ const CampaignDetail = ({ campaignInfo }: CampaignDetailProps) => {
               Deposited tokens amount
             </Text>
             <Text fontSize={3} fontWeight="bold">
-              {campaignInfo.depositAmount}
+              {campaignInfo.distributor.depositAmount}
             </Text>
           </Box>
           <Box ml={4}>

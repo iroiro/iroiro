@@ -22,7 +22,10 @@ const CreateCampaignPageTemaplate = ({
     <AppHeader />
     <Container>
       <Heading as={"h1"}>Audius Follower Campaign</Heading>
-      <DistributionTargets targets={targets} targetNumber={targetNumber} />
+      <DistributionTargets
+        distributionTargets={targets}
+        targetNumber={targetNumber}
+      />
       <DepositToken tokenInfo={tokenInfo} />
       <SetupCampaign />
     </Container>

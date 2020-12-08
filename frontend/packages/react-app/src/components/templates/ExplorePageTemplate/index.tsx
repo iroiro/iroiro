@@ -2,7 +2,8 @@ import React from "react";
 import { Box, Link, Heading, Text } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TokenList from "../../organisms/TokenList";
-import { TokenListState, ACTIONS } from "../../../reducers/tokens";
+import { ACTIONS } from "../../../reducers/tokens";
+import { TokenListState } from "../../../interfaces";
 import SetTokenModal from "../../organisms/SetTokenModal";
 import AddNewToken from "../../atoms/AddNewToken";
 
