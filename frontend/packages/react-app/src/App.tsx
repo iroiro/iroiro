@@ -11,7 +11,7 @@ import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
 import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
 import TokenHistoryPage from "./components/pages/TokenHistoryPage";
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <div>
       <Router>

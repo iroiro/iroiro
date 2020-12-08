@@ -24,7 +24,7 @@ const AbsoluteChip = styled.div`
   right: 10px;
 `;
 
-const TokenCampaignCard = ({ campaign }: TokenCampaignCardProps) => {
+const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({ campaign }) => {
   return (
     <Grid item key={campaign.id} xs={12}>
       <RelativeCard>

@@ -3,7 +3,7 @@ import { Box, Flex } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import TopPageBody from "../../molecules/TopBody";
 
-const TopPageTemplate = () => (
+const TopPageTemplate: React.FC = () => (
   <div style={{ minHeight: "100vh" }}>
     <AppHeader />
     <Box

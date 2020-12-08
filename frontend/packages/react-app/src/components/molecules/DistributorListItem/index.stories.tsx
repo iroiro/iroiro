@@ -25,7 +25,7 @@ const distributor: Distributor = {
     image: "https://example.com/distributerimage.jpg",
   },
 };
-const tokenAddress: string = "0xD92E713d051C37EbB2561803a3b5FBAbc4962431";
+const tokenAddress = "0xD92E713d051C37EbB2561803a3b5FBAbc4962431";
 
 export const Default = Template.bind({});
 Default.args = {

@@ -1,12 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useQuery } from "@apollo/react-hooks";
-import { GET_TOKENS } from "../../graphql/subgraph";
 import { web3Modal } from "../../utils/web3Modal";
-import { getDefaultProvider, Web3Provider } from "@ethersproject/providers";
+import { Web3Provider } from "@ethersproject/providers";
 import TopPageTemplate from "../templates/TopPageTemplate";
-import { Contract } from "@ethersproject/contracts";
-// @ts-ignore
-import { abis, addresses } from "@project/contracts";
 
 const TopPage = () => {
   const [provider, setProvider] = useState<Web3Provider>();

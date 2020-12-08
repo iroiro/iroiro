@@ -1,8 +1,6 @@
 import React from "react";
 
-interface Props {}
-
-const CampaignDetailPage = (props: Props) => {
+const CampaignDetailPage: React.FC = () => {
   return <>CampaignDetailPage!!!</>;
 };
 

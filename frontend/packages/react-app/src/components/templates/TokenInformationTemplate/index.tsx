@@ -7,7 +7,9 @@ export interface TokenInformationTemplateProps {
   state: TokenInformationState;
 }
 
-const TokenInformationTemplate = ({ state }: TokenInformationTemplateProps) => (
+const TokenInformationTemplate: React.FC<TokenInformationTemplateProps> = ({
+  state,
+}) => (
   <div style={{ minHeight: "100vh" }}>
     <AppHeader />
     <TokenInformationTabs state={state} />

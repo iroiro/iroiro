@@ -1,13 +1,15 @@
 import * as React from "react";
 import { Line, LineChart, XAxis, YAxis } from "recharts";
 import { Balance } from "../../../interfaces";
-import { Grid, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 export interface BalanceHistoryChartProps {
   balances: Balance[];
 }
 
-const BalanceHistoryChart = ({ balances }: BalanceHistoryChartProps) => {
+const BalanceHistoryChart: React.FC<BalanceHistoryChartProps> = ({
+  balances,
+}: BalanceHistoryChartProps) => {
   return (
     <div>
       <Typography variant="h5" component="h3">
