@@ -1,8 +1,5 @@
 import { Web3Provider } from "@ethersproject/providers";
-import {
-  FanToken,
-  FanToken__factory as FanTokenFactory,
-} from "../../../../../types/ethers";
+import { FanToken, FanToken__factory as FanTokenFactory } from "../types";
 
 export const getTokenInfo = async (
   dispatch: any,

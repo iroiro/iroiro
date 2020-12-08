@@ -8,7 +8,6 @@ import {
   AccountToken,
 } from "../interfaces";
 import { TokenListState } from "../reducers/tokens";
-import { EventData } from "web3-eth-contract";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -44,7 +43,9 @@ export const campaign: CampaignInfo = {
   claimed: 10,
   token: "",
   endDate: "",
-  creator: "",
+  creator: {
+    id: "",
+  },
   recipientsCid: "",
   claimedNum: 100,
   claims: [],
@@ -141,8 +142,7 @@ export const distributionTargets: Target[] = [
   },
 ];
 
-export const tokenAddress: string =
-  "0xD92E713d051C37EbB2561803a3b5FBAbc4962431";
+export const tokenAddress = "0xD92E713d051C37EbB2561803a3b5FBAbc4962431";
 
 export const tokenState: TokenInfo = {
   token: {
