@@ -13,7 +13,7 @@ export const useGetWalletBalance = (
 } => {
   const [result, setResult] = useState<BigNumber | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | undefined>();
+  const [error, setError] = useState<any | undefined>();
 
   useEffect(() => {
     const f = async () => {
@@ -32,9 +32,6 @@ export const useGetWalletBalance = (
     };
     f();
   }, [library, tokenAddress]);
-  return {
-    result,
-    loading,
-    error,
-  };
+
+  return { result, loading, error };
 };
