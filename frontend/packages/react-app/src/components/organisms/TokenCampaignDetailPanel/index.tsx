@@ -9,22 +9,11 @@ export interface TokenDetailCampaignPanelProps {
   readonly state: TokenInformationState;
 }
 
-const TokenDetailCampaignPanel = ({
-  state: {
-    token,
-    campaigns,
-    campaignAddress,
-    isTokenApproved,
-    isTokenRequested,
-    isTokenCheckFinished,
-    isCampaignClaimable,
-    isCampaignClaimed,
-  },
-}: TokenDetailCampaignPanelProps) => {
-  const campaign = campaigns.find(
-    (campaign) => campaign.id === campaignAddress
+const TokenDetailCampaignPanel = ({ state }: TokenDetailCampaignPanelProps) => {
+  const campaign = state.campaigns.find(
+    (campaign) => campaign.id === state.campaignAddress
   );
-  if (!token || !campaign) {
+  if (!state.token || !campaign) {
     return (
       <div>
         <Typography>Campaign not found.</Typography>
@@ -35,16 +24,13 @@ const TokenDetailCampaignPanel = ({
   return (
     <>
       <TokenCampaignDetail campaign={campaign} />
-      <TokenRequestCard
-        isApproved={isTokenApproved}
-        isRequested={isTokenRequested}
-      />
-      {isTokenCheckFinished && (
+      <TokenRequestCard state={state} />
+      {state.isTokenCheckFinished && (
         <TokenClaimCard
-          symbol={token.symbol}
+          symbol={state.token.symbol}
           claimAmount={campaign.claimAmount}
-          isClaimable={isCampaignClaimable}
-          isClaimed={isCampaignClaimed}
+          isClaimable={state.isCampaignClaimable}
+          isClaimed={state.isCampaignClaimed}
         />
       )}
     </>

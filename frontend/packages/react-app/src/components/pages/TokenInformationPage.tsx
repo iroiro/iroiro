@@ -11,7 +11,7 @@ import { getTokenInfo } from "../../utils/web3";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { CampaignInfo, CampaignMetadata } from "../../interfaces";
-import { useGetWalletBalance } from "../../hooks/useApproveToken";
+import { useGetWalletBalance } from "../../hooks/useGetWalletBalance";
 
 interface Params {
   tokenAddress: string;
