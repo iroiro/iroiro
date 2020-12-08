@@ -28,6 +28,7 @@ export const distributor: Distributor = {
 };
 
 export const campaign: CampaignInfo = {
+  id: "0xcc22b3199013627708d05fedf9b854bd7706a156",
   campaignInfoCid: "QmYdUkdEgQtn4viySEQie51JAwrC3xTyDqDbdWXWEwAz5J",
   campaignMetadata: {
     name: "Audiusフォロワーさん向けトークン配布キャンペーン！",
@@ -35,9 +36,8 @@ export const campaign: CampaignInfo = {
       "Audiusアカウントのフォロワーの方へトークンを配布します。手順はXXX...",
     image: "https://example.com/campaignimage.jpg",
   },
-  claimAmount: "0",
+  claimAmount: "10",
   distributor: distributor,
-  id: "0xcc22b3199013627708d05fedf9b854bd7706a156",
   startDate: "20201212",
   status: 0,
   claimed: 10,
@@ -78,7 +78,7 @@ export const tokenInformationState: TokenInformationState = {
   isCampaignClaimed: false,
   userAddress: "0x0000000000000000000000000000000000000000",
   userBalance: "1234500000",
-  campaignAddress: "0xcampaign...1234",
+  campaignAddress: "0xcc22b3199013627708d05fedf9b854bd7706a156",
   activities: [
     {
       name: "Claim",
