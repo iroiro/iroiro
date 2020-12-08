@@ -13,19 +13,19 @@ export interface UserToken {
   readonly balance: string;
 }
 
-export interface Token {
-  readonly id: string;
-  readonly name: string;
-  readonly symbol: string;
-  readonly decimals: number;
-}
+// export interface Token {
+//   readonly id: string;
+//   readonly name: string;
+//   readonly symbol: string;
+//   readonly decimals: number;
+// }
 
 export interface AccountToken {
-  readonly token: Token;
-  readonly balance: string;
+  readonly token?: TokenBasic;
+  readonly balance?: string;
 }
 
-export interface Account {
+export interface AccountTokens {
   readonly tokens: AccountToken[];
 }
 
@@ -69,7 +69,7 @@ export interface CheckRequest {
 export interface CampaignInfo {
   readonly id: string;
   readonly distributor: Distributor;
-  readonly token: string;
+  readonly token: AccountToken;
   readonly startDate: string;
   readonly endDate: string;
   readonly creator: Creator;
@@ -117,15 +117,15 @@ export interface TokenInformationState {
   balances: Balance[];
 }
 
-export interface TokenInfo {
-  token: {
-    name: string;
-    tokenAddress: string;
-  };
-}
+// export interface TokenInfo {
+//   token: {
+//     name: string;
+//     tokenAddress: string;
+//   };
+// }
 
 export interface TokenAndCampaignProps {
-  readonly tokenState: TokenInfo;
+  readonly tokenState: AccountToken;
   readonly campaignsState: CampaignInfo[];
 }
 

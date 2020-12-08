@@ -5,7 +5,7 @@ import ExternalTokenDetailPageTemplate, {
   ExternalTokenDetailPageTemplateProps,
 } from "./index";
 import { CampaignInfo } from "../../../interfaces";
-import { campaign, tokenState } from "../../../utils/mockData";
+import { campaign, tokenInfo } from "../../../utils/mockData";
 
 export default {
   title: "Templates/ExternalTokenDetailPageTemplate",
@@ -23,20 +23,20 @@ const campaignsState: CampaignInfo[] = [campaign, campaign, campaign];
 export const Default = Template.bind({});
 Default.args = {
   active: true,
-  tokenState,
+  tokenState: tokenInfo,
   campaignsState,
 };
 
 export const NoCampaigns = Template.bind({});
 NoCampaigns.args = {
   active: true,
-  tokenState,
+  tokenState: tokenInfo,
   campaignsState: [],
 };
 
 export const NoWallet = Template.bind({});
 NoWallet.args = {
   active: false,
-  tokenState,
+  tokenState: tokenInfo,
   campaignsState,
 };

@@ -24,7 +24,7 @@ const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
                 {"campaignMetadata" in campaign ? (
                   <td>
                     <Link
-                      to={`/dashboard/${tokenState.token.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
+                      to={`/dashboard/${tokenState.token?.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
                       style={{ textDecoration: "none", color: "#48C5D5" }}
                     >
                       <Text fontSize="2" fontWeight="bold">

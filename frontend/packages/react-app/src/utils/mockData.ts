@@ -4,7 +4,6 @@ import {
   TokenInformationState,
   Target,
   Distributor,
-  TokenInfo,
   AccountToken,
 } from "../interfaces";
 import { TokenListState } from "../reducers/tokens";
@@ -41,7 +40,16 @@ export const campaign: CampaignInfo = {
   startDate: "20201212",
   status: 0,
   claimed: 10,
-  token: "",
+  token: {
+    token: {
+      tokenAddress: "",
+      name: "",
+      symbol: "",
+      decimals: 18,
+      totalSupply: "",
+    },
+    balance: "",
+  },
   endDate: "",
   creator: {
     id: "",
@@ -145,19 +153,20 @@ export const distributionTargets: Target[] = [
 
 export const tokenAddress = "0xD92E713d051C37EbB2561803a3b5FBAbc4962431";
 
-export const tokenState: TokenInfo = {
-  token: {
-    name: "TestUsdtToken",
-    tokenAddress: "0xD92E713d051C37EbB2561803a3b5FBAbc4962431",
-  },
-};
+// export const tokenState: TokenInfo = {
+//   token: {
+//     name: "TestUsdtToken",
+//     tokenAddress: "0xD92E713d051C37EbB2561803a3b5FBAbc4962431",
+//   },
+// };
 
 export const tokenInfo: AccountToken = {
   token: {
-    id: "0xD92E713d051C37EbB2561803a3b5FBAbc4962431",
+    tokenAddress: "0xD92E713d051C37EbB2561803a3b5FBAbc4962431",
     name: "TestUsdtToken",
     symbol: "TUSDT",
     decimals: 18,
+    totalSupply: "1000000000",
   },
   balance: "8888888",
 };

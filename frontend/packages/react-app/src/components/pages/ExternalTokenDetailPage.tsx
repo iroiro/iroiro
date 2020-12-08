@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useReducer } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { tokenReducer } from "../../reducers/token";
+import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import { campaignReducer } from "../../reducers/campaign";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
@@ -8,18 +8,13 @@ import { CampaignInfo } from "../../interfaces";
 import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
 import { useWeb3React } from "@web3-react/core";
 
-const tokenInitialState = {
-  token: {
-    name: "",
-    tokenAddress: "",
-  },
-};
-
 const campaignsInitialState = new Array<CampaignInfo>();
 
-const ExternalTokenDetailPage: React.FC<RouteComponentProps<{
-  tokenAddress: string;
-}>> = (props) => {
+const ExternalTokenDetailPage: React.FC<
+  RouteComponentProps<{
+    tokenAddress: string;
+  }>
+> = (props) => {
   const { active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const [tokenState, tokenDispatch] = useReducer(

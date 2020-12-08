@@ -14,7 +14,7 @@ const TokenBalance = ({ tokenInfo }: TokenInfo) => (
         {tokenInfo.balance}
       </Text>
       <Text fontSize={3} fontWeight={"bold"}>
-        {tokenInfo.token.symbol}
+        {tokenInfo.token?.symbol}
       </Text>
     </Flex>
   </>
