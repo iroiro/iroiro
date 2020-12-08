@@ -25,20 +25,6 @@ export const getTokenInfo = async (
   };
 };
 
-export const getWalletBalance = async (
-  library: Web3Provider | undefined,
-  tokenAddress: string
-): Promise<string | undefined> => {
-  if (!library || tokenAddress === "") {
-    return undefined;
-  }
-  const signer = library.getSigner();
-  const walletAddress = await signer.getAddress();
-  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
-  const balance = await erc20.balanceOf(walletAddress);
-  return balance.toString();
-};
-
 export const getBalanceDevidedByDecimals = (
   balance: string,
   decimals: number

@@ -7,10 +7,11 @@ import {
   tokenInformationReducer,
 } from "../../reducers/tokenInformation";
 import { useParams, RouteComponentProps } from "react-router-dom";
-import { getTokenInfo, getWalletBalance } from "../../utils/web3";
+import { getTokenInfo } from "../../utils/web3";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { CampaignInfo, CampaignMetadata } from "../../interfaces";
+import { useGetWalletBalance } from "../../hooks/useApproveToken";
 
 interface Params {
   tokenAddress: string;
@@ -20,7 +21,8 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokenInformationReducer, initialState);
   const { tokenAddress } = useParams<Params>();
-  const [getCampaigns, { loading, error, data }] = useLazyQuery(GET_CAMPAIGNS);
+  const [getCampaigns, { data }] = useLazyQuery(GET_CAMPAIGNS);
+  const { result, loading, error } = useGetWalletBalance(library, tokenAddress);
 
   useEffect(() => {
     const f = async () => {
@@ -50,18 +52,14 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   }, [library, tokenAddress]);
 
   useEffect(() => {
-    const f = async () => {
-      const balance = await getWalletBalance(
-        library,
-        state.token?.tokenAddress ?? ""
-      );
-      if (balance === undefined) {
-        return;
-      }
-      dispatch({ type: "userBalance:set", payload: { balance } });
-    };
-    f();
-  }, [library, state.token?.tokenAddress]);
+    if (result === undefined || loading || error) {
+      return;
+    }
+    dispatch({
+      type: "userBalance:set",
+      payload: { balance: result.toString() },
+    });
+  }, [result, loading, error]);
 
   useEffect(() => {
     // TODO: After made campaign creation function, change dynamic value
