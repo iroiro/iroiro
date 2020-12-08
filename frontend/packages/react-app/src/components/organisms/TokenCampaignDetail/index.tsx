@@ -1,12 +1,11 @@
 import * as React from "react";
-import { TokenInformationState } from "../../../interfaces";
+import { CampaignInfo } from "../../../interfaces";
 import { Grid, makeStyles, Paper, Theme, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 
 export interface TokenCampaignDetailProps {
-  readonly state: TokenInformationState;
-  readonly campaignAddress: string;
+  readonly campaign: CampaignInfo;
 }
 
 // TODO Integrate styled-components theme
@@ -26,23 +25,8 @@ const AbsoluteChip = styled.div`
   right: 10px;
 `;
 
-const TokenCampaignDetail = ({
-  state: { campaigns },
-  campaignAddress,
-}: TokenCampaignDetailProps) => {
+const TokenCampaignDetail = ({ campaign }: TokenCampaignDetailProps) => {
   const classes = useStyles();
-
-  const campaign = campaigns.find(
-    (campaign) => campaign.id === campaignAddress
-  );
-
-  if (!campaign) {
-    return (
-      <div>
-        <Typography>Campaign not found.</Typography>
-      </div>
-    );
-  }
 
   return (
     <Grid container spacing={5}>

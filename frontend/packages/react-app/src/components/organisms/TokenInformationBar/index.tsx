@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
+import { getBalanceDevidedByDecimals } from "../../../utils/web3";
 
 export interface TokenInformationBarProps {
   readonly state: TokenInformationState;
@@ -35,7 +36,9 @@ const TokenInformationBar: React.FC<TokenInformationBarProps> = ({
         <Grid item xs>
           <Typography>Your Balance</Typography>
           <Typography variant="h6">
-            {!userBalance ? "Loading balnce..." : userBalance}
+            {!!userBalance && !!token
+              ? getBalanceDevidedByDecimals(userBalance, token.decimals)
+              : "Loading balance..."}
             {" $"}
             {!!token?.symbol && token.symbol}
           </Typography>

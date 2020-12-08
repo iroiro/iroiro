@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import ExternalTokenDetailPageTemplate, {
   ExternalTokenDetailPageTemplateProps,
 } from "./index";
-import { TokenInfo, CampaignInfo } from "../../../interfaces";
+import { CampaignInfo } from "../../../interfaces";
 import { campaign, tokenState } from "../../../utils/mockData";
 
 export default {
@@ -19,7 +19,7 @@ const Template: Story<ExternalTokenDetailPageTemplateProps> = (args) => (
 );
 
 const campaignsState: CampaignInfo[] = [campaign, campaign, campaign];
-        
+
 export const Default = Template.bind({});
 Default.args = {
   active: true,

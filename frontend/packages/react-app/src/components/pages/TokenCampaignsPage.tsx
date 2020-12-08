@@ -1,6 +1,6 @@
 import React from "react";
 
-const TokenCampaignsPage = () => {
+const TokenCampaignsPage: React.FC = () => {
   return <>TokenCampaignsPage!!!</>;
 };
 

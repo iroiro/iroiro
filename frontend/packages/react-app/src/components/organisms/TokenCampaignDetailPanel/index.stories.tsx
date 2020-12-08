@@ -20,7 +20,54 @@ const Template: Story<TokenDetailCampaignPanelProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   state: tokenInformationState,
-  campaignAddress: "0xcampaign...1234",
+};
+
+export const TokenApproved = Template.bind({});
+TokenApproved.args = {
+  state: {
+    ...tokenInformationState,
+    isTokenApproved: true,
+  },
+};
+
+export const Requested = Template.bind({});
+Requested.args = {
+  state: {
+    ...tokenInformationState,
+    isTokenApproved: true,
+    isTokenRequested: true,
+  },
+};
+
+export const IsClaimable = Template.bind({});
+IsClaimable.args = {
+  state: {
+    ...tokenInformationState,
+    isTokenApproved: true,
+    isTokenRequested: true,
+    isCampaignClaimable: true,
+  },
+};
+
+export const IsNotClaimable = Template.bind({});
+IsNotClaimable.args = {
+  state: {
+    ...tokenInformationState,
+    isTokenApproved: true,
+    isTokenRequested: true,
+    isCampaignClaimable: false,
+  },
+};
+
+export const IsClaimed = Template.bind({});
+IsClaimed.args = {
+  state: {
+    ...tokenInformationState,
+    isTokenApproved: true,
+    isTokenRequested: true,
+    isCampaignClaimable: true,
+    isCampaignClaimed: true,
+  },
 };
 
 export const NotFound = Template.bind({});

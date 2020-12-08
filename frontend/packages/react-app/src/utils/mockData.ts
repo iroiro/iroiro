@@ -58,10 +58,11 @@ export const tokenInformationState: TokenInformationState = {
     name: "Iroiro Token",
     symbol: "IRO",
     decimals: 18,
-    totalSupply: 2000000000,
+    totalSupply: "2000000000",
   },
-  isTokenApproved: true,
+  isTokenApproved: false,
   isTokenRequested: false,
+  isTokenCheckFinished: false, // TODO: Replace with subgraph response
   campaigns: [
     campaign,
     {
@@ -168,21 +169,21 @@ export const tokenListState: TokenListState = {
       name: "Iroiro Token",
       symbol: "IRO",
       decimals: 8,
-      totalSupply: 2000000000,
+      totalSupply: "2000000000",
     },
     {
       tokenAddress: "0xabcd....1234",
       name: "Storybook Token",
       symbol: "STR",
       decimals: 18,
-      totalSupply: 1000000000,
+      totalSupply: "1000000000",
     },
     {
       tokenAddress: "0xabcd....1234",
       name: "Test Token",
       symbol: "TST",
       decimals: 4,
-      totalSupply: 3000000000,
+      totalSupply: "3000000000",
     },
   ],
   isOpen: false,

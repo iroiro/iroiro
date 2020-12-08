@@ -17,18 +17,24 @@ const Template: Story<TokenClaimCardProps> = (args) => (
 
 export const NotClaimable = Template.bind({});
 NotClaimable.args = {
+  symbol: "IRO",
+  claimAmount: "100",
   isClaimable: false,
   isClaimed: false,
 };
 
 export const IsClaimable = Template.bind({});
 IsClaimable.args = {
+  symbol: "IRO",
+  claimAmount: "100",
   isClaimable: true,
   isClaimed: false,
 };
 
 export const Claimed = Template.bind({});
 Claimed.args = {
+  symbol: "IRO",
+  claimAmount: "100",
   isClaimable: true,
   isClaimed: true,
 };

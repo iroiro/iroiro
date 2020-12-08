@@ -8,7 +8,6 @@ import {
   Tab,
   Tabs,
   Theme,
-  Typography,
 } from "@material-ui/core";
 import TokenInformationBar from "../TokenInformationBar";
 import BasicTokenInformation from "../BasicTokenInformation";
@@ -36,11 +35,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
@@ -62,13 +57,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
+export function TokenInformationTabs({
   state,
-}: TokenInformationTemplateProps) => {
+  dispatch,
+}: TokenInformationTemplateProps) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
+    if (newValue !== 1) {
+      dispatch({ type: "campaignAddress:remove" });
+    }
     setValue(newValue);
   };
 
@@ -97,16 +96,9 @@ export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
         </TabPanel>
         <TabPanel value={value} index={1}>
           {!state.campaignAddress ? (
-            <TokenCampaigns state={state} />
+            <TokenCampaigns state={state} dispatch={dispatch} />
           ) : (
-            <TokenDetailCampaignPanel
-              state={state}
-              campaignAddress={state.campaignAddress}
-              isApproved={state.isTokenApproved}
-              isRequested={state.isTokenRequested}
-              isClaimable={state.isCampaignClaimable}
-              isClaimed={state.isCampaignClaimed}
-            />
+            <TokenDetailCampaignPanel state={state} />
           )}
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -128,6 +120,6 @@ export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
       </Container>
     </div>
   );
-};
+}
 
 export default TokenInformationTabs;

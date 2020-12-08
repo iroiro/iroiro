@@ -10,6 +10,7 @@ import CampaignDetailPage from "./components/pages/CampaignDetailPage";
 import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
 import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
 import TokenHistoryPage from "./components/pages/TokenHistoryPage";
+import TokenInformationPage from "./components/pages/TokenInformationPage";
 
 const App: React.FC = () => {
   return (
@@ -46,7 +47,7 @@ const App: React.FC = () => {
           <Route
             exact
             path="/explore/:tokenAddress"
-            component={TokenDetailPage}
+            component={TokenInformationPage}
           />
           <Route
             path="/explore/:tokenAddress/basic"

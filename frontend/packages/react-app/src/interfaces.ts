@@ -38,7 +38,7 @@ export interface TokenBasic {
   readonly name: string;
   readonly symbol: string;
   readonly decimals: number;
-  readonly totalSupply: number;
+  readonly totalSupply: string;
 }
 
 export interface Distributor {
@@ -106,6 +106,7 @@ export interface TokenInformationState {
   token?: TokenBasic;
   isTokenApproved: boolean;
   isTokenRequested: boolean;
+  isTokenCheckFinished: boolean;
   campaigns: CampaignInfo[];
   campaignAddress?: string;
   isCampaignClaimable: boolean;
