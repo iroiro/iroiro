@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Heading, Text, Box } from "rimble-ui";
 import TokenListItem from "../../molecules/TokenListItem";
-import { TokenListState } from "../../../interfaces";
+import { TokenListState } from "../../../reducers/tokens";
 
 export interface TokenListProps {
   readonly state: TokenListState;

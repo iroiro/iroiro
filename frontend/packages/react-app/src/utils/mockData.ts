@@ -6,8 +6,8 @@ import {
   Distributor,
   TokenInfo,
   AccountToken,
-  TokenListState,
 } from "../interfaces";
+import { TokenListState } from "../reducers/tokens";
 import { EventData } from "web3-eth-contract";
 
 export const campaignMetadata: CampaignMetadata = {

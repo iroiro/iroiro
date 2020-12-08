@@ -1,4 +1,4 @@
-import { TokenBasic, TokenListState } from "../interfaces";
+import { TokenBasic } from "../interfaces";
 import { ethers } from "ethers";
 
 export type ACTIONS =
@@ -8,6 +8,15 @@ export type ACTIONS =
   | { type: "tokenAddress:input"; payload: { tokenAddress: "" } }
   | { type: "tokenAddress:add" }
   | { type: "tokens:getlocal" };
+
+export interface TokenListState {
+  isOpen: boolean;
+  tokens: TokenBasic[];
+  tokenAddress: string;
+  inputTokenAddress: string;
+  type: string;
+  color: string;
+}
 
 export function tokensReducer(state: TokenListState, action: ACTIONS) {
   switch (action.type) {

@@ -132,12 +132,3 @@ export interface Target {
   readonly handle: string;
   readonly wallet: string;
 }
-
-export interface TokenListState {
-  isOpen: boolean;
-  tokens: TokenBasic[];
-  tokenAddress: string;
-  inputTokenAddress: string;
-  type: string;
-  color: string;
-}

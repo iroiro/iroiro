@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Flex, Box, Text } from "rimble-ui";
 import { CampaignInfo } from "../../../interfaces";
+import Item from "../../molecules/Item";
 
 export interface CampaignDetailProps {
   readonly campaignInfo: CampaignInfo;
@@ -11,40 +12,18 @@ const CampaignDetail = ({ campaignInfo }: CampaignDetailProps) => {
     <Card mt={2}>
       <Box>
         <Flex style={{ alignItems: "center", justifyContent: "left" }}>
-          <Box>
-            <Text fontSize={2} color="gray">
-              Campaign Name
-            </Text>
-            <Text fontSize={3} fontWeight="bold">
-              {campaignInfo.campaignMetadata.name}
-            </Text>
-          </Box>
+          <Item
+            title="Campaign Name"
+            text={campaignInfo.campaignMetadata.name}
+          />
         </Flex>
         <Flex mt={4} style={{ alignItems: "center", justifyContent: "left" }}>
-          <Box>
-            <Text fontSize={2} color="gray">
-              Deposited tokens amount
-            </Text>
-            <Text fontSize={3} fontWeight="bold">
-              {campaignInfo.distributor.depositAmount}
-            </Text>
-          </Box>
-          <Box ml={4}>
-            <Text fontSize={2} color="gray">
-              Claimed
-            </Text>
-            <Text fontSize={3} fontWeight="bold">
-              {campaignInfo.claimed}
-            </Text>
-          </Box>
-          <Box ml={4}>
-            <Text fontSize={2} color="gray">
-              Start Date
-            </Text>
-            <Text fontSize={3} fontWeight="bold">
-              {campaignInfo.startDate}
-            </Text>
-          </Box>
+          <Item
+            title="Deposited tokens amount"
+            text={campaignInfo.distributor.depositAmount}
+          />
+          <Item title="Claimed" text={campaignInfo.claimed.toString()} />
+          <Item title="Start Date" text={campaignInfo.startDate} />
         </Flex>
       </Box>
     </Card>
