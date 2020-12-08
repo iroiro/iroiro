@@ -86,7 +86,8 @@
     "test": "react-scripts test",
     "storybook": "start-storybook -p 6006 -s public --no-dll",
     "build-storybook": "build-storybook -s public --no-dll",
-    "lint": "yarn run eslint src"
+    "lint": "yarn run eslint src",
+    "typecheck": "yarn run tsc --noEmit"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import DistributorList, { Distributors } from "./index";
+import DistributorList, { DistributorsProps } from "./index";
 import { Distributor } from "../../../interfaces";
 
 export default {
@@ -9,7 +9,7 @@ export default {
   component: DistributorList,
 } as Meta;
 
-const Template: Story<Distributors> = (args) => (
+const Template: Story<DistributorsProps> = (args) => (
   <BrowserRouter>
     <DistributorList {...args} />
   </BrowserRouter>
