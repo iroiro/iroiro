@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useReducer } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import { useWeb3React } from "@web3-react/core";
 import TokenInformationTemplate from "../templates/TokenInformationTemplate";
 import {
@@ -12,6 +12,8 @@ import { useLazyQuery } from "@apollo/react-hooks";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { CampaignInfo, CampaignMetadata } from "../../interfaces";
 import { useGetWalletBalance } from "../../hooks/useGetWalletBalance";
+import { useGetAllowance } from "../../hooks/useGetAllowance";
+import { LINK_TOKEN_ADDRESS } from "../../utils/const";
 
 interface Params {
   tokenAddress: string;
@@ -23,6 +25,12 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   const { tokenAddress } = useParams<Params>();
   const [getCampaigns, { data }] = useLazyQuery(GET_CAMPAIGNS);
   const { result, loading, error } = useGetWalletBalance(library, tokenAddress);
+
+  const { allowance } = useGetAllowance(
+    library,
+    LINK_TOKEN_ADDRESS,
+    state?.campaignAddress ?? ""
+  );
 
   useEffect(() => {
     const f = async () => {
@@ -100,6 +108,16 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
     };
     f();
   }, [tokenAddress, data]);
+
+  useEffect(() => {
+    if (allowance === undefined) {
+      return;
+    }
+    dispatch({
+      type: "isTokenApproved:set",
+      payload: { allowance: allowance },
+    });
+  }, [allowance]);
 
   return <TokenInformationTemplate state={state} dispatch={dispatch} />;
 };

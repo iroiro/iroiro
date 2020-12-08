@@ -1,10 +1,18 @@
 import { CampaignInfo, TokenBasic, TokenInformationState } from "../interfaces";
+import { BigNumber } from "ethers";
+import { LINK_APPROVE_AMOUNT } from "../utils/const";
 
 export type TokenInformationAction =
   | {
       type: "token:set";
       payload: {
         token: TokenBasic;
+      };
+    }
+  | {
+      type: "isTokenApproved:set";
+      payload: {
+        allowance: BigNumber;
       };
     }
   | {
@@ -47,6 +55,15 @@ export const tokenInformationReducer = (
           ...action.payload.token,
         },
       };
+    case "isTokenApproved:set": {
+      const isTokenApproved = action.payload.allowance.gte(
+        BigNumber.from(LINK_APPROVE_AMOUNT)
+      );
+      return {
+        ...state,
+        isTokenApproved,
+      };
+    }
     case "campaigns:set":
       return {
         ...state,
