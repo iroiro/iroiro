@@ -14,15 +14,13 @@ import {
   GET_CHECK_REQUEST,
   GET_CLAIM,
 } from "../../graphql/subgraph";
-import {
-  CampaignInfo,
-  CampaignMetadata,
-  CheckRequest,
-  Claim,
-} from "../../interfaces";
+import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
 import { useGetWalletBalance } from "../../hooks/useGetWalletBalance";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
 import { LINK_TOKEN_ADDRESS } from "../../utils/const";
+import { useGetTransferEvents } from "../../hooks/useGetTransferEvents";
+import { Block } from "@ethersproject/providers";
+import { Event } from "@ethersproject/contracts";
 
 interface Params {
   tokenAddress: string;
@@ -40,11 +38,14 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
     GET_CLAIM
   );
   const { result, loading, error } = useGetWalletBalance(library, tokenAddress);
-
   const { allowance } = useGetAllowance(
     library,
     LINK_TOKEN_ADDRESS,
     state?.campaignAddress ?? ""
+  );
+  const { result: allTransferEvents } = useGetTransferEvents(
+    library,
+    tokenAddress
   );
 
   useEffect(() => {
@@ -192,6 +193,31 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
       },
     });
   }, [getClaimData]);
+
+  useEffect(() => {
+    const f = async () => {
+      if (allTransferEvents === undefined || state.userAddress === undefined) {
+        return;
+      }
+      const eventBlockPairs: {
+        event: Event;
+        block: Block;
+      }[] = await Promise.all(
+        allTransferEvents.map(async (event) => {
+          const block = await event.getBlock();
+          return { event, block };
+        })
+      );
+      dispatch({
+        type: "balances:set",
+        payload: {
+          walletAddress: state.userAddress,
+          eventBlockPairs,
+        },
+      });
+    };
+    f();
+  }, [allTransferEvents, state.userAddress]);
 
   return <TokenInformationTemplate state={state} dispatch={dispatch} />;
 };

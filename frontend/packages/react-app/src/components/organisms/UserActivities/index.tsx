@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, CardContent, Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { TokenInformationState } from "../../../interfaces";
 import UserActivityCard from "../../molecules/UserActivityCard";
 

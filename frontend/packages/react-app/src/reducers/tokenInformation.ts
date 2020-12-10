@@ -1,4 +1,5 @@
 import {
+  Balance,
   CampaignInfo,
   CheckRequest,
   Claim,
@@ -7,6 +8,8 @@ import {
 } from "../interfaces";
 import { BigNumber } from "ethers";
 import { LINK_APPROVE_AMOUNT } from "../utils/const";
+import { Event } from "@ethersproject/contracts";
+import { Block } from "@ethersproject/providers";
 
 export type TokenInformationAction =
   | {
@@ -73,6 +76,16 @@ export type TokenInformationAction =
       type: "userBalance:set";
       payload: {
         balance: string;
+      };
+    }
+  | {
+      type: "balances:set";
+      payload: {
+        walletAddress: string;
+        eventBlockPairs: {
+          event: Event;
+          block: Block;
+        }[];
       };
     };
 
@@ -174,6 +187,48 @@ export const tokenInformationReducer = (
         ...state,
         userBalance: action.payload.balance,
       };
+    case "balances:set": {
+      const balances: {
+        timestamp: number;
+        balance: BigNumber;
+      }[] = action.payload.eventBlockPairs
+        .sort((a, b) => {
+          return a.block.timestamp - b.block.timestamp;
+        })
+        .map((pair) => {
+          const rawAmount: BigNumber =
+            pair.event?.args?.["value"] ?? BigNumber.from("0");
+          const amount =
+            pair.event?.args?.["to"] === action.payload.walletAddress
+              ? rawAmount
+              : rawAmount.mul(-1);
+          return {
+            timestamp: pair.block.timestamp * 1000,
+            balance: amount,
+          };
+        });
+      const reducedBalances: Balance[] = balances
+        .map((balance, index) =>
+          balances.slice(0, index + 1).reduce((a, b) => {
+            return {
+              timestamp: b.timestamp,
+              balance: a.balance.add(b.balance),
+            };
+          })
+        )
+        .map((balance) => {
+          return {
+            timestamp: balance.timestamp,
+            balance: balance.balance.toString(),
+          };
+        });
+      console.debug("balances", balances);
+      console.debug("reduced", reducedBalances);
+      return {
+        ...state,
+        balances: reducedBalances,
+      };
+    }
     default:
       return state;
   }
