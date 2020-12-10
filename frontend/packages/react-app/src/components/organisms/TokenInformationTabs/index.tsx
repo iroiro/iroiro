@@ -67,6 +67,9 @@ export function TokenInformationTabs({
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     if (newValue !== 1) {
       dispatch({ type: "campaignAddress:remove" });
+      dispatch({ type: "isTokenCheckFinished:remove" });
+      dispatch({ type: "isCampaignClaimable:remove" });
+      dispatch({ type: "isCampaignClaimed:remove" });
     }
     setValue(newValue);
   };
