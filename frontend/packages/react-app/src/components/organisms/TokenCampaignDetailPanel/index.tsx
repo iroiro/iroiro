@@ -9,6 +9,7 @@ export interface TokenDetailCampaignPanelProps {
   readonly state: TokenInformationState;
 }
 
+// TODO: Add waiting transactions
 const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
   state,
 }) => {
