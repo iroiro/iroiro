@@ -1,4 +1,4 @@
-import { Claim, Campaign, CheckRequest } from "./types/schema";
+import { Claim, Campaign, CheckRequest, Account } from "./types/schema";
 import {
   AudiusFollowersCampaign,
   ChainlinkCancelled,
@@ -57,6 +57,14 @@ export function handleChainlinkRequested(event: ChainlinkRequested): void {
   if (checkRequest == null) {
     checkRequest = new CheckRequest(checkRequestId);
   }
+
+  let accountId = event.transaction.from.toHexString();
+  let account = Account.load(accountId);
+  if (account == null) {
+    account = new Account(accountId);
+  }
+  account.save();
+
   checkRequest.account = event.transaction.from.toHexString();
   checkRequest.campaign = event.address.toHexString();
   checkRequest.status = "IN_PROGRESS";
