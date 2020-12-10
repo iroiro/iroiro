@@ -30,7 +30,7 @@ type Campaign @entity {
   campaignInfoCid: String
   recipientsCid: String
   claimAmount: BigInt
-  claimedNum: Int
+  claimedNum: BigInt
   status: Int
   claims: [Claim!]! @derivedFrom(field: "campaign")
   checkRequests: [CheckRequest!]! @derivedFrom(field: "campaign")

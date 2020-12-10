@@ -47,7 +47,7 @@ export const campaign: CampaignInfo = {
     id: "",
   },
   recipientsCid: "",
-  claimedNum: 100,
+  claimedNum: "100",
   claims: [],
   checkRequests: [],
 };
