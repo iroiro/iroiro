@@ -3,7 +3,6 @@ import {
   AppBar,
   Box,
   Container,
-  Grid,
   makeStyles,
   Tab,
   Tabs,
@@ -13,16 +12,14 @@ import TokenInformationBar from "../TokenInformationBar";
 import BasicTokenInformation from "../BasicTokenInformation";
 import TokenCampaigns from "../TokenCampaigns";
 import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
-import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
-import UserActivities from "../UserActivities";
 import TokenDetailCampaignPanel from "../TokenCampaignDetailPanel";
 import UserHistory from "../UserHistory";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
   children?: React.ReactNode;
-  index: any;
-  value: any;
+  index: number;
+  value: number;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -41,7 +38,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: any) {
+function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -58,10 +55,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function TokenInformationTabs({
+export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
   state,
   dispatch,
-}: TokenInformationTemplateProps) {
+}) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -115,6 +112,6 @@ export function TokenInformationTabs({
       </Container>
     </div>
   );
-}
+};
 
 export default TokenInformationTabs;

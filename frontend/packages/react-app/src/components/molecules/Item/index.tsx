@@ -6,7 +6,7 @@ export interface ItemProps {
   readonly text: string;
 }
 
-const Item = ({ title, text }: ItemProps) => {
+const Item: React.FC<ItemProps> = ({ title, text }) => {
   return (
     <Box mr={4}>
       <Text fontSize={2} color="gray">

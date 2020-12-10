@@ -3,7 +3,10 @@ import { Heading, Modal, Card, Button, Box, Flex } from "rimble-ui";
 import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
 import AddressFormInput from "../../molecules/AddressFormInput";
 
-const SetTokenModal = ({ state, dispatch }: ExplorePageTemplateProps) => (
+const SetTokenModal: React.FC<ExplorePageTemplateProps> = ({
+  state,
+  dispatch,
+}) => (
   <Modal isOpen={state.isOpen}>
     <Card width={"420px"} p={0}>
       <Button.Text

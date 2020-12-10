@@ -103,7 +103,7 @@ export type TokenInformationAction =
 export const tokenInformationReducer = (
   state: TokenInformationState,
   action: TokenInformationAction
-) => {
+): TokenInformationState => {
   switch (action.type) {
     case "token:set":
       return {

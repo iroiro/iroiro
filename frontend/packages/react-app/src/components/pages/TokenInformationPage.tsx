@@ -26,7 +26,7 @@ interface Params {
   tokenAddress: string;
 }
 
-const TokenInformationPage = (props: RouteComponentProps<Params>) => {
+const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokenInformationReducer, initialState);
   const { tokenAddress } = useParams<Params>();

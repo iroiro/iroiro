@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Flex, Box, Text } from "rimble-ui";
+import { Card, Flex, Box } from "rimble-ui";
 import { CampaignInfo } from "../../../interfaces";
 import Item from "../../molecules/Item";
 
@@ -7,7 +7,7 @@ export interface CampaignDetailProps {
   readonly campaignInfo: CampaignInfo;
 }
 
-const CampaignDetail = ({ campaignInfo }: CampaignDetailProps) => {
+const CampaignDetail: React.FC<CampaignDetailProps> = ({ campaignInfo }) => {
   return (
     <Card mt={2}>
       <Box>
