@@ -7,7 +7,7 @@ type Creator @entity {
 type Account @entity {
   id: ID!
   tokens: [AccountToken!]! @derivedFrom(field: "account")
-  checkReuqest: [CheckRequest!]! @derivedFrom(field: "account")
+  checkRequests: [CheckRequest!]! @derivedFrom(field: "account")
   claims: [Claim!]! @derivedFrom(field: "account")
   # TODO: Disabled for this phase
   #  donates: [Donate!]! @derivedFrom(field: "account")
