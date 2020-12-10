@@ -209,6 +209,12 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
         })
       );
       dispatch({
+        type: "activities:setTransfers",
+        payload: {
+          eventBlockPairs,
+        },
+      });
+      dispatch({
         type: "balances:set",
         payload: {
           walletAddress: state.userAddress,

@@ -101,7 +101,7 @@ export interface CampaignMetadata {
 
 export interface Activity {
   name: string;
-  timestamp: string;
+  timestamp: number;
   amount: string;
 }
 

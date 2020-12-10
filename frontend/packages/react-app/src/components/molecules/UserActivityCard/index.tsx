@@ -12,7 +12,7 @@ const UserActivityCard = ({ activity, token }: UserActivityCardProps) => {
     <Card>
       <CardContent>
         <Typography>
-          {new Date(parseInt(activity.timestamp) * 1000).toLocaleDateString()}
+          {new Date(activity.timestamp).toLocaleDateString()}
         </Typography>
         <Typography>
           {activity.name} {activity.amount} ${token?.symbol}

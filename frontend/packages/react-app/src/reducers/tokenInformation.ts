@@ -1,4 +1,5 @@
 import {
+  Activity,
   Balance,
   CampaignInfo,
   CheckRequest,
@@ -76,6 +77,16 @@ export type TokenInformationAction =
       type: "userBalance:set";
       payload: {
         balance: string;
+      };
+    }
+  // TODO: Add claims activities
+  | {
+      type: "activities:setTransfers";
+      payload: {
+        eventBlockPairs: {
+          event: Event;
+          block: Block;
+        }[];
       };
     }
   | {
@@ -187,6 +198,30 @@ export const tokenInformationReducer = (
         ...state,
         userBalance: action.payload.balance,
       };
+    case "activities:setTransfers": {
+      if (state.userAddress === undefined) {
+        return state;
+      }
+      const activities: Activity[] = action.payload.eventBlockPairs
+        .sort((a, b) => {
+          return a.block.timestamp - b.block.timestamp;
+        })
+        .map((pair) => {
+          const name =
+            pair.event?.args?.["to"] === state.userAddress
+              ? "Receive"
+              : "Transfer";
+          return {
+            name,
+            timestamp: pair.block.timestamp * 1000,
+            amount: pair.event?.args?.["value"].toString(),
+          };
+        });
+      return {
+        ...state,
+        activities,
+      };
+    }
     case "balances:set": {
       const balances: {
         timestamp: number;
@@ -222,8 +257,6 @@ export const tokenInformationReducer = (
             balance: balance.balance.toString(),
           };
         });
-      console.debug("balances", balances);
-      console.debug("reduced", reducedBalances);
       return {
         ...state,
         balances: reducedBalances,

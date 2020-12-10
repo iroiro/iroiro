@@ -82,17 +82,17 @@ export const tokenInformationState: TokenInformationState = {
   activities: [
     {
       name: "Claim",
-      timestamp: "1612137600",
+      timestamp: 1612137600000,
       amount: "100",
     },
     {
       name: "Donate",
-      timestamp: "1612137600",
+      timestamp: 1612137600000,
       amount: "200",
     },
     {
       name: "Transfer",
-      timestamp: "1612137600",
+      timestamp: 1612137600000,
       amount: "300",
     },
   ],

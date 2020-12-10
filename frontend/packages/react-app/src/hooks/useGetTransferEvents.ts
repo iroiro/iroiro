@@ -34,7 +34,6 @@ export const useGetTransferEvents = (
 
       setLoading(false);
       setResult(allEvents);
-      console.debug(allEvents);
     };
     f();
   }, [library, tokenAddress]);
