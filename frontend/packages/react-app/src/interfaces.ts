@@ -60,7 +60,11 @@ export interface Creator {
 }
 
 export interface Claim {
-  id: string;
+  readonly id: string;
+  readonly account: Account;
+  readonly campaign: CampaignInfo;
+  readonly token: string;
+  readonly amount: string;
 }
 
 export interface CheckRequest {

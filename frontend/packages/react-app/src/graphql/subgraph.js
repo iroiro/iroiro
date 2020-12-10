@@ -98,3 +98,19 @@ export const GET_CHECK_REQUEST = gql`
     }
   }
 `;
+
+export const GET_CLAIM = gql`
+  query getClaim($id: ID!) {
+    claim(id: $id) {
+      id
+      account {
+        id
+      }
+      campaign {
+        id
+      }
+      token
+      amount
+    }
+  }
+`;

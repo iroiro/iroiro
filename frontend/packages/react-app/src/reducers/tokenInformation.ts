@@ -1,12 +1,12 @@
 import {
   CampaignInfo,
   CheckRequest,
+  Claim,
   TokenBasic,
   TokenInformationState,
 } from "../interfaces";
 import { BigNumber } from "ethers";
 import { LINK_APPROVE_AMOUNT } from "../utils/const";
-import { checkDocument } from "apollo-utilities";
 
 export type TokenInformationAction =
   | {
@@ -53,6 +53,15 @@ export type TokenInformationAction =
     }
   | {
       type: "isCampaignClaimable:remove";
+    }
+  | {
+      type: "isCampaignClaimed:set";
+      payload: {
+        claim: Claim;
+      };
+    }
+  | {
+      type: "isCampaignClaimed:remove";
     }
   | {
       type: "userAddress:set";
@@ -138,6 +147,21 @@ export const tokenInformationReducer = (
       return {
         ...state,
         isCampaignClaimable: false,
+      };
+    }
+    case "isCampaignClaimed:set": {
+      if (!action.payload.claim) {
+        return state;
+      }
+      return {
+        ...state,
+        isCampaignClaimed: true,
+      };
+    }
+    case "isCampaignClaimed:remove": {
+      return {
+        ...state,
+        isCampaignClaimed: false,
       };
     }
     case "userAddress:set":

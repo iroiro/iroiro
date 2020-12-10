@@ -9,8 +9,17 @@ import {
 import { useParams, RouteComponentProps } from "react-router-dom";
 import { getTokenInfo } from "../../utils/web3";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { GET_CAMPAIGNS, GET_CHECK_REQUEST } from "../../graphql/subgraph";
-import { CampaignInfo, CampaignMetadata } from "../../interfaces";
+import {
+  GET_CAMPAIGNS,
+  GET_CHECK_REQUEST,
+  GET_CLAIM,
+} from "../../graphql/subgraph";
+import {
+  CampaignInfo,
+  CampaignMetadata,
+  CheckRequest,
+  Claim,
+} from "../../interfaces";
 import { useGetWalletBalance } from "../../hooks/useGetWalletBalance";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
 import { LINK_TOKEN_ADDRESS } from "../../utils/const";
@@ -26,6 +35,9 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
   const [getCheckRequests, { data: checkRequestsData }] = useLazyQuery(
     GET_CHECK_REQUEST
+  );
+  const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
+    GET_CLAIM
   );
   const { result, loading, error } = useGetWalletBalance(library, tokenAddress);
 
@@ -154,6 +166,32 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
       payload: { allowance: allowance },
     });
   }, [allowance]);
+
+  useEffect(() => {
+    if (
+      state.userAddress === undefined ||
+      state.campaignAddress === undefined
+    ) {
+      return;
+    }
+    getClaim({
+      variables: {
+        id: `${state.userAddress.toLowerCase()}-${state.campaignAddress.toLowerCase()}`,
+      },
+    });
+  }, [getClaim, state.userAddress, state.campaignAddress]);
+
+  useEffect(() => {
+    if (getClaimData === undefined) {
+      return;
+    }
+    dispatch({
+      type: "isCampaignClaimed:set",
+      payload: {
+        claim: getClaimData.claim,
+      },
+    });
+  }, [getClaimData]);
 
   return <TokenInformationTemplate state={state} dispatch={dispatch} />;
 };
