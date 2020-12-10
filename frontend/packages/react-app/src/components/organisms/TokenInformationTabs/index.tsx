@@ -16,6 +16,7 @@ import { TokenInformationTemplateProps } from "../../templates/TokenInformationT
 import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
 import UserActivities from "../UserActivities";
 import TokenDetailCampaignPanel from "../TokenCampaignDetailPanel";
+import UserHistory from "../UserHistory";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
@@ -111,14 +112,7 @@ export function TokenInformationTabs({
           Coming soon...
         </TabPanel>
         <TabPanel value={value} index={4}>
-          <Grid container spacing={4} direction="column">
-            <Grid item xs={12}>
-              <UserActivities state={state} />
-            </Grid>
-            <Grid item xs={12}>
-              <BalanceHistoryChart balances={state.balances} />
-            </Grid>
-          </Grid>
+          <UserHistory state={state} />
         </TabPanel>
       </Container>
     </div>
