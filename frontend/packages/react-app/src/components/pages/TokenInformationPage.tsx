@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useMemo, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { useWeb3React } from "@web3-react/core";
 import TokenInformationTemplate from "../templates/TokenInformationTemplate";
 import {
@@ -9,7 +9,7 @@ import {
 import { useParams, RouteComponentProps } from "react-router-dom";
 import { getTokenInfo } from "../../utils/web3";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { GET_CAMPAIGNS } from "../../graphql/subgraph";
+import { GET_CAMPAIGNS, GET_CHECK_REQUEST } from "../../graphql/subgraph";
 import { CampaignInfo, CampaignMetadata } from "../../interfaces";
 import { useGetWalletBalance } from "../../hooks/useGetWalletBalance";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
@@ -23,7 +23,10 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokenInformationReducer, initialState);
   const { tokenAddress } = useParams<Params>();
-  const [getCampaigns, { data }] = useLazyQuery(GET_CAMPAIGNS);
+  const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
+  const [getCheckRequests, { data: checkRequestsData }] = useLazyQuery(
+    GET_CHECK_REQUEST
+  );
   const { result, loading, error } = useGetWalletBalance(library, tokenAddress);
 
   const { allowance } = useGetAllowance(
@@ -84,10 +87,10 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
       if (!tokenAddress) {
         return;
       }
-      if (data === undefined) {
+      if (campaignData === undefined) {
         return;
       }
-      const rawCampaigns = data.campaigns;
+      const rawCampaigns = campaignData.campaigns;
       const campaigns: CampaignInfo[] = await Promise.all(
         rawCampaigns.map(async (rawCampaign: CampaignInfo) => {
           const cid = rawCampaign.campaignInfoCid;
@@ -107,7 +110,40 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
       });
     };
     f();
-  }, [tokenAddress, data]);
+  }, [tokenAddress, campaignData]);
+
+  useEffect(() => {
+    if (
+      state.userAddress === undefined ||
+      state.campaignAddress === undefined
+    ) {
+      return;
+    }
+    getCheckRequests({
+      variables: {
+        account: state.userAddress.toLowerCase(),
+        campaign: state.campaignAddress.toLowerCase(),
+      },
+    });
+  }, [getCheckRequests, state.userAddress, state.campaignAddress]);
+
+  useEffect(() => {
+    if (checkRequestsData === undefined) {
+      return;
+    }
+    dispatch({
+      type: "isTokenCheckFinished:set",
+      payload: {
+        checkRequests: checkRequestsData.checkRequests,
+      },
+    });
+    dispatch({
+      type: "isCampaignClaimable:set",
+      payload: {
+        checkRequests: checkRequestsData.checkRequests,
+      },
+    });
+  }, [checkRequestsData]);
 
   useEffect(() => {
     if (allowance === undefined) {

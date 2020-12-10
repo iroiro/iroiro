@@ -1,6 +1,12 @@
-import { CampaignInfo, TokenBasic, TokenInformationState } from "../interfaces";
+import {
+  CampaignInfo,
+  CheckRequest,
+  TokenBasic,
+  TokenInformationState,
+} from "../interfaces";
 import { BigNumber } from "ethers";
 import { LINK_APPROVE_AMOUNT } from "../utils/const";
+import { checkDocument } from "apollo-utilities";
 
 export type TokenInformationAction =
   | {
@@ -16,6 +22,15 @@ export type TokenInformationAction =
       };
     }
   | {
+      type: "isTokenCheckFinished:set";
+      payload: {
+        checkRequests: CheckRequest[] | undefined;
+      };
+    }
+  | {
+      type: "isTokenCheckFinished:remove";
+    }
+  | {
       type: "campaigns:set";
       payload: {
         campaigns: CampaignInfo[];
@@ -29,6 +44,15 @@ export type TokenInformationAction =
     }
   | {
       type: "campaignAddress:remove";
+    }
+  | {
+      type: "isCampaignClaimable:set";
+      payload: {
+        checkRequests: CheckRequest[];
+      };
+    }
+  | {
+      type: "isCampaignClaimable:remove";
     }
   | {
       type: "userAddress:set";
@@ -64,6 +88,24 @@ export const tokenInformationReducer = (
         isTokenApproved,
       };
     }
+    case "isTokenCheckFinished:set": {
+      if (!action.payload.checkRequests) {
+        return state;
+      }
+      const isTokenCheckFinished =
+        action.payload.checkRequests.filter((req) => req.status !== 0).length >
+        0;
+      return {
+        ...state,
+        isTokenCheckFinished,
+      };
+    }
+    case "isTokenCheckFinished:remove": {
+      return {
+        ...state,
+        isTokenCheckFinished: false,
+      };
+    }
     case "campaigns:set":
       return {
         ...state,
@@ -79,6 +121,25 @@ export const tokenInformationReducer = (
         ...state,
         campaignAddress: undefined,
       };
+    case "isCampaignClaimable:set": {
+      if (!action.payload.checkRequests) {
+        return state;
+      }
+      const isCampaignClaimable = action.payload.checkRequests
+        .filter((req) => req.status !== 1)
+        .map((req) => req.result)
+        .includes(true);
+      return {
+        ...state,
+        isCampaignClaimable,
+      };
+    }
+    case "isCampaignClaimable:remove": {
+      return {
+        ...state,
+        isCampaignClaimable: false,
+      };
+    }
     case "userAddress:set":
       return {
         ...state,

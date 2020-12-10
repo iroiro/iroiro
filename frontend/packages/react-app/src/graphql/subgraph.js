@@ -85,3 +85,16 @@ export const GET_DISTRIBUTORS = gql`
     }
   }
 `;
+
+export const GET_CHECK_REQUEST = gql`
+  query getCheckRequest($account: String!, $campaign: String!) {
+    checkRequests(where: { account: $account, campaign: $campaign }) {
+      id
+      account {
+        id
+      }
+      result
+      status
+    }
+  }
+`;
