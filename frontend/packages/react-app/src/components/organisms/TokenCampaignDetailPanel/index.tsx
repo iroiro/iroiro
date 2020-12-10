@@ -9,7 +9,9 @@ export interface TokenDetailCampaignPanelProps {
   readonly state: TokenInformationState;
 }
 
-const TokenDetailCampaignPanel = ({ state }: TokenDetailCampaignPanelProps) => {
+const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
+  state,
+}) => {
   const campaign = state.campaigns.find(
     (campaign) => campaign.id === state.campaignAddress
   );
@@ -27,6 +29,7 @@ const TokenDetailCampaignPanel = ({ state }: TokenDetailCampaignPanelProps) => {
       <TokenRequestCard state={state} />
       {state.isTokenCheckFinished && (
         <TokenClaimCard
+          campaignAddress={state?.campaignAddress ?? ""}
           symbol={state.token.symbol}
           claimAmount={campaign.claimAmount}
           isClaimable={state.isCampaignClaimable}

@@ -91,7 +91,11 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({ state }) => {
             <Button
               variant="contained"
               color="primary"
-              disabled={state.isTokenApproved}
+              disabled={
+                state.isTokenApproved ||
+                state.isCampaignClaimable ||
+                state.isCampaignClaimed
+              }
               onClick={onClickApprove}
             >
               Approve $LINK
