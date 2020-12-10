@@ -11,8 +11,14 @@ import {
 import { useApproveToken } from "../../../hooks/useApproveToken";
 import { TokenInformationState } from "../../../interfaces";
 import { useWeb3React } from "@web3-react/core";
-import { LINK_APPROVE_AMOUNT, LINK_TOKEN_ADDRESS } from "../../../utils/const";
+import {
+  JOB_ID_AUDIUS_FOLLOWERS,
+  LINK_APPROVE_AMOUNT,
+  LINK_TOKEN_ADDRESS,
+  ORACLE_ADDRESS,
+} from "../../../utils/const";
 import { useCallback } from "react";
+import { useRequestCheckingIsClaimable } from "../../../hooks/distributors/audius-followers/useRequestCheckingIsClaimable";
 
 export interface TokenRequestCardProps {
   state: TokenInformationState;
@@ -46,9 +52,26 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({ state }) => {
     state?.campaignAddress ?? "",
     LINK_APPROVE_AMOUNT
   );
+  const requestCheck = useRequestCheckingIsClaimable(
+    library,
+    ORACLE_ADDRESS,
+    JOB_ID_AUDIUS_FOLLOWERS,
+    LINK_APPROVE_AMOUNT,
+    state?.campaignAddress ?? ""
+  );
 
   const onClickApprove = useCallback(async () => {
     const transaction = await approve();
+    if (transaction === undefined) {
+      console.error("Transaction failed");
+      return;
+    }
+    console.debug(transaction);
+    // TODO After approving finished, switch request button to enable
+  }, [approve]);
+
+  const onClickRequest = useCallback(async () => {
+    const transaction = await requestCheck();
     if (transaction === undefined) {
       console.error("Transaction failed");
       return;
@@ -79,6 +102,7 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({ state }) => {
               variant="contained"
               color="primary"
               disabled={!state.isTokenApproved || state.isTokenRequested}
+              onClick={onClickRequest}
             >
               Check request
             </Button>
