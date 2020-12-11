@@ -26,6 +26,9 @@ export type TokenInformationAction =
       };
     }
   | {
+      type: "isTokenApproved:setTrue";
+    }
+  | {
       type: "isTokenCheckFinished:set";
       payload: {
         checkRequests: CheckRequest[] | undefined;
@@ -119,6 +122,12 @@ export const tokenInformationReducer = (
       return {
         ...state,
         isTokenApproved,
+      };
+    }
+    case "isTokenApproved:setTrue": {
+      return {
+        ...state,
+        isTokenApproved: true,
       };
     }
     case "isTokenCheckFinished:set": {

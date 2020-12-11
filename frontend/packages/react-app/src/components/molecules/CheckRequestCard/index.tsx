@@ -17,11 +17,13 @@ import {
   LINK_TOKEN_ADDRESS,
   ORACLE_ADDRESS,
 } from "../../../utils/const";
-import { useCallback } from "react";
+import { Dispatch, useCallback } from "react";
 import { useRequestCheckingIsClaimable } from "../../../hooks/distributors/audius-followers/useRequestCheckingIsClaimable";
+import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
 export interface TokenRequestCardProps {
   state: TokenInformationState;
+  dispatch: Dispatch<TokenInformationAction>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,7 +45,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const TokenRequestCard: React.FC<TokenRequestCardProps> = ({ state }) => {
+const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
+  state,
+  dispatch,
+}) => {
   const classes = useStyles();
   const { library } = useWeb3React();
   const approve = useApproveToken(
@@ -68,6 +73,9 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({ state }) => {
     }
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
+    transaction.wait().then(() => {
+      dispatch({ type: "isTokenApproved:setTrue" });
+    });
   }, [approve]);
 
   const onClickRequest = useCallback(async () => {
