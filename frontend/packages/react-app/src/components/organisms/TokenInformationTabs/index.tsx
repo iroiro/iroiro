@@ -63,11 +63,11 @@ export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
+    setValue(newValue);
     dispatch({ type: "campaignAddress:remove" });
     dispatch({ type: "isTokenCheckFinished:remove" });
     dispatch({ type: "isCampaignClaimable:remove" });
     dispatch({ type: "isCampaignClaimed:remove" });
-    setValue(newValue);
   };
 
   return (
