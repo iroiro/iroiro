@@ -8,7 +8,7 @@ const {
 } = require("@openzeppelin/test-helpers");
 
 // TODO Fix tests fail with `truffle test`
-contract.skip("AudiusFollowersCampaign", (accounts) => {
+contract("AudiusFollowersCampaign", (accounts) => {
   const { LinkToken } = require("@chainlink/contracts/truffle/v0.4/LinkToken");
   const { Oracle } = require("@chainlink/contracts/truffle/v0.6/Oracle");
   const Distributor = artifacts.require("AudiusFollowersDistributor.sol");
@@ -42,7 +42,7 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
   const recipientsCid = "recipients cid";
   const recipientsNum = 100;
 
-  let toAddressHash, signature, bytes, r, s, v, from;
+  let toAddressHash, signature, bytes, r, s, v;
 
   beforeEach(async () => {
     toAddressHash = web3.utils.soliditySha3(metamask);
@@ -107,14 +107,9 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
     context("without LINK", () => {
       it("reverts", async () => {
         await expectRevert.unspecified(
-          cc.requestCheckingIsClaimable(
-            oc.address,
-            jobId,
-            payment,
-            follower,
-            follower.toString(),
-            { from: metamask }
-          )
+          cc.requestCheckingIsClaimable(oc.address, jobId, payment, follower, {
+            from: metamask,
+          })
         );
       });
     });
@@ -131,26 +126,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
         });
       });
 
-      it("throw an error if empty user address is passed", async () => {
-        const nextUserIdBefore = await cc.nextUserId();
-        assert.equal(nextUserIdBefore.toString(), "1");
-        try {
-          await cc.requestCheckingIsClaimable(
-            oc.address,
-            jobId,
-            payment,
-            follower,
-            {
-              from: metamask,
-            }
-          );
-          assert.fail();
-        } catch (error) {
-          assert.equal(error.reason, "User address shouldn't be empty");
-          assert(true);
-        }
-      });
-
       it("set new user id if its not registered yet", async () => {
         const nextUserIdBefore = await cc.nextUserId();
         assert.equal(nextUserIdBefore.toString(), "1");
@@ -159,7 +134,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
           jobId,
           payment,
           follower,
-          follower.toString(),
           { from: metamask }
         );
         const userId = await cc.userIdList(follower);
@@ -168,13 +142,26 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
         assert.equal(nextUserIdAfter, "2");
       });
 
+      it("set new user address if its not registered yet", async () => {
+        const nextUserIdBefore = await cc.nextUserId();
+        assert.equal(nextUserIdBefore.toString(), "1");
+        await cc.requestCheckingIsClaimable(
+          oc.address,
+          jobId,
+          payment,
+          follower,
+          { from: metamask }
+        );
+        const userAddress = await cc.userList(1);
+        assert.equal(userAddress, follower);
+      });
+
       it("does not set new user id if its already registered", async () => {
         await cc.requestCheckingIsClaimable(
           oc.address,
           jobId,
           payment,
           follower,
-          follower.toString(),
           { from: metamask }
         );
         const userId1 = await cc.userIdList(follower);
@@ -193,7 +180,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
           jobId,
           payment,
           follower,
-          follower.toString(),
           { from: metamask }
         );
         const userId2 = await cc.userIdList(follower);
@@ -209,7 +195,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
             jobId,
             payment,
             follower,
-            follower.toString(),
             { from: metamask }
           );
           request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
@@ -257,7 +242,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
           jobId,
           payment,
           follower,
-          follower.toString(),
           { from: metamask }
         );
         const request1 = oracle.decodeRunRequest(tx1.receipt.rawLogs[4]);
@@ -272,7 +256,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
           jobId,
           payment,
           metamask,
-          metamask.toString(),
           { from: metamask }
         );
         const request2 = oracle.decodeRunRequest(tx2.receipt.rawLogs[4]);
@@ -354,7 +337,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
           jobId,
           payment,
           follower,
-          follower.toString(),
           { from: metamask }
         );
         request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
@@ -414,7 +396,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
           jobId,
           payment,
           follower,
-          follower.toString(),
           { from: metamask }
         );
         request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
@@ -455,7 +436,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
           jobId,
           payment,
           follower,
-          follower.toString(),
           { from: metamask }
         );
         request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
@@ -601,7 +581,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
         jobId,
         payment,
         follower,
-        follower.toString(),
         { from: metamask }
       );
       request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
@@ -664,7 +643,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
         jobId,
         payment,
         follower,
-        follower.toString(),
         { from: metamask }
       );
       request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);

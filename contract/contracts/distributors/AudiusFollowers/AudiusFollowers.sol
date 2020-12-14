@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.6/interfaces/LinkTokenInterface.sol";
 import "../../SafeMath64.sol";
 
+// CustomAddressesDistributor
 contract AudiusFollowersDistributor is DistributorInterface {
     constructor (string memory _distributorInfoCid, address _link) public
     DistributorInterface(_distributorInfoCid, _link) {}
@@ -54,6 +55,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
     using SafeMath64 for uint64;
 
     uint64 public nextUserId = 1;
+    mapping(uint64 => address) public userList;
     mapping(address => uint64) public userIdList;
     mapping(address => bool) public claimedUserList;
     mapping(bytes32 => bool) private claimKeyHashList;
@@ -163,13 +165,8 @@ contract AudiusFollowersCampaign is CampaignInterface {
         address _oracle,
         bytes32 _jobId,
         uint256 fee,
-        address targetAddress,
-        string memory targetAddressString // TODO: should be removed
+        address targetAddress
     ) external returns (bytes32 requestId) {
-        require(
-            keccak256(abi.encodePacked(targetAddressString)) != keccak256(abi.encodePacked("")),
-            "User address shouldn't be empty"
-        );
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(link.allowance(msg.sender, address(this)) >= fee, "allowance is not enough");
         link.transferFrom(msg.sender, address(this), fee);
@@ -177,6 +174,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
         uint64 userId;
         if (userIdList[targetAddress] == 0) {
             userId = nextUserId;
+            userList[userId] = targetAddress;
             userIdList[targetAddress] = userId;
             nextUserId = nextUserId.add(1);
         } else {
@@ -185,7 +183,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
 
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
         request.add("cid", recipientsCid);
-        request.add("userAddress", targetAddressString);
+        request.addUint("userId", userId);
         request.addUint("campaignId", campaignId);
 
         return sendChainlinkRequestTo(_oracle, request, fee);
