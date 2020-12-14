@@ -91,7 +91,6 @@ app.post("/api", async (req, res) => {
       error: "Failed to get user id from user address.",
     });
   }
-  console.debug(content);
   const isClaimable: boolean = content.targets.includes(userAddress);
   const claimKeyHash: string = getClaimKeyHash(userId, isClaimable);
   console.debug("Claim key hash: ", claimKeyHash);
