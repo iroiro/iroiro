@@ -34,7 +34,7 @@ dataSources:
     #    network: mainnet # This is for local graph node
     source:
       # TODO: Investigate omitting address is available
-      address: "0x48889fecA4574810e5a5B30b6b93146a837500Fb" # CustomAddressesDistributor contract address on rinkeby
+      address: "0x5BadCC27134Cc43fDc35D247e340e655E8c1dB79" # CustomAddressesDistributor contract address on rinkeby
       #      address: "0x02e00DD6c22223B7d459aB472C947544f1619921" # CustomAddressesDistributor contract address on kovan
       # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
       abi: CustomAddressesDistributor
