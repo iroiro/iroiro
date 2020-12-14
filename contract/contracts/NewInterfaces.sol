@@ -64,6 +64,7 @@ contract DistributorInterface {
 
 contract CampaignInterface is ChainlinkClient, Ownable {
     event Claim(
+        address indexed from,
         address indexed to
     );
     // TODO Remove arg
@@ -140,13 +141,13 @@ contract CampaignInterface is ChainlinkClient, Ownable {
         emit UpdateStatus();
     }
 
+    // These functions should be overloaded because arguments could be added for each campaigns
     // Check msg.sender is claimable
-    function isClaimable(address user) virtual external view returns (bool) {}
-
+    // function isClaimable(address user) virtual external view returns (bool) {}
+    //
     // Claim tokens
-    function claim() virtual external {}
-
-    // This function should be overloaded because arguments could be added for each campaigns
+    // function claim() virtual external {}
+    //
     // Request to Chainlink for checking claimability
     // function requestCheckingIsClaimable(
     //     address _oracle, // which Oracle contract to requests

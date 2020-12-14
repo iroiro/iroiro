@@ -57,6 +57,7 @@ contract AudiusFollowersCampaign is CampaignInterface {
     mapping(address => uint64) public userIdList;
     mapping(address => bool) public claimedUserList;
     mapping(bytes32 => bool) private claimKeyHashList;
+    mapping(address => bool) public sentUserList;
 
     // TODO Integrate with parent constructor
     constructor(
@@ -81,17 +82,45 @@ contract AudiusFollowersCampaign is CampaignInterface {
         _link
     ) {}
 
+    modifier isValidHashAndSignature(
+        bytes32 toAddressHash,
+        bytes32 r,
+        bytes32 s,
+        uint8 v,
+        address from,
+        address to
+    ) {
+        require(
+            toAddressHash == keccak256(abi.encodePacked(to)),
+            "toAddressHash and hash of to address are not matched"
+        );
+
+        if (v < 27) {
+            v += 27;
+        }
+        bytes memory prefix = "\x19Ethereum Signed Message:\n32";
+        bytes32 prefixedProof = keccak256(abi.encodePacked(prefix, toAddressHash));
+        address _from = ecrecover(prefixedProof, v, r, s);
+        require(address(0) != _from, "address is 0");
+        require(from == _from, "from address is not matched");
+
+        _;
+    }
+
     function generateClaimKey(uint64 userId) public pure returns (uint256){
         return uint256(userId) * 10 + 1;
         // 1 as true
     }
 
-    function isClaimable(address user) public view override returns (bool) {
-        uint64 userId = userIdList[user];
+    function isClaimable(address from, address to) public view returns (bool) {
+        uint64 userId = userIdList[from];
         if (userId == 0) {
             return false;
         }
-        if (claimedUserList[user]) {
+        if (claimedUserList[from]) {
+            return false;
+        }
+        if (sentUserList[to]) {
             return false;
         }
         uint256 claimKey = generateClaimKey(userId);
@@ -99,28 +128,46 @@ contract AudiusFollowersCampaign is CampaignInterface {
         return claimKeyHashList[claimKeyHash];
     }
 
-    function claim() external override mustBeActive inTime {
-        require(isClaimable(msg.sender), "Token is not claimable");
+    function claim(
+        bytes32 toAddressHash,
+        bytes32 r,
+        bytes32 s,
+        uint8 v,
+        address from,
+        address to
+    )
+    external
+    mustBeActive
+    inTime
+    isValidHashAndSignature(toAddressHash, r, s, v, from, to)
+    {
+        require(isClaimable(from, to), "Token is not claimable");
 
-        claimedUserList[msg.sender] = true;
+        claimedUserList[from] = true;
+        sentUserList[to] = true;
         ERC20 erc20 = ERC20(token);
-        erc20.transfer(msg.sender, claimAmount);
+        erc20.transfer(to, claimAmount);
 
-        emit Claim(msg.sender);
+        emit Claim(from, to);
     }
 
     function fulfill(bytes32 _requestId, bytes32 data) public recordChainlinkFulfillment(_requestId) {
         claimKeyHashList[data] = true;
     }
 
+    /**
+     * @notice Request to Chainlink whether target address is claimable token
+     * Target address usually has no ETH, so another wallet send this function for target address
+     */
     function requestCheckingIsClaimable(
         address _oracle,
         bytes32 _jobId,
         uint256 fee,
-        string memory userAddress
+        address targetAddress,
+        string memory targetAddressString // TODO: should be removed
     ) external returns (bytes32 requestId) {
         require(
-            keccak256(abi.encodePacked(userAddress)) != keccak256(abi.encodePacked("")),
+            keccak256(abi.encodePacked(targetAddressString)) != keccak256(abi.encodePacked("")),
             "User address shouldn't be empty"
         );
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
@@ -128,17 +175,17 @@ contract AudiusFollowersCampaign is CampaignInterface {
         link.transferFrom(msg.sender, address(this), fee);
 
         uint64 userId;
-        if (userIdList[msg.sender] == 0) {
+        if (userIdList[targetAddress] == 0) {
             userId = nextUserId;
-            userIdList[msg.sender] = userId;
+            userIdList[targetAddress] = userId;
             nextUserId = nextUserId.add(1);
         } else {
-            userId = userIdList[msg.sender];
+            userId = userIdList[targetAddress];
         }
 
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
         request.add("cid", recipientsCid);
-        request.add("userAddress", userAddress);
+        request.add("userAddress", targetAddressString);
         request.addUint("campaignId", campaignId);
 
         return sendChainlinkRequestTo(_oracle, request, fee);
