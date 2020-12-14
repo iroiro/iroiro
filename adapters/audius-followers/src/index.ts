@@ -36,7 +36,7 @@ app.use(express.json());
 app.post("/api", async (req, res) => {
   console.debug("request body: ", req.body);
   const cid: string = req.body.data.cid;
-  const userAddress: string = req.body.data.userAddress;
+  const rawUserId: BN = new BN(req.body.data.userId.toString());
   const campaignId: BN = new BN(req.body.data.campaignId.toString());
 
   let campaignAddress: string;
@@ -61,20 +61,7 @@ app.post("/api", async (req, res) => {
     campaignInterface,
     campaignAddress
   );
-  let rawUserId: string;
-  try {
-    rawUserId = await Campaign.methods.userIdList(userAddress).call();
-  } catch (error) {
-    console.error("Failed to get user id from user address.", error);
-    return res.status(500).send({
-      jobRunID: req.body.id,
-      data: {},
-      status: "errored",
-      error: "Failed to get user id from user address.",
-    });
-  }
-  const userId: BN = new BN(rawUserId).mul(new BN(10));
-
+  const userId: BN = rawUserId.mul(new BN(10));
   let content: Recipients;
   try {
     content = await getFile(cid);
@@ -91,6 +78,20 @@ app.post("/api", async (req, res) => {
     });
   }
 
+  let userAddress: string;
+  try {
+    userAddress = await Campaign.methods.userList(rawUserId.toString()).call();
+    console.debug(userAddress);
+  } catch (error) {
+    console.error("Failed to get user id from user address.", error);
+    return res.status(500).send({
+      jobRunID: req.body.id,
+      data: {},
+      status: "errored",
+      error: "Failed to get user id from user address.",
+    });
+  }
+  console.debug(content);
   const isClaimable: boolean = content.targets.includes(userAddress);
   const claimKeyHash: string = getClaimKeyHash(userId, isClaimable);
   console.debug("Claim key hash: ", claimKeyHash);
