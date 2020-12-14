@@ -35,7 +35,7 @@ services:
     ports:
       - 3000:3000
     build:
-      context: ../adapters/audius-followers
+      context: ../adapters/custom-addresses
       dockerfile: ./Dockerfile
     restart: on-failure
     command: yarn start
