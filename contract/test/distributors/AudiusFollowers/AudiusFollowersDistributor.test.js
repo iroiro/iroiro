@@ -2,11 +2,11 @@ const { accounts, contract } = require("@openzeppelin/test-environment");
 const { constants, expectEvent, time } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
-const Distributor = contract.fromArtifact("AudiusFollowersDistributor");
-const Campaign = contract.fromArtifact("AudiusFollowersCampaign");
+const Distributor = contract.fromArtifact("CustomAddressesDistributor");
+const Campaign = contract.fromArtifact("CustomAddressesCampaign");
 const FanToken = contract.fromArtifact("FanToken");
 
-describe("AudiusFollowersDistributor", () => {
+describe("CustomAddressesDistributor", () => {
   const [owner, alice, link] = accounts;
 
   let now, future;

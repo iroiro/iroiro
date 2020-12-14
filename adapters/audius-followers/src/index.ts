@@ -3,8 +3,8 @@ import ipfsClient from "ipfs-http-client";
 import { AbiItem, soliditySha3 } from "web3-utils";
 import BN from "bn.js";
 import dotenv from "dotenv";
-import { AudiusFollowersCampaign } from "../../../types/web3/AudiusFollowersCampaign";
-import { AudiusFollowersDistributor } from "../../../types/web3/AudiusFollowersDistributor";
+import { CustomAddressesCampaign } from "../../../types/web3/CustomAddressesCampaign";
+import { CustomAddressesDistributor } from "../../../types/web3/CustomAddressesDistributor";
 dotenv.config();
 
 interface Recipients {
@@ -15,17 +15,17 @@ interface Recipients {
 const Web3 = require("web3");
 
 // TODO: Update getting ABI logic
-const DistributorContract = require("../build/contracts/AudiusFollowersDistributor.json");
+const DistributorContract = require("../build/contracts/CustomAddressesDistributor.json");
 const distributorInterface: AbiItem[] = DistributorContract.abi;
 const distributorAddress: string = process.env.DISTRIBUTOR_ADDRESS;
 const web3 = new Web3(
   new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER)
 );
-const Distributor: AudiusFollowersDistributor = new web3.eth.Contract(
+const Distributor: CustomAddressesDistributor = new web3.eth.Contract(
   distributorInterface,
   distributorAddress
 );
-const CampaignContract = require("../build/contracts/AudiusFollowersCampaign.json");
+const CampaignContract = require("../build/contracts/CustomAddressesCampaign.json");
 const campaignInterface: AbiItem[] = CampaignContract.abi;
 
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
@@ -57,7 +57,7 @@ app.post("/api", async (req, res) => {
     });
   }
 
-  const Campaign: AudiusFollowersCampaign = new web3.eth.Contract(
+  const Campaign: CustomAddressesCampaign = new web3.eth.Contract(
     campaignInterface,
     campaignAddress
   );

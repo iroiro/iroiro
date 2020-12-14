@@ -28,16 +28,16 @@ dataSources:
           handler: handleCreateToken
       file: ./src/mapping.ts
   - kind: ethereum/contract
-    name: AudiusFollowersDistributor
+    name: CustomAddressesDistributor
     network: rinkeby
     #    network: kovan
     #    network: mainnet # This is for local graph node
     source:
       # TODO: Investigate omitting address is available
-      address: "0x48889fecA4574810e5a5B30b6b93146a837500Fb" # AudiusFollowersDistributor contract address on rinkeby
-      #      address: "0x02e00DD6c22223B7d459aB472C947544f1619921" # AudiusFollowersDistributor contract address on kovan
+      address: "0x48889fecA4574810e5a5B30b6b93146a837500Fb" # CustomAddressesDistributor contract address on rinkeby
+      #      address: "0x02e00DD6c22223B7d459aB472C947544f1619921" # CustomAddressesDistributor contract address on kovan
       # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
-      abi: AudiusFollowersDistributor
+      abi: CustomAddressesDistributor
       startBlock: 7643514  # for Rinkeby. Comment out this line for local graph node
     #      startBlock: 22251048 # for Kovan. Comment out this line for local graph node
     mapping:
@@ -48,10 +48,10 @@ dataSources:
         - Campaign
         - Distributor
       abis:
-        - name: AudiusFollowersDistributor
-          file: ../contract/build/contracts/AudiusFollowersDistributor.json
-        - name: AudiusFollowersCampaign
-          file: ../contract/build/contracts/AudiusFollowersCampaign.json
+        - name: CustomAddressesDistributor
+          file: ../contract/build/contracts/CustomAddressesDistributor.json
+        - name: CustomAddressesCampaign
+          file: ../contract/build/contracts/CustomAddressesCampaign.json
       eventHandlers:
         - event: CreateCampaign(indexed address,indexed address,indexed address)
           handler: handleCreateCampaign
@@ -101,12 +101,12 @@ templates:
           handler: handleTransfer
       file: ./src/mapping.ts
   - kind: ethereum/contract
-    name: AudiusFollowersCampaign
+    name: CustomAddressesCampaign
     network: rinkeby
     #    network: kovan
     #    network: mainnet # This is for local graph node
     source:
-      abi: AudiusFollowersCampaign
+      abi: CustomAddressesCampaign
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -115,8 +115,8 @@ templates:
         - Campaign
         - Claim
       abis:
-        - name: AudiusFollowersCampaign
-          file: ../contract/build/contracts/AudiusFollowersCampaign.json
+        - name: CustomAddressesCampaign
+          file: ../contract/build/contracts/CustomAddressesCampaign.json
       eventHandlers:
         - event: ChainlinkRequested(indexed bytes32)
           handler: handleChainlinkRequested

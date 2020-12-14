@@ -8,11 +8,11 @@ const {
 } = require("@openzeppelin/test-helpers");
 
 // TODO Fix tests fail with `truffle test`
-contract("AudiusFollowersCampaign", (accounts) => {
+contract("CustomAddressesCampaign", (accounts) => {
   const { LinkToken } = require("@chainlink/contracts/truffle/v0.4/LinkToken");
   const { Oracle } = require("@chainlink/contracts/truffle/v0.6/Oracle");
-  const Distributor = artifacts.require("AudiusFollowersDistributor.sol");
-  const Campaign = artifacts.require("AudiusFollowersCampaign.sol");
+  const Distributor = artifacts.require("CustomAddressesDistributor.sol");
+  const Campaign = artifacts.require("CustomAddressesCampaign.sol");
   const FanToken = artifacts.require("FanToken.sol");
 
   const defaultAccount = accounts[0];

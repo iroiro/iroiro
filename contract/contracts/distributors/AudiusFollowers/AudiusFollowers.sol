@@ -6,8 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.6/interfaces/LinkTokenInterface.sol";
 import "../../SafeMath64.sol";
 
-// CustomAddressesDistributor
-contract AudiusFollowersDistributor is DistributorInterface {
+contract CustomAddressesDistributor is DistributorInterface {
     constructor (string memory _distributorInfoCid, address _link) public
     DistributorInterface(_distributorInfoCid, _link) {}
 
@@ -27,7 +26,7 @@ contract AudiusFollowersDistributor is DistributorInterface {
         require(allowance >= recipientsNum, "Token amount is not enough to distribute");
 
         uint256 claimAmount = calculateClaimAmount(allowance, recipientsNum);
-        AudiusFollowersCampaign campaign = new AudiusFollowersCampaign(
+        CustomAddressesCampaign campaign = new CustomAddressesCampaign(
             token,
             campaignInfoCid,
             recipientsCid,
@@ -51,7 +50,7 @@ contract AudiusFollowersDistributor is DistributorInterface {
     }
 }
 
-contract AudiusFollowersCampaign is CampaignInterface {
+contract CustomAddressesCampaign is CampaignInterface {
     using SafeMath64 for uint64;
 
     uint64 public nextUserId = 1;

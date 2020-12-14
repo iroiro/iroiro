@@ -1,12 +1,12 @@
 import { Claim, Campaign, CheckRequest, Account } from "./types/schema";
 import {
-  AudiusFollowersCampaign,
+  CustomAddressesCampaign,
   ChainlinkCancelled,
   ChainlinkFulfilled,
   ChainlinkRequested,
   Claim as ClaimEvent,
   UpdateStatus,
-} from "./types/templates/AudiusFollowersCampaign/AudiusFollowersCampaign";
+} from "./types/templates/CustomAddressesCampaign/CustomAddressesCampaign";
 import { Address, log } from "@graphprotocol/graph-ts/index";
 
 export function handleClaim(event: ClaimEvent): void {
@@ -20,7 +20,7 @@ export function handleClaim(event: ClaimEvent): void {
 
   claim.account = event.params.to.toHexString();
   claim.campaign = event.address.toHexString();
-  let campaignContract = AudiusFollowersCampaign.bind(event.address);
+  let campaignContract = CustomAddressesCampaign.bind(event.address);
   let callClaimAmount = campaignContract.try_claimAmount();
   if (callClaimAmount.reverted) {
     log.warning("Claim amount not found. Campaign: {}", [campaignId]);
@@ -38,7 +38,7 @@ export function handleUpdateStatus(event: UpdateStatus): void {
     campaign = new Campaign(campaignId);
   }
 
-  let campaignContract = AudiusFollowersCampaign.bind(event.address);
+  let campaignContract = CustomAddressesCampaign.bind(event.address);
   let callStatus = campaignContract.try_status();
   if (callStatus.reverted) {
     log.warning("Status not found. Campaign: {}", [campaignId]);
@@ -81,7 +81,7 @@ export function handleChainlinkFulfilled(event: ChainlinkFulfilled): void {
   }
   checkRequest.status = "FULFILLED";
 
-  let campaignContract = AudiusFollowersCampaign.bind(event.address);
+  let campaignContract = CustomAddressesCampaign.bind(event.address);
   let callIsClaimable = campaignContract.try_isClaimable(
     Address.fromString(checkRequest.account)
   );
