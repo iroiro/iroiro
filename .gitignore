@@ -9,3 +9,5 @@ node_modules/
 
 # typechain
 types/
+
+.aws-sam/
