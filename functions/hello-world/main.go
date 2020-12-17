@@ -1,9 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -22,26 +23,56 @@ var (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	resp, err := http.Get(DefaultHTTPGetAddress)
+	type RequestBody struct {
+		HashToPin string `json:"hashToPin"`
+	}
+	var body RequestBody
+	err := json.Unmarshal([]byte(request.Body), &body)
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}
 
-	if resp.StatusCode != 200 {
+	client := &http.Client{}
+	payload, err := json.Marshal(body)
+	if err != nil {
+		fmt.Println(err)
+		return events.APIGatewayProxyResponse{}, err
+	}
+
+	fmt.Println(string(payload))
+	req, err := http.NewRequest(
+		"POST",
+		"https://api.pinata.cloud/pinning/pinByHash",
+		bytes.NewBuffer(payload),
+	)
+	if err != nil {
+		fmt.Println(err)
+		return events.APIGatewayProxyResponse{}, err
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+	// todo: use env
+	req.Header.Add("pinata_api_key", "")
+	req.Header.Add("pinata_secret_api_key", "")
+	res, err := client.Do(req)
+	if err != nil {
+		return events.APIGatewayProxyResponse{}, err
+	}
+	fmt.Println(res)
+
+	if res.StatusCode != 200 {
 		return events.APIGatewayProxyResponse{}, ErrNon200Response
 	}
 
-	ip, err := ioutil.ReadAll(resp.Body)
+	responseBody := new(bytes.Buffer)
+	_, err = responseBody.ReadFrom(res.Body)
 	if err != nil {
-		return events.APIGatewayProxyResponse{}, err
+		return events.APIGatewayProxyResponse{
+			StatusCode: 200,
+		}, nil
 	}
-
-	if len(ip) == 0 {
-		return events.APIGatewayProxyResponse{}, ErrNoIP
-	}
-
 	return events.APIGatewayProxyResponse{
-		Body:       fmt.Sprintf("Hello, %v", string(ip)),
+		Body:       fmt.Sprint(string(responseBody.Bytes())),
 		StatusCode: 200,
 	}, nil
 }
