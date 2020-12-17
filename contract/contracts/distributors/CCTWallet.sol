@@ -164,13 +164,8 @@ contract CCTWalletCampaign is CampaignInterface {
     function requestCheckingIsClaimable(
         address _oracle,
         bytes32 _jobId,
-        uint256 fee,
         address targetAddress
     ) external returns (bytes32 requestId) {
-        LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
-        require(link.allowance(msg.sender, address(this)) >= fee, "allowance is not enough");
-        link.transferFrom(msg.sender, address(this), fee);
-
         uint64 userId;
         if (userIdList[targetAddress] == 0) {
             userId = nextUserId;
@@ -184,9 +179,11 @@ contract CCTWalletCampaign is CampaignInterface {
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
         request.add("cid", recipientsCid);
         request.addUint("userId", userId);
+
+        // todo: consider is it remove
         request.addUint("campaignId", campaignId);
 
-        return sendChainlinkRequestTo(_oracle, request, fee);
+        return sendChainlinkRequestTo(_oracle, request, 0);
     }
 
     /**

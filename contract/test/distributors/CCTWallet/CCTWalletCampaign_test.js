@@ -19,7 +19,7 @@ contract.skip("CCTWalletCampaign", (accounts) => {
   const oracleNode = accounts[1];
   const stranger = accounts[2];
   const consumer = accounts[3];
-  const follower = accounts[4];
+  const follower = accounts[3];
   const metamask = accounts[5];
 
   // These parameters are used to validate the data was received
@@ -70,17 +70,6 @@ contract.skip("CCTWalletCampaign", (accounts) => {
       5,
       { from: defaultAccount }
     );
-    xyztoken = await FanToken.new(
-      "XYZToken",
-      "XYZ",
-      1000000000,
-      defaultAccount,
-      5,
-      defaultAccount,
-      50,
-      5,
-      { from: defaultAccount }
-    );
     await abctoken.transfer(consumer, 1000, { from: defaultAccount });
     await abctoken.approve(distributor.address, 1000, { from: consumer });
     now = await time.latest();
@@ -104,108 +93,90 @@ contract.skip("CCTWalletCampaign", (accounts) => {
   });
 
   describe("#requestCheckingIsClaimable", () => {
-    context("without LINK", () => {
-      it("reverts", async () => {
-        await expectRevert.unspecified(
-          cc.requestCheckingIsClaimable(oc.address, jobId, payment, follower, {
-            from: metamask,
-          })
-        );
+    let request;
+
+    beforeEach(async () => {
+      await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
+        from: defaultAccount,
+      });
+      await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
+        from: metamask,
       });
     });
 
-    context("with LINK", () => {
-      let request;
-
-      beforeEach(async () => {
-        await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
-          from: defaultAccount,
-        });
-        await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
+    it("does not reverts without LINK", async () => {
+      try {
+        await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
           from: metamask,
         });
-      });
+        assert(true);
+      } catch (error) {
+        assert.fail(error.reason);
+      }
+    });
 
-      it("set new user id if its not registered yet", async () => {
-        const nextUserIdBefore = await cc.nextUserId();
-        assert.equal(nextUserIdBefore.toString(), "1");
-        await cc.requestCheckingIsClaimable(
+    it("set new user id if its not registered yet", async () => {
+      const nextUserIdBefore = await cc.nextUserId();
+      assert.equal(nextUserIdBefore.toString(), "1");
+      await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+        from: metamask,
+      });
+      const userId = await cc.userIdList(follower);
+      assert.equal(userId.toString(), "1");
+      const nextUserIdAfter = await cc.nextUserId();
+      assert.equal(nextUserIdAfter, "2");
+    });
+
+    it("set new user address if its not registered yet", async () => {
+      const nextUserIdBefore = await cc.nextUserId();
+      assert.equal(nextUserIdBefore.toString(), "1");
+      await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+        from: metamask,
+      });
+      const userAddress = await cc.userList(1);
+      assert.equal(userAddress, follower);
+    });
+
+    it("does not set new user id if its already registered", async () => {
+      await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+        from: metamask,
+      });
+      const userId1 = await cc.userIdList(follower);
+      assert.equal(userId1, "1");
+      const nextUserId1 = await cc.nextUserId();
+      assert.equal(nextUserId1, "2");
+
+      await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
+        from: defaultAccount,
+      });
+      await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
+        from: metamask,
+      });
+      await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+        from: metamask,
+      });
+      const userId2 = await cc.userIdList(follower);
+      assert.equal(userId2, "1");
+      const nextUserId2 = await cc.nextUserId();
+      assert.equal(nextUserId2, "2");
+    });
+
+    context("sending a request to a specific oracle contract address", () => {
+      it("triggers a log event in the new Oracle contract", async () => {
+        const tx = await cc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
           follower,
           { from: metamask }
         );
-        const userId = await cc.userIdList(follower);
-        assert.equal(userId.toString(), "1");
-        const nextUserIdAfter = await cc.nextUserId();
-        assert.equal(nextUserIdAfter, "2");
-      });
-
-      it("set new user address if its not registered yet", async () => {
-        const nextUserIdBefore = await cc.nextUserId();
-        assert.equal(nextUserIdBefore.toString(), "1");
-        await cc.requestCheckingIsClaimable(
-          oc.address,
-          jobId,
-          payment,
-          follower,
-          { from: metamask }
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
+        assert.equal(oc.address, tx.receipt.rawLogs[3].address);
+        assert.equal(
+          request.topic,
+          web3.utils.keccak256(
+            "OracleRequest(bytes32,address,bytes32,uint256,address,bytes4,uint256,uint256,bytes)"
+          )
         );
-        const userAddress = await cc.userList(1);
-        assert.equal(userAddress, follower);
-      });
-
-      it("does not set new user id if its already registered", async () => {
-        await cc.requestCheckingIsClaimable(
-          oc.address,
-          jobId,
-          payment,
-          follower,
-          { from: metamask }
-        );
-        const userId1 = await cc.userIdList(follower);
-        assert.equal(userId1, "1");
-        const nextUserId1 = await cc.nextUserId();
-        assert.equal(nextUserId1, "2");
-
-        await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
-          from: defaultAccount,
-        });
-        await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
-          from: metamask,
-        });
-        await cc.requestCheckingIsClaimable(
-          oc.address,
-          jobId,
-          payment,
-          follower,
-          { from: metamask }
-        );
-        const userId2 = await cc.userIdList(follower);
-        assert.equal(userId2, "1");
-        const nextUserId2 = await cc.nextUserId();
-        assert.equal(nextUserId2, "2");
-      });
-
-      context("sending a request to a specific oracle contract address", () => {
-        it("triggers a log event in the new Oracle contract", async () => {
-          const tx = await cc.requestCheckingIsClaimable(
-            oc.address,
-            jobId,
-            payment,
-            follower,
-            { from: metamask }
-          );
-          request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
-          assert.equal(oc.address, tx.receipt.rawLogs[4].address);
-          assert.equal(
-            request.topic,
-            web3.utils.keccak256(
-              "OracleRequest(bytes32,address,bytes32,uint256,address,bytes4,uint256,uint256,bytes)"
-            )
-          );
-        });
       });
     });
   });
@@ -240,11 +211,10 @@ contract.skip("CCTWalletCampaign", (accounts) => {
         const tx1 = await cc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
           follower,
           { from: metamask }
         );
-        const request1 = oracle.decodeRunRequest(tx1.receipt.rawLogs[4]);
+        const request1 = oracle.decodeRunRequest(tx1.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
           ...oracle.convertFufillParams(request1, response1, {
             from: oracleNode,
@@ -254,11 +224,10 @@ contract.skip("CCTWalletCampaign", (accounts) => {
         const tx2 = await cc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
           metamask,
           { from: metamask }
         );
-        const request2 = oracle.decodeRunRequest(tx2.receipt.rawLogs[4]);
+        const request2 = oracle.decodeRunRequest(tx2.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
           ...oracle.convertFufillParams(request2, response2, {
             from: oracleNode,
@@ -335,11 +304,10 @@ contract.skip("CCTWalletCampaign", (accounts) => {
         const tx = await futurecc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
           follower,
           { from: metamask }
         );
-        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
           ...oracle.convertFufillParams(request, response, {
             from: oracleNode,
@@ -394,11 +362,10 @@ contract.skip("CCTWalletCampaign", (accounts) => {
         const tx = await pastcc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
           follower,
           { from: metamask }
         );
-        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
           ...oracle.convertFufillParams(request, response, {
             from: oracleNode,
@@ -434,11 +401,10 @@ contract.skip("CCTWalletCampaign", (accounts) => {
         const tx = await cc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
           follower,
           { from: metamask }
         );
-        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
           ...oracle.convertFufillParams(request, response, {
             from: oracleNode,
@@ -579,11 +545,10 @@ contract.skip("CCTWalletCampaign", (accounts) => {
       const tx = await cc.requestCheckingIsClaimable(
         oc.address,
         jobId,
-        payment,
         follower,
         { from: metamask }
       );
-      request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+      request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
       await oc.fulfillOracleRequest(
         ...oracle.convertFufillParams(request, response, {
           from: oracleNode,
@@ -641,11 +606,10 @@ contract.skip("CCTWalletCampaign", (accounts) => {
       const tx = await cc.requestCheckingIsClaimable(
         oc.address,
         jobId,
-        payment,
         follower,
         { from: metamask }
       );
-      request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+      request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
     });
 
     context("before the expiration time", () => {
