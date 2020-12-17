@@ -4,7 +4,7 @@ const BN = require("bn.js");
 const Web3 = require("web3");
 let response;
 
-const DistributorContract = require("./build/contracts/AudiusFollowersDistributor.json");
+const DistributorContract = require("./build/contracts/CCTWalletDistributor.json");
 const distributorInterface = DistributorContract.abi;
 const distributorAddress = process.env.DISTRIBUTOR_ADDRESS;
 const web3 = new Web3(
@@ -15,7 +15,7 @@ const Distributor = new web3.eth.Contract(
   distributorAddress
 );
 
-const CampaignContract = require("./build/contracts/AudiusFollowersCampaign.json");
+const CampaignContract = require("./build/contracts/CCTWalletCampaign.json");
 const campaignInterface = CampaignContract.abi;
 
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
@@ -23,7 +23,7 @@ const ipfs = ipfsClient("https://gateway.pinata.cloud/");
 exports.handler = async (event, context) => {
   const body = JSON.parse(event.body);
   console.debug("request body: ", body);
-  const userAddress = body.data.userAddress;
+  const rawUserId = body.data.userId;
   const campaignId = new BN(body.data.campaignId.toString());
 
   let campaignAddress;
@@ -49,18 +49,18 @@ exports.handler = async (event, context) => {
   }
 
   const Campaign = new web3.eth.Contract(campaignInterface, campaignAddress);
-  let rawUserId;
+  let userAddress;
   try {
-    rawUserId = await Campaign.methods.userIdList(userAddress).call();
+    userAddress = await Campaign.methods.userList(rawUserId).call();
   } catch (error) {
-    console.error("Failed to get user id from user address.", error);
+    console.error("Failed to get user address from user id.", error);
     response = {
       statusCode: 500,
       body: JSON.stringify({
         jobRunID: body.id,
         data: {},
         status: "errored",
-        error: "Failed to get user id from user address.",
+        error: "Failed to get user address from user id.",
       }),
     };
     return response;

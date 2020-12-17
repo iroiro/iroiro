@@ -179,8 +179,6 @@ contract CCTWalletCampaign is CampaignInterface {
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfill.selector);
         request.add("cid", recipientsCid);
         request.addUint("userId", userId);
-
-        // todo: consider is it remove
         request.addUint("campaignId", campaignId);
 
         return sendChainlinkRequestTo(_oracle, request, 0);

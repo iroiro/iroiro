@@ -1,5 +1,5 @@
 {
-  "body": "{\n    \"id\": \"91182e305eac42ab9ddfec1b851ecdb7\",\n    \"data\": {\n        \"cid\": \"QmRif1xKnBBpeDKycvC5KWAstpF3gshNuY4iU5B6pqMnse\",\n        \"userId\": 1,\n        \"userAddress\": \"0x84d800DaE0Bdb31A4DE9918782bffCc8D041c1b8\",\n        \"campaignId\": 1\n    }\n}",
+  "body": "{\n    \"id\": \"91182e305eac42ab9ddfec1b851ecdb7\",\n    \"data\": {\n        \"cid\": \"QmRif1xKnBBpeDKycvC5KWAstpF3gshNuY4iU5B6pqMnse\",\n        \"userId\": 1,\n        \"campaignId\": 1\n    }\n}",
   "resource": "/{proxy+}",
   "path": "/path/to/resource",
   "httpMethod": "POST",
