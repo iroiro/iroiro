@@ -3,7 +3,6 @@ const { time } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
 const FanToken = contract.fromArtifact("FanToken");
-const TokenFactory = contract.fromArtifact("TokenFactory");
 const Vesting = contract.fromArtifact("Vesting");
 
 describe("Vesting", () => {

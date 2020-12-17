@@ -1,10 +1,5 @@
 const { accounts, contract } = require("@openzeppelin/test-environment");
-const {
-  BN,
-  constants,
-  expectEvent,
-  time,
-} = require("@openzeppelin/test-helpers");
+const { constants, expectEvent, time } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
 const Distributor = contract.fromArtifact("AudiusFollowersDistributor");

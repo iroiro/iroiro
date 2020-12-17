@@ -1,7 +1,6 @@
 const { accounts, contract } = require("@openzeppelin/test-environment");
 const {
   BN,
-  constants,
   expectEvent,
   expectRevert,
   time,
@@ -61,9 +60,7 @@ describe("CampaignInterface", () => {
         "campaign info cid"
       );
       expect(await this.campaign.recipientsCid()).to.be.equal("recipients cid");
-      expect((await this.campaign.campaignId()).toString()).to.be.equal(
-          "1"
-      );
+      expect((await this.campaign.campaignId()).toString()).to.be.equal("1");
       expect((await this.campaign.claimAmount()).toString()).to.be.equal(
         "100000"
       );

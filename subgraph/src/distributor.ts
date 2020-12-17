@@ -59,7 +59,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   if (callClaimedNum.reverted) {
     log.warning("Claimed num not found. Campaign: {}", [campaignId]);
   } else {
-    campaign.claimAmount = callClaimedNum.value;
+    campaign.claimedNum = callClaimedNum.value;
   }
   let callCampaignInfoCid = campaignContract.try_campaignInfoCid();
   if (callCampaignInfoCid.reverted) {

@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  audius-followers-sam
+
+  Sample SAM Template for audius-followers-sam
+  
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 120
+    Environment:
+      Variables:
+        DISTRIBUTOR_ADDRESS: ""
+        HTTP_PROVIDER: ""
+
+Resources:
+  # TODO update resource name
+  AudiusFollowersFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: index.handler
+      Runtime: nodejs10.x
+      Events:
+        AudiusFollowers:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /api
+            Method: post
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  AudiusFollowersApi:
+    Description: "API Gateway endpoint URL for Prod stage for Audius Followers function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/api/"
+  AudiusFollowersFunction:
+    Description: "Audius Followers Lambda Function ARN"
+    Value: !GetAtt AudiusFollowersFunction.Arn
+  AudiusFollowersFunctionIamRole:
+    Description: "Implicit IAM Role created for Audius Followers function"
+    Value: !GetAtt AudiusFollowersFunctionRole.Arn

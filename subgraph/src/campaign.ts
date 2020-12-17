@@ -1,4 +1,4 @@
-import { Claim, Campaign, CheckRequest } from "./types/schema";
+import { Claim, Campaign, CheckRequest, Account } from "./types/schema";
 import {
   AudiusFollowersCampaign,
   ChainlinkCancelled,
@@ -21,6 +21,12 @@ export function handleClaim(event: ClaimEvent): void {
   claim.account = event.params.to.toHexString();
   claim.campaign = event.address.toHexString();
   let campaignContract = AudiusFollowersCampaign.bind(event.address);
+  let callToken = campaignContract.try_token();
+  if (callToken.reverted) {
+    log.warning("Token not found. Campaign: {}", [campaignId]);
+  } else {
+    claim.token = callToken.value.toHexString();
+  }
   let callClaimAmount = campaignContract.try_claimAmount();
   if (callClaimAmount.reverted) {
     log.warning("Claim amount not found. Campaign: {}", [campaignId]);
@@ -57,6 +63,14 @@ export function handleChainlinkRequested(event: ChainlinkRequested): void {
   if (checkRequest == null) {
     checkRequest = new CheckRequest(checkRequestId);
   }
+
+  let accountId = event.transaction.from.toHexString();
+  let account = Account.load(accountId);
+  if (account == null) {
+    account = new Account(accountId);
+  }
+  account.save();
+
   checkRequest.account = event.transaction.from.toHexString();
   checkRequest.campaign = event.address.toHexString();
   checkRequest.status = "IN_PROGRESS";
