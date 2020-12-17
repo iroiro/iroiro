@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import "../../NewInterfaces.sol";
+import "../NewInterfaces.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.6/interfaces/LinkTokenInterface.sol";
-import "../../SafeMath64.sol";
+import "../NewInterfaces.sol";
+import "../SafeMath64.sol";
 
-contract CustomAddressesDistributor is DistributorInterface {
+contract CCTWalletDistributor is DistributorInterface {
     constructor (string memory _distributorInfoCid, address _link) public
     DistributorInterface(_distributorInfoCid, _link) {}
 
@@ -26,7 +27,7 @@ contract CustomAddressesDistributor is DistributorInterface {
         require(allowance >= recipientsNum, "Token amount is not enough to distribute");
 
         uint256 claimAmount = calculateClaimAmount(allowance, recipientsNum);
-        CustomAddressesCampaign campaign = new CustomAddressesCampaign(
+        CCTWalletCampaign campaign = new CCTWalletCampaign(
             token,
             campaignInfoCid,
             recipientsCid,
@@ -50,7 +51,7 @@ contract CustomAddressesDistributor is DistributorInterface {
     }
 }
 
-contract CustomAddressesCampaign is CampaignInterface {
+contract CCTWalletCampaign is CampaignInterface {
     using SafeMath64 for uint64;
 
     uint64 public nextUserId = 1;

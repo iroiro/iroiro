@@ -1,11 +1,11 @@
 import { log } from "@graphprotocol/graph-ts";
 import { Campaign, Creator, Distributor } from "./types/schema";
-import { CustomAddressesCampaign as CampaignTemplate } from "./types/templates";
+import { CCTWalletCampaign as CampaignTemplate } from "./types/templates";
 import {
-  CustomAddressesDistributor,
+  CCTWalletDistributor,
   CreateCampaign,
-} from "./types/CustomAddressesDistributor/CustomAddressesDistributor";
-import { CustomAddressesCampaign } from "./types/templates/CustomAddressesCampaign/CustomAddressesCampaign";
+} from "./types/CCTWalletDistributor/CCTWalletDistributor";
+import { CCTWalletCampaign } from "./types/templates/CCTWalletCampaign/CCTWalletCampaign";
 
 export function handleCreateCampaign(event: CreateCampaign): void {
   let distributorId = event.address.toHexString();
@@ -13,7 +13,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   if (distributor == null) {
     distributor = new Distributor(distributorId);
   }
-  let distributorContract = CustomAddressesDistributor.bind(event.address);
+  let distributorContract = CCTWalletDistributor.bind(event.address);
   let callDistributorCid = distributorContract.try_distributorInfoCid();
   if (callDistributorCid.reverted) {
     log.warning("Distributor cid not found. Campaign: {}", [distributorId]);
@@ -36,7 +36,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   campaign.token = event.params.token.toHexString();
   campaign.creator = event.params.creator.toHexString();
 
-  let campaignContract = CustomAddressesCampaign.bind(event.params.campaign);
+  let campaignContract = CCTWalletCampaign.bind(event.params.campaign);
   let callStartDate = campaignContract.try_startDate();
   if (callStartDate.reverted) {
     log.warning("Start date not found. Campaign: {}", [campaignId]);

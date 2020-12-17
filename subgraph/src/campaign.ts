@@ -1,12 +1,12 @@
 import { Claim, Campaign, CheckRequest, Account } from "./types/schema";
 import {
-  CustomAddressesCampaign,
+  CCTWalletCampaign,
   ChainlinkCancelled,
   ChainlinkFulfilled,
   ChainlinkRequested,
   Claim as ClaimEvent,
   UpdateStatus,
-} from "./types/templates/CustomAddressesCampaign/CustomAddressesCampaign";
+} from "./types/templates/CCTWalletCampaign/CCTWalletCampaign";
 import { Address, log } from "@graphprotocol/graph-ts/index";
 
 export function handleClaim(event: ClaimEvent): void {
@@ -20,7 +20,7 @@ export function handleClaim(event: ClaimEvent): void {
 
   claim.account = event.params.to.toHexString();
   claim.campaign = event.address.toHexString();
-  let campaignContract = CustomAddressesCampaign.bind(event.address);
+  let campaignContract = CCTWalletCampaign.bind(event.address);
   let callToken = campaignContract.try_token();
   if (callToken.reverted) {
     log.warning("Token not found. Campaign: {}", [campaignId]);
@@ -44,7 +44,7 @@ export function handleUpdateStatus(event: UpdateStatus): void {
     campaign = new Campaign(campaignId);
   }
 
-  let campaignContract = CustomAddressesCampaign.bind(event.address);
+  let campaignContract = CCTWalletCampaign.bind(event.address);
   let callStatus = campaignContract.try_status();
   if (callStatus.reverted) {
     log.warning("Status not found. Campaign: {}", [campaignId]);
@@ -87,7 +87,7 @@ export function handleChainlinkFulfilled(event: ChainlinkFulfilled): void {
   }
   checkRequest.status = "FULFILLED";
 
-  let campaignContract = CustomAddressesCampaign.bind(event.address);
+  let campaignContract = CCTWalletCampaign.bind(event.address);
   let callIsClaimable = campaignContract.try_isClaimable(
     Address.fromString(checkRequest.account),
     Address.fromString(checkRequest.account)
