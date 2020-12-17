@@ -21,6 +21,12 @@ export function handleClaim(event: ClaimEvent): void {
   claim.account = event.params.to.toHexString();
   claim.campaign = event.address.toHexString();
   let campaignContract = CustomAddressesCampaign.bind(event.address);
+  let callToken = campaignContract.try_token();
+  if (callToken.reverted) {
+    log.warning("Token not found. Campaign: {}", [campaignId]);
+  } else {
+    claim.token = callToken.value.toHexString();
+  }
   let callClaimAmount = campaignContract.try_claimAmount();
   if (callClaimAmount.reverted) {
     log.warning("Claim amount not found. Campaign: {}", [campaignId]);
@@ -83,6 +89,7 @@ export function handleChainlinkFulfilled(event: ChainlinkFulfilled): void {
 
   let campaignContract = CustomAddressesCampaign.bind(event.address);
   let callIsClaimable = campaignContract.try_isClaimable(
+    Address.fromString(checkRequest.account),
     Address.fromString(checkRequest.account)
   );
   if (callIsClaimable.reverted) {

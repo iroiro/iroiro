@@ -124,7 +124,7 @@ templates:
           handler: handleChainlinkFulfilled
         - event: ChainlinkCancelled(indexed bytes32)
           handler: handleChanlinkCancelled
-        - event: Claim(indexed address)
+        - event: Claim(indexed address,indexed address)
           handler: handleClaim
         - event: UpdateStatus()
           handler: handleUpdateStatus
