@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -51,9 +52,8 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	req.Header.Add("Content-Type", "application/json")
-	// todo: use env
-	req.Header.Add("pinata_api_key", "")
-	req.Header.Add("pinata_secret_api_key", "")
+	req.Header.Add("pinata_api_key", os.Getenv("PINATA_API_KEY"))
+	req.Header.Add("pinata_secret_api_key", os.Getenv("PINATA_SECRET_API_KEY"))
 	res, err := client.Do(req)
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err

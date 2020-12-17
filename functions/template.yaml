@@ -9,6 +9,10 @@ Description: >
 Globals:
   Function:
     Timeout: 30
+    Environment:
+      Variables:
+        PINATA_API_KEY: ""
+        PINATA_SECRET_API_KEY: ""
 
 Resources:
   HelloWorldFunction:

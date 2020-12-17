@@ -11,3 +11,4 @@ node_modules/
 types/
 
 .aws-sam/
+env.json
