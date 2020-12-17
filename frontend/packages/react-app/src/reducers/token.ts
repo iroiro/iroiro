@@ -8,6 +8,14 @@ export type ACTIONS =
   | {
       type: "token:setBalance";
       payload: { tokenBalance: string };
+    }
+  | {
+      type: "token:setAllowance";
+      payload: { allowance: string };
+    }
+  | {
+      type: "token:approve";
+      payload: { approveAmount: string };
     };
 
 export const tokenReducer = (
@@ -45,6 +53,9 @@ export const tokenReducer = (
     case "token:setBalance": {
       return { ...state, balance: action.payload.tokenBalance };
     }
+    case "token:setAllowance": {
+      return { ...state, allowance: action.payload.allowance };
+    }
     default:
       throw new Error();
   }
@@ -53,4 +64,5 @@ export const tokenReducer = (
 export const tokenInitialState: AccountToken = {
   token: undefined,
   balance: undefined,
+  allowance: undefined,
 };

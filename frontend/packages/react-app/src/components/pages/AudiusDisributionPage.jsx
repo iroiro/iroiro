@@ -4,7 +4,7 @@ import { web3Modal } from "../../utils/web3Modal";
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
 import { abis, addresses } from "@project/contracts";
-import AudiusDistributionPageTemplate from "../templates/AudiusDistributionPageTemplate";
+// import AudiusDistributionPageTemplate from "../templates/AudiusDistributionPageTemplate";
 import Audius from "@audius/libs";
 
 import IpfsHttpClient from "ipfs-http-client";
@@ -14,12 +14,11 @@ const ipfs = IpfsHttpClient(infura);
 const init = async () => {
   const dataRegistryAddress = "0xC611C82150b56E6e4Ec5973AcAbA8835Dd0d75A2";
 
-  // For Ropsten
-  const ethTokenAddress = "0xF0A4A438821d21e37150e9916569De7c156E898F";
-  const ethRegistryAddress = "0x095284A8237b275aBB96E8587e60ed76983BE6A5";
+  const ethTokenAddress = "0xADEf65C0f6a30Dcb5f88Eb8653BBFe09Bf99864f";
+  const ethRegistryAddress = "0xb2be26Ca062c5D74964921B80DE6cfa28D9A36c0";
   const ethProviderUrl =
-    "https://ropsten.infura.io/v3/b8d7e2bc1b8942a6859e2a840b82f09d";
-  const ethProviderOwnerWallet = "0xC7310a03e930DD659E15305ed7e1F5Df0F0426C5";
+    "https://mainnet.infura.io/v3/d6b566d7eea1408988388c311d5a273a";
+  const ethProviderOwnerWallet = "0xe886a1858d2d368ef8f02c65bdd470396a1ab188";
 
   const libs = new Audius({
     web3Config: Audius.configInternalWeb3(dataRegistryAddress, [
@@ -39,7 +38,8 @@ const init = async () => {
       "https://creatornode.audius.co"
     ),
   });
-  await libs.init();
+
+  await window.libs.init();
   window.libs = libs;
   return libs;
 };
@@ -180,11 +180,18 @@ const AudiusDisributionPage = () => {
 
   // Initialize @audius/libs on mount
   useEffect(() => {
+    console.log("****");
     const initLibs = async () => {
       const libs = await init();
       setLibs(libs);
-      const user = libs.Account.getCurrentUser();
-
+      // const user = libs.Account.getCurrentUser();
+      console.log("***************************************************");
+      const { user } = await libs.Account.login(
+        "toshi@tart.tokyo",
+        "toppi28123"
+      );
+      console.log(user);
+      console.log("***************************************************");
       if (user) {
         const followers = await libs.User.getFollowersForUser(
           100,
@@ -199,23 +206,24 @@ const AudiusDisributionPage = () => {
   }, []);
 
   return (
-    <AudiusDistributionPageTemplate
-      provider={provider}
-      loadWeb3Modal={loadWeb3Modal}
-      libs={libs}
-      audius={audiusAccount}
-      audiusFollowers={audiusFollowers}
-      isAudiusSigningIn={isSigningIn}
-      emailRef={emailRef}
-      passwordRef={passwordRef}
-      audiusSignIn={audiusSignIn}
-      audiusSignOut={audiusSignOut}
-      handleSubmit={handleSubmit}
-      amountInput={amountInput}
-      amountValue={amountValue}
-      tokenInfo={tokenInfo}
-      addAudiusList={addAudiusList}
-    />
+    <>Dummy</>
+    // <AudiusDistributionPageTemplate
+    //   provider={provider}
+    //   loadWeb3Modal={loadWeb3Modal}
+    //   libs={libs}
+    //   audius={audiusAccount}
+    //   audiusFollowers={audiusFollowers}
+    //   isAudiusSigningIn={isSigningIn}
+    //   emailRef={emailRef}
+    //   passwordRef={passwordRef}
+    //   audiusSignIn={audiusSignIn}
+    //   audiusSignOut={audiusSignOut}
+    //   handleSubmit={handleSubmit}
+    //   amountInput={amountInput}
+    //   amountValue={amountValue}
+    //   tokenInfo={tokenInfo}
+    //   addAudiusList={addAudiusList}
+    // />
   );
 };
 

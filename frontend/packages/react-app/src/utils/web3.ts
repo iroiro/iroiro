@@ -1,7 +1,8 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { TokenBasic } from "../interfaces";
-import { FanToken__factory as FanTokenFactory } from "../types";
+import { FanToken__factory as FanTokenFactory, FanToken } from "../types";
 import BN from "bn.js";
+import { ContractTransaction } from "@ethersproject/contracts";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -47,4 +48,51 @@ export const getBalanceDevidedByDecimals = (
   const balanceBN = new BN(balance);
   const divided = balanceBN.div(new BN(10).pow(new BN(decimals)));
   return divided.toString();
+};
+
+export const getAllowance = async (
+  library: Web3Provider | undefined,
+  tokenAddress: string,
+  distributorAddress: string
+): Promise<string | undefined> => {
+  if (!library || distributorAddress === "") {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const walletAddress = await signer.getAddress();
+  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+  const allowance = await erc20.allowance(walletAddress, distributorAddress);
+  return allowance.toString();
+};
+
+export const setApproveAmount = async (
+  library: Web3Provider | undefined,
+  tokenAddress: string,
+  distributorAddress: string,
+  approveAmount: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library || distributorAddress === "") {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  // const walletAddress = await signer.getAddress();
+  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+  return erc20
+    .approve(distributorAddress, approveAmount)
+    .then((transaction) => {
+      return transaction;
+    });
+
+  // const filter = await erc20.filters.Approval(
+  //   walletAddress,
+  //   distributorAddress,
+  //   null
+  // );
+
+  // erc20.on(
+  //   filter,
+  //   (walletAddress, distributorAddress, approveAmount, event) => {
+  //     console.log(approveAmount);
+  //   }
+  // );
 };

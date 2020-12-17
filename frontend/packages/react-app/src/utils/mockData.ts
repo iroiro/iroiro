@@ -7,6 +7,7 @@ import {
   AccountToken,
 } from "../interfaces";
 import { TokenListState } from "../reducers/tokens";
+import { createCampaignState } from "../reducers/distributorForm";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -200,4 +201,13 @@ export const tokenListState: TokenListState = {
   tokenAddress: "",
   type: "dashboard",
   color: "itblue",
+};
+
+export const distributorFormState: createCampaignState = {
+  approveAmount: "10000",
+  campaignName: "Audius Followers Campaign",
+  startDate: new Date("2021-01-01T00:00:00"),
+  endDate: new Date("2021-01-01T00:00:00"),
+  approveRequest: false,
+  requestDeployCampaign: false,
 };

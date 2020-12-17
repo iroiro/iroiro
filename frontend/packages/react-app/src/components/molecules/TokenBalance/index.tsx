@@ -1,20 +1,21 @@
 import React from "react";
 import { Flex, Text } from "rimble-ui";
-import { AccountToken } from "../../../interfaces";
 
 export interface TokenInfo {
-  readonly tokenInfo: AccountToken;
+  readonly balance: string;
+  readonly symbol: string;
+  readonly itemName: string;
 }
 
-const TokenBalance = ({ tokenInfo }: TokenInfo) => (
+const TokenBalance: React.FC<TokenInfo> = ({ balance, symbol, itemName }) => (
   <>
     <Flex style={{ alignItems: "baseline" }}>
-      <Text mr={4}>Balance:</Text>
-      <Text mr={1} fontSize={5} fontWeight={"bold"}>
-        {tokenInfo.balance}
+      <Text mr={4}>{itemName}</Text>
+      <Text mr={1} fontSize={4} fontWeight={"bold"}>
+        {balance}
       </Text>
-      <Text fontSize={3} fontWeight={"bold"}>
-        {tokenInfo.token?.symbol}
+      <Text fontSize={2} fontWeight={"bold"}>
+        {symbol}
       </Text>
     </Flex>
   </>

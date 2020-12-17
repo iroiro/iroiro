@@ -13,16 +13,10 @@ export interface UserToken {
   readonly balance: string;
 }
 
-// export interface Token {
-//   readonly id: string;
-//   readonly name: string;
-//   readonly symbol: string;
-//   readonly decimals: number;
-// }
-
 export interface AccountToken {
   readonly token?: TokenBasic;
   readonly balance?: string;
+  readonly allowance?: string;
 }
 
 export interface AccountTokens {
@@ -116,13 +110,6 @@ export interface TokenInformationState {
   activities: Activity[];
   balances: Balance[];
 }
-
-// export interface TokenInfo {
-//   token: {
-//     name: string;
-//     tokenAddress: string;
-//   };
-// }
 
 export interface TokenAndCampaignProps {
   readonly tokenState: AccountToken;
