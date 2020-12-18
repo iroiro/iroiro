@@ -6,11 +6,11 @@ import { injected } from "./connectors";
 const WalletButton: React.FC = () => {
   const { account, deactivate, active, error, activate } = useWeb3React();
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
-  // if (isUnsupportedChainIdError) {
-  //   alert(
-  //     "Currently we only supports Rikneby network. Please change your network to Rinkeby."
-  //   );
-  // }
+  if (isUnsupportedChainIdError) {
+    alert(
+      "Currently we only supports Rikneby network. Please change your network to Rinkeby."
+    );
+  }
 
   useEffect(() => {
     const { ethereum } = window;

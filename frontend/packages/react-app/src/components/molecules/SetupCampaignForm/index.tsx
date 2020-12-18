@@ -1,11 +1,9 @@
 import React from "react";
-import { Box, Text, Button, Form, Input } from "rimble-ui";
+import { Box, Button, Form, Input } from "rimble-ui";
 import "date-fns";
-import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";

@@ -16,7 +16,9 @@ const Template: Story<TokenAndCampaignProps> = (args) => (
   </BrowserRouter>
 );
 
-const campaignsState = [campaign, campaign, campaign];
+const campaignsState = {
+  campaigns: [campaign, campaign, campaign],
+};
 
 export const Default = Template.bind({});
 Default.args = {
@@ -25,4 +27,4 @@ Default.args = {
 };
 
 export const NoCampaign = Template.bind({});
-NoCampaign.args = { tokenState: tokenInfo, campaignsState: [] };
+NoCampaign.args = { tokenState: tokenInfo, campaignsState: { campaigns: [] } };

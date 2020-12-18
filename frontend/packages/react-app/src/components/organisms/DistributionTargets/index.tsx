@@ -4,10 +4,7 @@ import { Target } from "../../../interfaces";
 import DistributionTargetList from "../../molecules/DistributionTargetList";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import { Box } from "@material-ui/core";
-import {
-  createCampaignState,
-  DISTRIBUTOR_ACTIONS,
-} from "../../../reducers/distributorForm";
+import { DISTRIBUTOR_ACTIONS } from "../../../reducers/distributorForm";
 
 export interface TargetsProps {
   readonly distributionTargets: Target[];

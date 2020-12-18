@@ -3,9 +3,6 @@ import { Box, Button, Card, Text, Heading, Input } from "rimble-ui";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 
 export interface SigninAudiusProps {
-  // readonly emailRef: React.FC<createRef>;
-  // readonly passwordRef;
-  // readonly audiusSignIn;
   readonly audiusState: AudiusState;
   readonly audiusDispatch: React.Dispatch<AUDIUS_ACTIONS>;
 }
@@ -65,10 +62,3 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
 );
 
 export default SigninAudius;
-
-// onChange={(event: any) =>
-//   dispatch({
-//     type: "tokenAddress:input",
-//     payload: { tokenAddress: event.target.value },
-//   })
-// }

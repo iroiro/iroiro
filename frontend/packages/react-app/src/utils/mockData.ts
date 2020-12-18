@@ -8,6 +8,7 @@ import {
 } from "../interfaces";
 import { TokenListState } from "../reducers/tokens";
 import { createCampaignState } from "../reducers/distributorForm";
+import { AudiusState } from "../reducers/audius";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -170,6 +171,7 @@ export const tokenInfo: AccountToken = {
     totalSupply: "1000000000",
   },
   balance: "8888888",
+  allowance: "0",
 };
 
 export const tokenListState: TokenListState = {
@@ -211,4 +213,12 @@ export const distributorFormState: createCampaignState = {
   endDate: new Date("2021-01-01T00:00:00"),
   approveRequest: false,
   requestDeployCampaign: false,
+};
+
+export const audiusState: AudiusState = {
+  email: "sample@example.com",
+  password: "samplepassword",
+  followers: [],
+  isSignin: false,
+  requestSignin: false,
 };

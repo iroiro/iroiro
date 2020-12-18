@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
-import { CampaignInfo, AccountToken } from "../../../interfaces";
+import { AccountToken, Campaigns } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import Container from "../../atoms/Container";
 import CampaignList from "../../organisms/CampaignList";
@@ -9,7 +9,7 @@ import CampaignList from "../../organisms/CampaignList";
 export interface ExternalTokenDetailPageTemplateProps {
   readonly active: boolean;
   readonly tokenState: AccountToken;
-  readonly campaignsState: CampaignInfo[];
+  readonly campaignsState: Campaigns;
 }
 
 const ExternalTokenDetailPageTemplate: React.FC<ExternalTokenDetailPageTemplateProps> = ({

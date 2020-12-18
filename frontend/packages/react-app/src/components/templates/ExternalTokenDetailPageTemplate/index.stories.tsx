@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import ExternalTokenDetailPageTemplate, {
   ExternalTokenDetailPageTemplateProps,
 } from "./index";
-import { CampaignInfo } from "../../../interfaces";
+import { Campaigns } from "../../../interfaces";
 import { campaign, tokenInfo } from "../../../utils/mockData";
 
 export default {
@@ -18,7 +18,9 @@ const Template: Story<ExternalTokenDetailPageTemplateProps> = (args) => (
   </BrowserRouter>
 );
 
-const campaignsState: CampaignInfo[] = [campaign, campaign, campaign];
+const campaignsState: Campaigns = {
+  campaigns: [campaign, campaign, campaign],
+};
 
 export const Default = Template.bind({});
 Default.args = {
@@ -31,7 +33,7 @@ export const NoCampaigns = Template.bind({});
 NoCampaigns.args = {
   active: true,
   tokenState: tokenInfo,
-  campaignsState: [],
+  campaignsState: { campaigns: [] },
 };
 
 export const NoWallet = Template.bind({});

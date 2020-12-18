@@ -2,7 +2,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import DistributionTargetList, { TargetsProps } from "./index";
-import { distributionTargets } from "../../../utils/mockData";
+import { distributionTargets, audiusState } from "../../../utils/mockData";
 
 export default {
   title: "Molecules/DistributionTargetList",
@@ -23,4 +23,5 @@ Default.args = {
 export const NoTarget = Template.bind({});
 NoTarget.args = {
   distributionTargets: [],
+  audiusState,
 };

@@ -2,7 +2,11 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import CampaignListTable from "./index";
-import { CampaignInfo, TokenAndCampaignProps } from "../../../interfaces";
+import {
+  CampaignInfo,
+  TokenAndCampaignProps,
+  Campaigns,
+} from "../../../interfaces";
 
 import { campaign, tokenInfo } from "../../../utils/mockData";
 
@@ -17,7 +21,9 @@ const Template: Story<TokenAndCampaignProps> = (args) => (
   </BrowserRouter>
 );
 
-const campaignsState: CampaignInfo[] = [campaign, campaign, campaign];
+const campaignsState: Campaigns = {
+  campaigns: [campaign, campaign, campaign],
+};
 
 export const Default = Template.bind({});
 Default.args = {
@@ -28,5 +34,5 @@ Default.args = {
 export const NoCampaign = Template.bind({});
 NoCampaign.args = {
   tokenState: tokenInfo,
-  campaignsState: [],
+  campaignsState: { campaigns: [] },
 };

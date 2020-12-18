@@ -1,7 +1,7 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { TokenBasic } from "../interfaces";
 import { FanToken__factory as FanTokenFactory } from "../types";
-import { AudiusFollowersDistributor__factory as AudiusFollowersDistributor } from "../types";
+import { CCTWalletDistributor__factory as CCTWalletDistributor } from "../types";
 import BN from "bn.js";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
@@ -101,8 +101,8 @@ export const createCampaign = async (
   }
   const signer = library.getSigner();
   const walletAddress = await signer.getAddress();
-  const distributor = AudiusFollowersDistributor.connect(
-    addresses.AudiusFollowersDistributor,
+  const distributor = CCTWalletDistributor.connect(
+    addresses.CCTWalletDistributor,
     signer
   );
 
@@ -116,7 +116,7 @@ export const createCampaign = async (
       startDate,
       endDate
     )
-    .then((transaction) => {
+    .then((transaction: ContractTransaction) => {
       return transaction;
     });
 };

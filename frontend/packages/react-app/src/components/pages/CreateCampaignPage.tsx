@@ -140,33 +140,36 @@ const CreateCampaignPage: React.FC<
         payload: { allowance: allowance },
       });
     },
-    [tokenAddress]
+    [tokenAddress, distributorAddress]
   );
 
-  const approve = useCallback(async (library, approveAmount) => {
-    setApproveAmount(
-      library,
-      tokenAddress,
-      distributorAddress,
-      approveAmount
-    ).then((transaction) => {
-      if (transaction === undefined) {
-        return;
-      }
-      transaction.wait().then((result) => {
-        if (result.status === 1) {
-          tokenDispatch({
-            type: "token:setAllowance",
-            payload: { allowance: approveAmount },
-          });
+  const approve = useCallback(
+    async (library, approveAmount) => {
+      setApproveAmount(
+        library,
+        tokenAddress,
+        distributorAddress,
+        approveAmount
+      ).then((transaction) => {
+        if (transaction === undefined) {
+          return;
         }
+        transaction.wait().then((result) => {
+          if (result.status === 1) {
+            tokenDispatch({
+              type: "token:setAllowance",
+              payload: { allowance: approveAmount },
+            });
+          }
+        });
       });
-    });
-    distributorFormDispatch({
-      type: "approveAmount:set",
-      payload: { approveAmount: "0" },
-    });
-  }, []);
+      distributorFormDispatch({
+        type: "approveAmount:set",
+        payload: { approveAmount: "0" },
+      });
+    },
+    [distributorAddress, tokenAddress]
+  );
 
   const uploadJsonIpfs = useCallback(async (data, type) => {
     const { path } = await ipfs.add(JSON.stringify(data));
@@ -195,9 +198,23 @@ const CreateCampaignPage: React.FC<
         recipientsNum,
         startDate,
         endDate
-      );
+      ).then((transaction) => {
+        if (transaction === undefined) {
+          return;
+        }
+        transaction.wait().then((result) => {
+          if (result.status === 1) {
+            if (result.events && result.events[4].args) {
+              const campaignAddress = result.events[4].args.campaign;
+              props.history.push(
+                window.location.pathname + `/campaigns/${campaignAddress}`
+              );
+            }
+          }
+        });
+      });
     },
-    []
+    [props.history, tokenAddress]
   );
 
   useEffect(() => {
@@ -205,7 +222,7 @@ const CreateCampaignPage: React.FC<
       getBalance(library);
       getAllowanceAmount(library);
     }
-  }, [library, tokenAddress, getBalance]);
+  }, [library, tokenAddress, getBalance, getAllowanceAmount]);
 
   useEffect(() => {
     tokenDispatch({
@@ -237,10 +254,15 @@ const CreateCampaignPage: React.FC<
       uploadJsonIpfs(addresses, "recipientsCid");
       setRecipientsNum(addresses.addresses.length);
     }
-  }, [library, distributorFormState, approve]);
+  }, [
+    library,
+    distributorFormState,
+    approve,
+    uploadJsonIpfs,
+    setRecipientsNum,
+  ]);
 
   useEffect(() => {
-    console.log("a");
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
@@ -251,13 +273,6 @@ const CreateCampaignPage: React.FC<
       return;
     }
 
-    console.log(
-      campaignInfoCid,
-      recipientsCid,
-      recipientsNum,
-      distributorFormState.startDate.getTime(),
-      distributorFormState.endDate.getTime()
-    );
     deployCampaign(
       library,
       campaignInfoCid,
@@ -266,7 +281,14 @@ const CreateCampaignPage: React.FC<
       distributorFormState.startDate.getTime(),
       distributorFormState.endDate.getTime()
     );
-  }, [campaignInfoCid, recipientsCid]);
+  }, [
+    library,
+    campaignInfoCid,
+    recipientsCid,
+    recipientsNum,
+    distributorFormState,
+    deployCampaign,
+  ]);
 
   useEffect(() => {
     const initLibs = async () => {
@@ -293,7 +315,7 @@ const CreateCampaignPage: React.FC<
     if (audiusState.requestSignin === true) {
       audiusSignIn(audiusState.email, audiusState.password);
     }
-  }, [audiusState]);
+  }, [audiusState, audiusSignIn]);
 
   return (
     <>

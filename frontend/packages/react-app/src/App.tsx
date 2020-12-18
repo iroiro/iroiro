@@ -11,7 +11,6 @@ import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
 import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
 import TokenHistoryPage from "./components/pages/TokenHistoryPage";
 import TokenInformationPage from "./components/pages/TokenInformationPage";
-import AudiusDisributionPage from "./components/pages/AudiusDisributionPage";
 
 const App: React.FC = () => {
   return (
@@ -22,7 +21,6 @@ const App: React.FC = () => {
 
           {/* For Creator */}
           <Route exact path="/dashboard" component={DashboardPage} />
-          <Route exact path="/aaa" component={AudiusDisributionPage} />
           <Route
             exact
             path="/dashboard/:tokenAddress"

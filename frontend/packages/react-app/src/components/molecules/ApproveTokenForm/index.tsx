@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, Button, Form, Input } from "rimble-ui";
+import { Box, Button, Form, Input } from "rimble-ui";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,

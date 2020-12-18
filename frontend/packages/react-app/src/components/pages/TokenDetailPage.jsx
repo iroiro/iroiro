@@ -134,8 +134,8 @@ const TokenDetailPage = () => {
     staking.claim(address);
   };
 
-  const approve = async (address) => {
-    if (stakeValue === "" || stakeValue == 0) {
+  const approve = async () => {
+    if (stakeValue === "" || stakeValue === 0) {
       return;
     }
     const signer = await provider.getSigner();

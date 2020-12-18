@@ -59,17 +59,23 @@ const ApproveToken: React.FC<TokenInfo> = ({
       >
         Back
       </Button.Outline>
-      <Button
-        mainColor="itblue"
-        onClick={() => {
-          distributorFormDispatch({
-            type: "step:set",
-            payload: { stepNo: 3 },
-          });
-        }}
-      >
-        Next
-      </Button>
+      {tokenInfo.allowance === "0" ? (
+        <Button mainColor="itblue" disabled>
+          Next
+        </Button>
+      ) : (
+        <Button
+          mainColor="itblue"
+          onClick={() => {
+            distributorFormDispatch({
+              type: "step:set",
+              payload: { stepNo: 3 },
+            });
+          }}
+        >
+          Next
+        </Button>
+      )}
     </Box>
   </Card>
 );

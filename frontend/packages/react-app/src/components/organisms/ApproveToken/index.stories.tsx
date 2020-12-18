@@ -1,19 +1,28 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import DepositToken, { TokenInfo } from "./index";
-import { tokenInfo } from "../../../utils/mockData";
+import ApproveToken, { TokenInfo } from "./index";
+import { tokenInfo, distributorFormState } from "../../../utils/mockData";
 
 export default {
-  title: "Organisms/DepositToken",
-  component: DepositToken,
+  title: "Organisms/ApproveToken",
+  component: ApproveToken,
 } as Meta;
 
 const Template: Story<TokenInfo> = (args) => (
   <BrowserRouter>
-    <DepositToken {...args} />
+    <ApproveToken {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-Default.args = { tokenInfo };
+Default.args = { tokenInfo, distributorFormState };
+
+export const Approved = Template.bind({});
+Approved.args = {
+  tokenInfo: {
+    ...tokenInfo,
+    allowance: "1000",
+  },
+  distributorFormState,
+};

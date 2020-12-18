@@ -61,7 +61,7 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
       dispatch({ type: "userBalance:set", payload: { balance } });
     };
     f();
-  }, [library, state.token?.tokenAddress]);
+  }, [library, state]);
 
   useEffect(() => {
     // TODO: After made campaign creation function, change dynamic value
@@ -71,7 +71,7 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
         token: tokenAddress.toLowerCase(),
       },
     });
-  }, [tokenAddress, getCampaigns]);
+  }, [loading, error, tokenAddress, getCampaigns]);
 
   useEffect(() => {
     const f = async () => {

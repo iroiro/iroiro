@@ -7,7 +7,6 @@ import SetupCampaign from "../../organisms/SetupCampaign";
 import { AccountToken, Target } from "../../../interfaces";
 import DistributionTargets from "../../organisms/DistributionTargets";
 import WalletConnect from "../../organisms/WalletConnect";
-import { ACTIONS } from "../../../reducers/token";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,

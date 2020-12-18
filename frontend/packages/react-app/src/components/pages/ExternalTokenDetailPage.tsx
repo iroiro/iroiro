@@ -8,14 +8,15 @@ import { CampaignInfo } from "../../interfaces";
 import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
 import { useWeb3React } from "@web3-react/core";
 
-const campaignsInitialState = new Array<CampaignInfo>();
-
+const campaignsInitialState = {
+  campaigns: new Array<CampaignInfo>(),
+};
 const ExternalTokenDetailPage: React.FC<
   RouteComponentProps<{
     tokenAddress: string;
   }>
 > = (props) => {
-  const { active } = useWeb3React();
+  const { active, account } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const [tokenState, tokenDispatch] = useReducer(
     tokenReducer,
@@ -52,17 +53,19 @@ const ExternalTokenDetailPage: React.FC<
   }, [getLocalToken]);
 
   useEffect(() => {
-    // TODO: After made campaign creation function, change dinamic value
-    getCampaigns({
-      variables: {
-        creator: "0x84d800dae0bdb31a4de9918782bffcc8d041c1b8",
-        token: tokenAddress.toLowerCase(),
-      },
-    });
-  }, [tokenAddress, tokenState, getCampaigns]);
+    if (tokenAddress !== "" && account !== undefined && account !== null) {
+      getCampaigns({
+        variables: {
+          creator: account.toLowerCase(),
+          token: tokenAddress.toLowerCase(),
+        },
+      });
+    }
+  }, [account, tokenAddress, getCampaigns]);
 
   useEffect(() => {
     if (data !== undefined) {
+      console.log(data);
       campaignDispatch({
         type: "campaign:get",
         payload: { data: data.campaigns },
@@ -71,8 +74,11 @@ const ExternalTokenDetailPage: React.FC<
   }, [tokenAddress, data]);
 
   useEffect(() => {
-    if (campaignsState.length > 0) {
-      getCampaignMetadata(campaignsState);
+    if (campaignsState.campaigns.length > 0) {
+      if (campaignsState.campaigns[0].campaignMetadata) {
+        return;
+      }
+      getCampaignMetadata(campaignsState.campaigns);
     }
   }, [campaignsState, getCampaignMetadata]);
 

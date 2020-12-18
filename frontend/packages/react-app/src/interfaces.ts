@@ -111,9 +111,13 @@ export interface TokenInformationState {
   balances: Balance[];
 }
 
+export interface Campaigns {
+  campaigns: CampaignInfo[];
+}
+
 export interface TokenAndCampaignProps {
   readonly tokenState: AccountToken;
-  readonly campaignsState: CampaignInfo[];
+  readonly campaignsState: Campaigns;
 }
 
 export interface Target {
