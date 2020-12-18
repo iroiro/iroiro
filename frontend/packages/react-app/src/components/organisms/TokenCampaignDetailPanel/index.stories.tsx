@@ -45,6 +45,7 @@ IsClaimable.args = {
     ...tokenInformationState,
     isTokenApproved: true,
     isTokenRequested: true,
+    isTokenCheckFinished: true,
     isCampaignClaimable: true,
   },
 };
@@ -54,6 +55,7 @@ IsNotClaimable.args = {
   state: {
     ...tokenInformationState,
     isTokenApproved: true,
+    isTokenCheckFinished: true,
     isTokenRequested: true,
     isCampaignClaimable: false,
   },
@@ -65,6 +67,7 @@ IsClaimed.args = {
     ...tokenInformationState,
     isTokenApproved: true,
     isTokenRequested: true,
+    isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
   },

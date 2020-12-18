@@ -7,7 +7,7 @@ export interface CampaignDetailProps {
   readonly campaignInfo: CampaignInfo;
 }
 
-const CampaignDetail = ({ campaignInfo }: CampaignDetailProps) => {
+const CampaignDetail: React.FC<CampaignDetailProps> = ({ campaignInfo }) => {
   return (
     <Card mt={2}>
       <Box>

@@ -7,6 +7,7 @@ export interface BalanceHistoryChartProps {
   balances: Balance[];
 }
 
+// TODO: Fix overflow. See https://github.com/recharts/recharts/issues/1127
 const BalanceHistoryChart: React.FC<BalanceHistoryChartProps> = ({
   balances,
 }: BalanceHistoryChartProps) => {
@@ -15,7 +16,7 @@ const BalanceHistoryChart: React.FC<BalanceHistoryChartProps> = ({
       <Typography variant="h5" component="h3">
         Activities
       </Typography>
-      <LineChart width={500} height={300} data={balances}>
+      <LineChart width={300} height={300} data={balances}>
         <XAxis
           dataKey="timestamp"
           domain={["dataMin", "dataMax"]}
