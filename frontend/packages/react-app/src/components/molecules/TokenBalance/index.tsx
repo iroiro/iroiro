@@ -6,7 +6,7 @@ export interface TokenInfo {
   readonly tokenInfo: AccountToken;
 }
 
-const TokenBalance = ({ tokenInfo }: TokenInfo) => (
+const TokenBalance: React.FC<TokenInfo> = ({ tokenInfo }) => (
   <>
     <Flex style={{ alignItems: "baseline" }}>
       <Text mr={4}>Balance:</Text>

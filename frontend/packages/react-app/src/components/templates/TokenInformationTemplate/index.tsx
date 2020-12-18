@@ -9,10 +9,10 @@ export interface TokenInformationTemplateProps {
   dispatch: Dispatch<TokenInformationAction>;
 }
 
-const TokenInformationTemplate = ({
+const TokenInformationTemplate: React.FC<TokenInformationTemplateProps> = ({
   state,
   dispatch,
-}: TokenInformationTemplateProps) => (
+}) => (
   <div style={{ minHeight: "100vh" }}>
     <AppHeader />
     <TokenInformationTabs state={state} dispatch={dispatch} />

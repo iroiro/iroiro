@@ -8,10 +8,10 @@ export interface TargetsProps {
   readonly targetNumber: number;
 }
 
-const DistributionTargets = ({
+const DistributionTargets: React.FC<TargetsProps> = ({
   distributionTargets,
   targetNumber,
-}: TargetsProps) => (
+}) => (
   <Card>
     <Flex style={{ justifyContent: "space-between", alignItems: "center" }}>
       <Heading as={"h3"}>Audius Followers list</Heading>

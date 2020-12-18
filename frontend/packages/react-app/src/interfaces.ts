@@ -27,6 +27,7 @@ export interface AccountToken {
 
 export interface Account {
   readonly tokens: AccountToken[];
+  readonly checkRequests: CheckRequest[];
 }
 
 export interface TokenBalanceUserHolds {
@@ -59,11 +60,19 @@ export interface Creator {
 }
 
 export interface Claim {
-  id: string;
+  readonly id: string;
+  readonly account: Account;
+  readonly campaign: CampaignInfo;
+  readonly token: string;
+  readonly amount: string;
 }
 
 export interface CheckRequest {
   id: string;
+  account: Account;
+  campaign: CampaignInfo;
+  status: number; // TODO add status type
+  result: boolean;
 }
 
 export interface CampaignInfo {
@@ -92,7 +101,7 @@ export interface CampaignMetadata {
 
 export interface Activity {
   name: string;
-  timestamp: string;
+  timestamp: number;
   amount: string;
 }
 

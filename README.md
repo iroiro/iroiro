@@ -63,4 +63,4 @@ After that when DApp user want to withdraw a creator token, he sends withdraw re
 ### Frontend 
 
 1. To generate contract types, run `yarn` on `contracts/` dir. 
-When command finished, `types/` dir is generated on a root dir.
+When command finished, `types/` dir is generated on a frontend src dir.

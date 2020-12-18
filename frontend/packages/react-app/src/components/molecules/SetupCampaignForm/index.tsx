@@ -5,7 +5,7 @@ export interface NumberProps {
   readonly m: number;
 }
 
-const SetupCampaignForm = ({ m }: NumberProps) => (
+const SetupCampaignForm: React.FC<NumberProps> = ({ m }: NumberProps) => (
   <Box>
     <Text fontSize={3} fontWeight="bold">
       2. Setup basic info

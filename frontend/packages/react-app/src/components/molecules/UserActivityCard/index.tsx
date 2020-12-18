@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, CardContent, Grid, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@material-ui/core";
 import { Activity, TokenBasic } from "../../../interfaces";
 
 export interface UserActivityCardProps {
@@ -7,12 +7,15 @@ export interface UserActivityCardProps {
   readonly token?: TokenBasic;
 }
 
-const UserActivityCard = ({ activity, token }: UserActivityCardProps) => {
+const UserActivityCard: React.FC<UserActivityCardProps> = ({
+  activity,
+  token,
+}) => {
   return (
     <Card>
       <CardContent>
         <Typography>
-          {new Date(parseInt(activity.timestamp) * 1000).toLocaleDateString()}
+          {new Date(activity.timestamp).toLocaleDateString()}
         </Typography>
         <Typography>
           {activity.name} {activity.amount} ${token?.symbol}

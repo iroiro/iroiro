@@ -8,7 +8,7 @@ export interface TokenInfo {
   readonly tokenInfo: AccountToken;
 }
 
-const DepositToken = ({ tokenInfo }: TokenInfo) => (
+const DepositToken: React.FC<TokenInfo> = ({ tokenInfo }) => (
   <Card mt={2}>
     <Box m={"auto"} width={[3 / 4]}>
       <TokenBalance tokenInfo={tokenInfo} />

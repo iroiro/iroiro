@@ -3,7 +3,6 @@ import {
   AppBar,
   Box,
   Container,
-  Grid,
   makeStyles,
   Tab,
   Tabs,
@@ -13,15 +12,14 @@ import TokenInformationBar from "../TokenInformationBar";
 import BasicTokenInformation from "../BasicTokenInformation";
 import TokenCampaigns from "../TokenCampaigns";
 import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
-import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
-import UserActivities from "../UserActivities";
 import TokenDetailCampaignPanel from "../TokenCampaignDetailPanel";
+import UserHistory from "../UserHistory";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
   children?: React.ReactNode;
-  index: any;
-  value: any;
+  index: number;
+  value: number;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -40,7 +38,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: any) {
+function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -57,18 +55,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function TokenInformationTabs({
+export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
   state,
   dispatch,
-}: TokenInformationTemplateProps) {
+}) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
-    if (newValue !== 1) {
-      dispatch({ type: "campaignAddress:remove" });
-    }
     setValue(newValue);
+    dispatch({ type: "campaignAddress:remove" });
+    dispatch({ type: "isTokenCheckFinished:remove" });
+    dispatch({ type: "isCampaignClaimable:remove" });
+    dispatch({ type: "isCampaignClaimed:remove" });
   };
 
   return (
@@ -98,7 +97,7 @@ export function TokenInformationTabs({
           {!state.campaignAddress ? (
             <TokenCampaigns state={state} dispatch={dispatch} />
           ) : (
-            <TokenDetailCampaignPanel state={state} />
+            <TokenDetailCampaignPanel state={state} dispatch={dispatch} />
           )}
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -108,18 +107,11 @@ export function TokenInformationTabs({
           Coming soon...
         </TabPanel>
         <TabPanel value={value} index={4}>
-          <Grid container spacing={4} direction="column">
-            <Grid item xs={12}>
-              <UserActivities state={state} />
-            </Grid>
-            <Grid item xs={12}>
-              <BalanceHistoryChart balances={state.balances} />
-            </Grid>
-          </Grid>
+          <UserHistory state={state} />
         </TabPanel>
       </Container>
     </div>
   );
-}
+};
 
 export default TokenInformationTabs;

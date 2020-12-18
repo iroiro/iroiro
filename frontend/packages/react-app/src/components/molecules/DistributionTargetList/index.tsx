@@ -6,7 +6,9 @@ export interface TargetsProps {
   readonly distributionTargets: Target[];
 }
 
-const DistributionTargetList = ({ distributionTargets }: TargetsProps) => (
+const DistributionTargetList: React.FC<TargetsProps> = ({
+  distributionTargets,
+}) => (
   <>
     {distributionTargets.length > 0 ? (
       <Table>

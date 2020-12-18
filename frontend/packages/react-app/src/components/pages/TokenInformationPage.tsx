@@ -7,20 +7,46 @@ import {
   tokenInformationReducer,
 } from "../../reducers/tokenInformation";
 import { useParams, RouteComponentProps } from "react-router-dom";
-import { getTokenInfo, getWalletBalance } from "../../utils/web3";
+import { getTokenInfo } from "../../utils/web3";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { GET_CAMPAIGNS } from "../../graphql/subgraph";
-import { CampaignInfo, CampaignMetadata } from "../../interfaces";
+import {
+  GET_CAMPAIGNS,
+  GET_CHECK_REQUEST,
+  GET_CLAIM,
+} from "../../graphql/subgraph";
+import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
+import { useGetWalletBalance } from "../../hooks/useGetWalletBalance";
+import { useGetAllowance } from "../../hooks/useGetAllowance";
+import { LINK_TOKEN_ADDRESS } from "../../utils/const";
+import { useGetTransferEvents } from "../../hooks/useGetTransferEvents";
+import { Block } from "@ethersproject/providers";
+import { Event } from "@ethersproject/contracts";
 
 interface Params {
   tokenAddress: string;
 }
 
-const TokenInformationPage = (props: RouteComponentProps<Params>) => {
+const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokenInformationReducer, initialState);
   const { tokenAddress } = useParams<Params>();
-  const [getCampaigns, { loading, error, data }] = useLazyQuery(GET_CAMPAIGNS);
+  const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
+  const [getCheckRequests, { data: checkRequestsData }] = useLazyQuery(
+    GET_CHECK_REQUEST
+  );
+  const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
+    GET_CLAIM
+  );
+  const { result, loading, error } = useGetWalletBalance(library, tokenAddress);
+  const { allowance } = useGetAllowance(
+    library,
+    LINK_TOKEN_ADDRESS,
+    state?.campaignAddress ?? ""
+  );
+  const { result: allTransferEvents } = useGetTransferEvents(
+    library,
+    tokenAddress
+  );
 
   useEffect(() => {
     const f = async () => {
@@ -50,18 +76,14 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
   }, [library, tokenAddress]);
 
   useEffect(() => {
-    const f = async () => {
-      const balance = await getWalletBalance(
-        library,
-        state.token?.tokenAddress ?? ""
-      );
-      if (balance === undefined) {
-        return;
-      }
-      dispatch({ type: "userBalance:set", payload: { balance } });
-    };
-    f();
-  }, [library, state.token?.tokenAddress]);
+    if (result === undefined || loading || error) {
+      return;
+    }
+    dispatch({
+      type: "userBalance:set",
+      payload: { balance: result.toString() },
+    });
+  }, [result, loading, error]);
 
   useEffect(() => {
     // TODO: After made campaign creation function, change dynamic value
@@ -78,10 +100,10 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
       if (!tokenAddress) {
         return;
       }
-      if (data === undefined) {
+      if (campaignData === undefined) {
         return;
       }
-      const rawCampaigns = data.campaigns;
+      const rawCampaigns = campaignData.campaigns;
       const campaigns: CampaignInfo[] = await Promise.all(
         rawCampaigns.map(async (rawCampaign: CampaignInfo) => {
           const cid = rawCampaign.campaignInfoCid;
@@ -101,7 +123,107 @@ const TokenInformationPage = (props: RouteComponentProps<Params>) => {
       });
     };
     f();
-  }, [tokenAddress, data]);
+  }, [tokenAddress, campaignData]);
+
+  useEffect(() => {
+    if (
+      state.userAddress === undefined ||
+      state.campaignAddress === undefined
+    ) {
+      return;
+    }
+    getCheckRequests({
+      variables: {
+        account: state.userAddress.toLowerCase(),
+        campaign: state.campaignAddress.toLowerCase(),
+      },
+    });
+  }, [getCheckRequests, state.userAddress, state.campaignAddress]);
+
+  useEffect(() => {
+    if (checkRequestsData === undefined) {
+      return;
+    }
+    dispatch({
+      type: "isTokenCheckFinished:set",
+      payload: {
+        checkRequests: checkRequestsData.checkRequests,
+      },
+    });
+    dispatch({
+      type: "isCampaignClaimable:set",
+      payload: {
+        checkRequests: checkRequestsData.checkRequests,
+      },
+    });
+  }, [checkRequestsData]);
+
+  useEffect(() => {
+    if (allowance === undefined) {
+      return;
+    }
+    dispatch({
+      type: "isTokenApproved:set",
+      payload: { allowance: allowance },
+    });
+  }, [allowance]);
+
+  useEffect(() => {
+    if (
+      state.userAddress === undefined ||
+      state.campaignAddress === undefined
+    ) {
+      return;
+    }
+    getClaim({
+      variables: {
+        id: `${state.userAddress.toLowerCase()}-${state.campaignAddress.toLowerCase()}`,
+      },
+    });
+  }, [getClaim, state.userAddress, state.campaignAddress]);
+
+  useEffect(() => {
+    if (getClaimData === undefined) {
+      return;
+    }
+    dispatch({
+      type: "isCampaignClaimed:set",
+      payload: {
+        claim: getClaimData.claim,
+      },
+    });
+  }, [getClaimData]);
+
+  useEffect(() => {
+    const f = async () => {
+      if (allTransferEvents === undefined || state.userAddress === undefined) {
+        return;
+      }
+      const eventBlockPairs: {
+        event: Event;
+        block: Block;
+      }[] = await Promise.all(
+        allTransferEvents.map(async (event) => {
+          const block = await event.getBlock();
+          return { event, block };
+        })
+      );
+      dispatch({
+        type: "activities:setTransfers",
+        payload: {
+          eventBlockPairs,
+        },
+      });
+      dispatch({
+        type: "balances:set",
+        payload: {
+          walletAddress: state.userAddress,
+          eventBlockPairs,
+        },
+      });
+    };
+    f();
+  }, [allTransferEvents, state.userAddress]);
 
   return <TokenInformationTemplate state={state} dispatch={dispatch} />;
 };

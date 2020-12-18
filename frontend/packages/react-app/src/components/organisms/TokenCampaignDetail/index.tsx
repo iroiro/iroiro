@@ -25,7 +25,9 @@ const AbsoluteChip = styled.div`
   right: 10px;
 `;
 
-const TokenCampaignDetail = ({ campaign }: TokenCampaignDetailProps) => {
+const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
+  campaign,
+}) => {
   const classes = useStyles();
 
   return (
