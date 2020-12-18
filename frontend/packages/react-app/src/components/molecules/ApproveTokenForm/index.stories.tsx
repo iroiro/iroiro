@@ -1,19 +1,22 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import SetupCampaignForm, { SetupCampaignFormProps } from "./index";
+import ApproveTokenForm, { ApproveTokenFormProps } from "./index";
 import { distributorFormState } from "../../../utils/mockData";
 
 export default {
-  title: "Molecules/SetupCampaignForm",
-  component: SetupCampaignForm,
+  title: "Molecules/ApproveTokenForm",
+  component: ApproveTokenForm,
 } as Meta;
 
-const Template: Story<SetupCampaignFormProps> = (args) => (
+const Template: Story<ApproveTokenFormProps> = (args) => (
   <BrowserRouter>
-    <SetupCampaignForm {...args} />
+    <ApproveTokenForm {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-Default.args = { distributorFormState: distributorFormState };
+Default.args = {
+  m: 4,
+  distributorFormState,
+};

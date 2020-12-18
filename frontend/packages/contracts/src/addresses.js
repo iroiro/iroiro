@@ -7,7 +7,7 @@ const addresses = {
   Vesting: "0x886D4Aa23a93FeB8252B47e2BA9Fab7C078Faebe",
   Audius: "0x4273503fc36E02004C6FEb242253046Bc2d59870",
   Oracle: "0x80041A05d87a9355e154460c6Aba3dB589F44793",
-  CCTWalletDistributor: "0x5BadCC27134Cc43fDc35D247e340e655E8c1dB79",
+  CCTWalletDistributor: "0x590b4465a94bE635bF2F760025c61Ec3680f687C",
 };
 
 export default addresses;

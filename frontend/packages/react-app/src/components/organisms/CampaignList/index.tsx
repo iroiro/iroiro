@@ -11,10 +11,10 @@ const CampaignList: React.FC<TokenAndCampaignProps> = ({
   return (
     <>
       <Flex style={{ alignItems: "center", justifyContent: "space-between" }}>
-        <Heading as={"h1"}>{tokenState.token.name}</Heading>
+        <Heading as={"h1"}>{tokenState.token?.name}</Heading>
         <LinkButton
           m={0}
-          path={`/dashboard/${tokenState.token.tokenAddress}/distributors`}
+          path={`/dashboard/${tokenState.token?.tokenAddress}/distributors`}
           text="+ Create New Campaign"
           mainColor="itblue"
         ></LinkButton>

@@ -3,7 +3,7 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import CampaignList from "./index";
 import { TokenAndCampaignProps } from "../../../interfaces";
-import { campaign, tokenState } from "../../../utils/mockData";
+import { campaign, tokenInfo } from "../../../utils/mockData";
 
 export default {
   title: "Organisms/CampaignList",
@@ -16,13 +16,15 @@ const Template: Story<TokenAndCampaignProps> = (args) => (
   </BrowserRouter>
 );
 
-const campaignsState = [campaign, campaign, campaign];
+const campaignsState = {
+  campaigns: [campaign, campaign, campaign],
+};
 
 export const Default = Template.bind({});
 Default.args = {
-  tokenState,
+  tokenState: tokenInfo,
   campaignsState,
 };
 
 export const NoCampaign = Template.bind({});
-NoCampaign.args = { tokenState, campaignsState: [] };
+NoCampaign.args = { tokenState: tokenInfo, campaignsState: { campaigns: [] } };

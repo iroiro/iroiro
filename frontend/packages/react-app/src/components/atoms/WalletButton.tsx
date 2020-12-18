@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { injected } from "./connectors";
 
-const WalletButton = () => {
+const WalletButton: React.FC = () => {
   const { account, deactivate, active, error, activate } = useWeb3React();
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
   if (isUnsupportedChainIdError) {
@@ -15,22 +15,21 @@ const WalletButton = () => {
   useEffect(() => {
     const { ethereum } = window;
     if (ethereum && ethereum.on && !active && !error) {
-      console.log("ethereum");
       const handleConnect = () => {
         console.log("Handling 'connect' event");
         activate(injected);
       };
-      const handleChainChanged = (chainId) => {
+      const handleChainChanged = (chainId: number) => {
         console.log("Handling 'chainChanged' event with payload", chainId);
         activate(injected);
       };
-      const handleAccountsChanged = (accounts) => {
+      const handleAccountsChanged = (accounts: string) => {
         console.log("Handling 'accountsChanged' event with payload", accounts);
         if (accounts.length > 0) {
           activate(injected);
         }
       };
-      const handleNetworkChanged = (networkId) => {
+      const handleNetworkChanged = (networkId: number) => {
         console.log("Handling 'networkChanged' event with payload", networkId);
         activate(injected);
       };

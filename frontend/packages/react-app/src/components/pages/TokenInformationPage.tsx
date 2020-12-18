@@ -7,7 +7,7 @@ import {
   tokenInformationReducer,
 } from "../../reducers/tokenInformation";
 import { useParams, RouteComponentProps } from "react-router-dom";
-import { getTokenInfo } from "../../utils/web3";
+import { getTokenInfo, getWalletBalance } from "../../utils/web3";
 import { useLazyQuery } from "@apollo/react-hooks";
 import {
   GET_CAMPAIGNS,
@@ -76,14 +76,20 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   }, [library, tokenAddress]);
 
   useEffect(() => {
-    if (result === undefined || loading || error) {
-      return;
+    if (library) {
+      const f = async () => {
+        const balance = await getWalletBalance(
+          library,
+          state.token?.tokenAddress ?? ""
+        );
+        if (balance === undefined) {
+          return;
+        }
+        dispatch({ type: "userBalance:set", payload: { balance } });
+      };
+      f();
     }
-    dispatch({
-      type: "userBalance:set",
-      payload: { balance: result.toString() },
-    });
-  }, [result, loading, error]);
+  }, [library, state]);
 
   useEffect(() => {
     // TODO: After made campaign creation function, change dynamic value
@@ -93,7 +99,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
         token: tokenAddress.toLowerCase(),
       },
     });
-  }, [tokenAddress, getCampaigns]);
+  }, [loading, error, tokenAddress, getCampaigns]);
 
   useEffect(() => {
     const f = async () => {

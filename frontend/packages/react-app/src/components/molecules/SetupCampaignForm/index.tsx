@@ -1,15 +1,27 @@
 import React from "react";
-import { Box, Text, Button, Form, Input } from "rimble-ui";
+import { Box, Button, Form, Input } from "rimble-ui";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import {
+  createCampaignState,
+  DISTRIBUTOR_ACTIONS,
+} from "../../../reducers/distributorForm";
 
-export interface NumberProps {
-  readonly m: number;
+export interface SetupCampaignFormProps {
+  readonly distributorFormState: createCampaignState;
+  distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
-const SetupCampaignForm: React.FC<NumberProps> = ({ m }: NumberProps) => (
+const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
+  distributorFormDispatch,
+  distributorFormState,
+}) => (
   <Box>
-    <Text fontSize={3} fontWeight="bold">
-      2. Setup basic info
-    </Text>
     <Box mt={3}>
       <Form>
         <Input
@@ -18,12 +30,65 @@ const SetupCampaignForm: React.FC<NumberProps> = ({ m }: NumberProps) => (
           required
           width={1}
           placeholder="Campaign Name"
+          onChange={(event: any) =>
+            distributorFormDispatch({
+              type: "campaignName:set",
+              payload: { campaignName: event.target.value },
+            })
+          }
+          value={distributorFormState.campaignName}
         />
-        <Input mb={2} type="number" required width={1} placeholder="100000" />
-        <Input mb={2} type="text" required width={1} placeholder="2020/10/10" />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <div style={{ marginTop: 18 }}>
+            <KeyboardDatePicker
+              margin="normal"
+              id="date-picker-dialog"
+              label="Start Date"
+              format="MM/dd/yyyy"
+              value={distributorFormState.startDate}
+              onChange={(date: MaterialUiPickersDate) =>
+                distributorFormDispatch({
+                  type: "startDate:set",
+                  payload: { startDate: date },
+                })
+              }
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </div>
+          <div style={{ marginTop: 10 }}>
+            <KeyboardDatePicker
+              margin="normal"
+              id="date-picker-dialog"
+              label="End Date"
+              format="MM/dd/yyyy"
+              value={distributorFormState.endDate}
+              onChange={(date: MaterialUiPickersDate) =>
+                distributorFormDispatch({
+                  type: "endDate:set",
+                  payload: { endDate: date },
+                })
+              }
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </div>
+        </MuiPickersUtilsProvider>
       </Form>
-      <Button mainColor="itblue" mt={2} width={1}>
-        Start
+      <Button
+        mainColor="itblue"
+        mt={3}
+        width={1}
+        onClick={() => {
+          distributorFormDispatch({
+            type: "campaign:deploy",
+            payload: { requestDeployCampaign: true },
+          });
+        }}
+      >
+        Start Campaign
       </Button>
     </Box>
   </Box>

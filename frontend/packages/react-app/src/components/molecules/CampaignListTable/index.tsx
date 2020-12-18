@@ -8,7 +8,7 @@ const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
   campaignsState,
 }) => (
   <>
-    {campaignsState.length > 0 ? (
+    {campaignsState.campaigns.length > 0 ? (
       <Table>
         <thead>
           <tr>
@@ -18,13 +18,13 @@ const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
           </tr>
         </thead>
         <tbody>
-          {campaignsState.length > 0 &&
-            campaignsState.map((campaign) => (
+          {campaignsState.campaigns.length > 0 &&
+            campaignsState.campaigns.map((campaign) => (
               <tr key={campaign.id}>
                 {"campaignMetadata" in campaign ? (
                   <td>
                     <Link
-                      to={`/dashboard/${tokenState.token.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
+                      to={`/dashboard/${tokenState.token?.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
                       style={{ textDecoration: "none", color: "#48C5D5" }}
                     >
                       <Text fontSize="2" fontWeight="bold">

@@ -5,19 +5,27 @@ import Container from "../../atoms/Container";
 import CampaignDetail from "../../organisms/CampaignDetail";
 import { AccountToken, Target, CampaignInfo } from "../../../interfaces";
 import DistributionTargets from "../../organisms/DistributionTargets";
+import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
+import { DISTRIBUTOR_ACTIONS } from "../../../reducers/distributorForm";
 
 export interface CampaignInfoProps {
   readonly tokenInfo: AccountToken;
   readonly targets: Target[];
   readonly targetNumber: number;
   readonly campaignInfo: CampaignInfo;
+  readonly audiusState: AudiusState;
+  readonly audiusDispatch: React.Dispatch<AUDIUS_ACTIONS>;
+  distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
-const CampaignDetailPageTemaplate = ({
+const CampaignDetailPageTemaplate: React.FC<CampaignInfoProps> = ({
   targets,
   targetNumber,
   campaignInfo,
-}: CampaignInfoProps) => (
+  audiusState,
+  audiusDispatch,
+  distributorFormDispatch,
+}) => (
   <div>
     <AppHeader />
     <Container>
@@ -25,6 +33,9 @@ const CampaignDetailPageTemaplate = ({
       <DistributionTargets
         distributionTargets={targets}
         targetNumber={targetNumber}
+        audiusState={audiusState}
+        audiusDispatch={audiusDispatch}
+        distributorFormDispatch={distributorFormDispatch}
       />
       <CampaignDetail campaignInfo={campaignInfo} />
       <Box mt={4} style={{ textAlign: "center" }}>
