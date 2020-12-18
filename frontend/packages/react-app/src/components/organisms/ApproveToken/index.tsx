@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Box } from "rimble-ui";
+import { Card, Box, Button, Heading } from "rimble-ui";
 import { AccountToken } from "../../../interfaces";
 import ApproveTokenForm from "../../molecules/ApproveTokenForm";
 import TokenBalance from "../../molecules/TokenBalance";
@@ -21,6 +21,7 @@ const ApproveToken: React.FC<TokenInfo> = ({
 }) => (
   <Card mt={2}>
     <Box m={"auto"} width={[3 / 4]}>
+      <Heading>2. Approve your tokens</Heading>
       {tokenInfo.balance && tokenInfo.token ? (
         <TokenBalance
           balance={tokenInfo.balance}
@@ -44,6 +45,31 @@ const ApproveToken: React.FC<TokenInfo> = ({
         distributorFormState={distributorFormState}
         distributorFormDispatch={distributorFormDispatch}
       />
+    </Box>
+    <Box my={4} style={{ textAlign: "center" }}>
+      <Button.Outline
+        mr={4}
+        mainColor="gray"
+        onClick={() => {
+          distributorFormDispatch({
+            type: "step:set",
+            payload: { stepNo: 1 },
+          });
+        }}
+      >
+        Back
+      </Button.Outline>
+      <Button
+        mainColor="itblue"
+        onClick={() => {
+          distributorFormDispatch({
+            type: "step:set",
+            payload: { stepNo: 3 },
+          });
+        }}
+      >
+        Next
+      </Button>
     </Box>
   </Card>
 );

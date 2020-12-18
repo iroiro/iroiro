@@ -2,6 +2,10 @@ import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 
 export type DISTRIBUTOR_ACTIONS =
   | {
+      type: "step:set";
+      payload: { stepNo: number };
+    }
+  | {
       type: "approveAmount:set";
       payload: { approveAmount: string };
     }
@@ -15,6 +19,7 @@ export type DISTRIBUTOR_ACTIONS =
     };
 
 export interface createCampaignState {
+  step: number;
   approveAmount: string;
   campaignName: string;
   startDate: MaterialUiPickersDate;
@@ -28,6 +33,9 @@ export const distributorFormReducer = (
   action: DISTRIBUTOR_ACTIONS
 ): createCampaignState => {
   switch (action.type) {
+    case "step:set": {
+      return { ...state, step: action.payload.stepNo };
+    }
     case "approveAmount:set": {
       return {
         ...state,
@@ -48,7 +56,6 @@ export const distributorFormReducer = (
       return { ...state, approveRequest: action.payload.approveRequest };
     }
     case "campaign:deploy": {
-      console.log("aaaaa");
       return {
         ...state,
         requestDeployCampaign: action.payload.requestDeployCampaign,
@@ -60,6 +67,7 @@ export const distributorFormReducer = (
 };
 
 export const distributorFormInitialState: createCampaignState = {
+  step: 1,
   approveAmount: "",
   campaignName: "",
   startDate: new Date("2021-01-01T00:00:00"),

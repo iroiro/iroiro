@@ -45,21 +45,28 @@ const CreateCampaignPageTemaplate: React.FC<CampaignInfo> = ({
       ) : (
         <Box>
           <Heading as={"h1"}>Audius Follower Campaign</Heading>
-          <DistributionTargets
-            distributionTargets={targets}
-            targetNumber={targetNumber}
-            audiusState={audiusState}
-            audiusDispatch={audiusDispatch}
-          />
-          <ApproveToken
-            tokenInfo={tokenInfo}
-            distributorFormState={distributorFormState}
-            distributorFormDispatch={distributorFormDispatch}
-          />
-          <SetupCampaign
-            distributorFormState={distributorFormState}
-            distributorFormDispatch={distributorFormDispatch}
-          />
+          {distributorFormState.step === 1 && (
+            <DistributionTargets
+              distributionTargets={targets}
+              targetNumber={targetNumber}
+              audiusState={audiusState}
+              audiusDispatch={audiusDispatch}
+              distributorFormDispatch={distributorFormDispatch}
+            />
+          )}
+          {distributorFormState.step === 2 && (
+            <ApproveToken
+              tokenInfo={tokenInfo}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
+          )}
+          {distributorFormState.step === 3 && (
+            <SetupCampaign
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
+          )}
         </Box>
       )}
     </Container>

@@ -204,6 +204,7 @@ export const tokenListState: TokenListState = {
 };
 
 export const distributorFormState: createCampaignState = {
+  step: 1,
   approveAmount: "10000",
   campaignName: "Audius Followers Campaign",
   startDate: new Date("2021-01-01T00:00:00"),

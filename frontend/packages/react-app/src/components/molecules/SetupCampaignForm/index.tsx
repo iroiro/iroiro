@@ -24,9 +24,6 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
   distributorFormState,
 }) => (
   <Box>
-    <Text fontSize={3} fontWeight="bold">
-      2. Setup basic info
-    </Text>
     <Box mt={3}>
       <Form>
         <Input
@@ -44,7 +41,7 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
           value={distributorFormState.campaignName}
         />
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div>
+          <div style={{ marginTop: 18 }}>
             <KeyboardDatePicker
               margin="normal"
               id="date-picker-dialog"
@@ -62,7 +59,7 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
               }}
             />
           </div>
-          <div>
+          <div style={{ marginTop: 10 }}>
             <KeyboardDatePicker
               margin="normal"
               id="date-picker-dialog"
@@ -84,7 +81,7 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
       </Form>
       <Button
         mainColor="itblue"
-        mt={2}
+        mt={3}
         width={1}
         onClick={() => {
           distributorFormDispatch({
@@ -93,7 +90,7 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
           });
         }}
       >
-        Start
+        Start Campaign
       </Button>
     </Box>
   </Box>

@@ -1,8 +1,11 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { TokenBasic } from "../interfaces";
-import { FanToken__factory as FanTokenFactory, FanToken } from "../types";
+import { FanToken__factory as FanTokenFactory } from "../types";
+import { AudiusFollowersDistributor__factory as AudiusFollowersDistributor } from "../types";
 import BN from "bn.js";
 import { ContractTransaction } from "@ethersproject/contracts";
+// @ts-ignore
+import { addresses } from "@project/contracts";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -82,17 +85,38 @@ export const setApproveAmount = async (
     .then((transaction) => {
       return transaction;
     });
+};
 
-  // const filter = await erc20.filters.Approval(
-  //   walletAddress,
-  //   distributorAddress,
-  //   null
-  // );
+export const createCampaign = async (
+  library: Web3Provider | undefined,
+  tokenAddress: string,
+  campaignInfoCid: string,
+  recipientsCid: string,
+  recipientsNum: number,
+  startDate: number,
+  endDate: number
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const walletAddress = await signer.getAddress();
+  const distributor = AudiusFollowersDistributor.connect(
+    addresses.AudiusFollowersDistributor,
+    signer
+  );
 
-  // erc20.on(
-  //   filter,
-  //   (walletAddress, distributorAddress, approveAmount, event) => {
-  //     console.log(approveAmount);
-  //   }
-  // );
+  return distributor
+    .createCampaign(
+      tokenAddress,
+      walletAddress,
+      campaignInfoCid,
+      recipientsCid,
+      recipientsNum,
+      startDate,
+      endDate
+    )
+    .then((transaction) => {
+      return transaction;
+    });
 };

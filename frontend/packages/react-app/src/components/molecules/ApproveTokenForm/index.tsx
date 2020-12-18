@@ -17,9 +17,6 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
   distributorFormDispatch,
 }) => (
   <Box mt={m}>
-    <Text fontSize={3} fontWeight="bold">
-      1. Approve your tokens
-    </Text>
     <Box mt={3}>
       <Form>
         <Input

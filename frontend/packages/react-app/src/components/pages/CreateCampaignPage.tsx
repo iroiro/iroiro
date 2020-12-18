@@ -6,6 +6,7 @@ import {
   getWalletBalance,
   getAllowance,
   setApproveAmount,
+  createCampaign,
 } from "../../utils/web3";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import {
@@ -87,6 +88,10 @@ const CreateCampaignPage: React.FC<
   );
 
   const [libs, setLibs] = useState(Object);
+  const [recipientsCid, setRecipientsCid] = useState("");
+  const [campaignInfoCid, setCampaignInfoCid] = useState("");
+  const [recipientsNum, setRecipientsNum] = useState(0);
+
   const audiusSignIn = useCallback(
     async (email, password) => {
       console.log(email);
@@ -163,17 +168,37 @@ const CreateCampaignPage: React.FC<
     });
   }, []);
 
-  const uploadJsonIpfs = async () => {
-    const json = {
-      addresses: [
-        "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
-        "0xc61641C59f5c459Da94E330535A95df4d5fACeAe",
-        "0xAF9A4Ec7aDd58d7F184c5D13e40eBB2B41Ed9e0D",
-      ],
-    };
-    const { path } = await ipfs.add(JSON.stringify(json));
-    console.log(path);
-  };
+  const uploadJsonIpfs = useCallback(async (data, type) => {
+    const { path } = await ipfs.add(JSON.stringify(data));
+    if (type === "campaignInfoCid") {
+      setCampaignInfoCid(path);
+    }
+    if (type === "recipientsCid") {
+      setRecipientsCid(path);
+    }
+  }, []);
+
+  const deployCampaign = useCallback(
+    async (
+      library,
+      campaignInfoCid,
+      recipientsCid,
+      recipientsNum,
+      startDate,
+      endDate
+    ) => {
+      createCampaign(
+        library,
+        tokenAddress,
+        campaignInfoCid,
+        recipientsCid,
+        recipientsNum,
+        startDate,
+        endDate
+      );
+    },
+    []
+  );
 
   useEffect(() => {
     if (library) {
@@ -194,10 +219,54 @@ const CreateCampaignPage: React.FC<
       approve(library, distributorFormState.approveAmount);
     }
     if (distributorFormState.requestDeployCampaign) {
-      console.log("atruetrue");
-      uploadJsonIpfs();
+      const campaignInfo = {
+        description: "",
+        image: "",
+        name: distributorFormState.campaignName,
+      };
+
+      // TODO: Temporal Data
+      const addresses = {
+        addresses: [
+          "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
+          "0xc61641C59f5c459Da94E330535A95df4d5fACeAe",
+          "0xAF9A4Ec7aDd58d7F184c5D13e40eBB2B41Ed9e0D",
+        ],
+      };
+      uploadJsonIpfs(campaignInfo, "campaignInfoCid");
+      uploadJsonIpfs(addresses, "recipientsCid");
+      setRecipientsNum(addresses.addresses.length);
     }
   }, [library, distributorFormState, approve]);
+
+  useEffect(() => {
+    console.log("a");
+    if (
+      campaignInfoCid === "" ||
+      recipientsCid === "" ||
+      recipientsNum === 0 ||
+      distributorFormState.startDate == null ||
+      distributorFormState.endDate == null
+    ) {
+      return;
+    }
+
+    console.log(
+      campaignInfoCid,
+      recipientsCid,
+      recipientsNum,
+      distributorFormState.startDate.getTime(),
+      distributorFormState.endDate.getTime()
+    );
+    deployCampaign(
+      library,
+      campaignInfoCid,
+      recipientsCid,
+      recipientsNum,
+      distributorFormState.startDate.getTime(),
+      distributorFormState.endDate.getTime()
+    );
+  }, [campaignInfoCid, recipientsCid]);
 
   useEffect(() => {
     const initLibs = async () => {
