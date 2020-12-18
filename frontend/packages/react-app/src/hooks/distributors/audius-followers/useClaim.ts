@@ -1,5 +1,5 @@
 import { Web3Provider } from "@ethersproject/providers";
-import { AudiusFollowersCampaign__factory as AudiusFollowersCampaignFactory } from "../../..//types";
+import { CCTWalletCampaign__factory } from "../../../types";
 import { ContractTransaction } from "@ethersproject/contracts";
 import { useCallback } from "react";
 
@@ -12,19 +12,20 @@ export const useClaim = (
       return undefined;
     }
     const signer = library.getSigner();
-    const campaign = AudiusFollowersCampaignFactory.connect(
+    const campaign = CCTWalletCampaign__factory.connect(
       campaignAddress,
       signer
     );
-    return campaign
-      .claim()
-      .then((transaction) => {
-        console.debug(transaction);
-        return transaction;
-      })
-      .catch((error) => {
-        console.error(error);
-        return error;
-      });
+    return undefined;
+    // campaign
+    //   .claim() // TODO: need newly added arguments
+    //   .then((transaction) => {
+    //     console.debug(transaction);
+    //     return transaction;
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     return error;
+    //   });
   }, [library, campaignAddress]);
 };
