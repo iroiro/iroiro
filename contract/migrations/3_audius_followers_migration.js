@@ -1,16 +1,14 @@
-const AudiusFollowersDistributor = artifacts.require(
-  "AudiusFollowersDistributor"
-);
+const CCTWalletDistributor = artifacts.require("CCTWalletDistributor");
 const { LinkToken } = require("@chainlink/contracts/truffle/v0.4/LinkToken");
 const { Oracle } = require("@chainlink/contracts/truffle/v0.6/Oracle");
 
-const distributorInfoCid = "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA"
+const distributorInfoCid = "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA";
 
 module.exports = async (deployer, network, [defaultAccount]) => {
   if (network.startsWith("rinkeby")) {
     try {
       await deployer.deploy(
-        AudiusFollowersDistributor,
+        CCTWalletDistributor,
         distributorInfoCid,
         "0x01BE23585060835E02B77ef475b0Cc51aA1e0709"
       );
@@ -20,7 +18,7 @@ module.exports = async (deployer, network, [defaultAccount]) => {
   } else if (network.startsWith("kovan")) {
     try {
       await deployer.deploy(
-        AudiusFollowersDistributor,
+        CCTWalletDistributor,
         distributorInfoCid,
         "0xa36085F69e2889c224210F603D836748e7dC0088"
       );
@@ -38,7 +36,7 @@ module.exports = async (deployer, network, [defaultAccount]) => {
         from: defaultAccount,
       });
       await deployer.deploy(
-        AudiusFollowersDistributor,
+        CCTWalletDistributor,
         distributorInfoCid,
         LinkToken.address
       );
@@ -49,7 +47,7 @@ module.exports = async (deployer, network, [defaultAccount]) => {
     // For live networks, use the 0 address to allow the ChainlinkRegistry
     // contract automatically retrieve the correct address for you
     await deployer.deploy(
-      AudiusFollowersDistributor,
+      CCTWalletDistributor,
       distributorInfoCid,
       "0x0000000000000000000000000000000000000000"
     );

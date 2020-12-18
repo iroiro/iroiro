@@ -48,6 +48,7 @@ type CheckRequest @entity {
   account: Account!
   campaign: Campaign!
   status: CheckRequestStatus!
+  "Show result only for requested address, not only for other addresses"
   result: Boolean
 }
 

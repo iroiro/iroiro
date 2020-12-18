@@ -8,18 +8,19 @@ const {
 } = require("@openzeppelin/test-helpers");
 
 // TODO Fix tests fail with `truffle test`
-contract.skip("AudiusFollowersCampaign", (accounts) => {
+contract.skip("CCTWalletCampaign", (accounts) => {
   const { LinkToken } = require("@chainlink/contracts/truffle/v0.4/LinkToken");
   const { Oracle } = require("@chainlink/contracts/truffle/v0.6/Oracle");
-  const Distributor = artifacts.require("AudiusFollowersDistributor.sol");
-  const Campaign = artifacts.require("AudiusFollowersCampaign.sol");
+  const Distributor = artifacts.require("CCTWalletDistributor.sol");
+  const Campaign = artifacts.require("CCTWalletCampaign.sol");
   const FanToken = artifacts.require("FanToken.sol");
 
   const defaultAccount = accounts[0];
   const oracleNode = accounts[1];
   const stranger = accounts[2];
   const consumer = accounts[3];
-  const follower = accounts[4];
+  const follower = accounts[3];
+  const metamask = accounts[5];
 
   // These parameters are used to validate the data was received
   // on the deployed oracle contract. The Job ID only represents
@@ -41,7 +42,16 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
   const recipientsCid = "recipients cid";
   const recipientsNum = 100;
 
+  let toAddressHash, signature, bytes, r, s, v;
+
   beforeEach(async () => {
+    toAddressHash = web3.utils.soliditySha3(metamask);
+    signature = await web3.eth.sign(toAddressHash, follower);
+    bytes = web3.utils.hexToBytes(signature);
+    r = web3.utils.bytesToHex(bytes.slice(0, 32));
+    s = web3.utils.bytesToHex(bytes.slice(32, 64));
+    v = web3.utils.hexToNumber(web3.utils.bytesToHex(bytes.slice(-1)));
+
     link = await LinkToken.new({ from: defaultAccount });
     oc = await Oracle.new(link.address, { from: defaultAccount });
     distributor = await Distributor.new(
@@ -52,17 +62,6 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
     abctoken = await FanToken.new(
       "ABCToken",
       "ABC",
-      1000000000,
-      defaultAccount,
-      5,
-      defaultAccount,
-      50,
-      5,
-      { from: defaultAccount }
-    );
-    xyztoken = await FanToken.new(
-      "XYZToken",
-      "XYZ",
       1000000000,
       defaultAccount,
       5,
@@ -94,112 +93,90 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
   });
 
   describe("#requestCheckingIsClaimable", () => {
-    context("without LINK", () => {
-      it("reverts", async () => {
-        await expectRevert.unspecified(
-          cc.requestCheckingIsClaimable(
-            oc.address,
-            jobId,
-            payment,
-            follower.toString(),
-            { from: follower }
-          )
-        );
+    let request;
+
+    beforeEach(async () => {
+      await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
+        from: defaultAccount,
+      });
+      await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
+        from: metamask,
       });
     });
 
-    context("with LINK", () => {
-      let request;
-
-      beforeEach(async () => {
-        await link.transfer(follower, web3.utils.toWei("1", "ether"), {
-          from: defaultAccount,
+    it("does not reverts without LINK", async () => {
+      try {
+        await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+          from: metamask,
         });
-        await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
-          from: follower,
-        });
-      });
+        assert(true);
+      } catch (error) {
+        assert.fail(error.reason);
+      }
+    });
 
-      it("throw an error if empty user address is passed", async () => {
-        const nextUserIdBefore = await cc.nextUserId();
-        assert.equal(nextUserIdBefore.toString(), "1");
-        try {
-          await cc.requestCheckingIsClaimable(oc.address, jobId, payment, {
-            from: follower,
-          });
-          assert.fail();
-        } catch (error) {
-          assert.equal(error.reason, "User address shouldn't be empty");
-          assert(true);
-        }
+    it("set new user id if its not registered yet", async () => {
+      const nextUserIdBefore = await cc.nextUserId();
+      assert.equal(nextUserIdBefore.toString(), "1");
+      await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+        from: metamask,
       });
+      const userId = await cc.userIdList(follower);
+      assert.equal(userId.toString(), "1");
+      const nextUserIdAfter = await cc.nextUserId();
+      assert.equal(nextUserIdAfter, "2");
+    });
 
-      it("set new user id if its not registered yet", async () => {
-        const nextUserIdBefore = await cc.nextUserId();
-        assert.equal(nextUserIdBefore.toString(), "1");
-        await cc.requestCheckingIsClaimable(
+    it("set new user address if its not registered yet", async () => {
+      const nextUserIdBefore = await cc.nextUserId();
+      assert.equal(nextUserIdBefore.toString(), "1");
+      await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+        from: metamask,
+      });
+      const userAddress = await cc.userList(1);
+      assert.equal(userAddress, follower);
+    });
+
+    it("does not set new user id if its already registered", async () => {
+      await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+        from: metamask,
+      });
+      const userId1 = await cc.userIdList(follower);
+      assert.equal(userId1, "1");
+      const nextUserId1 = await cc.nextUserId();
+      assert.equal(nextUserId1, "2");
+
+      await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
+        from: defaultAccount,
+      });
+      await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
+        from: metamask,
+      });
+      await cc.requestCheckingIsClaimable(oc.address, jobId, follower, {
+        from: metamask,
+      });
+      const userId2 = await cc.userIdList(follower);
+      assert.equal(userId2, "1");
+      const nextUserId2 = await cc.nextUserId();
+      assert.equal(nextUserId2, "2");
+    });
+
+    context("sending a request to a specific oracle contract address", () => {
+      it("triggers a log event in the new Oracle contract", async () => {
+        const tx = await cc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
-          follower.toString(),
-          { from: follower }
+          follower,
+          { from: metamask }
         );
-        const userId = await cc.userIdList(follower);
-        assert.equal(userId.toString(), "1");
-        const nextUserIdAfter = await cc.nextUserId();
-        assert.equal(nextUserIdAfter, "2");
-      });
-
-      it("does not set new user id if its already registered", async () => {
-        await cc.requestCheckingIsClaimable(
-          oc.address,
-          jobId,
-          payment,
-          follower.toString(),
-          { from: follower }
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
+        assert.equal(oc.address, tx.receipt.rawLogs[3].address);
+        assert.equal(
+          request.topic,
+          web3.utils.keccak256(
+            "OracleRequest(bytes32,address,bytes32,uint256,address,bytes4,uint256,uint256,bytes)"
+          )
         );
-        const userId1 = await cc.userIdList(follower);
-        assert.equal(userId1, "1");
-        const nextUserId1 = await cc.nextUserId();
-        assert.equal(nextUserId1, "2");
-
-        await link.transfer(follower, web3.utils.toWei("1", "ether"), {
-          from: defaultAccount,
-        });
-        await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
-          from: follower,
-        });
-        await cc.requestCheckingIsClaimable(
-          oc.address,
-          jobId,
-          payment,
-          follower.toString(),
-          { from: follower }
-        );
-        const userId2 = await cc.userIdList(follower);
-        assert.equal(userId2, "1");
-        const nextUserId2 = await cc.nextUserId();
-        assert.equal(nextUserId2, "2");
-      });
-
-      context("sending a request to a specific oracle contract address", () => {
-        it("triggers a log event in the new Oracle contract", async () => {
-          const tx = await cc.requestCheckingIsClaimable(
-            oc.address,
-            jobId,
-            payment,
-            follower.toString(),
-            { from: follower }
-          );
-          request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
-          assert.equal(oc.address, tx.receipt.rawLogs[4].address);
-          assert.equal(
-            request.topic,
-            web3.utils.keccak256(
-              "OracleRequest(bytes32,address,bytes32,uint256,address,bytes4,uint256,uint256,bytes)"
-            )
-          );
-        });
       });
     });
   });
@@ -214,31 +191,45 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
 
   describe("isClaimable", () => {
     it("returns false if user is is not registered", async () => {
-      expect(await cc.isClaimable(stranger, { from: stranger })).to.equal(
-        false
-      );
+      expect(
+        await cc.isClaimable(follower, stranger, { from: stranger })
+      ).to.equal(false);
     });
 
     describe("after request", () => {
       beforeEach(async () => {
-        const expected = web3.utils.soliditySha3(new BN(11));
-        const response = web3.utils.padLeft(web3.utils.toHex(expected), 64);
-        await link.transfer(follower, web3.utils.toWei("1", "ether"), {
+        const expected1 = web3.utils.soliditySha3(new BN(11));
+        const response1 = web3.utils.padLeft(web3.utils.toHex(expected1), 64);
+        const expected2 = web3.utils.soliditySha3(new BN(21));
+        const response2 = web3.utils.padLeft(web3.utils.toHex(expected2), 64);
+        await link.transfer(metamask, web3.utils.toWei("2", "ether"), {
           from: defaultAccount,
         });
-        await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
-          from: follower,
+        await link.approve(cc.address, web3.utils.toWei("2", "ether"), {
+          from: metamask,
         });
-        const tx = await cc.requestCheckingIsClaimable(
+        const tx1 = await cc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
-          follower.toString(),
-          { from: follower }
+          follower,
+          { from: metamask }
         );
-        const request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+        const request1 = oracle.decodeRunRequest(tx1.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
-          ...oracle.convertFufillParams(request, response, {
+          ...oracle.convertFufillParams(request1, response1, {
+            from: oracleNode,
+            gas: 500000,
+          })
+        );
+        const tx2 = await cc.requestCheckingIsClaimable(
+          oc.address,
+          jobId,
+          metamask,
+          { from: metamask }
+        );
+        const request2 = oracle.decodeRunRequest(tx2.receipt.rawLogs[3]);
+        await oc.fulfillOracleRequest(
+          ...oracle.convertFufillParams(request2, response2, {
             from: oracleNode,
             gas: 500000,
           })
@@ -246,20 +237,34 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
       });
 
       it("returns false if user already claimed", async () => {
-        const beforeClaim = await cc.isClaimable(follower);
+        const beforeClaim = await cc.isClaimable(follower, metamask);
         assert.equal(beforeClaim, true);
-        await cc.claim({ from: follower });
-        const afterClaim = await cc.isClaimable(follower);
+        await cc.claim(toAddressHash, r, s, v, follower, metamask, {
+          from: metamask,
+        });
+        const afterClaim = await cc.isClaimable(follower, metamask);
+        assert.equal(afterClaim, false);
+      });
+
+      it("returns false if user already sent token", async () => {
+        const beforeClaim1 = await cc.isClaimable(follower, metamask);
+        assert.equal(beforeClaim1, true);
+        const beforeClaim2 = await cc.isClaimable(metamask, metamask);
+        assert.equal(beforeClaim2, true);
+        await cc.claim(toAddressHash, r, s, v, follower, metamask, {
+          from: metamask,
+        });
+        const afterClaim = await cc.isClaimable(metamask, metamask);
         assert.equal(afterClaim, false);
       });
 
       it("returns false if claim hash is not matched", async () => {
-        const isClaimable = await cc.isClaimable(stranger);
+        const isClaimable = await cc.isClaimable(stranger, stranger);
         assert.equal(isClaimable, false);
       });
 
       it("returns true if claim hash is matched", async () => {
-        const isClaimable = await cc.isClaimable(follower);
+        const isClaimable = await cc.isClaimable(follower, metamask);
         assert.equal(isClaimable, true);
       });
     });
@@ -290,20 +295,19 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
         futurecc = await Campaign.at(futurecampaignaddress);
         const expected = web3.utils.soliditySha3(new BN(11));
         const response = web3.utils.padLeft(web3.utils.toHex(expected), 64);
-        await link.transfer(follower, web3.utils.toWei("1", "ether"), {
+        await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
           from: defaultAccount,
         });
         await link.approve(futurecc.address, web3.utils.toWei("1", "ether"), {
-          from: follower,
+          from: metamask,
         });
         const tx = await futurecc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
-          follower.toString(),
-          { from: follower }
+          follower,
+          { from: metamask }
         );
-        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
           ...oracle.convertFufillParams(request, response, {
             from: oracleNode,
@@ -313,10 +317,15 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
       });
 
       it("throws an error if campaign is not started yet", async () => {
-        expectRevert(
-          futurecc.claim({ from: follower }),
-          "Campaign is not started yet"
-        );
+        try {
+          await futurecc.claim(toAddressHash, r, s, v, follower, metamask, {
+            from: metamask,
+          });
+          assert.fail();
+        } catch (error) {
+          expect(error.reason).to.equal("Campaign is not started yet");
+          assert(true);
+        }
       });
     });
 
@@ -344,20 +353,19 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
         pastcc = await Campaign.at(pastcampaignaddress);
         const expected = web3.utils.soliditySha3(new BN(11));
         const response = web3.utils.padLeft(web3.utils.toHex(expected), 64);
-        await link.transfer(follower, web3.utils.toWei("1", "ether"), {
+        await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
           from: defaultAccount,
         });
         await link.approve(pastcc.address, web3.utils.toWei("1", "ether"), {
-          from: follower,
+          from: metamask,
         });
         const tx = await pastcc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
-          follower.toString(),
-          { from: follower }
+          follower,
+          { from: metamask }
         );
-        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
           ...oracle.convertFufillParams(request, response, {
             from: oracleNode,
@@ -368,7 +376,15 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
 
       it("throws an error if campaign is finished", async () => {
         time.increase(time.duration.weeks(2));
-        expectRevert(pastcc.claim({ from: follower }), "Campaign is finished");
+        try {
+          await pastcc.claim(toAddressHash, r, s, v, follower, metamask, {
+            from: metamask,
+          });
+          assert.fail();
+        } catch (error) {
+          expect(error.reason).to.equal("Campaign is finished");
+          assert(true);
+        }
       });
     });
 
@@ -376,20 +392,19 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
       beforeEach(async () => {
         const expected = web3.utils.soliditySha3(new BN(11));
         const response = web3.utils.padLeft(web3.utils.toHex(expected), 64);
-        await link.transfer(follower, web3.utils.toWei("1", "ether"), {
+        await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
           from: defaultAccount,
         });
         await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
-          from: follower,
+          from: metamask,
         });
         const tx = await cc.requestCheckingIsClaimable(
           oc.address,
           jobId,
-          payment,
-          follower.toString(),
-          { from: follower }
+          follower,
+          { from: metamask }
         );
-        request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+        request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
         await oc.fulfillOracleRequest(
           ...oracle.convertFufillParams(request, response, {
             from: oracleNode,
@@ -399,25 +414,118 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
       });
 
       it("throws an error if user is not claimable", async () => {
-        expectRevert(cc.claim({ from: stranger }), "Token is not claimable");
+        const strangersig = await web3.eth.sign(toAddressHash, stranger);
+        const sigbytes = web3.utils.hexToBytes(strangersig);
+        const strangerr = web3.utils.bytesToHex(sigbytes.slice(0, 32));
+        const strangers = web3.utils.bytesToHex(sigbytes.slice(32, 64));
+        const strangerv = web3.utils.hexToNumber(
+          web3.utils.bytesToHex(sigbytes.slice(-1))
+        );
+        expectRevert(
+          cc.claim(
+            toAddressHash,
+            strangerr,
+            strangers,
+            strangerv,
+            stranger,
+            metamask,
+            {
+              from: metamask,
+            }
+          ),
+          "Token is not claimable"
+        );
+      });
+
+      it("throws an error if to address hash is not matched", async () => {
+        try {
+          await cc.claim(toAddressHash, r, s, v, follower, stranger, {
+            from: metamask,
+          });
+          assert.fail();
+        } catch (error) {
+          expect(error.reason).to.equal(
+            "toAddressHash and hash of to address are not matched"
+          );
+          assert(true);
+        }
+      });
+
+      it("throws an error if ecrecover is failed", async () => {
+        try {
+          await cc.claim(toAddressHash, r, s, 3, follower, metamask, {
+            from: metamask,
+          });
+          assert.fail();
+        } catch (error) {
+          expect(error.reason).to.equal("address is 0");
+          assert(true);
+        }
+      });
+
+      it("throws an error if from hash is not matched", async () => {
+        try {
+          await cc.claim(toAddressHash, r, s, v, stranger, metamask, {
+            from: metamask,
+          }),
+            assert.fail();
+        } catch (error) {
+          expect(error.reason).to.equal("from address is not matched");
+          assert(true);
+        }
       });
 
       it("throws an error if user already claimed", async () => {
-        await cc.claim({ from: follower });
-        expectRevert(cc.claim({ from: follower }), "Token is not claimable");
+        await cc.claim(toAddressHash, r, s, v, follower, metamask, {
+          from: metamask,
+        });
+        expectRevert(
+          cc.claim(toAddressHash, r, s, v, follower, metamask, {
+            from: metamask,
+          }),
+          "Token is not claimable"
+        );
+      });
+
+      it("update claimed user to true", async () => {
+        await cc.claim(toAddressHash, r, s, v, follower, metamask, {
+          from: metamask,
+        });
+        const isClaimed = await cc.claimedUserList(follower);
+        expect(isClaimed).to.equal(true);
+      });
+
+      it("update sent user to true", async () => {
+        await cc.claim(toAddressHash, r, s, v, follower, metamask, {
+          from: metamask,
+        });
+        const isSent = await cc.sentUserList(metamask);
+        expect(isSent).to.equal(true);
       });
 
       it("transfer token to user with specific amount", async () => {
-        const balanceBefore = await abctoken.balanceOf(follower);
+        const balanceBefore = await abctoken.balanceOf(metamask);
         assert.equal(balanceBefore.toString(), "0");
-        await cc.claim({ from: follower });
-        const balanceAfter = await abctoken.balanceOf(follower);
+        await cc.claim(toAddressHash, r, s, v, follower, metamask, {
+          from: metamask,
+        });
+        const balanceAfter = await abctoken.balanceOf(metamask);
         assert.equal(balanceAfter.toString(), "10");
       });
 
       it("emits event", async () => {
-        const receipt = await cc.claim({ from: follower });
-        expectEvent(receipt, "Claim", { to: follower });
+        const receipt = await cc.claim(
+          toAddressHash,
+          r,
+          s,
+          v,
+          follower,
+          metamask,
+          {
+            from: metamask,
+          }
+        );
+        expectEvent(receipt, "Claim", { from: follower, to: metamask });
       });
     });
   });
@@ -428,20 +536,19 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
     let request;
 
     beforeEach(async () => {
-      await link.transfer(follower, web3.utils.toWei("1", "ether"), {
+      await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
         from: defaultAccount,
       });
       await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
-        from: follower,
+        from: metamask,
       });
       const tx = await cc.requestCheckingIsClaimable(
         oc.address,
         jobId,
-        payment,
-        follower.toString(),
-        { from: follower }
+        follower,
+        { from: metamask }
       );
-      request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+      request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
       await oc.fulfillOracleRequest(
         ...oracle.convertFufillParams(request, response, {
           from: oracleNode,
@@ -453,9 +560,9 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
     });
 
     it("set key hash list", async () => {
-      const isClaimable = await cc.isClaimable(follower);
+      const isClaimable = await cc.isClaimable(follower, metamask);
       assert.equal(isClaimable, true);
-      const isNotClaimable = await cc.isClaimable(stranger);
+      const isNotClaimable = await cc.isClaimable(stranger, metamask);
       assert.equal(isNotClaimable, false);
     });
 
@@ -490,20 +597,19 @@ contract.skip("AudiusFollowersCampaign", (accounts) => {
     let request;
 
     beforeEach(async () => {
-      await link.transfer(follower, web3.utils.toWei("1", "ether"), {
+      await link.transfer(metamask, web3.utils.toWei("1", "ether"), {
         from: defaultAccount,
       });
       await link.approve(cc.address, web3.utils.toWei("1", "ether"), {
-        from: follower,
+        from: metamask,
       });
       const tx = await cc.requestCheckingIsClaimable(
         oc.address,
         jobId,
-        payment,
-        follower.toString(),
-        { from: follower }
+        follower,
+        { from: metamask }
       );
-      request = oracle.decodeRunRequest(tx.receipt.rawLogs[4]);
+      request = oracle.decodeRunRequest(tx.receipt.rawLogs[3]);
     });
 
     context("before the expiration time", () => {
