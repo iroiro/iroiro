@@ -1,34 +1,33 @@
 import * as React from "react";
-import { Heading, Loader, Text, Box } from "rimble-ui";
+import { Heading, Text, Box } from "rimble-ui";
 import TokenListItem from "../../molecules/TokenListItem";
-import {UserToken} from "../../../interfaces";
+import { TokenListState } from "../../../reducers/tokens";
 
 export interface TokenListProps {
-    readonly tokens: UserToken[]
-    readonly loading: boolean
+  readonly state: TokenListState;
 }
 
-const TokenList = ({ tokens, loading }: TokenListProps) => (
+const TokenList: React.FC<TokenListProps> = ({ state }) => (
   <div>
-    <Heading as={"h2"}>Token List</Heading>
-    {loading &&
-      <Loader size="80px" m="auto" mt={5} color="itblue"/>
-    }
-    {!loading && tokens.length == 0
-      ? <Text>You don't have any tokens</Text>
-      : <Box>
-          {tokens.map(token => 
-            <TokenListItem
-              key={token.address}
-              name={token.name}
-              balance={token.balance}
-              symbol={token.symbol}
-              address={token.address}
-            />
-          )}
-        </Box>
-    }
+    <Heading as={"h2"} mt={5}>
+      Token List
+    </Heading>
+    {state.tokens.length === 0 ? (
+      <Text>You don`&apos;`t have any tokens</Text>
+    ) : (
+      <Box>
+        {state.tokens.map((token) => (
+          <TokenListItem
+            key={token.tokenAddress}
+            type={state.type}
+            color={state.color}
+            name={token.name}
+            address={token.tokenAddress}
+          />
+        ))}
+      </Box>
+    )}
   </div>
-)
+);
 
-export default TokenList
+export default TokenList;

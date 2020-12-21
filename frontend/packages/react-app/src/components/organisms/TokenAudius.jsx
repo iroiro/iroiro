@@ -1,18 +1,13 @@
-import React from "react"
-import {
-  Loader,
-  Box,
-  Flex,
-  Flash,
-} from "rimble-ui";
+import React from "react";
+import { Loader, Box, Flex, Flash } from "rimble-ui";
 
-import SignInAudius from "../molecules/SignInAudius"
-import SignOutAudius from "../molecules/SignOutAudius"
-import AudiusAccount from "../molecules/AudiusAccount"
-import AudiusAddressInput from "../molecules/AudiusAddressInput"
-import AudiusWithdrawToken from "../molecules/AudiusWithdrawToken"
-import CheckClaimable from "../molecules/CheckClaimable"
-import UserTokenInfo from "../molecules/UserTokenInfo"
+import SignInAudius from "../molecules/SigninAudius";
+import SignOutAudius from "../molecules/SignOutAudius";
+import AudiusAccount from "../molecules/AudiusAccount";
+import AudiusAddressInput from "../molecules/AudiusAddressInput";
+import AudiusWithdrawToken from "../molecules/AudiusWithdrawToken";
+import CheckClaimable from "../molecules/CheckClaimable";
+import UserTokenInfo from "../molecules/UserTokenInfo";
 
 const TokenAudius = ({
   libs,
@@ -41,18 +36,12 @@ const TokenAudius = ({
         audiusSignIn={signIn}
       />
     )}
-    {isSigningIn && (
-      <Loader size="80px" m="auto" />
-    )}
+    {isSigningIn && <Loader size="80px" m="auto" />}
     {myAccount && (
       <Box>
-        <AudiusAccount
-          myAccount={myAccount}
-        />
+        <AudiusAccount myAccount={myAccount} />
         <Flex style={{ justifyContent: "flex-end" }}>
-          <SignOutAudius
-            audiusSignOut={signOut}
-          />
+          <SignOutAudius audiusSignOut={signOut} />
         </Flex>
         <AudiusAddressInput
           addressSubmit={addressSubmit}
@@ -60,31 +49,27 @@ const TokenAudius = ({
           addressValue={addressValue}
         />
         {/* { isRequestAddress && */}
-          <UserTokenInfo
-            tokenInfo={tokenInfo}
-          />
+        <UserTokenInfo tokenInfo={tokenInfo} />
         {/* } */}
         {/* { isRequestAddress && */}
-          <CheckClaimable
-            checkAudiusStatus={checkAudiusStatus}
-          />
+        <CheckClaimable checkAudiusStatus={checkAudiusStatus} />
         {/* } */}
-        { !isClaimable && (
+        {!isClaimable && (
           <Flash my={3} variant="danger">
             You can't withdraw tokens from this contract.
           </Flash>
         )}
-        {distributedAmount > 0 &&
+        {distributedAmount > 0 && (
           <AudiusWithdrawToken
             distributedAmount={distributedAmount}
             withdrawToken={withdrawToken}
             isWithdrawLoading={isWithdrawLoading}
             tokenInfo={tokenInfo}
           />
-        }
+        )}
       </Box>
     )}
   </Box>
-)
+);
 
-export default TokenAudius
+export default TokenAudius;

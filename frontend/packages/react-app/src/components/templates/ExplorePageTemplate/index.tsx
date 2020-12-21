@@ -1,24 +1,33 @@
-import React from "react"
-import { Box } from "rimble-ui"
-import AppHeader from "../../molecules/AppHeader"
-import TokenList from "../../organisms/TokenList"
-import {UserToken, Web3Props} from "../../../interfaces";
+import React from "react";
+import { Box, Heading, Text } from "rimble-ui";
+import AppHeader from "../../molecules/AppHeader";
+import TokenList from "../../organisms/TokenList";
+import { TokenListState, ACTIONS } from "../../../reducers/tokens";
+import SetTokenModal from "../../organisms/SetTokenModal";
+import AddNewToken from "../../atoms/AddNewToken";
 
-export interface ExportPageTemplateProps extends Web3Props {
-    readonly tokens: UserToken[]
-    readonly loading: boolean
+export interface ExplorePageTemplateProps {
+  readonly state: TokenListState;
+  dispatch: React.Dispatch<ACTIONS>;
 }
 
-const ExplorePageTemplate = ({ provider, loadWeb3Modal, tokens, loading}: ExportPageTemplateProps) => (
+const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
+  state,
+  dispatch,
+}) => (
   <div>
-    <AppHeader provider={provider} loadWeb3Modal={loadWeb3Modal}/>
-    <Box m={"auto"} my={5} width={[4/5, 3/4]} >
-      <TokenList
-        tokens={tokens}
-        loading={loading}
-      />
+    <AppHeader />
+    <Box m={"auto"} my={5} width={[3 / 4, 1 / 2]}>
+      <Heading as={"h1"}>Token Explorer</Heading>
+      <Text>
+        Check the status of the tokens you have been distributed and information
+        on the campaign.
+      </Text>
+      <TokenList state={state} />
+      <AddNewToken color={state.color} dispatch={dispatch} />
+      <SetTokenModal state={state} dispatch={dispatch} />
     </Box>
   </div>
-)
+);
 
-export default ExplorePageTemplate
+export default ExplorePageTemplate;

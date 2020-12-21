@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname $0)/_/husky.sh"
+
+yarn --cwd frontend/packages/react-app/ run eslint src
+yarn --cwd frontend/packages/react-app/ run typecheck

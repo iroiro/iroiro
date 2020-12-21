@@ -9,18 +9,14 @@
   ],
   "private": true,
   "scripts": {
-    "subgraph:auth": "yarn workspace @project/subgraph auth",
-    "subgraph:codegen": "yarn workspace @project/subgraph codegen",
-    "subgraph:build": "yarn workspace @project/subgraph build",
-    "subgraph:deploy": "yarn workspace @project/subgraph deploy",
-    "subgraph:deploy:local": "yarn workspace @project/subgraph create-local && yarn workspace @project/subgraph deploy-local",
-    "subgraph:remove:local": "yarn workspace @project/subgraph remove-local ",
     "react-app:build": "yarn workspace @project/react-app build",
     "react-app:eject": "yarn workspace @project/react-app eject",
     "react-app:ipfs": "yarn workspace @project/react-app ipfs",
     "react-app:start": "yarn workspace @project/react-app start",
     "react-app:test": "yarn workspace @project/react-app test",
-    "react-app:storybook": "yarn workspace @project/react-app storybook"
+    "react-app:storybook": "yarn workspace @project/react-app storybook",
+    "react-app:lint": "yarn workspace @project/react-app lint",
+    "react-app:typecheck": "yarn workspace @project/react-app typecheck"
   },
   "workspaces": {
     "nohoist": [

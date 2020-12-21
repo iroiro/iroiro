@@ -29,13 +29,3 @@ services:
     depends_on:
       - postgresql
     entrypoint: "/bin/bash"
-
-  adapter:
-    container_name: adapter
-    ports:
-      - 3000:3000
-    build:
-      context: ../adapter
-      dockerfile: ./Dockerfile
-    restart: on-failure
-    command: yarn start

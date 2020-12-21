@@ -1,55 +1,47 @@
-import * as React from 'react';
-import {Story, Meta} from '@storybook/react/types-6-0'
-import {BrowserRouter} from "react-router-dom";
-import TokenList, {TokenListProps} from "./index";
-import {UserToken} from "../../../interfaces";
+import * as React from "react";
+import { Story, Meta } from "@storybook/react/types-6-0";
+import { BrowserRouter } from "react-router-dom";
+import TokenList, { TokenListProps } from "./index";
+import { tokenListState } from "../../../utils/mockData";
 
 export default {
-    title: "Molecules/TokenList",
-    component: TokenList
-} as Meta
+  title: "Organisms/TokenList",
+  component: TokenList,
+} as Meta;
 
 const Template: Story<TokenListProps> = (args) => (
-    <BrowserRouter>
-        <TokenList {...args} />
-    </BrowserRouter>
-)
+  <BrowserRouter>
+    <TokenList {...args} />
+  </BrowserRouter>
+);
 
-const tokens: UserToken[] = [
-    {
-        address: "0xabcd....1234",
-        name: "Iroiro Token",
-        symbol: "IRO",
-        balance: "2000000000"
-    },
-    {
-        address: "0xabcd....1234",
-        name: "Storybook Token",
-        symbol: "STR",
-        balance: "1000000000"
-    },
-    {
-        address: "0xabcd....1234",
-        name: "Test Token",
-        symbol: "TST",
-        balance: "3000000000"
-    }
-]
-
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
-    tokens,
-    loading: false
-}
+  state: tokenListState,
+};
 
-export const NoTokens = Template.bind({})
+export const NoTokens = Template.bind({});
 NoTokens.args = {
+  state: {
+    ...tokenListState,
     tokens: [],
-    loading: false
-}
+    isOpen: false,
+    tokenAddress: "0x",
+    inputTokenAddress: "0x",
+    type: "dashboard",
+    color: "itblue",
+  },
+};
 
-export const Loading = Template.bind({})
+export const Loading = Template.bind({});
 Loading.args = {
+  state: {
+    ...tokenListState,
     tokens: [],
-    loading: true
-}
+    isOpen: false,
+    tokenAddress: "0x",
+    inputTokenAddress: "0x",
+    type: "dashboard",
+    color: "itblue",
+  },
+};

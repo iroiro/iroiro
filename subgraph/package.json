@@ -1,0 +1,24 @@
+{
+  "name": "@project/subgraph",
+  "version": "1.0.0",
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.18.0",
+    "@graphprotocol/graph-ts": "0.18.1"
+  },
+  "license": "UNLICENSED",
+  "scripts": {
+    "auth": "node_modules/.bin/graph auth https://api.thegraph.com/deploy/ $GRAPH_ACCESS_TOKEN",
+    "build": "node_modules/.bin/graph build",
+    "codegen": "node_modules/.bin/graph codegen --output-dir src/types/",
+    "deploy:mainnet": "node_modules/.bin/graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ TART-tokyo/iroiro",
+    "deploy:rinkeby": "node_modules/.bin/graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ TART-tokyo/iroiro-rinkeby",
+    "deploy:kovan": "node_modules/.bin/graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ TART-tokyo/iroiro-kovan-dev",
+    "create-local": "node_modules/.bin/graph create --node http://localhost:8020/ TART-tokyo/iroiro",
+    "remove-local": "node_modules/.bin/graph remove --node http://localhost:8020/ TART-tokyo/iroiro",
+    "deploy-local": "node_modules/.bin/graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 TART-tokyo/iroiro",
+    "format": "yarn prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "2.1.2"
+  }
+}
