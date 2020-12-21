@@ -2,6 +2,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { TokenBasic } from "../interfaces";
 import { FanToken__factory as FanTokenFactory } from "../types";
 import { CCTWalletDistributor__factory as CCTWalletDistributor } from "../types";
+import { CampaignInterface__factory as Campaign } from "../types";
 import BN from "bn.js";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
@@ -40,6 +41,20 @@ export const getWalletBalance = async (
   const walletAddress = await signer.getAddress();
   const erc20 = FanTokenFactory.connect(tokenAddress, signer);
   const balance = await erc20.balanceOf(walletAddress);
+  return balance.toString();
+};
+
+export const getContractTokenBalance = async (
+  library: Web3Provider | undefined,
+  tokenAddress: string,
+  contractAddress: string
+): Promise<string | undefined> => {
+  if (!library || tokenAddress === "") {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+  const balance = await erc20.balanceOf(contractAddress);
   return balance.toString();
 };
 
@@ -116,6 +131,41 @@ export const createCampaign = async (
       startDate,
       endDate
     )
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const cancelCampaign = async (
+  library: Web3Provider | undefined,
+  campaignAddress: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+
+  const campaignContract = Campaign.connect(campaignAddress, signer);
+
+  return campaignContract
+    .cancelCampaign()
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const refundCampaign = async (
+  library: Web3Provider | undefined,
+  campaignAddress: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const campaignContract = Campaign.connect(campaignAddress, signer);
+
+  return campaignContract
+    .refundRemainingTokens()
     .then((transaction: ContractTransaction) => {
       return transaction;
     });

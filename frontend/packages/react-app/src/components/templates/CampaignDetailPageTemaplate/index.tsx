@@ -1,48 +1,63 @@
 import React from "react";
-import { Heading, Button, Box } from "rimble-ui";
+import { Heading, Button, Box, Flex } from "rimble-ui";
 import AppHeader from "../../molecules/AppHeader";
 import Container from "../../atoms/Container";
 import CampaignDetail from "../../organisms/CampaignDetail";
-import { AccountToken, Target, CampaignInfo } from "../../../interfaces";
-import DistributionTargets from "../../organisms/DistributionTargets";
-import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
-import { DISTRIBUTOR_ACTIONS } from "../../../reducers/distributorForm";
+import { AccountToken } from "../../../interfaces";
+import { CampaignData } from "../../../reducers/campaign";
+import { ACTIONS } from "../../../reducers/campaign";
 
 export interface CampaignInfoProps {
   readonly tokenInfo: AccountToken;
-  readonly targets: Target[];
-  readonly targetNumber: number;
-  readonly campaignInfo: CampaignInfo;
-  readonly audiusState: AudiusState;
-  readonly audiusDispatch: React.Dispatch<AUDIUS_ACTIONS>;
-  distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly targetNumber: string;
+  readonly campaignData: CampaignData;
+  campaignDispatch: React.Dispatch<ACTIONS>;
 }
 
 const CampaignDetailPageTemaplate: React.FC<CampaignInfoProps> = ({
-  targets,
   targetNumber,
-  campaignInfo,
-  audiusState,
-  audiusDispatch,
-  distributorFormDispatch,
+  campaignData,
+  campaignDispatch,
 }) => (
   <div>
     <AppHeader />
     <Container>
-      <Heading as={"h1"}>Audius Follower Campaign</Heading>
-      <DistributionTargets
-        distributionTargets={targets}
-        targetNumber={targetNumber}
-        audiusState={audiusState}
-        audiusDispatch={audiusDispatch}
-        distributorFormDispatch={distributorFormDispatch}
-      />
-      <CampaignDetail campaignInfo={campaignInfo} />
-      <Box mt={4} style={{ textAlign: "center" }}>
-        <Button.Outline size="small" m="auto" mainColor="danger">
-          Cancel campaign
-        </Button.Outline>
-      </Box>
+      <Flex style={{ justifyContent: "space-between" }}>
+        <Heading as={"h1"}>Audius Follower Campaign</Heading>
+        <Box mt={4} style={{ textAlign: "center" }}>
+          {campaignData.campaign.status === 0 && !campaignData.canRefund && (
+            <Button.Outline
+              size="small"
+              m="auto"
+              mainColor="danger"
+              onClick={() =>
+                campaignDispatch({
+                  type: "campaign:cancel",
+                  payload: { data: true },
+                })
+              }
+            >
+              Cancel campaign
+            </Button.Outline>
+          )}
+          {campaignData.canRefund && (
+            <Button.Outline
+              size="small"
+              m="auto"
+              mainColor="itblue"
+              onClick={() =>
+                campaignDispatch({
+                  type: "campaign:refund",
+                  payload: { data: true },
+                })
+              }
+            >
+              End campaign and refund tokens
+            </Button.Outline>
+          )}
+        </Box>
+      </Flex>
+      <CampaignDetail campaignData={campaignData} targetNumber={targetNumber} />
     </Container>
   </div>
 );

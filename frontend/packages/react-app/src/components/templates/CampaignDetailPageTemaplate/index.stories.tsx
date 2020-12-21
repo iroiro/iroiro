@@ -2,11 +2,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import CampaignDetailPageTemaplate, { CampaignInfoProps } from "./index";
-import {
-  distributionTargets,
-  campaign,
-  tokenInfo,
-} from "../../../utils/mockData";
+import { campaign, tokenInfo } from "../../../utils/mockData";
 
 export default {
   title: "Templates/CampaignDetailPageTemaplate",
@@ -22,7 +18,12 @@ const Template: Story<CampaignInfoProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   tokenInfo: tokenInfo,
-  targets: distributionTargets,
-  targetNumber: 1234567890123450,
-  campaignInfo: campaign,
+  targetNumber: "1234567890123450",
+  campaignData: {
+    campaign,
+    isCancelRequest: false,
+    isRefundRequest: false,
+    canRefund: false,
+    depositTokens: "100000",
+  },
 };
