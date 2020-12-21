@@ -16,6 +16,9 @@ export const useGetTransferEvents = (
   const [error, setError] = useState<any | undefined>();
 
   useEffect(() => {
+    if (loading || error) {
+      return;
+    }
     const f = async () => {
       if (!library || tokenAddress === "") {
         setError("Invalid arguments.");
@@ -36,7 +39,7 @@ export const useGetTransferEvents = (
       setResult(allEvents);
     };
     f();
-  }, [library, tokenAddress]);
+  }, [loading, error, result, library, tokenAddress]);
 
   return { result, loading, error };
 };

@@ -27,10 +27,7 @@ const CampaignDetailPage: React.FC<
   const { library } = useWeb3React();
   const [getCampaign, { data }] = useLazyQuery(GET_CAMPAIGN);
 
-  const [tokenState, tokenDispatch] = useReducer(
-    tokenReducer,
-    tokenInitialState
-  );
+  const [tokenState] = useReducer(tokenReducer, tokenInitialState);
 
   const [campaignState, campaignDispatch] = useReducer(
     campaignReducer,
@@ -119,7 +116,7 @@ const CampaignDetailPage: React.FC<
         payload: { data: String(balance) },
       });
     },
-    [campaignAddress]
+    []
   );
 
   useEffect(() => {
@@ -128,7 +125,7 @@ const CampaignDetailPage: React.FC<
         id: campaignAddress.toLowerCase(),
       },
     });
-  }, [campaignAddress]);
+  }, [getCampaign, campaignAddress]);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -150,13 +147,13 @@ const CampaignDetailPage: React.FC<
       getCampaignMetadata(data.campaign);
       getTargets(data.campaign);
     }
-  }, [data]);
+  }, [data, getTargets]);
 
   useEffect(() => {
     if (library && campaignAddress !== "" && tokenAddress !== "") {
       getBalance(library, tokenAddress, campaignAddress);
     }
-  }, [library, tokenAddress, campaignAddress]);
+  }, [library, tokenAddress, campaignAddress, getBalance]);
 
   useEffect(() => {
     if (
@@ -174,11 +171,7 @@ const CampaignDetailPage: React.FC<
     ) {
       refund(library, campaignAddress);
     }
-  }, [library, campaignState]);
-
-  useEffect(() => {
-    console.log(campaignState);
-  }, [campaignState]);
+  }, [library, campaignState, campaignAddress, cancel, refund]);
 
   return (
     <>

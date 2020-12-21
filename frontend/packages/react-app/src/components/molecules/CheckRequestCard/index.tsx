@@ -86,7 +86,7 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
     }
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
-  }, [approve]);
+  }, [approve, requestCheck]);
 
   return (
     <Grid container spacing={5}>
