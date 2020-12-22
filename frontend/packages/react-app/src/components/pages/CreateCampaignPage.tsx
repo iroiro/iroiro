@@ -95,7 +95,6 @@ const CreateCampaignPage: React.FC<
   const audiusSignIn = useCallback(
     async (email, password) => {
       console.log(email);
-      console.log(password);
 
       const { user } = await libs.Account.login(email, password);
       console.log(user);
