@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import CampaignDetailPageTemaplate from "../templates/CampaignDetailPageTemaplate";
+import CampaignDetailPageTemplate from "../templates/CampaignDetailPageTemplate";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import { GET_CAMPAIGN } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
@@ -11,7 +11,7 @@ import {
   getContractTokenBalance,
 } from "../../utils/web3";
 import { useWeb3React } from "@web3-react/core";
-import moment from "moment";
+import dayjs from "dayjs";
 import { CampaignInfo } from "../../interfaces";
 
 const CampaignDetailPage: React.FC<
@@ -56,9 +56,7 @@ const CampaignDetailPage: React.FC<
   }, []);
 
   const getDateString = (timestamp: number) => {
-    const dateString = moment(Number(timestamp) * 1000)
-      .local()
-      .format("MM-DD-YYYY");
+    const dateString = dayjs(Number(timestamp) * 1000).format("MM-DD-YYYY");
     return dateString;
   };
 
@@ -132,7 +130,8 @@ const CampaignDetailPage: React.FC<
   useEffect(() => {
     if (data !== undefined) {
       let canRefund = false;
-      if (data.campaign.endDate < new Date().getTime()) {
+
+      if (data.campaign.endDate * 1000 < new Date().getTime()) {
         canRefund = true;
       }
 
@@ -177,7 +176,7 @@ const CampaignDetailPage: React.FC<
 
   return (
     <>
-      <CampaignDetailPageTemaplate
+      <CampaignDetailPageTemplate
         tokenInfo={tokenState}
         targetNumber={tartgetNumber}
         campaignData={campaignState}

@@ -14,7 +14,7 @@ export interface CampaignInfoProps {
   campaignDispatch: React.Dispatch<ACTIONS>;
 }
 
-const CampaignDetailPageTemaplate: React.FC<CampaignInfoProps> = ({
+const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
   targetNumber,
   campaignData,
   campaignDispatch,
@@ -62,4 +62,4 @@ const CampaignDetailPageTemaplate: React.FC<CampaignInfoProps> = ({
   </div>
 );
 
-export default CampaignDetailPageTemaplate;
+export default CampaignDetailPageTemplate;
