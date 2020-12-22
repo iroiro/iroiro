@@ -13,7 +13,7 @@ const TokenList: React.FC<TokenListProps> = ({ state }) => (
       Token List
     </Heading>
     {state.tokens.length === 0 ? (
-      <Text>You don`&apos;`t have any tokens</Text>
+      <Text>You don&apos;t have any tokens</Text>
     ) : (
       <Box>
         {state.tokens.map((token) => (

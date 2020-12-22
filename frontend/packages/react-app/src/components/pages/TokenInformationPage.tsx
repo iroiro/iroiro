@@ -37,7 +37,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
     GET_CLAIM
   );
-  const { result, loading, error } = useGetWalletBalance(library, tokenAddress);
+  const { loading, error } = useGetWalletBalance(library, tokenAddress);
   const { allowance } = useGetAllowance(
     library,
     LINK_TOKEN_ADDRESS,
