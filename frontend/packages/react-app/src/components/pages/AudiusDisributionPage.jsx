@@ -186,10 +186,7 @@ const AudiusDisributionPage = () => {
       setLibs(libs);
       // const user = libs.Account.getCurrentUser();
       console.log("***************************************************");
-      const { user } = await libs.Account.login(
-        "toshi@tart.tokyo",
-        "toppi28123"
-      );
+      const { user } = await libs.Account.login();
       console.log(user);
       console.log("***************************************************");
       if (user) {
