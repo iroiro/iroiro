@@ -62,12 +62,10 @@ const init = async () => {
   return libs;
 };
 
-const CreateCampaignPage: React.FC<
-  RouteComponentProps<{
-    tokenAddress: string;
-    distributorAddress: string;
-  }>
-> = (props) => {
+const CreateCampaignPage: React.FC<RouteComponentProps<{
+  tokenAddress: string;
+  distributorAddress: string;
+}>> = (props) => {
   const { library, active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const distributorAddress = props.match.params.distributorAddress;
@@ -98,12 +96,12 @@ const CreateCampaignPage: React.FC<
 
       const { user } = await libs.Account.login(email, password);
       console.log(user);
-      // const followers = await libs.User.getFollowersForUser(
-      //   100,
-      //   0,
-      //   user.user_id
-      // );
-      // console.log(followers);
+      const followers = await libs.User.getFollowersForUser(
+        100,
+        0,
+        user.user_id
+      );
+      console.log(followers);
       // setAudiusAccount(user);
       // setAudiusFollowers(followers);
     },
