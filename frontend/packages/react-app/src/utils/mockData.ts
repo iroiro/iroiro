@@ -209,8 +209,8 @@ export const distributorFormState: createCampaignState = {
   step: 1,
   approveAmount: "10000",
   campaignName: "Audius Followers Campaign",
-  startDate: new Date("2021-01-01T00:00:00"),
-  endDate: new Date("2021-01-01T00:00:00"),
+  startDate: new Date("2021-01-01T00:00:00").getTime(),
+  endDate: new Date("2021-01-01T00:00:00").getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
 };

@@ -17,5 +17,12 @@ const Template: Story<CampaignDetailProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  campaignInfo: campaign,
+  campaignData: {
+    campaign,
+    isCancelRequest: false,
+    isRefundRequest: false,
+    canRefund: false,
+    depositTokens: "100000",
+  },
+  targetNumber: "100000",
 };

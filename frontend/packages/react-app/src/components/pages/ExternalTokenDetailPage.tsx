@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useReducer } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
-import { campaignReducer } from "../../reducers/campaign";
+import { campaignsReducer } from "../../reducers/campaigns";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { CampaignInfo } from "../../interfaces";
@@ -23,7 +23,7 @@ const ExternalTokenDetailPage: React.FC<
     tokenInitialState
   );
   const [campaignsState, campaignDispatch] = useReducer(
-    campaignReducer,
+    campaignsReducer,
     campaignsInitialState
   );
   const [getCampaigns, { data }] = useLazyQuery(GET_CAMPAIGNS);
