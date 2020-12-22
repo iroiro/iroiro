@@ -56,7 +56,9 @@ const CampaignDetailPage: React.FC<
   }, []);
 
   const getDateString = (timestamp: number) => {
-    const dateString = moment(Number(timestamp)).local().format("MM-DD-YYYY");
+    const dateString = moment(Number(timestamp) * 1000)
+      .local()
+      .format("MM-DD-YYYY");
     return dateString;
   };
 

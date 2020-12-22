@@ -190,14 +190,17 @@ const CreateCampaignPage: React.FC<
       startDate,
       endDate
     ) => {
+      const secondsStartDate = startDate / 1000;
+      const secondsEndDate = endDate / 1000;
+
       createCampaign(
         library,
         tokenAddress,
         campaignInfoCid,
         recipientsCid,
         recipientsNum,
-        startDate,
-        endDate
+        secondsStartDate,
+        secondsEndDate
       ).then((transaction) => {
         if (transaction === undefined) {
           return;
@@ -278,8 +281,8 @@ const CreateCampaignPage: React.FC<
       campaignInfoCid,
       recipientsCid,
       recipientsNum,
-      distributorFormState.startDate.getTime(),
-      distributorFormState.endDate.getTime()
+      distributorFormState.startDate,
+      distributorFormState.endDate
     );
   }, [
     library,

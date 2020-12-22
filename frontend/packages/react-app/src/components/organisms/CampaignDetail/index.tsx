@@ -26,7 +26,7 @@ const CampaignDetail: React.FC<CampaignDetailProps> = ({
           </Flex>
           <Flex mt={4} style={{ alignItems: "center", justifyContent: "left" }}>
             <Item
-              title="Deposited tokens amount"
+              title="Campaign tokens balance"
               text={campaignData.depositTokens}
             />
           </Flex>
