@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { Card, CardContent, Typography, Link, Box } from "@material-ui/core";
 import { CampaignInfo } from "../../../interfaces";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 import styled from "styled-components";
@@ -18,17 +10,10 @@ export interface TokenCampaignCardProps {
   readonly dispatch: React.Dispatch<TokenInformationAction>;
 }
 
-const RelativeCard = styled(Card)`
-  position: relative;
-`;
-
-const AbsoluteChip = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
-
-const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({ campaign, dispatch }) => {
+const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
+  campaign,
+  dispatch,
+}) => {
   const onClickDetail = () => {
     dispatch({
       type: "campaignAddress:set",
@@ -39,29 +24,23 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({ campaign, dispatc
   };
 
   return (
-    <Grid item key={campaign.id} xs={12}>
-      <RelativeCard>
-        <AbsoluteChip>
+    <Card key={campaign.id} style={{ marginTop: "12px" }}>
+      <CardContent>
+        <Box display="flex" justifyContent="space-between">
+          <Link component="button" onClick={() => onClickDetail()}>
+            <Typography variant="h5">
+              {campaign.campaignMetadata.name}
+            </Typography>
+          </Link>
           <CampaignStatusChip status={campaign.status} />
-        </AbsoluteChip>
-        <CardHeader title={campaign.campaignMetadata.name} />
-        <CardContent>
-          {campaign.campaignMetadata && (
-            <Typography>{campaign.campaignMetadata.description}</Typography>
-          )}
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() => onClickDetail()}
-          >
-            Detail
-          </Button>
-        </CardActions>
-      </RelativeCard>
-    </Grid>
+        </Box>
+        {campaign.campaignMetadata ? (
+          <Typography>{campaign.campaignMetadata.description}</Typography>
+        ) : (
+          <Typography>No description</Typography>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

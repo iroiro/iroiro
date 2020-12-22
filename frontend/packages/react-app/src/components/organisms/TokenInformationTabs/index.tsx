@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  AppBar,
   Box,
   Container,
   makeStyles,
@@ -48,7 +47,6 @@ function a11yProps(index: number) {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
   },
   chart: {
     paddingTop: theme.spacing(6),
@@ -73,23 +71,22 @@ export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
   return (
     <div className={classes.root}>
       <TokenInformationBar state={state} />
-      <AppBar position="static">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="simple tabs example"
-          scrollButtons="auto"
-          indicatorColor="primary"
-          centered
-        >
-          <Tab label="Basic" {...a11yProps(0)} />
-          <Tab label="Campaigns" {...a11yProps(1)} />
-          <Tab label="Creator Log" {...a11yProps(2)} />
-          <Tab label="Donation" {...a11yProps(3)} />
-          <Tab label="User History" {...a11yProps(4)} />
-        </Tabs>
-      </AppBar>
-      <Container maxWidth="sm">
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        scrollButtons="auto"
+        indicatorColor="primary"
+        textColor="primary"
+        style={{ backgroundColor: "white" }}
+        centered
+      >
+        <Tab label="Basic" {...a11yProps(0)} />
+        <Tab label="Campaigns" {...a11yProps(1)} />
+        <Tab label="Creator Log" {...a11yProps(2)} />
+        <Tab label="Donation" {...a11yProps(3)} />
+        <Tab label="User History" {...a11yProps(4)} />
+      </Tabs>
+      <Container maxWidth="md">
         <TabPanel value={value} index={0}>
           <BasicTokenInformation state={state} />
         </TabPanel>
@@ -101,10 +98,14 @@ export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
           )}
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Coming soon...
+          <Box pt={8} textAlign="center">
+            Coming soon...
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          Coming soon...
+          <Box pt={8} textAlign="center">
+            Coming soon...
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={4}>
           <UserHistory state={state} />

@@ -31,29 +31,31 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
   const classes = useStyles();
 
   return (
-    <Grid container spacing={5}>
-      <Grid item xs={12}>
-        <RelativeContainer>
-          <AbsoluteChip>
-            <CampaignStatusChip status={campaign.status} />
-          </AbsoluteChip>
-          <Paper className={classes.container}>
-            <Typography variant="h4" component="h2">
-              {campaign.campaignMetadata.name}
-            </Typography>
-            <Typography>
-              Name: {campaign.campaignMetadata.description}
-            </Typography>
-            <Typography>
-              Start Date:{" "}
-              {new Date(
-                parseInt(campaign.startDate) * 1000
-              ).toLocaleDateString()}
-            </Typography>
-          </Paper>
-        </RelativeContainer>
+    <div style={{ marginTop: "24px" }}>
+      <Grid container spacing={5}>
+        <Grid item xs={12}>
+          <RelativeContainer>
+            <AbsoluteChip>
+              <CampaignStatusChip status={campaign.status} />
+            </AbsoluteChip>
+            <Paper className={classes.container}>
+              <Typography variant="h4" component="h2">
+                {campaign.campaignMetadata.name}
+              </Typography>
+              <Typography>
+                Name: {campaign.campaignMetadata.description}
+              </Typography>
+              <Typography>
+                Start Date:{" "}
+                {new Date(
+                  parseInt(campaign.startDate) * 1000
+                ).toLocaleDateString()}
+              </Typography>
+            </Paper>
+          </RelativeContainer>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };
 
