@@ -12,7 +12,7 @@ import { useApproveToken } from "../../../hooks/useApproveToken";
 import { TokenInformationState } from "../../../interfaces";
 import { useWeb3React } from "@web3-react/core";
 import {
-  JOB_ID_AUDIUS_FOLLOWERS,
+  JOB_ID_CCT_WALLET_EA,
   LINK_APPROVE_AMOUNT,
   LINK_TOKEN_ADDRESS,
   ORACLE_ADDRESS,
@@ -60,7 +60,7 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
   const requestCheck = useRequestCheckingIsClaimable(
     library,
     ORACLE_ADDRESS,
-    JOB_ID_AUDIUS_FOLLOWERS,
+    JOB_ID_CCT_WALLET_EA,
     LINK_APPROVE_AMOUNT,
     state?.campaignAddress ?? ""
   );
