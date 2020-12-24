@@ -11,11 +11,12 @@ Globals:
     Timeout: 30
     Environment:
       Variables:
+        FRONTEND_ORIGIN: ""
         PINATA_API_KEY: ""
         PINATA_SECRET_API_KEY: ""
 
 Resources:
-  HelloWorldFunction:
+  PinIpfsFileFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: api/
@@ -28,6 +29,19 @@ Resources:
           Properties:
             Path: /pinning/pinByHash
             Method: POST
+  PreflightFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: api/
+      Handler: api
+      Runtime: go1.x
+      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Events:
+        CatchAll:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /pinning/pinByHash
+            Method: OPTIONS
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -38,7 +52,7 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/pinning/pinByHash/"
   HelloWorldFunction:
     Description: "First Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
+    Value: !GetAtt PinIpfsFileFunction.Arn
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Value: !GetAtt PinIpfsFileFunction.Arn
