@@ -34,11 +34,14 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
           </Link>
           <CampaignStatusChip status={campaign.status} />
         </Box>
-        {campaign.campaignMetadata ? (
-          <Typography>{campaign.campaignMetadata.description}</Typography>
-        ) : (
-          <Typography>No description</Typography>
-        )}
+        <Box mt={2}>
+          {campaign.campaignMetadata &&
+          campaign.campaignMetadata.description != "" ? (
+            <Typography>{campaign.campaignMetadata.description}</Typography>
+          ) : (
+            <Typography>-</Typography>
+          )}
+        </Box>
       </CardContent>
     </Card>
   );

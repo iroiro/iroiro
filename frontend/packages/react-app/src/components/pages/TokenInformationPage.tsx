@@ -123,6 +123,14 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
           return campaign;
         })
       );
+
+      console.log(campaigns);
+      console.log(campaigns);
+      console.log(campaigns);
+      console.log(campaigns);
+      console.log(campaigns);
+      console.log(campaigns);
+
       dispatch({
         type: "campaigns:set",
         payload: { campaigns: campaigns },
