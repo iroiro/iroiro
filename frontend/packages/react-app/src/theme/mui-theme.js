@@ -34,4 +34,12 @@ theme.typography.h5 = {
     fontSize: "1.2rem",
   },
 };
+
+theme.typography.body1 = {
+  fontSize: "1rem",
+  fontWeight: "400",
+  [theme.breakpoints.up("md")]: {
+    fontSize: "1.2rem",
+  },
+};
 export default theme;

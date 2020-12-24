@@ -1,6 +1,13 @@
 import * as React from "react";
 import { CampaignInfo } from "../../../interfaces";
-import { Grid, makeStyles, Paper, Theme, Typography } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  Paper,
+  Theme,
+  Typography,
+  Box,
+} from "@material-ui/core";
 import styled from "styled-components";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 
@@ -15,16 +22,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const RelativeContainer = styled.div`
-  position: relative;
-`;
-
-const AbsoluteChip = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
-
 const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
   campaign,
 }) => {
@@ -32,29 +29,38 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
 
   return (
     <div style={{ marginTop: "24px" }}>
-      <Grid container spacing={5}>
-        <Grid item xs={12}>
-          <RelativeContainer>
-            <AbsoluteChip>
-              <CampaignStatusChip status={campaign.status} />
-            </AbsoluteChip>
-            <Paper className={classes.container}>
-              <Typography variant="h4" component="h2">
-                {campaign.campaignMetadata.name}
-              </Typography>
-              <Typography>
-                Name: {campaign.campaignMetadata.description}
-              </Typography>
-              <Typography>
-                Start Date:{" "}
-                {new Date(
-                  parseInt(campaign.startDate) * 1000
-                ).toLocaleDateString()}
-              </Typography>
-            </Paper>
-          </RelativeContainer>
-        </Grid>
-      </Grid>
+      <Paper className={classes.container}>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h4" component="h2">
+            {campaign.campaignMetadata.name}
+          </Typography>
+          <CampaignStatusChip status={campaign.status} />
+        </Box>
+        <Box mt={2}>
+          <Typography variant="subtitle1">Description:</Typography>
+          <Typography variant="body1">
+            {campaign.campaignMetadata.description != ""
+              ? campaign.campaignMetadata.description
+              : "No description"}
+          </Typography>
+        </Box>
+        <Box display="flex" justifyContent="start" mt={2}>
+          <Box>
+            <Typography variant="subtitle1">Start Date:</Typography>
+            <Typography variant="h5">
+              {new Date(
+                parseInt(campaign.startDate) * 1000
+              ).toLocaleDateString()}
+            </Typography>
+          </Box>
+          <Box ml={8}>
+            <Typography variant="subtitle1">End Date:</Typography>
+            <Typography variant="h5">
+              {new Date(parseInt(campaign.endDate) * 1000).toLocaleDateString()}
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
     </div>
   );
 };

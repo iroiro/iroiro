@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Grid, Typography, Box } from "@material-ui/core";
+import { Grid, Typography, Box, Paper } from "@material-ui/core";
 import TokenCampaignCard from "../../molecules/TokenCampaignCard";
 import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
 import { TokenInformationState } from "../../../interfaces";
@@ -17,7 +17,13 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
 }) => (
   <Grid container spacing={4} direction="column">
     {campaigns.length === 0 ? (
-      <Typography>No campaigns for this Token yet.</Typography>
+      <Box mt={4}>
+        <Paper>
+          <Box p={8} textAlign="center">
+            <Typography>No campaigns for this Token yet.</Typography>
+          </Box>
+        </Paper>
+      </Box>
     ) : (
       <Box mt={4}>
         {campaigns.map((campaign) => (
