@@ -53,6 +53,7 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
         <Button
           onClick={() => audiusDispatch({ type: "audius:login" })}
           mainColor={"#7e1bcc"}
+          disabled={!audiusState.isLibsActive}
         >
           Sign In
         </Button>

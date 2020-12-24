@@ -7,16 +7,12 @@ import { Box } from "@material-ui/core";
 import { DISTRIBUTOR_ACTIONS } from "../../../reducers/distributorForm";
 
 export interface TargetsProps {
-  readonly distributionTargets: Target[];
-  readonly targetNumber: number;
   readonly audiusState: AudiusState;
   readonly audiusDispatch: React.Dispatch<AUDIUS_ACTIONS>;
   distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
 const DistributionTargets: React.FC<TargetsProps> = ({
-  distributionTargets,
-  targetNumber,
   audiusState,
   audiusDispatch,
   distributorFormDispatch,
@@ -25,11 +21,10 @@ const DistributionTargets: React.FC<TargetsProps> = ({
     <Heading>1. Check your followers list</Heading>
     <Flex style={{ justifyContent: "space-between", alignItems: "center" }}>
       <Heading as={"h3"}>Audius Followers list</Heading>
-      <Text>Total users: {targetNumber}</Text>
+      <Text>Total users: {audiusState.followers.length}</Text>
     </Flex>
 
     <DistributionTargetList
-      distributionTargets={distributionTargets}
       audiusState={audiusState}
       audiusDispatch={audiusDispatch}
     />
