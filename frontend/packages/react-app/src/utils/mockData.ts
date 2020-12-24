@@ -87,7 +87,7 @@ export const tokenInformationState: TokenInformationState = {
   isCampaignClaimable: false,
   isCampaignClaimed: false,
   userAddress: "0x0000000000000000000000000000000000000000",
-  userBalance: "1234500000",
+  userBalance: "1234500000000000000000000",
   campaignAddress: "0xcc22b3199013627708d05fedf9b854bd7706a156",
   activities: [
     {

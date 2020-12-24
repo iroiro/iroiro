@@ -29,7 +29,7 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
   }
 
   return (
-    <>
+    <div style={{ marginTop: "24px" }}>
       <TokenCampaignDetail campaign={campaign} />
       <TokenRequestCard state={state} dispatch={dispatch} />
       {state.isTokenCheckFinished && (
@@ -41,7 +41,7 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
           isClaimed={state.isCampaignClaimed}
         />
       )}
-    </>
+    </div>
   );
 };
 

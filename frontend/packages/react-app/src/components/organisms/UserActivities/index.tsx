@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Paper, Box } from "@material-ui/core";
 import { TokenInformationState } from "../../../interfaces";
 import UserActivityCard from "../../molecules/UserActivityCard";
 
@@ -10,14 +10,18 @@ export interface UserActivitiesProps {
 const UserActivities: React.FC<UserActivitiesProps> = ({
   state: { activities, token },
 }) => (
-  <div>
-    <Typography variant="h5" component="h3">
-      Activities
-    </Typography>
+  <>
+    <Box mb={1}>
+      <Typography variant="h3">Activities</Typography>
+    </Box>
     {activities.length === 0 ? (
-      <Typography>No activities for this Token yet.</Typography>
+      <Paper>
+        <Box py={8} textAlign="center">
+          <Typography>No activities for this Token yet.</Typography>
+        </Box>
+      </Paper>
     ) : (
-      <Grid container spacing={4} direction="column">
+      <Grid container spacing={1} direction="column">
         {activities.map((activity) => (
           <Grid key={activity.timestamp} item xs={12}>
             <UserActivityCard activity={activity} token={token} />
@@ -25,7 +29,7 @@ const UserActivities: React.FC<UserActivitiesProps> = ({
         ))}
       </Grid>
     )}
-  </div>
+  </>
 );
 
 export default UserActivities;

@@ -1,6 +1,13 @@
 import * as React from "react";
 import { TokenInformationState } from "../../../interfaces";
-import { Card, CardContent, makeStyles, Typography } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  makeStyles,
+  Typography,
+  Box,
+  Container,
+} from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,18 +29,39 @@ const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
   const classes = useStyles();
 
   return (
-    <div>
+    <div style={{ marginTop: "24px" }}>
       <Card>
         <CardContent>
-          {!token ? (
-            <Typography>Loading Token information...</Typography>
-          ) : (
-            <>
-              <Typography>Name: {token.name}</Typography>
-              <Typography>Symbol: {token.symbol}</Typography>
-              <Typography>Total Supply: {token.totalSupply}</Typography>
-            </>
-          )}
+          <Container>
+            {!token ? (
+              <Box my={4}>
+                <Typography>Loading Token information...</Typography>
+              </Box>
+            ) : (
+              <>
+                <Box display="flex" justifyContent="start" mt={2}>
+                  <Box>
+                    <Typography variant="subtitle1">Name:</Typography>
+                    <Typography variant="h4">{token.name}</Typography>
+                  </Box>
+                  <Box ml={8}>
+                    <Typography variant="subtitle1">Symbol:</Typography>
+                    <Typography variant="h4">{token.symbol}</Typography>
+                  </Box>
+                </Box>
+                <Box display="flex" justifyContent="start" my={2}>
+                  <Box>
+                    <Typography variant="subtitle1">Total Supply:</Typography>
+                    <Typography variant="h4">{token.totalSupply}</Typography>
+                  </Box>
+                  <Box ml={8}>
+                    <Typography variant="subtitle1">Decimals:</Typography>
+                    <Typography variant="h4">{token.decimals}</Typography>
+                  </Box>
+                </Box>
+              </>
+            )}
+          </Container>
         </CardContent>
       </Card>
       <div className={classes.link}>

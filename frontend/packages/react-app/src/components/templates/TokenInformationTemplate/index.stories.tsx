@@ -20,6 +20,7 @@ const Template: Story<TokenInformationTemplateProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   state: tokenInformationState,
+  active: true,
 };
 
 export const Campaigns = Template.bind({});
@@ -28,4 +29,11 @@ Campaigns.args = {
     ...tokenInformationState,
     campaignAddress: undefined,
   },
+  active: true,
+};
+
+export const NoWallet = Template.bind({});
+NoWallet.args = {
+  state: tokenInformationState,
+  active: false,
 };

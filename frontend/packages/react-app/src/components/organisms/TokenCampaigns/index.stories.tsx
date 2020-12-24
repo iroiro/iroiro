@@ -1,15 +1,16 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import TokenCampaigns, { TokenCampaignsProps } from "./index";
+import TokenCampaigns from "./index";
 import { tokenInformationState } from "../../../utils/mockData";
+import { TokenInformationProps } from "../../organisms/TokenInformationTabs";
 
 export default {
   title: "Organisms/TokenCampaigns",
   component: TokenCampaigns,
 } as Meta;
 
-const Template: Story<TokenCampaignsProps> = (args) => (
+const Template: Story<TokenInformationProps> = (args) => (
   <BrowserRouter>
     <TokenCampaigns {...args} />
   </BrowserRouter>
