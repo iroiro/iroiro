@@ -1,14 +1,6 @@
 import * as React from "react";
 import { CampaignInfo } from "../../../interfaces";
-import {
-  Grid,
-  makeStyles,
-  Paper,
-  Theme,
-  Typography,
-  Box,
-} from "@material-ui/core";
-import styled from "styled-components";
+import { makeStyles, Paper, Theme, Typography, Box } from "@material-ui/core";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 
 export interface TokenCampaignDetailProps {
@@ -39,7 +31,7 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
         <Box mt={2}>
           <Typography variant="subtitle1">Description:</Typography>
           <Typography variant="body1">
-            {campaign.campaignMetadata.description != ""
+            {campaign.campaignMetadata.description !== ""
               ? campaign.campaignMetadata.description
               : "No description"}
           </Typography>

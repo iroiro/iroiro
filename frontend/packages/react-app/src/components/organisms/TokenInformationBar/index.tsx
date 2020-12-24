@@ -2,7 +2,6 @@ import * as React from "react";
 import { TokenInformationState } from "../../../interfaces";
 import {
   Container,
-  Grid,
   makeStyles,
   Theme,
   Typography,

@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import { CampaignInfo } from "../../../interfaces";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
-import styled from "styled-components";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
 export interface TokenCampaignCardProps {
@@ -44,7 +43,7 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
           </Box>
           <Box mt={2}>
             {campaign.campaignMetadata &&
-            campaign.campaignMetadata.description != "" ? (
+            campaign.campaignMetadata.description !== "" ? (
               <Typography>{campaign.campaignMetadata.description}</Typography>
             ) : (
               <Typography>-</Typography>

@@ -18,7 +18,7 @@ const BalanceHistoryChart: React.FC<BalanceHistoryChartProps> = ({
       </Box>
       <Paper>
         <Box p={8} display="flex" justifyContent="center">
-          {balances.length == 0 ? (
+          {balances.length === 0 ? (
             <Typography>No Data</Typography>
           ) : (
             <LineChart width={600} height={300} data={balances}>

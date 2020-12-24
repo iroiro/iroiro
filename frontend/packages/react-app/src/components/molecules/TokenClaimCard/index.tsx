@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
-import styled from "styled-components";
 import { useWeb3React } from "@web3-react/core";
 import { useClaim } from "../../../hooks/distributors/audius-followers/useClaim";
 import { useCallback } from "react";
