@@ -24,6 +24,18 @@ var (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	if request.HTTPMethod == "OPTIONS" {
+		var headers = map[string]string{
+			"Access-Control-Allow-Origin": os.Getenv("FRONTEND_ORIGIN"),
+			"Access-Control-Allow-Headers" : "Content-Type",
+			"Access-Control-Allow-Methods": "OPTIONS,POST",
+		}
+		return events.APIGatewayProxyResponse{
+			StatusCode: 200,
+			Headers:    headers,
+		}, nil
+	}
+
 	type RequestBody struct {
 		HashToPin string `json:"hashToPin"`
 	}
