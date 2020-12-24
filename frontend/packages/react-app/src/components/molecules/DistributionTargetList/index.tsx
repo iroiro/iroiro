@@ -1,22 +1,19 @@
 import React from "react";
 import { Box, Text, Table } from "rimble-ui";
-import { Target } from "../../../interfaces";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import SigninAudius from "../SigninAudius";
 
 export interface TargetsProps {
-  readonly distributionTargets: Target[];
   readonly audiusState: AudiusState;
   readonly audiusDispatch: React.Dispatch<AUDIUS_ACTIONS>;
 }
 
 const DistributionTargetList: React.FC<TargetsProps> = ({
-  distributionTargets,
   audiusState,
   audiusDispatch,
 }) => (
   <>
-    {distributionTargets.length > 0 ? (
+    {audiusState.followers.length > 0 ? (
       <Table>
         <thead>
           <tr>
@@ -25,7 +22,7 @@ const DistributionTargetList: React.FC<TargetsProps> = ({
           </tr>
         </thead>
         <tbody>
-          {distributionTargets.map((target) => (
+          {audiusState.followers.map((target) => (
             <tr key={target.wallet}>
               <td>{target.handle}</td>
               <td>{target.wallet}</td>

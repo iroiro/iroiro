@@ -31,11 +31,11 @@ const ipfs = IpfsHttpClient(infura);
 const init = async () => {
   const dataRegistryAddress = "0xC611C82150b56E6e4Ec5973AcAbA8835Dd0d75A2";
 
-  const ethTokenAddress = "0xADEf65C0f6a30Dcb5f88Eb8653BBFe09Bf99864f";
-  const ethRegistryAddress = "0xb2be26Ca062c5D74964921B80DE6cfa28D9A36c0";
+  const ethTokenAddress = "0x18aAA7115705e8be94bfFEBDE57Af9BFc265B998";
+  const ethRegistryAddress = "0xd976d3b4f4e22a238c1A736b6612D22f17b6f64C";
   const ethProviderUrl =
     "https://mainnet.infura.io/v3/d6b566d7eea1408988388c311d5a273a";
-  const ethProviderOwnerWallet = "0xe886a1858d2d368ef8f02c65bdd470396a1ab188";
+  const ethProviderOwnerWallet = "0xC7310a03e930DD659E15305ed7e1F5Df0F0426C5";
 
   const libs = new Audius({
     web3Config: Audius.configInternalWeb3(dataRegistryAddress, [
@@ -74,12 +74,10 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     tokenReducer,
     tokenInitialState
   );
-
   const [distributorFormState, distributorFormDispatch] = useReducer(
     distributorFormReducer,
     distributorFormInitialState
   );
-
   const [audiusState, audiusDispatch] = useReducer(
     audiusReducer,
     audiusInitialState
@@ -92,18 +90,18 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
 
   const audiusSignIn = useCallback(
     async (email, password) => {
-      console.log(email);
-
       const { user } = await libs.Account.login(email, password);
-      console.log(user);
       const followers = await libs.User.getFollowersForUser(
         100,
         0,
         user.user_id
       );
-      console.log(followers);
-      // setAudiusAccount(user);
-      // setAudiusFollowers(followers);
+      audiusDispatch({
+        type: "followers:set",
+        payload: {
+          followers,
+        },
+      });
     },
     [libs]
   );
@@ -242,14 +240,10 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
         name: distributorFormState.campaignName,
       };
 
-      // TODO: Temporal Data
-      const addresses = {
-        addresses: [
-          "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
-          "0xc61641C59f5c459Da94E330535A95df4d5fACeAe",
-          "0xAF9A4Ec7aDd58d7F184c5D13e40eBB2B41Ed9e0D",
-        ],
-      };
+      const followersAddress: string[] = audiusState.followers.map(
+        (follower) => follower.wallet
+      );
+      const addresses = { addresses: followersAddress };
       uploadJsonIpfs(campaignInfo, "campaignInfoCid");
       uploadJsonIpfs(addresses, "recipientsCid");
       setRecipientsNum(addresses.addresses.length);
@@ -260,6 +254,7 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     approve,
     uploadJsonIpfs,
     setRecipientsNum,
+    audiusState,
   ]);
 
   useEffect(() => {
@@ -295,21 +290,10 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
       const libs = await init();
       console.log(libs);
       setLibs(libs);
-      // const user = libs.Account.getCurrentUser();
-
-      // if (user) {
-      //   const followers = await libs.User.getFollowersForUser(
-      //     100,
-      //     0,
-      //     user.user_id
-      //   );
-      //   console.log(followers);
-      //   //   setAudiusAccount(user);
-      //   //   setAudiusFollowers(followers);
-      // }
+      audiusDispatch({ type: "isLibsActive:true" });
     };
     initLibs();
-  }, []);
+  }, [audiusDispatch]);
 
   useEffect(() => {
     if (audiusState.requestSignin === true) {
@@ -322,8 +306,6 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
       <CreateCampaignPageTemaplate
         active={active}
         tokenInfo={tokenState}
-        targets={[]}
-        targetNumber={10000}
         distributorFormDispatch={distributorFormDispatch}
         distributorFormState={distributorFormState}
         audiusState={audiusState}

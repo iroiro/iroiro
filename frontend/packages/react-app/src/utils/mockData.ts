@@ -215,10 +215,16 @@ export const distributorFormState: createCampaignState = {
   requestDeployCampaign: false,
 };
 
+export const audiusTarget: Target = {
+  handle: "handlename",
+  wallet: "0x0000000000000000000000000000000000000000",
+};
+
 export const audiusState: AudiusState = {
   email: "sample@example.com",
   password: "samplepassword",
-  followers: [],
-  isSignin: false,
-  requestSignin: false,
+  followers: [audiusTarget, audiusTarget, audiusTarget],
+  isSignin: true,
+  requestSignin: true,
+  isLibsActive: true,
 };
