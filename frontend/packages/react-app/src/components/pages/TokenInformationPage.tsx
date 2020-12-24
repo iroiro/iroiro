@@ -27,7 +27,7 @@ interface Params {
 }
 
 const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
-  const { library } = useWeb3React();
+  const { library, active } = useWeb3React();
   const [state, dispatch] = useReducer(tokenInformationReducer, initialState);
   const { tokenAddress } = useParams<Params>();
   const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
@@ -232,7 +232,13 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
     f();
   }, [allTransferEvents, state.userAddress]);
 
-  return <TokenInformationTemplate state={state} dispatch={dispatch} />;
+  return (
+    <TokenInformationTemplate
+      state={state}
+      dispatch={dispatch}
+      active={active}
+    />
+  );
 };
 
 export default TokenInformationPage;

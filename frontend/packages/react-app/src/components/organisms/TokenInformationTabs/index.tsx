@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Dispatch } from "react";
 import {
   Box,
   Container,
@@ -10,15 +10,21 @@ import {
 import TokenInformationBar from "../TokenInformationBar";
 import BasicTokenInformation from "../BasicTokenInformation";
 import TokenCampaigns from "../TokenCampaigns";
-import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
 import TokenDetailCampaignPanel from "../TokenCampaignDetailPanel";
 import UserHistory from "../UserHistory";
+import { TokenInformationState } from "../../../interfaces";
+import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+
+export interface TokenInformationProps {
+  state: TokenInformationState;
+  dispatch: Dispatch<TokenInformationAction>;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -53,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
+export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
   state,
   dispatch,
 }) => {
