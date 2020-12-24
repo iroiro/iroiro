@@ -224,7 +224,7 @@ export const audiusState: AudiusState = {
   email: "sample@example.com",
   password: "samplepassword",
   followers: [audiusTarget, audiusTarget, audiusTarget],
-  isSignin: false,
-  requestSignin: false,
+  isSignin: true,
+  requestSignin: true,
   isLibsActive: true,
 };

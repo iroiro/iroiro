@@ -58,7 +58,7 @@ export const audiusInitialState: AudiusState = {
   email: "",
   password: "",
   followers: [],
-  isSignin: true,
-  requestSignin: true,
-  isLibsActive: true,
+  isSignin: false,
+  requestSignin: false,
+  isLibsActive: false,
 };
