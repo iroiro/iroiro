@@ -21,26 +21,28 @@ const DistributionTargets: React.FC<TargetsProps> = ({
     <Heading>1. Check your followers list</Heading>
     <Flex style={{ justifyContent: "space-between", alignItems: "center" }}>
       <Heading as={"h3"}>Audius Followers list</Heading>
-      <Text>Total users: {audiusState.followers.length}</Text>
+      <Text>Total users: {audiusState.followersCount}</Text>
     </Flex>
 
     <DistributionTargetList
       audiusState={audiusState}
       audiusDispatch={audiusDispatch}
     />
-    <Box my={4} style={{ textAlign: "center" }}>
-      <Button
-        mainColor="itblue"
-        onClick={() => {
-          distributorFormDispatch({
-            type: "step:set",
-            payload: { stepNo: 2 },
-          });
-        }}
-      >
-        Next
-      </Button>
-    </Box>
+    {audiusState.followers.length > 0 && (
+      <Box my={4} style={{ textAlign: "center" }}>
+        <Button
+          mainColor="itblue"
+          onClick={() => {
+            distributorFormDispatch({
+              type: "step:set",
+              payload: { stepNo: 2 },
+            });
+          }}
+        >
+          Next
+        </Button>
+      </Box>
+    )}
   </Card>
 );
 
