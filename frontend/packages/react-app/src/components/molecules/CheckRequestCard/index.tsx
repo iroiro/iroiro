@@ -2,11 +2,11 @@ import * as React from "react";
 import {
   Button,
   createStyles,
-  Grid,
   makeStyles,
   Paper,
   Theme,
   Typography,
+  Box,
 } from "@material-ui/core";
 import { useApproveToken } from "../../../hooks/useApproveToken";
 import { TokenInformationState } from "../../../interfaces";
@@ -35,9 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     container: {
       padding: theme.spacing(3),
-    },
-    btnWrapper: {
-      textAlign: "center",
     },
     firstBtn: {
       margin: theme.spacing(1, 0, 1),
@@ -89,39 +86,18 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
   }, [approve, requestCheck]);
 
   return (
-    <Grid container spacing={5}>
-      <Grid item xs={12}>
-        <Paper className={classes.container}>
-          <Typography align="center">
-            Send a check request to see whether you are eligible for to claim.
-          </Typography>
-          <div className={` ${classes.btnWrapper} ${classes.firstBtn}`}>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={
-                state.isTokenApproved ||
-                state.isCampaignClaimable ||
-                state.isCampaignClaimed
-              }
-              onClick={onClickApprove}
-            >
-              Approve $LINK
-            </Button>
-          </div>
-          <div className={classes.btnWrapper}>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={!state.isTokenApproved || state.isTokenRequested}
-              onClick={onClickRequest}
-            >
-              Check request
-            </Button>
-          </div>
-        </Paper>
-      </Grid>
-    </Grid>
+    <div style={{ marginTop: "24px" }}>
+      <Paper className={classes.container}>
+        <Typography align="center">
+          Send a check request to see whether you are eligible for to claim.
+        </Typography>
+        <Box textAlign="center" my={5}>
+          <Button variant="contained" color="primary" onClick={onClickRequest}>
+            Check request
+          </Button>
+        </Box>
+      </Paper>
+    </div>
   );
 };
 

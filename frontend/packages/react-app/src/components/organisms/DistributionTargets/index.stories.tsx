@@ -2,7 +2,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import DistributionTargets, { TargetsProps } from "./index";
-import { distributionTargets } from "../../../utils/mockData";
+import { audiusState } from "../../../utils/mockData";
 
 export default {
   title: "Organisms/DistributionTargets",
@@ -16,4 +16,14 @@ const Template: Story<TargetsProps> = (args) => (
 );
 
 export const Default = Template.bind({});
-Default.args = { distributionTargets, targetNumber: 10000 };
+Default.args = {
+  audiusState,
+};
+
+export const NoTarget = Template.bind({});
+NoTarget.args = {
+  audiusState: {
+    ...audiusState,
+    followers: [],
+  },
+};

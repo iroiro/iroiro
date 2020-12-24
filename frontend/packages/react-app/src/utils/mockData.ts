@@ -87,7 +87,7 @@ export const tokenInformationState: TokenInformationState = {
   isCampaignClaimable: false,
   isCampaignClaimed: false,
   userAddress: "0x0000000000000000000000000000000000000000",
-  userBalance: "1234500000",
+  userBalance: "1234500000000000000000000",
   campaignAddress: "0xcc22b3199013627708d05fedf9b854bd7706a156",
   activities: [
     {
@@ -215,10 +215,16 @@ export const distributorFormState: createCampaignState = {
   requestDeployCampaign: false,
 };
 
+export const audiusTarget: Target = {
+  handle: "handlename",
+  wallet: "0x0000000000000000000000000000000000000000",
+};
+
 export const audiusState: AudiusState = {
   email: "sample@example.com",
   password: "samplepassword",
-  followers: [],
-  isSignin: false,
-  requestSignin: false,
+  followers: [audiusTarget, audiusTarget, audiusTarget],
+  isSignin: true,
+  requestSignin: true,
+  isLibsActive: true,
 };

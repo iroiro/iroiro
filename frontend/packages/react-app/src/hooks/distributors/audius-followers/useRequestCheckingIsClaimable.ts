@@ -1,6 +1,6 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { CCTWalletCampaign__factory } from "../../../types";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { ContractTransaction } from "@ethersproject/contracts";
 import { useCallback } from "react";
 
@@ -28,12 +28,7 @@ export const useRequestCheckingIsClaimable = (
     const jobIdBytes = ethers.utils.toUtf8Bytes(jobId);
     const walletAddress = await signer.getAddress();
     return campaign
-      .requestCheckingIsClaimable(
-        oracleAddress,
-        jobIdBytes,
-        BigNumber.from(fee),
-        walletAddress
-      )
+      .requestCheckingIsClaimable(oracleAddress, jobIdBytes, walletAddress)
       .then((transaction) => {
         console.debug(transaction);
         return transaction;

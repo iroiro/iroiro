@@ -1,6 +1,5 @@
-import * as React from "react";
+import React, { Dispatch } from "react";
 import {
-  AppBar,
   Box,
   Container,
   makeStyles,
@@ -11,15 +10,21 @@ import {
 import TokenInformationBar from "../TokenInformationBar";
 import BasicTokenInformation from "../BasicTokenInformation";
 import TokenCampaigns from "../TokenCampaigns";
-import { TokenInformationTemplateProps } from "../../templates/TokenInformationTemplate";
 import TokenDetailCampaignPanel from "../TokenCampaignDetailPanel";
 import UserHistory from "../UserHistory";
+import { TokenInformationState } from "../../../interfaces";
+import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+
+export interface TokenInformationProps {
+  state: TokenInformationState;
+  dispatch: Dispatch<TokenInformationAction>;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -48,14 +53,13 @@ function a11yProps(index: number) {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
   },
   chart: {
     paddingTop: theme.spacing(6),
   },
 }));
 
-export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
+export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
   state,
   dispatch,
 }) => {
@@ -73,23 +77,22 @@ export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
   return (
     <div className={classes.root}>
       <TokenInformationBar state={state} />
-      <AppBar position="static">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="simple tabs example"
-          scrollButtons="auto"
-          indicatorColor="primary"
-          centered
-        >
-          <Tab label="Basic" {...a11yProps(0)} />
-          <Tab label="Campaigns" {...a11yProps(1)} />
-          <Tab label="Creator Log" {...a11yProps(2)} />
-          <Tab label="Donation" {...a11yProps(3)} />
-          <Tab label="User History" {...a11yProps(4)} />
-        </Tabs>
-      </AppBar>
-      <Container maxWidth="sm">
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        scrollButtons="auto"
+        indicatorColor="primary"
+        textColor="primary"
+        style={{ backgroundColor: "white" }}
+        centered
+      >
+        <Tab label="Basic" {...a11yProps(0)} />
+        <Tab label="Campaigns" {...a11yProps(1)} />
+        <Tab label="Creator Log" {...a11yProps(2)} />
+        <Tab label="Donation" {...a11yProps(3)} />
+        <Tab label="User History" {...a11yProps(4)} />
+      </Tabs>
+      <Container maxWidth="md">
         <TabPanel value={value} index={0}>
           <BasicTokenInformation state={state} />
         </TabPanel>
@@ -101,10 +104,14 @@ export const TokenInformationTabs: React.FC<TokenInformationTemplateProps> = ({
           )}
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Coming soon...
+          <Box pt={8} textAlign="center">
+            Coming soon...
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          Coming soon...
+          <Box pt={8} textAlign="center">
+            Coming soon...
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={4}>
           <UserHistory state={state} />
