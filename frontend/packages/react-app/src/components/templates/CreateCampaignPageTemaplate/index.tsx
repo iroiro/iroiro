@@ -4,7 +4,7 @@ import AppHeader from "../../molecules/AppHeader";
 import Container from "../../atoms/Container";
 import ApproveToken from "../../organisms/ApproveToken";
 import SetupCampaign from "../../organisms/SetupCampaign";
-import { AccountToken, Target } from "../../../interfaces";
+import { AccountToken } from "../../../interfaces";
 import DistributionTargets from "../../organisms/DistributionTargets";
 import WalletConnect from "../../organisms/WalletConnect";
 import {

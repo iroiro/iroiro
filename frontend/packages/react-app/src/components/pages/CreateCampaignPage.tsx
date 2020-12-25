@@ -90,45 +90,8 @@ const CreateCampaignPage: React.FC<
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
   const [myAccount, setMyAccount] = useState({ user_id: "" });
 
-  const audiusSignIn = useCallback(
-    async (email, password) => {
-      const { user } = await libs.Account.login(email, password);
-      console.log(user);
-      setMyAccount(user);
-
-      const headers = {
-        Accept: "application/json",
-      };
-
-      fetch(
-        `https://discoveryprovider.audius3.prod-us-west-2.staked.cloud/v1/users/${user.user_id}`,
-        {
-          method: "GET",
-          headers: headers,
-        }
-      )
-        .then(function (res) {
-          return res.json();
-        })
-        .then(function (body) {
-          console.log(body.data.follower_count);
-          audiusDispatch({
-            type: "followersCount:set",
-            payload: { followersCount: body.data.follower_count },
-          });
-        });
-
-      getFollowers();
-    },
-    [libs]
-  );
-
-  const getFollowers = useCallback(async () => {
-    const followers = await libs.User.getFollowersForUser(
-      100,
-      audiusState.offset,
-      myAccount.user_id
-    );
+  const getFollowers = useCallback(async (libs, user_id, offset) => {
+    const followers = await libs.User.getFollowersForUser(100, offset, user_id);
     audiusDispatch({
       type: "followers:set",
       payload: {
@@ -136,6 +99,40 @@ const CreateCampaignPage: React.FC<
       },
     });
   }, []);
+
+  const getFollowersCount = useCallback((user) => {
+    audiusDispatch({
+      type: "followersCount:set",
+      payload: { followersCount: user.follower_count },
+    });
+  }, []);
+
+  const audiusSignIn = useCallback(
+    async (libs, email, password) => {
+      const { user } = await libs.Account.login(email, password);
+      setMyAccount(user);
+      getFollowersCount(user);
+      getFollowers(libs, user.user_id, 0);
+    },
+    [getFollowersCount, getFollowers]
+  );
+
+  const audiusSignOut = useCallback(async () => {
+    await libs.Account.logout();
+    setMyAccount({ user_id: "" });
+  }, [libs]);
+
+  const getUser = useCallback(
+    async (libs) => {
+      const user = await libs.Account.getCurrentUser();
+      if (user) {
+        setMyAccount(user);
+        getFollowersCount(user);
+        getFollowers(libs, user.user_id, 0);
+      }
+    },
+    [getFollowersCount, getFollowers]
+  );
 
   const getBalance = useCallback(
     async (library) => {
@@ -277,16 +274,8 @@ const CreateCampaignPage: React.FC<
       const addresses = { addresses: followersAddress };
       uploadJsonIpfs(campaignInfo, "campaignInfoCid");
       uploadJsonIpfs(addresses, "recipientsCid");
-      // setRecipientsNum(addresses.addresses.length);
     }
-  }, [
-    library,
-    distributorFormState,
-    approve,
-    uploadJsonIpfs,
-    // setRecipientsNum,
-    audiusState,
-  ]);
+  }, [library, distributorFormState, approve, uploadJsonIpfs, audiusState]);
 
   useEffect(() => {
     if (
@@ -321,22 +310,27 @@ const CreateCampaignPage: React.FC<
       const libs = await init();
       setLibs(libs);
       audiusDispatch({ type: "isLibsActive:true" });
+      getUser(libs);
     };
     initLibs();
-  }, [audiusDispatch]);
+  }, [audiusDispatch, getUser]);
 
   useEffect(() => {
     if (
       audiusState.requestSignin === true &&
       audiusState.isLibsActive === true
     ) {
-      audiusSignIn(audiusState.email, audiusState.password);
+      audiusSignIn(libs, audiusState.email, audiusState.password);
     }
 
-    if (audiusState.isRequestFollowers === true && !myAccount) {
-      getFollowers();
+    if (audiusState.isRequestFollowers === true && myAccount) {
+      getFollowers(libs, myAccount.user_id, audiusState.offset);
     }
-  }, [audiusState, audiusSignIn]);
+
+    if (audiusState.isRequestSignout === true && !myAccount) {
+      audiusSignOut();
+    }
+  }, [audiusState, libs, audiusSignIn, myAccount, getFollowers, audiusSignOut]);
 
   return (
     <>

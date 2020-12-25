@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, Heading, Text, Flex, Button } from "rimble-ui";
-import { Target } from "../../../interfaces";
 import DistributionTargetList from "../../molecules/DistributionTargetList";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import { Box } from "@material-ui/core";

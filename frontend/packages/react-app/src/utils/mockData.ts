@@ -230,4 +230,5 @@ export const audiusState: AudiusState = {
   isLibsActive: true,
   offset: 0,
   isRequestFollowers: false,
+  isRequestSignout: false,
 };

@@ -31,19 +31,21 @@ const DistributionTargetList: React.FC<TargetsProps> = ({
             ))}
           </tbody>
         </Table>
-        <Box my={2} style={{ textAlign: "center" }}>
-          <Button.Text
-            mainColor="itblue"
-            onClick={() =>
-              audiusDispatch({
-                type: "isRequestFollowers:set",
-                payload: { isRequestFollowers: true },
-              })
-            }
-          >
-            load more...
-          </Button.Text>
-        </Box>
+        {audiusState.followersCount !== audiusState.followers.length && (
+          <Box my={2} style={{ textAlign: "center" }}>
+            <Button.Text
+              mainColor="itblue"
+              onClick={() =>
+                audiusDispatch({
+                  type: "isRequestFollowers:set",
+                  payload: { isRequestFollowers: true },
+                })
+              }
+            >
+              load more...
+            </Button.Text>
+          </Box>
+        )}
       </div>
     ) : (
       <Box style={{ textAlign: "center" }}>

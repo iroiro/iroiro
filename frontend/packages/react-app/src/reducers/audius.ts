@@ -15,6 +15,10 @@ export type AUDIUS_ACTIONS =
   | {
       type: "isRequestFollowers:set";
       payload: { isRequestFollowers: boolean };
+    }
+  | {
+      type: "isRequestSignout:set";
+      payload: { isRequestSignout: boolean };
     };
 
 export interface AudiusState {
@@ -27,6 +31,7 @@ export interface AudiusState {
   isLibsActive: boolean;
   offset: number;
   isRequestFollowers: boolean;
+  isRequestSignout: boolean;
 }
 
 export const audiusReducer = (
@@ -48,8 +53,13 @@ export const audiusReducer = (
         };
       });
       const newFollowers = state.followers.concat(followers);
-      const nextOffset = state.offset + 1;
-      return { ...state, followers: newFollowers, offset: nextOffset };
+      const newOffset = state.offset + 100;
+      return {
+        ...state,
+        followers: newFollowers,
+        offset: newOffset,
+        isRequestFollowers: false,
+      };
     }
     case "followersCount:set": {
       return { ...state, followersCount: action.payload.followersCount };
@@ -69,6 +79,12 @@ export const audiusReducer = (
         isRequestFollowers: action.payload.isRequestFollowers,
       };
     }
+    case "isRequestSignout:set": {
+      return {
+        ...state,
+        isRequestFollowers: action.payload.isRequestSignout,
+      };
+    }
     default:
       throw new Error();
   }
@@ -77,100 +93,12 @@ export const audiusReducer = (
 export const audiusInitialState: AudiusState = {
   email: "",
   password: "",
-  followers: [
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-    {
-      handle: "handlename",
-      wallet: "0x0000000000000000000000000000000000000000",
-    },
-  ],
+  followers: [],
   followersCount: 0,
   isSignin: false,
   requestSignin: false,
   isLibsActive: false,
   offset: 0,
   isRequestFollowers: false,
+  isRequestSignout: false,
 };
