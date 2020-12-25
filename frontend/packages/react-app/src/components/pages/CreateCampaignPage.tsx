@@ -143,6 +143,9 @@ const CreateCampaignPage: React.FC<
   const audiusSignOut = useCallback(async () => {
     await libs.Account.logout();
     setMyAccount({ user_id: "" });
+    audiusDispatch({
+      type: "state:reset",
+    });
   }, [libs]);
 
   const getUser = useCallback(
@@ -350,7 +353,7 @@ const CreateCampaignPage: React.FC<
       getFollowers(libs, myAccount);
     }
 
-    if (audiusState.isRequestSignout === true && !myAccount) {
+    if (audiusState.isRequestSignout === true && myAccount) {
       audiusSignOut();
     }
   }, [audiusState, libs, audiusSignIn, myAccount, getFollowers, audiusSignOut]);

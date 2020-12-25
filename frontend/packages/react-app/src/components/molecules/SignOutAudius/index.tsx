@@ -8,10 +8,10 @@ export interface SignOutAudiusProps {
 }
 
 const SignOutAudius: React.FC<SignOutAudiusProps> = ({ audiusDispatch }) => (
-  <Box mt={2}>
+  <Box mt={4} style={{ textAlign: "center" }}>
     <Button.Outline
       size="small"
-      mainColor="#333"
+      mainColor="red"
       onClick={() =>
         audiusDispatch({
           type: "isRequestSignout:set",

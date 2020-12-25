@@ -23,7 +23,8 @@ export type AUDIUS_ACTIONS =
   | {
       type: "progress:set";
       payload: { progress: number };
-    };
+    }
+  | { type: "state:reset" };
 
 export interface AudiusState {
   email: string;
@@ -86,7 +87,21 @@ export const audiusReducer = (
     case "isRequestSignout:set": {
       return {
         ...state,
-        isRequestFollowers: action.payload.isRequestSignout,
+        isRequestSignout: action.payload.isRequestSignout,
+      };
+    }
+    case "state:reset": {
+      return {
+        email: "",
+        password: "",
+        followers: [],
+        followersCount: 0,
+        isSignin: false,
+        requestSignin: false,
+        isLibsActive: true,
+        isRequestFollowers: false,
+        isRequestSignout: false,
+        progress: 0,
       };
     }
     default:
