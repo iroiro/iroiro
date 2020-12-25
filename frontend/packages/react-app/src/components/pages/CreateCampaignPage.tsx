@@ -103,7 +103,7 @@ const CreateCampaignPage: React.FC<
       const followers: Target[] = targets.map((target: Target) => {
         return {
           handle: target.handle,
-          wallet: target.wallet,
+          wallet: target.wallet.toLowerCase(),
         };
       });
       allFollowers = allFollowers.concat(followers);
