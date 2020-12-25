@@ -21,6 +21,7 @@ import { LINK_TOKEN_ADDRESS } from "../../utils/const";
 import { useGetTransferEvents } from "../../hooks/useGetTransferEvents";
 import { Block } from "@ethersproject/providers";
 import { Event } from "@ethersproject/contracts";
+import { useAudiusLibs } from "../../hooks/useAudiusLibs";
 
 interface Params {
   tokenAddress: string;
@@ -47,6 +48,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
     library,
     tokenAddress
   );
+  const { libs, isLibsInitialized } = useAudiusLibs();
 
   useEffect(() => {
     const f = async () => {
