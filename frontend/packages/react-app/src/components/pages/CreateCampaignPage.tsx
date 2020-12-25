@@ -15,9 +15,8 @@ import {
 } from "../../reducers/distributorForm";
 import { audiusReducer, audiusInitialState } from "../../reducers/audius";
 
-// @ts-ignore
-import Audius from "@audius/libs";
 import IpfsHttpClient from "ipfs-http-client";
+import { useAudiusLibs } from "../../hooks/useAudiusLibs";
 
 declare global {
   interface Window {
@@ -27,40 +26,6 @@ declare global {
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
-
-const init = async () => {
-  const dataRegistryAddress = "0xC611C82150b56E6e4Ec5973AcAbA8835Dd0d75A2";
-
-  const ethTokenAddress = "0x18aAA7115705e8be94bfFEBDE57Af9BFc265B998";
-  const ethRegistryAddress = "0xd976d3b4f4e22a238c1A736b6612D22f17b6f64C";
-  const ethProviderUrl =
-    "https://mainnet.infura.io/v3/d6b566d7eea1408988388c311d5a273a";
-  const ethProviderOwnerWallet = "0xC7310a03e930DD659E15305ed7e1F5Df0F0426C5";
-
-  const libs = new Audius({
-    web3Config: Audius.configInternalWeb3(dataRegistryAddress, [
-      "https://core.poa.network",
-    ]),
-
-    ethWeb3Config: Audius.configEthWeb3(
-      ethTokenAddress,
-      ethRegistryAddress,
-      ethProviderUrl,
-      ethProviderOwnerWallet
-    ),
-
-    discoveryProviderConfig: Audius.configDiscoveryProvider(),
-    identityServiceConfig: Audius.configIdentityService(
-      "https://identityservice.audius.co"
-    ),
-    creatorNodeConfig: Audius.configCreatorNode(
-      "https://creatornode.audius.co"
-    ),
-  });
-  await libs.init();
-  window.libs = libs;
-  return libs;
-};
 
 const CreateCampaignPage: React.FC<RouteComponentProps<{
   tokenAddress: string;
@@ -83,7 +48,7 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     audiusInitialState
   );
 
-  const [libs, setLibs] = useState(Object);
+  const { libs, isLibsInitialized } = useAudiusLibs();
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
   const [recipientsNum, setRecipientsNum] = useState(0);
@@ -286,14 +251,11 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   ]);
 
   useEffect(() => {
-    const initLibs = async () => {
-      const libs = await init();
-      console.log(libs);
-      setLibs(libs);
-      audiusDispatch({ type: "isLibsActive:true" });
-    };
-    initLibs();
-  }, [audiusDispatch]);
+    if (!isLibsInitialized) {
+      return;
+    }
+    audiusDispatch({ type: "isLibsActive:true" });
+  }, [audiusDispatch, isLibsInitialized]);
 
   useEffect(() => {
     if (audiusState.requestSignin === true) {
