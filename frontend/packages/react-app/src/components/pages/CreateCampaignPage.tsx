@@ -16,7 +16,9 @@ import {
 import { audiusReducer, audiusInitialState } from "../../reducers/audius";
 
 import IpfsHttpClient from "ipfs-http-client";
-import { useAudiusLibs } from "../../hooks/useAudiusLibs";
+import { useAudiusLibs } from "../../hooks/audius/useAudiusLibs";
+import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
+import { useGetAudiusFollowers } from "../../hooks/audius/useGetAudiusFollowers";
 
 declare global {
   interface Window {
@@ -49,27 +51,25 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   );
 
   const { libs, isLibsInitialized } = useAudiusLibs();
+  const user = useGetAudiusUserOrSignIn(
+    libs,
+    audiusState.email,
+    audiusState.password,
+    audiusState.requestSignin
+  );
+  const { followers, isLoading } = useGetAudiusFollowers(libs, user);
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
   const [recipientsNum, setRecipientsNum] = useState(0);
 
-  const audiusSignIn = useCallback(
-    async (email, password) => {
-      const { user } = await libs.Account.login(email, password);
-      const followers = await libs.User.getFollowersForUser(
-        100,
-        0,
-        user.user_id
-      );
-      audiusDispatch({
-        type: "followers:set",
-        payload: {
-          followers,
-        },
-      });
-    },
-    [libs]
-  );
+  useEffect(() => {
+    audiusDispatch({
+      type: "followers:set",
+      payload: {
+        followers,
+      },
+    });
+  }, [followers]);
 
   const getBalance = useCallback(
     async (library) => {
@@ -256,12 +256,6 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     }
     audiusDispatch({ type: "isLibsActive:true" });
   }, [audiusDispatch, isLibsInitialized]);
-
-  useEffect(() => {
-    if (audiusState.requestSignin === true) {
-      audiusSignIn(audiusState.email, audiusState.password);
-    }
-  }, [audiusState, audiusSignIn]);
 
   return (
     <>
