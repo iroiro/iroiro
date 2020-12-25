@@ -14,6 +14,7 @@ import {
   distributorFormInitialState,
 } from "../../reducers/distributorForm";
 import { audiusReducer, audiusInitialState } from "../../reducers/audius";
+import { Target } from "../../interfaces";
 
 // @ts-ignore
 import Audius from "@audius/libs";
@@ -90,12 +91,34 @@ const CreateCampaignPage: React.FC<
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
   const [myAccount, setMyAccount] = useState({ user_id: "" });
 
-  const getFollowers = useCallback(async (libs, user_id, offset) => {
-    const followers = await libs.User.getFollowersForUser(100, offset, user_id);
+  const getFollowers = useCallback(async (libs, user) => {
+    let allFollowers: Target[] = [];
+    const offset = 100;
+    for (let i = 0; i <= user.follower_count / offset; i++) {
+      const targets = await libs.User.getFollowersForUser(
+        offset,
+        i * offset,
+        user.user_id
+      );
+      const followers: Target[] = targets.map((target: Target) => {
+        return {
+          handle: target.handle,
+          wallet: target.wallet,
+        };
+      });
+      allFollowers = allFollowers.concat(followers);
+      audiusDispatch({
+        type: "progress:set",
+        payload: {
+          progress: (i * offset) / user.follower_count,
+        },
+      });
+    }
+
     audiusDispatch({
       type: "followers:set",
       payload: {
-        followers,
+        followers: allFollowers,
       },
     });
   }, []);
@@ -112,7 +135,7 @@ const CreateCampaignPage: React.FC<
       const { user } = await libs.Account.login(email, password);
       setMyAccount(user);
       getFollowersCount(user);
-      getFollowers(libs, user.user_id, 0);
+      getFollowers(libs, user);
     },
     [getFollowersCount, getFollowers]
   );
@@ -128,7 +151,7 @@ const CreateCampaignPage: React.FC<
       if (user) {
         setMyAccount(user);
         getFollowersCount(user);
-        getFollowers(libs, user.user_id, 0);
+        getFollowers(libs, user);
       }
     },
     [getFollowersCount, getFollowers]
@@ -324,7 +347,7 @@ const CreateCampaignPage: React.FC<
     }
 
     if (audiusState.isRequestFollowers === true && myAccount) {
-      getFollowers(libs, myAccount.user_id, audiusState.offset);
+      getFollowers(libs, myAccount);
     }
 
     if (audiusState.isRequestSignout === true && !myAccount) {

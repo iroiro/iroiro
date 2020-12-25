@@ -6,7 +6,7 @@ export type AUDIUS_ACTIONS =
       payload: { email: string };
     }
   | { type: "password:set"; payload: { password: string } }
-  | { type: "followers:set"; payload: { followers: any[] } }
+  | { type: "followers:set"; payload: { followers: Target[] } }
   | { type: "followersCount:set"; payload: { followersCount: number } }
   | { type: "audius:login" }
   | { type: "audius:loggedIn" }
@@ -19,6 +19,10 @@ export type AUDIUS_ACTIONS =
   | {
       type: "isRequestSignout:set";
       payload: { isRequestSignout: boolean };
+    }
+  | {
+      type: "progress:set";
+      payload: { progress: number };
     };
 
 export interface AudiusState {
@@ -29,9 +33,9 @@ export interface AudiusState {
   isSignin: boolean;
   requestSignin: boolean;
   isLibsActive: boolean;
-  offset: number;
   isRequestFollowers: boolean;
   isRequestSignout: boolean;
+  progress: number;
 }
 
 export const audiusReducer = (
@@ -52,14 +56,14 @@ export const audiusReducer = (
           wallet: follower.wallet,
         };
       });
-      const newFollowers = state.followers.concat(followers);
-      const newOffset = state.offset + 100;
       return {
         ...state,
-        followers: newFollowers,
-        offset: newOffset,
+        followers: followers,
         isRequestFollowers: false,
       };
+    }
+    case "progress:set": {
+      return { ...state, progress: action.payload.progress };
     }
     case "followersCount:set": {
       return { ...state, followersCount: action.payload.followersCount };
@@ -98,7 +102,7 @@ export const audiusInitialState: AudiusState = {
   isSignin: false,
   requestSignin: false,
   isLibsActive: false,
-  offset: 0,
   isRequestFollowers: false,
   isRequestSignout: false,
+  progress: 0,
 };
