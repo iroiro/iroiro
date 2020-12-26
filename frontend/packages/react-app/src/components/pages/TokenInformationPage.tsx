@@ -22,8 +22,6 @@ import { useGetTransferEvents } from "../../hooks/useGetTransferEvents";
 import { Block } from "@ethersproject/providers";
 import { Event } from "@ethersproject/contracts";
 import { useAudiusLibs } from "../../hooks/audius/useAudiusLibs";
-import Web3 from "web3";
-import { Sign } from "web3-core";
 import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
 import { audiusInitialState, audiusReducer } from "../../reducers/audius";
 import { useIsClaimable } from "../../hooks/distributors/audius-followers/useIsClaimable";
