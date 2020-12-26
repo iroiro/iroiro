@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TokenInformationState } from "../../../interfaces";
-import TokenRequestCard from "../../molecules/CheckRequestCard";
+import TokenRequestCard from "../../molecules/TokenRequestCard";
 import TokenClaimCard from "../../molecules/TokenClaimCard";
 import TokenCampaignDetail from "../TokenCampaignDetail";
 import { Typography } from "@material-ui/core";

@@ -227,4 +227,6 @@ export const audiusState: AudiusState = {
   isSignin: true,
   requestSignin: true,
   isLibsActive: true,
+  libs: {},
+  user: {},
 };
