@@ -21,7 +21,12 @@ import { LINK_TOKEN_ADDRESS } from "../../utils/const";
 import { useGetTransferEvents } from "../../hooks/useGetTransferEvents";
 import { Block } from "@ethersproject/providers";
 import { Event } from "@ethersproject/contracts";
-import { useAudiusLibs } from "../../hooks/useAudiusLibs";
+import { useAudiusLibs } from "../../hooks/audius/useAudiusLibs";
+import Web3 from "web3";
+import { Sign } from "web3-core";
+import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
+import { audiusInitialState, audiusReducer } from "../../reducers/audius";
+import { useIsClaimable } from "../../hooks/distributors/audius-followers/useIsClaimable";
 
 interface Params {
   tokenAddress: string;
@@ -29,6 +34,10 @@ interface Params {
 
 const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const { library, active } = useWeb3React();
+  const [audiusState, audiusDispatch] = useReducer(
+    audiusReducer,
+    audiusInitialState
+  );
   const [state, dispatch] = useReducer(tokenInformationReducer, initialState);
   const { tokenAddress } = useParams<Params>();
   const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
@@ -49,6 +58,25 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
     tokenAddress
   );
   const { libs, isLibsInitialized } = useAudiusLibs();
+  const user = useGetAudiusUserOrSignIn(
+    audiusState.libs,
+    audiusState.email,
+    audiusState.password,
+    audiusState.requestSignin
+  );
+  const { isClaimable } = useIsClaimable(
+    library,
+    state?.campaignAddress ?? "",
+    user?.wallet ?? ""
+  );
+
+  useEffect(() => {
+    audiusDispatch({ type: "libs:set", payload: { libs } });
+  }, [libs]);
+
+  useEffect(() => {
+    audiusDispatch({ type: "user:set", payload: { user } });
+  }, [user]);
 
   useEffect(() => {
     const f = async () => {
@@ -159,13 +187,16 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
         checkRequests: checkRequestsData.checkRequests,
       },
     });
+  }, [checkRequestsData]);
+
+  useEffect(() => {
     dispatch({
       type: "isCampaignClaimable:set",
       payload: {
-        checkRequests: checkRequestsData.checkRequests,
+        isClaimable,
       },
     });
-  }, [checkRequestsData]);
+  }, [isClaimable]);
 
   useEffect(() => {
     if (allowance === undefined) {
@@ -239,6 +270,8 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
       state={state}
       dispatch={dispatch}
       active={active}
+      audiusState={audiusState}
+      audiusDispatch={audiusDispatch}
     />
   );
 };

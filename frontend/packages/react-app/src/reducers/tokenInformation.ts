@@ -55,7 +55,7 @@ export type TokenInformationAction =
   | {
       type: "isCampaignClaimable:set";
       payload: {
-        checkRequests: CheckRequest[];
+        isClaimable: boolean;
       };
     }
   | {
@@ -164,16 +164,9 @@ export const tokenInformationReducer = (
         campaignAddress: undefined,
       };
     case "isCampaignClaimable:set": {
-      if (!action.payload.checkRequests) {
-        return state;
-      }
-      const isCampaignClaimable = action.payload.checkRequests
-        .filter((req) => req.status !== 1)
-        .map((req) => req.result)
-        .includes(true);
       return {
         ...state,
-        isCampaignClaimable,
+        isCampaignClaimable: action.payload.isClaimable,
       };
     }
     case "isCampaignClaimable:remove": {

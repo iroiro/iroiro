@@ -2,6 +2,14 @@ import { Target } from "../interfaces";
 
 export type AUDIUS_ACTIONS =
   | {
+      type: "libs:set";
+      payload: { libs: any };
+    }
+  | {
+      type: "user:set";
+      payload: { user: any };
+    }
+  | {
       type: "email:set";
       payload: { email: string };
     }
@@ -12,6 +20,8 @@ export type AUDIUS_ACTIONS =
   | { type: "isLibsActive:true" };
 
 export interface AudiusState {
+  libs?: any;
+  user?: any;
   email: string;
   password: string;
   followers: Target[];
@@ -25,6 +35,16 @@ export const audiusReducer = (
   action: AUDIUS_ACTIONS
 ): AudiusState => {
   switch (action.type) {
+    case "libs:set": {
+      return {
+        ...state,
+        libs: action.payload.libs,
+        isLibsActive: !!action.payload.libs,
+      };
+    }
+    case "user:set": {
+      return { ...state, user: action.payload.user };
+    }
     case "email:set": {
       return { ...state, email: action.payload.email };
     }
@@ -55,6 +75,8 @@ export const audiusReducer = (
 };
 
 export const audiusInitialState: AudiusState = {
+  libs: undefined,
+  user: null,
   email: "",
   password: "",
   followers: [],

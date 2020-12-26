@@ -20,10 +20,13 @@ import {
 import { Dispatch, useCallback } from "react";
 import { useRequestCheckingIsClaimable } from "../../../hooks/distributors/audius-followers/useRequestCheckingIsClaimable";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { AUDIUS_ACTIONS, AudiusState } from "../../../reducers/audius";
 
 export interface TokenRequestCardProps {
   state: TokenInformationState;
   dispatch: Dispatch<TokenInformationAction>;
+  readonly audiusState: AudiusState;
+  readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -45,6 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
   state,
   dispatch,
+  audiusState,
+  audiusDispatch,
 }) => {
   const classes = useStyles();
   const { library } = useWeb3React();
@@ -58,22 +63,9 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
     library,
     ORACLE_ADDRESS,
     JOB_ID_CCT_WALLET_EA,
-    LINK_APPROVE_AMOUNT,
-    state?.campaignAddress ?? ""
+    state?.campaignAddress ?? "",
+    audiusState.user.wallet ?? ""
   );
-
-  const onClickApprove = useCallback(async () => {
-    const transaction = await approve();
-    if (transaction === undefined) {
-      console.error("Transaction failed");
-      return;
-    }
-    console.debug(transaction);
-    // TODO After approving finished, switch request button to enable
-    transaction.wait().then(() => {
-      dispatch({ type: "isTokenApproved:setTrue" });
-    });
-  }, [approve]);
 
   const onClickRequest = useCallback(async () => {
     const transaction = await requestCheck();

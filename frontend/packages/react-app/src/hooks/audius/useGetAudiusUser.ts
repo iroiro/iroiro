@@ -9,7 +9,7 @@ export const useGetAudiusUserOrSignIn = (
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (libs.Account === undefined) {
+    if (libs === undefined || libs.Account === undefined) {
       return;
     }
     const f = async () => {
@@ -20,7 +20,7 @@ export const useGetAudiusUserOrSignIn = (
   }, [libs]);
 
   useEffect(() => {
-    if (libs.Account === undefined || email === "" || password === "") {
+    if (libs === undefined || email === "" || password === "") {
       return;
     }
     if (!requestSignin) {

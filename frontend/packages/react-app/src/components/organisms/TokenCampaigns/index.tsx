@@ -1,9 +1,16 @@
 import * as React from "react";
 import { Grid, Typography, Box, Paper } from "@material-ui/core";
 import TokenCampaignCard from "../../molecules/TokenCampaignCard";
-import { TokenInformationProps } from "../../organisms/TokenInformationTabs";
+import { TokenInformationState } from "../../../interfaces";
+import { Dispatch } from "react";
+import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
-const TokenCampaigns: React.FC<TokenInformationProps> = ({
+export interface TokenCampaignsProps {
+  state: TokenInformationState;
+  dispatch: Dispatch<TokenInformationAction>;
+}
+
+const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
   state: { campaigns },
   dispatch,
 }) => (

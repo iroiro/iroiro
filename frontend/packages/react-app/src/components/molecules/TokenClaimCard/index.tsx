@@ -3,6 +3,7 @@ import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { useClaim } from "../../../hooks/distributors/audius-followers/useClaim";
 import { useCallback } from "react";
+import { AudiusState } from "../../../reducers/audius";
 
 export interface TokenClaimCardProps {
   campaignAddress: string;
@@ -10,6 +11,8 @@ export interface TokenClaimCardProps {
   claimAmount: string;
   isClaimable: boolean;
   isClaimed: boolean;
+  userAddress: string;
+  readonly audiusState: AudiusState;
 }
 
 const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
@@ -18,9 +21,16 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
   claimAmount,
   isClaimable,
   isClaimed,
+  userAddress, // TODO enable switching Audius address and web wallet address
+  audiusState,
 }) => {
   const { library } = useWeb3React();
-  const claim = useClaim(library, campaignAddress);
+  const claim = useClaim(
+    library,
+    campaignAddress,
+    audiusState.libs,
+    userAddress
+  );
   const onClickClaim = useCallback(async () => {
     const transaction = await claim();
     if (transaction === undefined) {
