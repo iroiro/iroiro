@@ -106,20 +106,21 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   }, [library, tokenAddress]);
 
   useEffect(() => {
-    if (library) {
-      const f = async () => {
-        const balance = await getWalletBalance(
-          library,
-          state.token?.tokenAddress ?? ""
-        );
-        if (balance === undefined) {
-          return;
-        }
-        dispatch({ type: "userBalance:set", payload: { balance } });
-      };
-      f();
+    if (!library) {
+      return;
     }
-  }, [library, state]);
+    const f = async () => {
+      const balance = await getWalletBalance(
+        library,
+        state.token?.tokenAddress ?? ""
+      );
+      if (balance === undefined) {
+        return;
+      }
+      dispatch({ type: "userBalance:set", payload: { balance } });
+    };
+    f();
+  }, [library, state.token]);
 
   useEffect(() => {
     // TODO: After made campaign creation function, change dynamic value
