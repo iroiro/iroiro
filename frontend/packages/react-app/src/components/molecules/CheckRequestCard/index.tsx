@@ -64,7 +64,7 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
     ORACLE_ADDRESS,
     JOB_ID_CCT_WALLET_EA,
     state?.campaignAddress ?? "",
-    audiusState.user.wallet ?? ""
+    audiusState?.user?.wallet ?? ""
   );
 
   const onClickRequest = useCallback(async () => {
