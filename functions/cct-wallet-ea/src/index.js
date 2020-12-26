@@ -87,7 +87,7 @@ exports.handler = async (event, context) => {
     return response;
   }
 
-  const isClaimable = content.targets.includes(userAddress);
+  const isClaimable = content.targets.includes(userAddress.toLowerCase());
   const claimKeyHash = getClaimKeyHash(userId, isClaimable);
   console.debug("Claim key hash: ", claimKeyHash);
 
