@@ -44,10 +44,13 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
     // TODO After approving finished, switch request button to enable
   }, [claim]);
 
-  const text = isClaimable
-    ? "You can claim token."
-    : "We are sorry but you can not claim token.";
-
+  let text = "We are sorry but you can not claim token.";
+  if (isClaimable) {
+    text = "You can claim token.";
+  }
+  if (isClaimed) {
+    text = "You claimed token.";
+  }
   return (
     <Card>
       <CardContent>

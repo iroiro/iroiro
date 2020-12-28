@@ -36,30 +36,33 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
 
   return (
     <div style={{ marginTop: "24px" }}>
-      {!audiusState.user && (
+      {!audiusState.user ? (
         <SigninAudius
           audiusState={audiusState}
           audiusDispatch={audiusDispatch}
         />
-      )}
-      <TokenCampaignDetail campaign={campaign} />
-      <TokenRequestCard
-        state={state}
-        dispatch={dispatch}
-        audiusState={audiusState}
-        audiusDispatch={audiusDispatch}
-      />
-      {state.isTokenCheckFinished && (
-        <TokenClaimCard
-          campaignAddress={state?.campaignAddress ?? ""}
-          symbol={state.token.symbol}
-          decimals={state.token.decimals}
-          claimAmount={campaign.claimAmount}
-          isClaimable={state.isCampaignClaimable}
-          isClaimed={state.isCampaignClaimed}
-          userAddress={state.userAddress ?? ""}
-          audiusState={audiusState}
-        />
+      ) : (
+        <>
+          <TokenCampaignDetail campaign={campaign} />
+          <TokenRequestCard
+            state={state}
+            dispatch={dispatch}
+            audiusState={audiusState}
+            audiusDispatch={audiusDispatch}
+          />
+          {state.isTokenCheckFinished && (
+            <TokenClaimCard
+              campaignAddress={state?.campaignAddress ?? ""}
+              symbol={state.token.symbol}
+              decimals={state.token.decimals}
+              claimAmount={campaign.claimAmount}
+              isClaimable={state.isCampaignClaimable}
+              isClaimed={state.isCampaignClaimed}
+              userAddress={state.userAddress ?? ""}
+              audiusState={audiusState}
+            />
+          )}
+        </>
       )}
     </div>
   );

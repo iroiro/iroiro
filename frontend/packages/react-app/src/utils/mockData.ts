@@ -67,7 +67,7 @@ export const tokenInformationState: TokenInformationState = {
     tokenAddress: "0xabcd...1234",
     name: "Iroiro Token",
     symbol: "IRO",
-    decimals: 18,
+    decimals: 5,
     totalSupply: "2000000000",
   },
   isTokenApproved: false,

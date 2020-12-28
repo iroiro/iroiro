@@ -15,20 +15,10 @@ const Template: Story<TokenRequestCardProps> = (args) => (
   </BrowserRouter>
 );
 
-export const NoApprove = Template.bind({});
-NoApprove.args = {
+export const Default = Template.bind({});
+Default.args = {
   state: {
     ...tokenInformationState,
-    isTokenApproved: false,
-    isTokenRequested: false,
-  },
-};
-
-export const Approved = Template.bind({});
-Approved.args = {
-  state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
     isTokenRequested: false,
   },
 };
@@ -37,7 +27,6 @@ export const Requested = Template.bind({});
 Requested.args = {
   state: {
     ...tokenInformationState,
-    isTokenApproved: true,
     isTokenRequested: true,
   },
 };

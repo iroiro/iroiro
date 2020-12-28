@@ -17,6 +17,15 @@ const Template: Story<TokenDetailCampaignPanelProps> = (args) => (
   </BrowserRouter>
 );
 
+export const NotLoggedIn = Template.bind({});
+NotLoggedIn.args = {
+  state: tokenInformationState,
+  audiusState: {
+    ...audiusState,
+    user: null,
+  },
+};
+
 export const Default = Template.bind({});
 Default.args = {
   state: tokenInformationState,
