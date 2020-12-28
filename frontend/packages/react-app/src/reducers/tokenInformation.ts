@@ -71,6 +71,9 @@ export type TokenInformationAction =
       type: "isCampaignClaimable:remove";
     }
   | {
+      type: "isCampaignClaimed:setTrue";
+    }
+  | {
       type: "isCampaignClaimed:set";
       payload: {
         claim: Claim;
@@ -200,6 +203,12 @@ export const tokenInformationReducer = (
       return {
         ...state,
         isCampaignClaimable: false,
+      };
+    }
+    case "isCampaignClaimed:setTrue": {
+      return {
+        ...state,
+        isCampaignClaimed: true,
       };
     }
     case "isCampaignClaimed:set": {

@@ -70,6 +70,7 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
               isClaimable={state.isCampaignClaimable}
               isClaimed={state.isCampaignClaimed}
               userAddress={state.userAddress ?? ""}
+              dispatch={dispatch}
               audiusState={audiusState}
             />
           )}

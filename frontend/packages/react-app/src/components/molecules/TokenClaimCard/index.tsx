@@ -2,9 +2,10 @@ import * as React from "react";
 import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { useClaim } from "../../../hooks/distributors/audius-followers/useClaim";
-import { useCallback } from "react";
+import { Dispatch, useCallback } from "react";
 import { AudiusState } from "../../../reducers/audius";
 import TokenAmount from "../../atoms/TokenAmount";
+import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
 export interface TokenClaimCardProps {
   campaignAddress: string;
@@ -14,6 +15,7 @@ export interface TokenClaimCardProps {
   isClaimed: boolean;
   userAddress: string;
   decimals: number;
+  readonly dispatch: Dispatch<TokenInformationAction>;
   readonly audiusState: AudiusState;
 }
 
@@ -25,6 +27,7 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
   isClaimed,
   userAddress, // TODO enable switching Audius address and web wallet address
   decimals,
+  dispatch,
   audiusState,
 }) => {
   const { library } = useWeb3React();
@@ -40,6 +43,7 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
       console.error("Transaction failed");
       return;
     }
+    dispatch({ type: "isCampaignClaimed:setTrue" });
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
   }, [claim]);
