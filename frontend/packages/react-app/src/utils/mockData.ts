@@ -39,7 +39,7 @@ export const campaign: CampaignInfo = {
   },
   claimAmount: "10",
   distributor: distributor,
-  startDate: "20201212",
+  startDate: "1606780800",
   status: 0,
   claimed: 10,
   token: {
@@ -52,7 +52,7 @@ export const campaign: CampaignInfo = {
     },
     balance: "",
   },
-  endDate: "",
+  endDate: "1612137600",
   creator: {
     id: "",
   },
@@ -128,6 +128,7 @@ export const tokenInformationState: TokenInformationState = {
       balance: "300",
     },
   ],
+  now: new Date(),
 };
 
 export const distributionTargets: Target[] = [

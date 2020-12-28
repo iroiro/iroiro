@@ -61,19 +61,20 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
       console.error("Transaction failed");
       return;
     }
+    dispatch({ type: "isTokenRequested:setTrue" });
     console.debug(transaction);
-    // TODO After approving finished, switch request button to enable
-  }, [requestCheck]);
+  }, [requestCheck, dispatch]);
 
   if (state.isCampaignClaimable || state.isTokenCheckFinished) {
     return null;
   }
+  const text = state.isTokenRequested
+    ? "Request sent. Please visit after transaction is completed."
+    : "Send a check request to see whether you are eligible for to claim.";
   return (
     <div style={{ marginTop: "24px" }}>
       <Paper className={classes.container}>
-        <Typography align="center">
-          Send a check request to see whether you are eligible for to claim.
-        </Typography>
+        <Typography align="center">{text}</Typography>
         <Box textAlign="center" my={5}>
           <Button
             variant="contained"

@@ -34,8 +34,20 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
     );
   }
 
+  const startDate = Number.parseInt(campaign.startDate);
+  const endDate = Number.parseInt(campaign.endDate);
+  const now = state.now.getTime() / 1000;
+  if (now < startDate || endDate <= now) {
+    return (
+      <div style={{ marginTop: "24px" }}>
+        <TokenCampaignDetail campaign={campaign} />
+      </div>
+    );
+  }
+
   return (
     <div style={{ marginTop: "24px" }}>
+      <TokenCampaignDetail campaign={campaign} />
       {!audiusState.user ? (
         <SigninAudius
           audiusState={audiusState}
@@ -43,7 +55,6 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
         />
       ) : (
         <>
-          <TokenCampaignDetail campaign={campaign} />
           <TokenRequestCard
             state={state}
             dispatch={dispatch}
