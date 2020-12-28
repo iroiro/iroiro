@@ -184,11 +184,7 @@ const AudiusDisributionPage = () => {
     const initLibs = async () => {
       const libs = await init();
       setLibs(libs);
-      // const user = libs.Account.getCurrentUser();
-      console.log("***************************************************");
       const { user } = await libs.Account.login();
-      console.log(user);
-      console.log("***************************************************");
       if (user) {
         const followers = await libs.User.getFollowersForUser(
           100,

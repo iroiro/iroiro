@@ -57,19 +57,33 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     audiusState.password,
     audiusState.requestSignin
   );
-  const { followers, isLoading } = useGetAudiusFollowers(libs, user);
+  const {
+    followersCount,
+    followers,
+    progress,
+    isLoading,
+  } = useGetAudiusFollowers(libs, user);
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
-  const [recipientsNum, setRecipientsNum] = useState(0);
 
   useEffect(() => {
-    audiusDispatch({
-      type: "followers:set",
-      payload: {
-        followers,
-      },
-    });
-  }, [followers]);
+    audiusDispatch({ type: "libs:set", payload: { libs } });
+  }, [libs]);
+
+  useEffect(() => {
+    audiusDispatch({ type: "user:set", payload: { user } });
+  }, [user]);
+
+  useEffect(() => {
+    audiusDispatch({ type: "followersCount:set", payload: { followersCount } });
+    audiusDispatch({ type: "followers:set", payload: { followers } });
+    audiusDispatch({ type: "progress:set", payload: { progress } });
+  }, [followersCount, followers, progress]);
+
+  const audiusSignOut = useCallback(async () => {
+    await audiusState.libs.Account.logout();
+    audiusDispatch({ type: "state:reset" });
+  }, [audiusState.libs]);
 
   const getBalance = useCallback(
     async (library) => {
@@ -211,22 +225,14 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
       const addresses = { addresses: followersAddress };
       uploadJsonIpfs(campaignInfo, "campaignInfoCid");
       uploadJsonIpfs(addresses, "recipientsCid");
-      setRecipientsNum(addresses.addresses.length);
     }
-  }, [
-    library,
-    distributorFormState,
-    approve,
-    uploadJsonIpfs,
-    setRecipientsNum,
-    audiusState,
-  ]);
+  }, [library, distributorFormState, approve, uploadJsonIpfs, audiusState]);
 
   useEffect(() => {
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
-      recipientsNum === 0 ||
+      audiusState.followersCount === 0 ||
       distributorFormState.startDate == null ||
       distributorFormState.endDate == null
     ) {
@@ -237,7 +243,7 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
       library,
       campaignInfoCid,
       recipientsCid,
-      recipientsNum,
+      audiusState.followersCount,
       distributorFormState.startDate,
       distributorFormState.endDate
     );
@@ -245,17 +251,16 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     library,
     campaignInfoCid,
     recipientsCid,
-    recipientsNum,
+    audiusState,
     distributorFormState,
     deployCampaign,
   ]);
 
   useEffect(() => {
-    if (!isLibsInitialized) {
-      return;
+    if (audiusState.isRequestSignout === true && audiusState.user) {
+      audiusSignOut();
     }
-    audiusDispatch({ type: "isLibsActive:true" });
-  }, [audiusDispatch, isLibsInitialized]);
+  }, [audiusState.isRequestSignout, audiusState.user, audiusSignOut]);
 
   return (
     <>
