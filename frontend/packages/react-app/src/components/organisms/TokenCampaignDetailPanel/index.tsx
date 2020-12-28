@@ -53,6 +53,7 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
         <TokenClaimCard
           campaignAddress={state?.campaignAddress ?? ""}
           symbol={state.token.symbol}
+          decimals={state.token.decimals}
           claimAmount={campaign.claimAmount}
           isClaimable={state.isCampaignClaimable}
           isClaimed={state.isCampaignClaimed}

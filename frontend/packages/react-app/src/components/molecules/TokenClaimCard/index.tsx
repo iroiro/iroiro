@@ -4,6 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useClaim } from "../../../hooks/distributors/audius-followers/useClaim";
 import { useCallback } from "react";
 import { AudiusState } from "../../../reducers/audius";
+import TokenAmount from "../../atoms/TokenAmount";
 
 export interface TokenClaimCardProps {
   campaignAddress: string;
@@ -12,6 +13,7 @@ export interface TokenClaimCardProps {
   isClaimable: boolean;
   isClaimed: boolean;
   userAddress: string;
+  decimals: number;
   readonly audiusState: AudiusState;
 }
 
@@ -22,6 +24,7 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
   isClaimable,
   isClaimed,
   userAddress, // TODO enable switching Audius address and web wallet address
+  decimals,
   audiusState,
 }) => {
   const { library } = useWeb3React();
@@ -53,9 +56,13 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
           {isClaimable && (
             <>
               <Box my={2}>
-                <Typography align="center" variant="h2">
-                  {`${claimAmount} $${symbol}`}
-                </Typography>
+                <TokenAmount
+                  amount={claimAmount}
+                  decimals={decimals}
+                  align="center"
+                  variant="h2"
+                  symbol={symbol}
+                />
               </Box>
               <Box mt={4} textAlign="center">
                 <Button

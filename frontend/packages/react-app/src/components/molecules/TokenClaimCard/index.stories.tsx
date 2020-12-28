@@ -22,6 +22,7 @@ NotClaimable.args = {
   claimAmount: "100",
   isClaimable: false,
   isClaimed: false,
+  decimals: 6,
   audiusState,
 };
 
@@ -31,6 +32,7 @@ IsClaimable.args = {
   claimAmount: "100",
   isClaimable: true,
   isClaimed: false,
+  decimals: 6,
   audiusState,
 };
 
@@ -40,5 +42,6 @@ Claimed.args = {
   claimAmount: "100",
   isClaimable: true,
   isClaimed: true,
+  decimals: 6,
   audiusState,
 };
