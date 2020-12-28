@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -22,14 +23,28 @@ var (
 	// ErrNon200Response non 200 status code in response
 	ErrNon200Response = errors.New("Non 200 Response found")
 
-	headers = map[string]string{
-		"Access-Control-Allow-Origin":  os.Getenv("FRONTEND_ORIGIN"),
-		"Access-Control-Allow-Headers": "Content-Type",
-		"Access-Control-Allow-Methods": "OPTIONS, POST",
-	}
+	AllowOrigins = strings.Split(os.Getenv("FRONTEND_ORIGINS"), ",")
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	origin := request.Headers["Origin"]
+	isOriginMatched := false
+	for _, o := range AllowOrigins {
+		if o == origin {
+			isOriginMatched = true
+		}
+	}
+	if !isOriginMatched {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 403,
+		}, nil
+	}
+
+	headers := map[string]string{
+		"Access-Control-Allow-Origin": origin,
+		"Access-Control-Allow-Headers": "Content-Type",
+		"Access-Control-Allow-Methods": "OPTIONS, POST",
+	}
 	if request.HTTPMethod == "OPTIONS" {
 		return events.APIGatewayProxyResponse{
 			StatusCode: 200,
