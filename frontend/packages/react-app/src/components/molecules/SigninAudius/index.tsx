@@ -50,13 +50,18 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
         />
       </Box>
       <Box m={"auto"} my={4} style={{ textAlign: "center" }}>
-        <Button
-          onClick={() => audiusDispatch({ type: "audius:login" })}
-          mainColor={"#7e1bcc"}
-          disabled={!audiusState.isLibsActive}
-        >
-          Sign In
-        </Button>
+        {audiusState.isLibsActive ? (
+          <Button
+            onClick={() => audiusDispatch({ type: "audius:login" })}
+            mainColor={"#7e1bcc"}
+          >
+            Sign In
+          </Button>
+        ) : (
+          <Button mainColor={"#7e1bcc"} disabled>
+            Sign In
+          </Button>
+        )}
       </Box>
     </Box>
   </Card>

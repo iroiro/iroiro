@@ -14,6 +14,7 @@ import {
   distributorFormInitialState,
 } from "../../reducers/distributorForm";
 import { audiusReducer, audiusInitialState } from "../../reducers/audius";
+import { Target } from "../../interfaces";
 
 // @ts-ignore
 import Audius from "@audius/libs";
@@ -62,10 +63,12 @@ const init = async () => {
   return libs;
 };
 
-const CreateCampaignPage: React.FC<RouteComponentProps<{
-  tokenAddress: string;
-  distributorAddress: string;
-}>> = (props) => {
+const CreateCampaignPage: React.FC<
+  RouteComponentProps<{
+    tokenAddress: string;
+    distributorAddress: string;
+  }>
+> = (props) => {
   const { library, active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const distributorAddress = props.match.params.distributorAddress;
@@ -86,24 +89,75 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   const [libs, setLibs] = useState(Object);
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
-  const [recipientsNum, setRecipientsNum] = useState(0);
+  const [myAccount, setMyAccount] = useState({ user_id: "" });
 
-  const audiusSignIn = useCallback(
-    async (email, password) => {
-      const { user } = await libs.Account.login(email, password);
-      const followers = await libs.User.getFollowersForUser(
-        100,
-        0,
+  const getFollowers = useCallback(async (libs, user) => {
+    let allFollowers: Target[] = [];
+    const offset = 100;
+    for (let i = 0; i <= user.follower_count / offset; i++) {
+      const targets = await libs.User.getFollowersForUser(
+        offset,
+        i * offset,
         user.user_id
       );
+      const followers: Target[] = targets.map((target: Target) => {
+        return {
+          handle: target.handle,
+          wallet: target.wallet.toLowerCase(),
+        };
+      });
+      allFollowers = allFollowers.concat(followers);
       audiusDispatch({
-        type: "followers:set",
+        type: "progress:set",
         payload: {
-          followers,
+          progress: (i * offset) / user.follower_count,
         },
       });
+    }
+
+    audiusDispatch({
+      type: "followers:set",
+      payload: {
+        followers: allFollowers,
+      },
+    });
+  }, []);
+
+  const getFollowersCount = useCallback((user) => {
+    audiusDispatch({
+      type: "followersCount:set",
+      payload: { followersCount: user.follower_count },
+    });
+  }, []);
+
+  const audiusSignIn = useCallback(
+    async (libs, email, password) => {
+      const { user } = await libs.Account.login(email, password);
+      setMyAccount(user);
+      getFollowersCount(user);
+      getFollowers(libs, user);
     },
-    [libs]
+    [getFollowersCount, getFollowers]
+  );
+
+  const audiusSignOut = useCallback(async () => {
+    await libs.Account.logout();
+    setMyAccount({ user_id: "" });
+    audiusDispatch({
+      type: "state:reset",
+    });
+  }, [libs]);
+
+  const getUser = useCallback(
+    async (libs) => {
+      const user = await libs.Account.getCurrentUser();
+      if (user) {
+        setMyAccount(user);
+        getFollowersCount(user);
+        getFollowers(libs, user);
+      }
+    },
+    [getFollowersCount, getFollowers]
   );
 
   const getBalance = useCallback(
@@ -246,22 +300,14 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
       const addresses = { addresses: followersAddress };
       uploadJsonIpfs(campaignInfo, "campaignInfoCid");
       uploadJsonIpfs(addresses, "recipientsCid");
-      setRecipientsNum(addresses.addresses.length);
     }
-  }, [
-    library,
-    distributorFormState,
-    approve,
-    uploadJsonIpfs,
-    setRecipientsNum,
-    audiusState,
-  ]);
+  }, [library, distributorFormState, approve, uploadJsonIpfs, audiusState]);
 
   useEffect(() => {
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
-      recipientsNum === 0 ||
+      audiusState.followersCount === 0 ||
       distributorFormState.startDate == null ||
       distributorFormState.endDate == null
     ) {
@@ -272,7 +318,7 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
       library,
       campaignInfoCid,
       recipientsCid,
-      recipientsNum,
+      audiusState.followersCount,
       distributorFormState.startDate,
       distributorFormState.endDate
     );
@@ -280,7 +326,7 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     library,
     campaignInfoCid,
     recipientsCid,
-    recipientsNum,
+    audiusState,
     distributorFormState,
     deployCampaign,
   ]);
@@ -288,18 +334,29 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   useEffect(() => {
     const initLibs = async () => {
       const libs = await init();
-      console.log(libs);
       setLibs(libs);
       audiusDispatch({ type: "isLibsActive:true" });
+      getUser(libs);
     };
     initLibs();
-  }, [audiusDispatch]);
+  }, [audiusDispatch, getUser]);
 
   useEffect(() => {
-    if (audiusState.requestSignin === true) {
-      audiusSignIn(audiusState.email, audiusState.password);
+    if (
+      audiusState.requestSignin === true &&
+      audiusState.isLibsActive === true
+    ) {
+      audiusSignIn(libs, audiusState.email, audiusState.password);
     }
-  }, [audiusState, audiusSignIn]);
+
+    if (audiusState.isRequestFollowers === true && myAccount) {
+      getFollowers(libs, myAccount);
+    }
+
+    if (audiusState.isRequestSignout === true && myAccount) {
+      audiusSignOut();
+    }
+  }, [audiusState, libs, audiusSignIn, myAccount, getFollowers, audiusSignOut]);
 
   return (
     <>
