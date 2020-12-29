@@ -2,9 +2,9 @@
 pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "./NewInterfaces.sol";
+import "./interfaces/DonatorInterface.sol";
 
-contract NewDonator is DonatorInterface {
+contract Donator is DonatorInterface {
     // TODO This function should be restricted for authenticated token owners
     function setDonatee(address _token) public override {
         tokenDonateeList[_token] = msg.sender;

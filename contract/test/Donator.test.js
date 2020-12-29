@@ -2,7 +2,7 @@ const { accounts, contract } = require("@openzeppelin/test-environment");
 const { constants } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
-const Donator = contract.fromArtifact("NewDonator");
+const Donator = contract.fromArtifact("Donator");
 const FanToken = contract.fromArtifact("FanToken");
 
 describe("FanToken", () => {

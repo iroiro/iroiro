@@ -1,7 +1,6 @@
 const { LinkToken } = require("@chainlink/contracts/truffle/v0.4/LinkToken");
 const { Oracle } = require("@chainlink/contracts/truffle/v0.6/Oracle");
 
-// TODO: Deprecated contracts migration, will be removed
 module.exports = async (deployer, network, [defaultAccount]) => {
   if (network.startsWith("rinkeby")) {
     Oracle.setProvider(deployer.provider);

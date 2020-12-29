@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
-import TokenDetailPage from "./components/pages/TokenDetailPage";
 import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
 import SelectDistributorsPage from "./components/pages/SelectDistributorsPage";
 import CreateCampaignPage from "./components/pages/CreateCampaignPage";
@@ -48,10 +47,6 @@ const App: React.FC = () => {
             exact
             path="/explore/:tokenAddress"
             component={TokenInformationPage}
-          />
-          <Route
-            path="/explore/:tokenAddress/basic"
-            component={TokenDetailPage}
           />
           <Route
             path="/explore/:tokenAddress/campaigns"
