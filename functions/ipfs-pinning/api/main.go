@@ -28,6 +28,9 @@ var (
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	origin := request.Headers["Origin"]
+	if origin == "" {
+		origin = request.Headers["origin"]
+	}
 	isOriginMatched := false
 	for _, o := range AllowOrigins {
 		if o == origin {
