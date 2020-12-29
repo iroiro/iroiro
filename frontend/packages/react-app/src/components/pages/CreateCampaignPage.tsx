@@ -22,12 +22,6 @@ import { useGetAudiusFollowers } from "../../hooks/audius/useGetAudiusFollowers"
 import useAxios from "axios-hooks";
 import { IPFS_PINNING_API } from "../../utils/const";
 
-declare global {
-  interface Window {
-    libs: any;
-  }
-}
-
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
@@ -52,22 +46,19 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     audiusInitialState
   );
 
-  const { libs, isLibsInitialized } = useAudiusLibs();
+  const { libs } = useAudiusLibs();
   const user = useGetAudiusUserOrSignIn(
     libs,
     audiusState.email,
     audiusState.password,
     audiusState.requestSignin
   );
-  const {
-    followersCount,
-    followers,
-    progress,
-    isLoading,
-  } = useGetAudiusFollowers(libs, user);
+  const { followersCount, followers, progress } = useGetAudiusFollowers(
+    libs,
+    user
+  );
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
-  const [myAccount, setMyAccount] = useState({ user_id: "" });
   const [{ error: pinningError }, postPinning] = useAxios(
     {
       url: IPFS_PINNING_API,

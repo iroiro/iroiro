@@ -14,13 +14,12 @@ import { JOB_ID_CCT_WALLET_EA, ORACLE_ADDRESS } from "../../../utils/const";
 import { Dispatch, useCallback } from "react";
 import { useRequestCheckingIsClaimable } from "../../../hooks/distributors/audius-followers/useRequestCheckingIsClaimable";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
-import { AUDIUS_ACTIONS, AudiusState } from "../../../reducers/audius";
+import { AudiusState } from "../../../reducers/audius";
 
 export interface TokenRequestCardProps {
   state: TokenInformationState;
   dispatch: Dispatch<TokenInformationAction>;
   readonly audiusState: AudiusState;
-  readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,7 +42,6 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
   state,
   dispatch,
   audiusState,
-  audiusDispatch,
 }) => {
   const classes = useStyles();
   const { library } = useWeb3React();

@@ -10,10 +10,10 @@ export interface Distributors {
   readonly tokenAddress: string;
 }
 
-const SelectDistributorsPageTemplate = ({
+const SelectDistributorsPageTemplate: React.FC<Distributors> = ({
   distributors,
   tokenAddress,
-}: Distributors) => {
+}) => {
   return (
     <>
       <AppHeader />

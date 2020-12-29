@@ -99,7 +99,6 @@ const AudiusDisributionPage = () => {
     const filter = fanToken.filters.Transfer(walletAddress);
     fanToken.on(filter, async () => {
       const balanceOfAudius = await fanToken.balanceOf(addresses.Audius);
-      console.log(balanceOfAudius.toString());
       const newTokenInfo = {
         name: tokenInfo.name,
         symbol: tokenInfo.symbol,
@@ -180,7 +179,6 @@ const AudiusDisributionPage = () => {
 
   // Initialize @audius/libs on mount
   useEffect(() => {
-    console.log("****");
     const initLibs = async () => {
       const libs = await init();
       setLibs(libs);

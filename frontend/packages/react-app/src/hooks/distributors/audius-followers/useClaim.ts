@@ -63,5 +63,12 @@ export const useClaim = (
         console.error(error);
         return error;
       });
-  }, [library, campaignAddress]);
+  }, [
+    library,
+    toAddress,
+    campaignAddress,
+    audiusLibs.Account,
+    audiusLibs.web3Manager.web3,
+    audiusLibs.hedgehog.wallet.privKey,
+  ]);
 };

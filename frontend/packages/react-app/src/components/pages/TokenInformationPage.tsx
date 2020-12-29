@@ -55,7 +55,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
     library,
     tokenAddress
   );
-  const { libs, isLibsInitialized } = useAudiusLibs();
+  const { libs } = useAudiusLibs();
   const user = useGetAudiusUserOrSignIn(
     audiusState.libs,
     audiusState.email,

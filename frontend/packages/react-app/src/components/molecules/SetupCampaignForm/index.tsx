@@ -30,7 +30,7 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
           required
           width={1}
           placeholder="Campaign Name"
-          onChange={(event: any) =>
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             distributorFormDispatch({
               type: "campaignName:set",
               payload: { campaignName: event.target.value },
