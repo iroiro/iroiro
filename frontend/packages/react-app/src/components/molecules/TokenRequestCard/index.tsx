@@ -8,22 +8,19 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
-import { useApproveToken } from "../../../hooks/useApproveToken";
 import { TokenInformationState } from "../../../interfaces";
 import { useWeb3React } from "@web3-react/core";
-import {
-  JOB_ID_CCT_WALLET_EA,
-  LINK_APPROVE_AMOUNT,
-  LINK_TOKEN_ADDRESS,
-  ORACLE_ADDRESS,
-} from "../../../utils/const";
+import { JOB_ID_CCT_WALLET_EA, ORACLE_ADDRESS } from "../../../utils/const";
 import { Dispatch, useCallback } from "react";
 import { useRequestCheckingIsClaimable } from "../../../hooks/distributors/audius-followers/useRequestCheckingIsClaimable";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { AUDIUS_ACTIONS, AudiusState } from "../../../reducers/audius";
 
 export interface TokenRequestCardProps {
   state: TokenInformationState;
   dispatch: Dispatch<TokenInformationAction>;
+  readonly audiusState: AudiusState;
+  readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -45,35 +42,18 @@ const useStyles = makeStyles((theme: Theme) =>
 const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
   state,
   dispatch,
+  audiusState,
+  audiusDispatch,
 }) => {
   const classes = useStyles();
   const { library } = useWeb3React();
-  const approve = useApproveToken(
-    library,
-    LINK_TOKEN_ADDRESS,
-    state?.campaignAddress ?? "",
-    LINK_APPROVE_AMOUNT
-  );
   const requestCheck = useRequestCheckingIsClaimable(
     library,
     ORACLE_ADDRESS,
     JOB_ID_CCT_WALLET_EA,
-    LINK_APPROVE_AMOUNT,
-    state?.campaignAddress ?? ""
+    state?.campaignAddress ?? "",
+    audiusState?.user?.wallet ?? ""
   );
-
-  const onClickApprove = useCallback(async () => {
-    const transaction = await approve();
-    if (transaction === undefined) {
-      console.error("Transaction failed");
-      return;
-    }
-    console.debug(transaction);
-    // TODO After approving finished, switch request button to enable
-    transaction.wait().then(() => {
-      dispatch({ type: "isTokenApproved:setTrue" });
-    });
-  }, [approve]);
 
   const onClickRequest = useCallback(async () => {
     const transaction = await requestCheck();
@@ -81,18 +61,27 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
       console.error("Transaction failed");
       return;
     }
+    dispatch({ type: "isTokenRequested:setTrue" });
     console.debug(transaction);
-    // TODO After approving finished, switch request button to enable
-  }, [approve, requestCheck]);
+  }, [requestCheck, dispatch]);
 
+  if (state.isCampaignClaimable || state.isTokenCheckFinished) {
+    return null;
+  }
+  const text = state.isTokenRequested
+    ? "Request sent. Please visit after transaction is completed."
+    : "Send a check request to see whether you are eligible for to claim.";
   return (
     <div style={{ marginTop: "24px" }}>
       <Paper className={classes.container}>
-        <Typography align="center">
-          Send a check request to see whether you are eligible for to claim.
-        </Typography>
+        <Typography align="center">{text}</Typography>
         <Box textAlign="center" my={5}>
-          <Button variant="contained" color="primary" onClick={onClickRequest}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onClickRequest}
+            disabled={state.isTokenRequested}
+          >
             Check request
           </Button>
         </Box>

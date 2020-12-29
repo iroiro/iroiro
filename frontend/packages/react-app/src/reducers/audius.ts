@@ -2,6 +2,14 @@ import { Target } from "../interfaces";
 
 export type AUDIUS_ACTIONS =
   | {
+      type: "libs:set";
+      payload: { libs: any };
+    }
+  | {
+      type: "user:set";
+      payload: { user: any };
+    }
+  | {
       type: "email:set";
       payload: { email: string };
     }
@@ -10,7 +18,6 @@ export type AUDIUS_ACTIONS =
   | { type: "followersCount:set"; payload: { followersCount: number } }
   | { type: "audius:login" }
   | { type: "audius:loggedIn" }
-  | { type: "isLibsActive:true" }
   | { type: "offset:set" }
   | {
       type: "isRequestFollowers:set";
@@ -27,13 +34,14 @@ export type AUDIUS_ACTIONS =
   | { type: "state:reset" };
 
 export interface AudiusState {
+  libs?: any;
+  user?: any;
   email: string;
   password: string;
   followers: Target[];
   followersCount: number;
   isSignin: boolean;
   requestSignin: boolean;
-  isLibsActive: boolean;
   isRequestFollowers: boolean;
   isRequestSignout: boolean;
   progress: number;
@@ -44,6 +52,15 @@ export const audiusReducer = (
   action: AUDIUS_ACTIONS
 ): AudiusState => {
   switch (action.type) {
+    case "libs:set": {
+      return {
+        ...state,
+        libs: action.payload.libs,
+      };
+    }
+    case "user:set": {
+      return { ...state, user: action.payload.user };
+    }
     case "email:set": {
       return { ...state, email: action.payload.email };
     }
@@ -75,9 +92,6 @@ export const audiusReducer = (
     case "audius:loggedIn": {
       return { ...state, isSignin: true, requestSignin: false };
     }
-    case "isLibsActive:true": {
-      return { ...state, isLibsActive: true };
-    }
     case "isRequestFollowers:set": {
       return {
         ...state,
@@ -92,16 +106,8 @@ export const audiusReducer = (
     }
     case "state:reset": {
       return {
-        email: "",
-        password: "",
-        followers: [],
-        followersCount: 0,
-        isSignin: false,
-        requestSignin: false,
-        isLibsActive: true,
-        isRequestFollowers: false,
-        isRequestSignout: false,
-        progress: 0,
+        ...audiusInitialState,
+        libs: state.libs,
       };
     }
     default:
@@ -110,13 +116,14 @@ export const audiusReducer = (
 };
 
 export const audiusInitialState: AudiusState = {
+  libs: undefined,
+  user: null,
   email: "",
   password: "",
   followers: [],
   followersCount: 0,
   isSignin: false,
   requestSignin: false,
-  isLibsActive: false,
   isRequestFollowers: false,
   isRequestSignout: false,
   progress: 0,

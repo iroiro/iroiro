@@ -14,6 +14,7 @@ import TokenDetailCampaignPanel from "../TokenCampaignDetailPanel";
 import UserHistory from "../UserHistory";
 import { TokenInformationState } from "../../../interfaces";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { AUDIUS_ACTIONS, AudiusState } from "../../../reducers/audius";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {
@@ -23,8 +24,10 @@ interface TabPanelProps {
 }
 
 export interface TokenInformationProps {
-  state: TokenInformationState;
-  dispatch: Dispatch<TokenInformationAction>;
+  readonly state: TokenInformationState;
+  readonly dispatch: Dispatch<TokenInformationAction>;
+  readonly audiusState: AudiusState;
+  readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -62,6 +65,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
   state,
   dispatch,
+  audiusState,
+  audiusDispatch,
 }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -100,7 +105,12 @@ export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
           {!state.campaignAddress ? (
             <TokenCampaigns state={state} dispatch={dispatch} />
           ) : (
-            <TokenDetailCampaignPanel state={state} dispatch={dispatch} />
+            <TokenDetailCampaignPanel
+              state={state}
+              dispatch={dispatch}
+              audiusState={audiusState}
+              audiusDispatch={audiusDispatch}
+            />
           )}
         </TabPanel>
         <TabPanel value={value} index={2}>

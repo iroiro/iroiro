@@ -118,6 +118,7 @@ export interface TokenInformationState {
   userBalance?: string;
   activities: Activity[];
   balances: Balance[];
+  now: Date;
 }
 
 export interface Campaigns {

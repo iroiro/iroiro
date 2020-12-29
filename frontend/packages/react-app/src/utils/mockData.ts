@@ -39,7 +39,7 @@ export const campaign: CampaignInfo = {
   },
   claimAmount: "10",
   distributor: distributor,
-  startDate: "20201212",
+  startDate: "1606780800",
   status: 0,
   claimed: 10,
   token: {
@@ -52,7 +52,7 @@ export const campaign: CampaignInfo = {
     },
     balance: "",
   },
-  endDate: "",
+  endDate: "1612137600",
   creator: {
     id: "",
   },
@@ -67,7 +67,7 @@ export const tokenInformationState: TokenInformationState = {
     tokenAddress: "0xabcd...1234",
     name: "Iroiro Token",
     symbol: "IRO",
-    decimals: 18,
+    decimals: 5,
     totalSupply: "2000000000",
   },
   isTokenApproved: false,
@@ -128,6 +128,7 @@ export const tokenInformationState: TokenInformationState = {
       balance: "300",
     },
   ],
+  now: new Date(),
 };
 
 export const distributionTargets: Target[] = [
@@ -227,7 +228,8 @@ export const audiusState: AudiusState = {
   followersCount: 10000,
   isSignin: true,
   requestSignin: true,
-  isLibsActive: true,
+  libs: {},
+  user: {},
   isRequestFollowers: false,
   isRequestSignout: false,
   progress: 0,

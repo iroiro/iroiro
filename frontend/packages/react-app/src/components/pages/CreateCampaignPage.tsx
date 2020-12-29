@@ -14,11 +14,11 @@ import {
   distributorFormInitialState,
 } from "../../reducers/distributorForm";
 import { audiusReducer, audiusInitialState } from "../../reducers/audius";
-import { Target } from "../../interfaces";
 
-// @ts-ignore
-import Audius from "@audius/libs";
 import IpfsHttpClient from "ipfs-http-client";
+import { useAudiusLibs } from "../../hooks/audius/useAudiusLibs";
+import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
+import { useGetAudiusFollowers } from "../../hooks/audius/useGetAudiusFollowers";
 import useAxios from "axios-hooks";
 import { IPFS_PINNING_API } from "../../utils/const";
 
@@ -30,40 +30,6 @@ declare global {
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
-
-const init = async () => {
-  const dataRegistryAddress = "0xC611C82150b56E6e4Ec5973AcAbA8835Dd0d75A2";
-
-  const ethTokenAddress = "0x18aAA7115705e8be94bfFEBDE57Af9BFc265B998";
-  const ethRegistryAddress = "0xd976d3b4f4e22a238c1A736b6612D22f17b6f64C";
-  const ethProviderUrl =
-    "https://mainnet.infura.io/v3/d6b566d7eea1408988388c311d5a273a";
-  const ethProviderOwnerWallet = "0xC7310a03e930DD659E15305ed7e1F5Df0F0426C5";
-
-  const libs = new Audius({
-    web3Config: Audius.configInternalWeb3(dataRegistryAddress, [
-      "https://core.poa.network",
-    ]),
-
-    ethWeb3Config: Audius.configEthWeb3(
-      ethTokenAddress,
-      ethRegistryAddress,
-      ethProviderUrl,
-      ethProviderOwnerWallet
-    ),
-
-    discoveryProviderConfig: Audius.configDiscoveryProvider(),
-    identityServiceConfig: Audius.configIdentityService(
-      "https://identityservice.audius.co"
-    ),
-    creatorNodeConfig: Audius.configCreatorNode(
-      "https://creatornode.audius.co"
-    ),
-  });
-  await libs.init();
-  window.libs = libs;
-  return libs;
-};
 
 const CreateCampaignPage: React.FC<RouteComponentProps<{
   tokenAddress: string;
@@ -86,7 +52,19 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     audiusInitialState
   );
 
-  const [libs, setLibs] = useState(Object);
+  const { libs, isLibsInitialized } = useAudiusLibs();
+  const user = useGetAudiusUserOrSignIn(
+    libs,
+    audiusState.email,
+    audiusState.password,
+    audiusState.requestSignin
+  );
+  const {
+    followersCount,
+    followers,
+    progress,
+    isLoading,
+  } = useGetAudiusFollowers(libs, user);
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
   const [myAccount, setMyAccount] = useState({ user_id: "" });
@@ -98,74 +76,24 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     { manual: true }
   );
 
-  const getFollowers = useCallback(async (libs, user) => {
-    let allFollowers: Target[] = [];
-    const offset = 100;
-    for (let i = 0; i <= user.follower_count / offset; i++) {
-      const targets = await libs.User.getFollowersForUser(
-        offset,
-        i * offset,
-        user.user_id
-      );
-      const followers: Target[] = targets.map((target: Target) => {
-        return {
-          handle: target.handle,
-          wallet: target.wallet.toLowerCase(),
-        };
-      });
-      allFollowers = allFollowers.concat(followers);
-      audiusDispatch({
-        type: "progress:set",
-        payload: {
-          progress: (i * offset) / user.follower_count,
-        },
-      });
-    }
-
-    audiusDispatch({
-      type: "followers:set",
-      payload: {
-        followers: allFollowers,
-      },
-    });
-  }, []);
-
-  const getFollowersCount = useCallback((user) => {
-    audiusDispatch({
-      type: "followersCount:set",
-      payload: { followersCount: user.follower_count },
-    });
-  }, []);
-
-  const audiusSignIn = useCallback(
-    async (libs, email, password) => {
-      const { user } = await libs.Account.login(email, password);
-      setMyAccount(user);
-      getFollowersCount(user);
-      getFollowers(libs, user);
-    },
-    [getFollowersCount, getFollowers]
-  );
-
-  const audiusSignOut = useCallback(async () => {
-    await libs.Account.logout();
-    setMyAccount({ user_id: "" });
-    audiusDispatch({
-      type: "state:reset",
-    });
+  useEffect(() => {
+    audiusDispatch({ type: "libs:set", payload: { libs } });
   }, [libs]);
 
-  const getUser = useCallback(
-    async (libs) => {
-      const user = await libs.Account.getCurrentUser();
-      if (user) {
-        setMyAccount(user);
-        getFollowersCount(user);
-        getFollowers(libs, user);
-      }
-    },
-    [getFollowersCount, getFollowers]
-  );
+  useEffect(() => {
+    audiusDispatch({ type: "user:set", payload: { user } });
+  }, [user]);
+
+  useEffect(() => {
+    audiusDispatch({ type: "followersCount:set", payload: { followersCount } });
+    audiusDispatch({ type: "followers:set", payload: { followers } });
+    audiusDispatch({ type: "progress:set", payload: { progress } });
+  }, [followersCount, followers, progress]);
+
+  const audiusSignOut = useCallback(async () => {
+    await audiusState.libs.Account.logout();
+    audiusDispatch({ type: "state:reset" });
+  }, [audiusState.libs]);
 
   const getBalance = useCallback(
     async (library) => {
@@ -354,31 +282,10 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   ]);
 
   useEffect(() => {
-    const initLibs = async () => {
-      const libs = await init();
-      setLibs(libs);
-      audiusDispatch({ type: "isLibsActive:true" });
-      getUser(libs);
-    };
-    initLibs();
-  }, [audiusDispatch, getUser]);
-
-  useEffect(() => {
-    if (
-      audiusState.requestSignin === true &&
-      audiusState.isLibsActive === true
-    ) {
-      audiusSignIn(libs, audiusState.email, audiusState.password);
-    }
-
-    if (audiusState.isRequestFollowers === true && myAccount) {
-      getFollowers(libs, myAccount);
-    }
-
-    if (audiusState.isRequestSignout === true && myAccount) {
+    if (audiusState.isRequestSignout === true && audiusState.user) {
       audiusSignOut();
     }
-  }, [audiusState, libs, audiusSignIn, myAccount, getFollowers, audiusSignOut]);
+  }, [audiusState.isRequestSignout, audiusState.user, audiusSignOut]);
 
   return (
     <>

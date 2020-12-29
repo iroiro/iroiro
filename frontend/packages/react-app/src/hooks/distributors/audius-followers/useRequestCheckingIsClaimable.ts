@@ -8,8 +8,8 @@ export const useRequestCheckingIsClaimable = (
   library: Web3Provider | undefined,
   oracleAddress: string,
   jobId: string,
-  fee: string,
-  campaignAddress: string
+  campaignAddress: string,
+  walletAddress: string // TODO enable switching Audius wallet and web wallet
 ): (() => Promise<ContractTransaction | undefined>) => {
   return useCallback(async () => {
     if (
@@ -26,7 +26,7 @@ export const useRequestCheckingIsClaimable = (
       signer
     );
     const jobIdBytes = ethers.utils.toUtf8Bytes(jobId);
-    const walletAddress = await signer.getAddress();
+    // const walletAddress = await signer.getAddress();
     return campaign
       .requestCheckingIsClaimable(oracleAddress, jobIdBytes, walletAddress)
       .then((transaction) => {
@@ -37,5 +37,5 @@ export const useRequestCheckingIsClaimable = (
         console.error(error);
         return error;
       });
-  }, [library, oracleAddress, jobId, fee, campaignAddress]);
+  }, [library, oracleAddress, jobId, campaignAddress]);
 };
