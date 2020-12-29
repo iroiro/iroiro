@@ -90,7 +90,7 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
   const [myAccount, setMyAccount] = useState({ user_id: "" });
-  const [{ data, loading, error }, postPinning] = useAxios(
+  const [{ error: pinningError }, postPinning] = useAxios(
     {
       url: IPFS_PINNING_API,
       method: "POST",
@@ -232,7 +232,6 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
       const { path } = await ipfs.add(JSON.stringify(data));
       await postPinning({ data: { hashToPin: path } });
       if (type === "campaignInfoCid") {
-        await postPinning({ data: { hashToPin: path } });
         setCampaignInfoCid(path);
       }
       if (type === "recipientsCid") {
@@ -316,6 +315,13 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   }, [library, distributorFormState, approve, uploadJsonIpfs, audiusState]);
 
   useEffect(() => {
+    if (pinningError) {
+      console.error(pinningError);
+      // alert(
+      //   "There is an error on uploading a file used for campaign. Please try again later."
+      // );
+      return;
+    }
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
@@ -341,6 +347,7 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
     audiusState,
     distributorFormState,
     deployCampaign,
+    pinningError,
   ]);
 
   useEffect(() => {
