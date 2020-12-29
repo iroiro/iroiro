@@ -37,5 +37,5 @@ export const useRequestCheckingIsClaimable = (
         console.error(error);
         return error;
       });
-  }, [library, oracleAddress, jobId, campaignAddress]);
+  }, [library, oracleAddress, jobId, campaignAddress, walletAddress]);
 };

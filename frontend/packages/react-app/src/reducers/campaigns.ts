@@ -21,7 +21,6 @@ export const campaignsReducer = (
       }
       return { ...state, campaigns: action.payload.data };
     case "campaignMetadata:set":
-      console.log(action.payload.data);
       return { ...state, campaigns: action.payload.data };
     default:
       return state;

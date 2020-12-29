@@ -3,7 +3,7 @@ import { web3Modal } from "../../utils/web3Modal";
 import { Web3Provider } from "@ethersproject/providers";
 import TopPageTemplate from "../templates/TopPageTemplate";
 
-const TopPage = () => {
+const TopPage: React.FC = () => {
   const [provider, setProvider] = useState<Web3Provider>();
 
   /* Open wallet selection modal. */

@@ -46,7 +46,7 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
     dispatch({ type: "isCampaignClaimed:setTrue" });
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
-  }, [claim]);
+  }, [claim, dispatch]);
 
   let text = "We are sorry but you can not claim token.";
   if (isClaimable) {

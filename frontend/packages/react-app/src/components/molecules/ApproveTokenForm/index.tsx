@@ -24,7 +24,7 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
           required
           width={1}
           placeholder="0"
-          onChange={(event: any) =>
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             distributorFormDispatch({
               type: "approveAmount:set",
               payload: { approveAmount: event.target.value.toString() },

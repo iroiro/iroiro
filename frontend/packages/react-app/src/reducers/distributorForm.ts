@@ -48,12 +48,10 @@ export const distributorFormReducer = (
     }
     case "startDate:set": {
       const startDate = Number(action.payload.startDate);
-      console.log(startDate);
       return { ...state, startDate: startDate };
     }
     case "endDate:set": {
       const endDate = Number(action.payload.endDate);
-      console.log(endDate);
       return { ...state, endDate: endDate };
     }
     case "token:approve": {
