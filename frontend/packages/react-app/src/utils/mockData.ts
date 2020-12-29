@@ -39,7 +39,7 @@ export const campaign: CampaignInfo = {
   },
   claimAmount: "10",
   distributor: distributor,
-  startDate: "20201212",
+  startDate: "1606780800",
   status: 0,
   claimed: 10,
   token: {
@@ -52,7 +52,7 @@ export const campaign: CampaignInfo = {
     },
     balance: "",
   },
-  endDate: "",
+  endDate: "1612137600",
   creator: {
     id: "",
   },
@@ -67,7 +67,7 @@ export const tokenInformationState: TokenInformationState = {
     tokenAddress: "0xabcd...1234",
     name: "Iroiro Token",
     symbol: "IRO",
-    decimals: 18,
+    decimals: 5,
     totalSupply: "2000000000",
   },
   isTokenApproved: false,
@@ -87,7 +87,7 @@ export const tokenInformationState: TokenInformationState = {
   isCampaignClaimable: false,
   isCampaignClaimed: false,
   userAddress: "0x0000000000000000000000000000000000000000",
-  userBalance: "1234500000",
+  userBalance: "1234500000000000000000000",
   campaignAddress: "0xcc22b3199013627708d05fedf9b854bd7706a156",
   activities: [
     {
@@ -128,6 +128,7 @@ export const tokenInformationState: TokenInformationState = {
       balance: "300",
     },
   ],
+  now: new Date(),
 };
 
 export const distributionTargets: Target[] = [
@@ -209,16 +210,27 @@ export const distributorFormState: createCampaignState = {
   step: 1,
   approveAmount: "10000",
   campaignName: "Audius Followers Campaign",
-  startDate: new Date("2021-01-01T00:00:00"),
-  endDate: new Date("2021-01-01T00:00:00"),
+  startDate: new Date("2021-01-01T00:00:00").getTime(),
+  endDate: new Date("2021-01-01T00:00:00").getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
+};
+
+export const audiusTarget: Target = {
+  handle: "handlename",
+  wallet: "0x0000000000000000000000000000000000000000",
 };
 
 export const audiusState: AudiusState = {
   email: "sample@example.com",
   password: "samplepassword",
-  followers: [],
-  isSignin: false,
-  requestSignin: false,
+  followers: [audiusTarget, audiusTarget, audiusTarget],
+  followersCount: 10000,
+  isSignin: true,
+  requestSignin: true,
+  libs: {},
+  user: {},
+  isRequestFollowers: false,
+  isRequestSignout: false,
+  progress: 0,
 };

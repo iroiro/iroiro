@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import TokenDetailCampaignPanel, {
   TokenDetailCampaignPanelProps,
 } from "./index";
-import { tokenInformationState } from "../../../utils/mockData";
+import { audiusState, tokenInformationState } from "../../../utils/mockData";
 
 export default {
   title: "Organisms/TokenDetailCampaignPanel",
@@ -17,17 +17,28 @@ const Template: Story<TokenDetailCampaignPanelProps> = (args) => (
   </BrowserRouter>
 );
 
+export const IsNotStarted = Template.bind({});
+IsNotStarted.args = {
+  state: {
+    ...tokenInformationState,
+    now: new Date(1577836800000),
+  },
+  audiusState,
+};
+
+export const NotLoggedIn = Template.bind({});
+NotLoggedIn.args = {
+  state: tokenInformationState,
+  audiusState: {
+    ...audiusState,
+    user: null,
+  },
+};
+
 export const Default = Template.bind({});
 Default.args = {
   state: tokenInformationState,
-};
-
-export const TokenApproved = Template.bind({});
-TokenApproved.args = {
-  state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
-  },
+  audiusState,
 };
 
 export const Requested = Template.bind({});
@@ -37,6 +48,7 @@ Requested.args = {
     isTokenApproved: true,
     isTokenRequested: true,
   },
+  audiusState,
 };
 
 export const IsClaimable = Template.bind({});
@@ -48,6 +60,7 @@ IsClaimable.args = {
     isTokenCheckFinished: true,
     isCampaignClaimable: true,
   },
+  audiusState,
 };
 
 export const IsNotClaimable = Template.bind({});
@@ -59,6 +72,7 @@ IsNotClaimable.args = {
     isTokenRequested: true,
     isCampaignClaimable: false,
   },
+  audiusState,
 };
 
 export const IsClaimed = Template.bind({});
@@ -71,6 +85,7 @@ IsClaimed.args = {
     isCampaignClaimable: true,
     isCampaignClaimed: true,
   },
+  audiusState,
 };
 
 export const NotFound = Template.bind({});
@@ -81,4 +96,5 @@ NotFound.args = {
     campaigns: [],
     userBalance: "",
   },
+  audiusState,
 };

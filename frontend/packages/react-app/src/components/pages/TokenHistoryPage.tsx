@@ -1,6 +1,6 @@
 import React from "react";
 
-const TokenHistoryPage = () => {
+const TokenHistoryPage: React.FC = () => {
   return <>TokenHistoryPage!!!</>;
 };
 

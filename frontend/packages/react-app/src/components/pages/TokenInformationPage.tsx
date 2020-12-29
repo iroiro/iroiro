@@ -21,13 +21,21 @@ import { LINK_TOKEN_ADDRESS } from "../../utils/const";
 import { useGetTransferEvents } from "../../hooks/useGetTransferEvents";
 import { Block } from "@ethersproject/providers";
 import { Event } from "@ethersproject/contracts";
+import { useAudiusLibs } from "../../hooks/audius/useAudiusLibs";
+import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
+import { audiusInitialState, audiusReducer } from "../../reducers/audius";
+import { useIsClaimable } from "../../hooks/distributors/cct-wallet/useIsClaimable";
 
 interface Params {
   tokenAddress: string;
 }
 
 const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
-  const { library } = useWeb3React();
+  const { library, active } = useWeb3React();
+  const [audiusState, audiusDispatch] = useReducer(
+    audiusReducer,
+    audiusInitialState
+  );
   const [state, dispatch] = useReducer(tokenInformationReducer, initialState);
   const { tokenAddress } = useParams<Params>();
   const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
@@ -37,7 +45,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
     GET_CLAIM
   );
-  const { result, loading, error } = useGetWalletBalance(library, tokenAddress);
+  const { loading, error } = useGetWalletBalance(library, tokenAddress);
   const { allowance } = useGetAllowance(
     library,
     LINK_TOKEN_ADDRESS,
@@ -47,6 +55,26 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
     library,
     tokenAddress
   );
+  const { libs } = useAudiusLibs();
+  const user = useGetAudiusUserOrSignIn(
+    audiusState.libs,
+    audiusState.email,
+    audiusState.password,
+    audiusState.requestSignin
+  );
+  const { isClaimable } = useIsClaimable(
+    library,
+    state?.campaignAddress ?? "",
+    user?.wallet ?? ""
+  );
+
+  useEffect(() => {
+    audiusDispatch({ type: "libs:set", payload: { libs } });
+  }, [libs]);
+
+  useEffect(() => {
+    audiusDispatch({ type: "user:set", payload: { user } });
+  }, [user]);
 
   useEffect(() => {
     const f = async () => {
@@ -76,20 +104,21 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   }, [library, tokenAddress]);
 
   useEffect(() => {
-    if (library) {
-      const f = async () => {
-        const balance = await getWalletBalance(
-          library,
-          state.token?.tokenAddress ?? ""
-        );
-        if (balance === undefined) {
-          return;
-        }
-        dispatch({ type: "userBalance:set", payload: { balance } });
-      };
-      f();
+    if (!library) {
+      return;
     }
-  }, [library, state]);
+    const f = async () => {
+      const balance = await getWalletBalance(
+        library,
+        state.token?.tokenAddress ?? ""
+      );
+      if (balance === undefined) {
+        return;
+      }
+      dispatch({ type: "userBalance:set", payload: { balance } });
+    };
+    f();
+  }, [library, state.token]);
 
   useEffect(() => {
     // TODO: After made campaign creation function, change dynamic value
@@ -123,6 +152,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
           return campaign;
         })
       );
+
       dispatch({
         type: "campaigns:set",
         payload: { campaigns: campaigns },
@@ -156,13 +186,16 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
         checkRequests: checkRequestsData.checkRequests,
       },
     });
+  }, [checkRequestsData]);
+
+  useEffect(() => {
     dispatch({
       type: "isCampaignClaimable:set",
       payload: {
-        checkRequests: checkRequestsData.checkRequests,
+        isClaimable,
       },
     });
-  }, [checkRequestsData]);
+  }, [isClaimable]);
 
   useEffect(() => {
     if (allowance === undefined) {
@@ -231,7 +264,15 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
     f();
   }, [allTransferEvents, state.userAddress]);
 
-  return <TokenInformationTemplate state={state} dispatch={dispatch} />;
+  return (
+    <TokenInformationTemplate
+      state={state}
+      dispatch={dispatch}
+      active={active}
+      audiusState={audiusState}
+      audiusDispatch={audiusDispatch}
+    />
+  );
 };
 
 export default TokenInformationPage;

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 
-import "../NewInterfaces.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@chainlink/contracts/src/v0.6/interfaces/LinkTokenInterface.sol";
-import "../NewInterfaces.sol";
+import "../interfaces/CampaignInterface.sol";
+import "../interfaces/DistributorInterface.sol";
 import "../SafeMath64.sol";
 
 contract CCTWalletDistributor is DistributorInterface {

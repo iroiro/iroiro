@@ -29,6 +29,12 @@ export type TokenInformationAction =
       type: "isTokenApproved:setTrue";
     }
   | {
+      type: "isTokenRequested:setTrue";
+    }
+  | {
+      type: "isTokenCheckFinished:setTrue";
+    }
+  | {
       type: "isTokenCheckFinished:set";
       payload: {
         checkRequests: CheckRequest[] | undefined;
@@ -53,13 +59,19 @@ export type TokenInformationAction =
       type: "campaignAddress:remove";
     }
   | {
+      type: "isCampaignClaimable:setTrue";
+    }
+  | {
       type: "isCampaignClaimable:set";
       payload: {
-        checkRequests: CheckRequest[];
+        isClaimable: boolean;
       };
     }
   | {
       type: "isCampaignClaimable:remove";
+    }
+  | {
+      type: "isCampaignClaimed:setTrue";
     }
   | {
       type: "isCampaignClaimed:set";
@@ -130,6 +142,18 @@ export const tokenInformationReducer = (
         isTokenApproved: true,
       };
     }
+    case "isTokenRequested:setTrue": {
+      return {
+        ...state,
+        isTokenRequested: true,
+      };
+    }
+    case "isTokenCheckFinished:setTrue": {
+      return {
+        ...state,
+        isTokenCheckFinished: true,
+      };
+    }
     case "isTokenCheckFinished:set": {
       if (!action.payload.checkRequests) {
         return state;
@@ -163,23 +187,28 @@ export const tokenInformationReducer = (
         ...state,
         campaignAddress: undefined,
       };
-    case "isCampaignClaimable:set": {
-      if (!action.payload.checkRequests) {
-        return state;
-      }
-      const isCampaignClaimable = action.payload.checkRequests
-        .filter((req) => req.status !== 1)
-        .map((req) => req.result)
-        .includes(true);
+    case "isCampaignClaimable:setTrue": {
       return {
         ...state,
-        isCampaignClaimable,
+        isCampaignClaimable: true,
+      };
+    }
+    case "isCampaignClaimable:set": {
+      return {
+        ...state,
+        isCampaignClaimable: action.payload.isClaimable,
       };
     }
     case "isCampaignClaimable:remove": {
       return {
         ...state,
         isCampaignClaimable: false,
+      };
+    }
+    case "isCampaignClaimed:setTrue": {
+      return {
+        ...state,
+        isCampaignClaimed: true,
       };
     }
     case "isCampaignClaimed:set": {
@@ -289,4 +318,5 @@ export const initialState: TokenInformationState = {
   userBalance: undefined,
   activities: [],
   balances: [],
+  now: new Date(),
 };

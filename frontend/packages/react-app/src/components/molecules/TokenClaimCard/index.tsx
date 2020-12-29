@@ -1,9 +1,11 @@
 import * as React from "react";
-import { Button, Card, CardContent, Typography } from "@material-ui/core";
-import styled from "styled-components";
+import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
-import { useClaim } from "../../../hooks/distributors/audius-followers/useClaim";
-import { useCallback } from "react";
+import { useClaim } from "../../../hooks/distributors/cct-wallet/useClaim";
+import { Dispatch, useCallback } from "react";
+import { AudiusState } from "../../../reducers/audius";
+import TokenAmount from "../../atoms/TokenAmount";
+import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
 export interface TokenClaimCardProps {
   campaignAddress: string;
@@ -11,12 +13,11 @@ export interface TokenClaimCardProps {
   claimAmount: string;
   isClaimable: boolean;
   isClaimed: boolean;
+  userAddress: string;
+  decimals: number;
+  readonly dispatch: Dispatch<TokenInformationAction>;
+  readonly audiusState: AudiusState;
 }
-
-const BtnWrapper = styled.div`
-  text-align: center;
-  margin-top: 4px;
-`;
 
 const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
   campaignAddress,
@@ -24,44 +25,65 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
   claimAmount,
   isClaimable,
   isClaimed,
+  userAddress, // TODO enable switching Audius address and web wallet address
+  decimals,
+  dispatch,
+  audiusState,
 }) => {
   const { library } = useWeb3React();
-  const claim = useClaim(library, campaignAddress);
+  const claim = useClaim(
+    library,
+    campaignAddress,
+    audiusState.libs,
+    userAddress
+  );
   const onClickClaim = useCallback(async () => {
     const transaction = await claim();
     if (transaction === undefined) {
       console.error("Transaction failed");
       return;
     }
+    dispatch({ type: "isCampaignClaimed:setTrue" });
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
-  }, [claim]);
+  }, [claim, dispatch]);
 
-  const text = isClaimable
-    ? "You can claim token."
-    : "We are sorry but you can not claim token.";
-
+  let text = "We are sorry but you can not claim token.";
+  if (isClaimable) {
+    text = "You can claim token.";
+  }
+  if (isClaimed) {
+    text = "You claimed token.";
+  }
   return (
     <Card>
       <CardContent>
-        <Typography align="center">{text}</Typography>
-        {isClaimable && (
-          <>
-            <Typography align="center" variant="h4">
-              {`${claimAmount} $${symbol}`}
-            </Typography>
-            <BtnWrapper>
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={isClaimed}
-                onClick={onClickClaim}
-              >
-                {isClaimed ? "Claimed" : "Claim"}
-              </Button>
-            </BtnWrapper>
-          </>
-        )}
+        <Box my={4}>
+          <Typography align="center">{text}</Typography>
+          {isClaimable && (
+            <>
+              <Box my={2}>
+                <TokenAmount
+                  amount={claimAmount}
+                  decimals={decimals}
+                  align="center"
+                  variant="h2"
+                  symbol={symbol}
+                />
+              </Box>
+              <Box mt={4} textAlign="center">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={isClaimed}
+                  onClick={onClickClaim}
+                >
+                  {isClaimed ? "Claimed" : "Claim"}
+                </Button>
+              </Box>
+            </>
+          )}
+        </Box>
       </CardContent>
     </Card>
   );

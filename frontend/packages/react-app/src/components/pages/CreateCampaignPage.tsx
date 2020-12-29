@@ -15,59 +15,20 @@ import {
 } from "../../reducers/distributorForm";
 import { audiusReducer, audiusInitialState } from "../../reducers/audius";
 
-// @ts-ignore
-import Audius from "@audius/libs";
 import IpfsHttpClient from "ipfs-http-client";
-
-declare global {
-  interface Window {
-    libs: any;
-  }
-}
+import { useAudiusLibs } from "../../hooks/audius/useAudiusLibs";
+import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
+import { useGetAudiusFollowers } from "../../hooks/audius/useGetAudiusFollowers";
+import useAxios from "axios-hooks";
+import { IPFS_PINNING_API } from "../../utils/const";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
-const init = async () => {
-  const dataRegistryAddress = "0xC611C82150b56E6e4Ec5973AcAbA8835Dd0d75A2";
-
-  const ethTokenAddress = "0xADEf65C0f6a30Dcb5f88Eb8653BBFe09Bf99864f";
-  const ethRegistryAddress = "0xb2be26Ca062c5D74964921B80DE6cfa28D9A36c0";
-  const ethProviderUrl =
-    "https://mainnet.infura.io/v3/d6b566d7eea1408988388c311d5a273a";
-  const ethProviderOwnerWallet = "0xe886a1858d2d368ef8f02c65bdd470396a1ab188";
-
-  const libs = new Audius({
-    web3Config: Audius.configInternalWeb3(dataRegistryAddress, [
-      "https://core.poa.network",
-    ]),
-
-    ethWeb3Config: Audius.configEthWeb3(
-      ethTokenAddress,
-      ethRegistryAddress,
-      ethProviderUrl,
-      ethProviderOwnerWallet
-    ),
-
-    discoveryProviderConfig: Audius.configDiscoveryProvider(),
-    identityServiceConfig: Audius.configIdentityService(
-      "https://identityservice.audius.co"
-    ),
-    creatorNodeConfig: Audius.configCreatorNode(
-      "https://creatornode.audius.co"
-    ),
-  });
-  await libs.init();
-  window.libs = libs;
-  return libs;
-};
-
-const CreateCampaignPage: React.FC<
-  RouteComponentProps<{
-    tokenAddress: string;
-    distributorAddress: string;
-  }>
-> = (props) => {
+const CreateCampaignPage: React.FC<RouteComponentProps<{
+  tokenAddress: string;
+  distributorAddress: string;
+}>> = (props) => {
   const { library, active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const distributorAddress = props.match.params.distributorAddress;
@@ -76,40 +37,54 @@ const CreateCampaignPage: React.FC<
     tokenReducer,
     tokenInitialState
   );
-
   const [distributorFormState, distributorFormDispatch] = useReducer(
     distributorFormReducer,
     distributorFormInitialState
   );
-
   const [audiusState, audiusDispatch] = useReducer(
     audiusReducer,
     audiusInitialState
   );
 
-  const [libs, setLibs] = useState(Object);
+  const { libs } = useAudiusLibs();
+  const user = useGetAudiusUserOrSignIn(
+    libs,
+    audiusState.email,
+    audiusState.password,
+    audiusState.requestSignin
+  );
+  const { followersCount, followers, progress } = useGetAudiusFollowers(
+    libs,
+    user
+  );
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
-  const [recipientsNum, setRecipientsNum] = useState(0);
-
-  const audiusSignIn = useCallback(
-    async (email, password) => {
-      console.log(email);
-      console.log(password);
-
-      const { user } = await libs.Account.login(email, password);
-      console.log(user);
-      // const followers = await libs.User.getFollowersForUser(
-      //   100,
-      //   0,
-      //   user.user_id
-      // );
-      // console.log(followers);
-      // setAudiusAccount(user);
-      // setAudiusFollowers(followers);
+  const [{ error: pinningError }, postPinning] = useAxios(
+    {
+      url: IPFS_PINNING_API,
+      method: "POST",
     },
-    [libs]
+    { manual: true }
   );
+
+  useEffect(() => {
+    audiusDispatch({ type: "libs:set", payload: { libs } });
+  }, [libs]);
+
+  useEffect(() => {
+    audiusDispatch({ type: "user:set", payload: { user } });
+  }, [user]);
+
+  useEffect(() => {
+    audiusDispatch({ type: "followersCount:set", payload: { followersCount } });
+    audiusDispatch({ type: "followers:set", payload: { followers } });
+    audiusDispatch({ type: "progress:set", payload: { progress } });
+  }, [followersCount, followers, progress]);
+
+  const audiusSignOut = useCallback(async () => {
+    await audiusState.libs.Account.logout();
+    audiusDispatch({ type: "state:reset" });
+  }, [audiusState.libs]);
 
   const getBalance = useCallback(
     async (library) => {
@@ -171,15 +146,19 @@ const CreateCampaignPage: React.FC<
     [distributorAddress, tokenAddress]
   );
 
-  const uploadJsonIpfs = useCallback(async (data, type) => {
-    const { path } = await ipfs.add(JSON.stringify(data));
-    if (type === "campaignInfoCid") {
-      setCampaignInfoCid(path);
-    }
-    if (type === "recipientsCid") {
-      setRecipientsCid(path);
-    }
-  }, []);
+  const uploadJsonIpfs = useCallback(
+    async (data, type) => {
+      const { path } = await ipfs.add(JSON.stringify(data));
+      await postPinning({ data: { hashToPin: path } });
+      if (type === "campaignInfoCid") {
+        setCampaignInfoCid(path);
+      }
+      if (type === "recipientsCid") {
+        setRecipientsCid(path);
+      }
+    },
+    [postPinning]
+  );
 
   const deployCampaign = useCallback(
     async (
@@ -190,14 +169,17 @@ const CreateCampaignPage: React.FC<
       startDate,
       endDate
     ) => {
+      const secondsStartDate = startDate / 1000;
+      const secondsEndDate = endDate / 1000;
+
       createCampaign(
         library,
         tokenAddress,
         campaignInfoCid,
         recipientsCid,
         recipientsNum,
-        startDate,
-        endDate
+        secondsStartDate,
+        secondsEndDate
       ).then((transaction) => {
         if (transaction === undefined) {
           return;
@@ -232,41 +214,40 @@ const CreateCampaignPage: React.FC<
   }, [tokenAddress]);
 
   useEffect(() => {
-    if (distributorFormState.approveRequest && library) {
-      approve(library, distributorFormState.approveAmount);
-    }
-    if (distributorFormState.requestDeployCampaign) {
-      const campaignInfo = {
-        description: "",
-        image: "",
-        name: distributorFormState.campaignName,
-      };
+    const f = async () => {
+      if (distributorFormState.approveRequest && library) {
+        approve(library, distributorFormState.approveAmount);
+      }
+      if (distributorFormState.requestDeployCampaign) {
+        const campaignInfo = {
+          description: "",
+          image: "",
+          name: distributorFormState.campaignName,
+        };
 
-      // TODO: Temporal Data
-      const addresses = {
-        addresses: [
-          "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
-          "0xc61641C59f5c459Da94E330535A95df4d5fACeAe",
-          "0xAF9A4Ec7aDd58d7F184c5D13e40eBB2B41Ed9e0D",
-        ],
-      };
-      uploadJsonIpfs(campaignInfo, "campaignInfoCid");
-      uploadJsonIpfs(addresses, "recipientsCid");
-      setRecipientsNum(addresses.addresses.length);
-    }
-  }, [
-    library,
-    distributorFormState,
-    approve,
-    uploadJsonIpfs,
-    setRecipientsNum,
-  ]);
+        const followersAddress: string[] = audiusState.followers.map(
+          (follower) => follower.wallet
+        );
+        const addresses = { addresses: followersAddress };
+        await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
+        await uploadJsonIpfs(addresses, "recipientsCid");
+      }
+    };
+    f();
+  }, [library, distributorFormState, approve, uploadJsonIpfs, audiusState]);
 
   useEffect(() => {
+    if (pinningError) {
+      console.error(pinningError);
+      alert(
+        "There is an error on uploading a file used for campaign. Please try again later."
+      );
+      return;
+    }
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
-      recipientsNum === 0 ||
+      audiusState.followersCount === 0 ||
       distributorFormState.startDate == null ||
       distributorFormState.endDate == null
     ) {
@@ -277,53 +258,31 @@ const CreateCampaignPage: React.FC<
       library,
       campaignInfoCid,
       recipientsCid,
-      recipientsNum,
-      distributorFormState.startDate.getTime(),
-      distributorFormState.endDate.getTime()
+      audiusState.followersCount,
+      distributorFormState.startDate,
+      distributorFormState.endDate
     );
   }, [
     library,
     campaignInfoCid,
     recipientsCid,
-    recipientsNum,
+    audiusState,
     distributorFormState,
     deployCampaign,
+    pinningError,
   ]);
 
   useEffect(() => {
-    const initLibs = async () => {
-      const libs = await init();
-      console.log(libs);
-      setLibs(libs);
-      // const user = libs.Account.getCurrentUser();
-
-      // if (user) {
-      //   const followers = await libs.User.getFollowersForUser(
-      //     100,
-      //     0,
-      //     user.user_id
-      //   );
-      //   console.log(followers);
-      //   //   setAudiusAccount(user);
-      //   //   setAudiusFollowers(followers);
-      // }
-    };
-    initLibs();
-  }, []);
-
-  useEffect(() => {
-    if (audiusState.requestSignin === true) {
-      audiusSignIn(audiusState.email, audiusState.password);
+    if (audiusState.isRequestSignout === true && audiusState.user) {
+      audiusSignOut();
     }
-  }, [audiusState, audiusSignIn]);
+  }, [audiusState.isRequestSignout, audiusState.user, audiusSignOut]);
 
   return (
     <>
       <CreateCampaignPageTemaplate
         active={active}
         tokenInfo={tokenState}
-        targets={[]}
-        targetNumber={10000}
         distributorFormDispatch={distributorFormDispatch}
         distributorFormState={distributorFormState}
         audiusState={audiusState}

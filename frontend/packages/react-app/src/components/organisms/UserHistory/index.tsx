@@ -10,14 +10,16 @@ export interface UserHistoryProps {
 
 const UserHistory: React.FC<UserHistoryProps> = ({ state }) => {
   return (
-    <Grid container spacing={4} direction="column">
-      <Grid item xs={12}>
-        <UserActivities state={state} />
+    <div style={{ marginTop: "24px" }}>
+      <Grid container spacing={4} direction="column">
+        <Grid item xs={12}>
+          <UserActivities state={state} />
+        </Grid>
+        <Grid item xs={12}>
+          <BalanceHistoryChart balances={state.balances} />
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <BalanceHistoryChart balances={state.balances} />
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 

@@ -24,7 +24,7 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
           required
           width={1}
           placeholder="Email"
-          onChange={(event: any) =>
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             audiusDispatch({
               type: "email:set",
               payload: { email: event.target.value },
@@ -40,7 +40,7 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
           required
           width={1}
           placeholder="Password"
-          onChange={(event: any) =>
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             audiusDispatch({
               type: "password:set",
               payload: { password: event.target.value },
@@ -50,12 +50,18 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
         />
       </Box>
       <Box m={"auto"} my={4} style={{ textAlign: "center" }}>
-        <Button
-          onClick={() => audiusDispatch({ type: "audius:login" })}
-          mainColor={"#7e1bcc"}
-        >
-          Sign In
-        </Button>
+        {audiusState.libs !== undefined ? (
+          <Button
+            onClick={() => audiusDispatch({ type: "audius:login" })}
+            mainColor={"#7e1bcc"}
+          >
+            Sign In
+          </Button>
+        ) : (
+          <Button mainColor={"#7e1bcc"} disabled>
+            Sign In
+          </Button>
+        )}
       </Box>
     </Box>
   </Card>

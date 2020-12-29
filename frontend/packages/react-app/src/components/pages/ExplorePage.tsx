@@ -13,7 +13,7 @@ const initialState = {
   color: "itred",
 };
 
-const ExplorePage = () => {
+const ExplorePage: React.FC = () => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokensReducer, initialState);
 

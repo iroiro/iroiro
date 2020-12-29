@@ -23,7 +23,7 @@ const EtherscanLink: React.FC<EtherscanLinkProps> = ({ type, address }) => {
   return (
     <Typography align="center">
       <Link href={link}>
-        View on Etherscan
+        View on Etherscan&nbsp;&nbsp;
         <FontAwesomeIcon icon={faExternalLinkAlt} />
       </Link>
     </Typography>

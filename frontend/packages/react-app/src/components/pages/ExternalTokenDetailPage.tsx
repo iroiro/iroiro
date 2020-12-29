@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useReducer } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
-import { campaignReducer } from "../../reducers/campaign";
+import { campaignsReducer } from "../../reducers/campaigns";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { CampaignInfo } from "../../interfaces";
@@ -11,11 +11,9 @@ import { useWeb3React } from "@web3-react/core";
 const campaignsInitialState = {
   campaigns: new Array<CampaignInfo>(),
 };
-const ExternalTokenDetailPage: React.FC<
-  RouteComponentProps<{
-    tokenAddress: string;
-  }>
-> = (props) => {
+const ExternalTokenDetailPage: React.FC<RouteComponentProps<{
+  tokenAddress: string;
+}>> = (props) => {
   const { active, account } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const [tokenState, tokenDispatch] = useReducer(
@@ -23,7 +21,7 @@ const ExternalTokenDetailPage: React.FC<
     tokenInitialState
   );
   const [campaignsState, campaignDispatch] = useReducer(
-    campaignReducer,
+    campaignsReducer,
     campaignsInitialState
   );
   const [getCampaigns, { data }] = useLazyQuery(GET_CAMPAIGNS);
@@ -65,7 +63,6 @@ const ExternalTokenDetailPage: React.FC<
 
   useEffect(() => {
     if (data !== undefined) {
-      console.log(data);
       campaignDispatch({
         type: "campaign:get",
         payload: { data: data.campaigns },

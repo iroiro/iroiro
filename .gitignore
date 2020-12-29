@@ -7,8 +7,5 @@ subgraph/build/
 subgraph/src/types/
 node_modules/
 
-# typechain
-types/
-
 .aws-sam/
 env.json

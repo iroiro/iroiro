@@ -71,7 +71,26 @@ export const GET_CAMPAIGNS = gql`
       }
       campaignInfoCid
       startDate
+      endDate
       claimAmount
+      status
+    }
+  }
+`;
+
+export const GET_CAMPAIGN = gql`
+  query getCampaign($id: ID!) {
+    campaign(id: $id) {
+      token
+      distributor {
+        id
+      }
+      campaignInfoCid
+      recipientsCid
+      startDate
+      endDate
+      claimAmount
+      claimedNum
       status
     }
   }
