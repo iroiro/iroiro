@@ -295,31 +295,34 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   }, [tokenAddress]);
 
   useEffect(() => {
-    if (distributorFormState.approveRequest && library) {
-      approve(library, distributorFormState.approveAmount);
-    }
-    if (distributorFormState.requestDeployCampaign) {
-      const campaignInfo = {
-        description: "",
-        image: "",
-        name: distributorFormState.campaignName,
-      };
+    const f = async () => {
+      if (distributorFormState.approveRequest && library) {
+        approve(library, distributorFormState.approveAmount);
+      }
+      if (distributorFormState.requestDeployCampaign) {
+        const campaignInfo = {
+          description: "",
+          image: "",
+          name: distributorFormState.campaignName,
+        };
 
-      const followersAddress: string[] = audiusState.followers.map(
-        (follower) => follower.wallet
-      );
-      const addresses = { addresses: followersAddress };
-      uploadJsonIpfs(campaignInfo, "campaignInfoCid");
-      uploadJsonIpfs(addresses, "recipientsCid");
-    }
+        const followersAddress: string[] = audiusState.followers.map(
+          (follower) => follower.wallet
+        );
+        const addresses = { addresses: followersAddress };
+        await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
+        await uploadJsonIpfs(addresses, "recipientsCid");
+      }
+    };
+    f();
   }, [library, distributorFormState, approve, uploadJsonIpfs, audiusState]);
 
   useEffect(() => {
     if (pinningError) {
       console.error(pinningError);
-      // alert(
-      //   "There is an error on uploading a file used for campaign. Please try again later."
-      // );
+      alert(
+        "There is an error on uploading a file used for campaign. Please try again later."
+      );
       return;
     }
     if (
