@@ -5,7 +5,7 @@ export type ACTIONS =
   | { type: "modal:open" }
   | { type: "modal:close" }
   | { type: "token:set"; payload: { token: TokenBasic } }
-  | { type: "tokenAddress:input"; payload: { tokenAddress: "" } }
+  | { type: "tokenAddress:input"; payload: { tokenAddress: string } }
   | { type: "tokenAddress:add" }
   | { type: "tokens:getlocal" };
 

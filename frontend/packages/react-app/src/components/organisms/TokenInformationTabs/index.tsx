@@ -15,6 +15,7 @@ import UserHistory from "../UserHistory";
 import { TokenInformationState } from "../../../interfaces";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import { AUDIUS_ACTIONS, AudiusState } from "../../../reducers/audius";
+import { Input } from "rimble-ui";
 
 // See https://material-ui.com/components/tabs/#tabs
 interface TabPanelProps {

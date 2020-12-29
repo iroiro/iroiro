@@ -12,7 +12,7 @@ const AddressFormInput: React.FC<ExplorePageTemplateProps> = ({
         <Input
           type="text"
           required
-          onChange={(event: any) =>
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             dispatch({
               type: "tokenAddress:input",
               payload: { tokenAddress: event.target.value },

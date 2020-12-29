@@ -59,7 +59,6 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
             state={state}
             dispatch={dispatch}
             audiusState={audiusState}
-            audiusDispatch={audiusDispatch}
           />
           {state.isTokenCheckFinished && (
             <TokenClaimCard

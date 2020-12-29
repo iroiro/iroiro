@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, Table, Button, Progress } from "rimble-ui";
+import { Box, Text, Table, Progress } from "rimble-ui";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import SigninAudius from "../SigninAudius";
 

@@ -11,10 +11,10 @@ export interface DashboardPageTemplateProps {
   dispatch: React.Dispatch<ACTIONS>;
 }
 
-const DashboardPageTemplate = ({
+const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
   state,
   dispatch,
-}: DashboardPageTemplateProps) => (
+}) => (
   <div>
     <AppHeader />
     <Box m={"auto"} my={5} width={[3 / 4, 1 / 2]}>

@@ -13,7 +13,7 @@ const initialState = {
   color: "itblue",
 };
 
-const DashboardPage = () => {
+const DashboardPage: React.FC = () => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokensReducer, initialState);
 

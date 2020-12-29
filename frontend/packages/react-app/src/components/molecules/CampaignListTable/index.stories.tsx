@@ -2,11 +2,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import CampaignListTable from "./index";
-import {
-  CampaignInfo,
-  TokenAndCampaignProps,
-  Campaigns,
-} from "../../../interfaces";
+import { TokenAndCampaignProps, Campaigns } from "../../../interfaces";
 
 import { campaign, tokenInfo } from "../../../utils/mockData";
 
