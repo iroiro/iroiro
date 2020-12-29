@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
-import { useClaim } from "../../../hooks/distributors/audius-followers/useClaim";
+import { useClaim } from "../../../hooks/distributors/cct-wallet/useClaim";
 import { Dispatch, useCallback } from "react";
 import { AudiusState } from "../../../reducers/audius";
 import TokenAmount from "../../atoms/TokenAmount";

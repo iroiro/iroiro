@@ -24,7 +24,7 @@ import { Event } from "@ethersproject/contracts";
 import { useAudiusLibs } from "../../hooks/audius/useAudiusLibs";
 import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
 import { audiusInitialState, audiusReducer } from "../../reducers/audius";
-import { useIsClaimable } from "../../hooks/distributors/audius-followers/useIsClaimable";
+import { useIsClaimable } from "../../hooks/distributors/cct-wallet/useIsClaimable";
 
 interface Params {
   tokenAddress: string;
