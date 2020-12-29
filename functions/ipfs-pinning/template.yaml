@@ -11,7 +11,7 @@ Globals:
     Timeout: 30
     Environment:
       Variables:
-        FRONTEND_ORIGIN: ""
+        FRONTEND_ORIGINS: ""
         PINATA_API_KEY: ""
         PINATA_SECRET_API_KEY: ""
 
