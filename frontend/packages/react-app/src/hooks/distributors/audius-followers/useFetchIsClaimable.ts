@@ -8,9 +8,7 @@ export const useGetIsClaimable = (
   fromAddress: string
 ): (() => Promise<boolean | undefined>) => {
   return useCallback(async () => {
-    console.log(fromAddress, campaignAddress);
     if (!library || fromAddress === "" || campaignAddress === "") {
-      console.log("hoge");
       return undefined;
     }
     const signer = library.getSigner();
@@ -20,7 +18,6 @@ export const useGetIsClaimable = (
       signer
     );
 
-    console.log(await campaign.isClaimable(fromAddress, walletAddress));
     return await campaign.isClaimable(fromAddress, walletAddress);
   }, [library, fromAddress, campaignAddress]);
 };

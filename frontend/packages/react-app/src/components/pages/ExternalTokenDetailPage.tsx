@@ -65,7 +65,6 @@ const ExternalTokenDetailPage: React.FC<
 
   useEffect(() => {
     if (data !== undefined) {
-      console.log(data);
       campaignDispatch({
         type: "campaign:get",
         payload: { data: data.campaigns },

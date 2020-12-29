@@ -20,7 +20,6 @@ const SelectDistributorsPage: React.FC<RouteComponentProps<{
       distributors[i].distributorMetadata = await response.json();
     }
     setDistributors(distributors);
-    console.log(distributors);
   }, []);
 
   useEffect(() => {
