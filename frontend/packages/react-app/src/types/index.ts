@@ -2,8 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { Audius } from "./Audius";
-export type { AudiusFollowersCampaign } from "./AudiusFollowersCampaign";
-export type { AudiusFollowersDistributor } from "./AudiusFollowersDistributor";
 export type { AudiusInterface } from "./AudiusInterface";
 export type { CampaignInterface } from "./CampaignInterface";
 export type { CCTWalletCampaign } from "./CCTWalletCampaign";
@@ -11,6 +9,7 @@ export type { CCTWalletDistributor } from "./CCTWalletDistributor";
 export type { ChainlinkClient } from "./ChainlinkClient";
 export type { ChainlinkRequestInterface } from "./ChainlinkRequestInterface";
 export type { DistributorInterface } from "./DistributorInterface";
+export type { Donator } from "./Donator";
 export type { DonatorInterface } from "./DonatorInterface";
 export type { ENSInterface } from "./ENSInterface";
 export type { ENSResolver } from "./ENSResolver";
@@ -31,8 +30,6 @@ export type { Vesting } from "./Vesting";
 export type { VestingInterface } from "./VestingInterface";
 
 export { Audius__factory } from "./factories/Audius__factory";
-export { AudiusFollowersCampaign__factory } from "./factories/AudiusFollowersCampaign__factory";
-export { AudiusFollowersDistributor__factory } from "./factories/AudiusFollowersDistributor__factory";
 export { AudiusInterface__factory } from "./factories/AudiusInterface__factory";
 export { CampaignInterface__factory } from "./factories/CampaignInterface__factory";
 export { CCTWalletCampaign__factory } from "./factories/CCTWalletCampaign__factory";
@@ -40,6 +37,7 @@ export { CCTWalletDistributor__factory } from "./factories/CCTWalletDistributor_
 export { ChainlinkClient__factory } from "./factories/ChainlinkClient__factory";
 export { ChainlinkRequestInterface__factory } from "./factories/ChainlinkRequestInterface__factory";
 export { DistributorInterface__factory } from "./factories/DistributorInterface__factory";
+export { Donator__factory } from "./factories/Donator__factory";
 export { DonatorInterface__factory } from "./factories/DonatorInterface__factory";
 export { ENSInterface__factory } from "./factories/ENSInterface__factory";
 export { ENSResolver__factory } from "./factories/ENSResolver__factory";
