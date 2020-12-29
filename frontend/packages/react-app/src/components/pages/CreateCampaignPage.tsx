@@ -19,6 +19,8 @@ import { Target } from "../../interfaces";
 // @ts-ignore
 import Audius from "@audius/libs";
 import IpfsHttpClient from "ipfs-http-client";
+import useAxios from "axios-hooks";
+import { IPFS_PINNING_API } from "../../utils/const";
 
 declare global {
   interface Window {
@@ -63,12 +65,10 @@ const init = async () => {
   return libs;
 };
 
-const CreateCampaignPage: React.FC<
-  RouteComponentProps<{
-    tokenAddress: string;
-    distributorAddress: string;
-  }>
-> = (props) => {
+const CreateCampaignPage: React.FC<RouteComponentProps<{
+  tokenAddress: string;
+  distributorAddress: string;
+}>> = (props) => {
   const { library, active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const distributorAddress = props.match.params.distributorAddress;
@@ -90,6 +90,13 @@ const CreateCampaignPage: React.FC<
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
   const [myAccount, setMyAccount] = useState({ user_id: "" });
+  const [{ error: pinningError }, postPinning] = useAxios(
+    {
+      url: IPFS_PINNING_API,
+      method: "POST",
+    },
+    { manual: true }
+  );
 
   const getFollowers = useCallback(async (libs, user) => {
     let allFollowers: Target[] = [];
@@ -220,15 +227,19 @@ const CreateCampaignPage: React.FC<
     [distributorAddress, tokenAddress]
   );
 
-  const uploadJsonIpfs = useCallback(async (data, type) => {
-    const { path } = await ipfs.add(JSON.stringify(data));
-    if (type === "campaignInfoCid") {
-      setCampaignInfoCid(path);
-    }
-    if (type === "recipientsCid") {
-      setRecipientsCid(path);
-    }
-  }, []);
+  const uploadJsonIpfs = useCallback(
+    async (data, type) => {
+      const { path } = await ipfs.add(JSON.stringify(data));
+      await postPinning({ data: { hashToPin: path } });
+      if (type === "campaignInfoCid") {
+        setCampaignInfoCid(path);
+      }
+      if (type === "recipientsCid") {
+        setRecipientsCid(path);
+      }
+    },
+    [postPinning]
+  );
 
   const deployCampaign = useCallback(
     async (
@@ -284,26 +295,36 @@ const CreateCampaignPage: React.FC<
   }, [tokenAddress]);
 
   useEffect(() => {
-    if (distributorFormState.approveRequest && library) {
-      approve(library, distributorFormState.approveAmount);
-    }
-    if (distributorFormState.requestDeployCampaign) {
-      const campaignInfo = {
-        description: "",
-        image: "",
-        name: distributorFormState.campaignName,
-      };
+    const f = async () => {
+      if (distributorFormState.approveRequest && library) {
+        approve(library, distributorFormState.approveAmount);
+      }
+      if (distributorFormState.requestDeployCampaign) {
+        const campaignInfo = {
+          description: "",
+          image: "",
+          name: distributorFormState.campaignName,
+        };
 
-      const followersAddress: string[] = audiusState.followers.map(
-        (follower) => follower.wallet
-      );
-      const addresses = { addresses: followersAddress };
-      uploadJsonIpfs(campaignInfo, "campaignInfoCid");
-      uploadJsonIpfs(addresses, "recipientsCid");
-    }
+        const followersAddress: string[] = audiusState.followers.map(
+          (follower) => follower.wallet
+        );
+        const addresses = { addresses: followersAddress };
+        await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
+        await uploadJsonIpfs(addresses, "recipientsCid");
+      }
+    };
+    f();
   }, [library, distributorFormState, approve, uploadJsonIpfs, audiusState]);
 
   useEffect(() => {
+    if (pinningError) {
+      console.error(pinningError);
+      alert(
+        "There is an error on uploading a file used for campaign. Please try again later."
+      );
+      return;
+    }
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
@@ -329,6 +350,7 @@ const CreateCampaignPage: React.FC<
     audiusState,
     distributorFormState,
     deployCampaign,
+    pinningError,
   ]);
 
   useEffect(() => {
