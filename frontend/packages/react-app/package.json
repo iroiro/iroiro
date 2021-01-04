@@ -93,7 +93,8 @@
     "storybook": "start-storybook -p 6006 -s public --no-dll",
     "build-storybook": "build-storybook -s public --no-dll",
     "lint": "yarn run eslint src",
-    "typecheck": "yarn run tsc --noEmit"
+    "typecheck": "yarn run tsc --noEmit",
+    "echo-netlify-basic-auth": "echo \"/*\\n  Basic-Auth: name:pass\" > build/_headers"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

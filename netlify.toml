@@ -1,0 +1,5 @@
+[context.production]
+command = "yarn react-app:build"
+
+[context.deploy-preview]
+command = 'yarn react-app:build && yarn react-app:echo-netlify-basic-auth'
