@@ -1,3 +1,6 @@
+[build]
+base="frontend/"
+
 [context.production]
 command = "yarn react-app:build"
 
