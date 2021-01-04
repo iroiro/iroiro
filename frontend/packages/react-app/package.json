@@ -94,7 +94,7 @@
     "build-storybook": "build-storybook -s public --no-dll",
     "lint": "yarn run eslint src",
     "typecheck": "yarn run tsc --noEmit",
-    "echo-netlify-basic-auth": "echo \"/*\\n  Basic-Auth: name:pass\" > build/_headers"
+    "echo-netlify-basic-auth": "echo \"/*\\n  Basic-Auth: $BASIC_AUTH_USER:$BASIC_AUTH_PASS\" > build/_headers"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
