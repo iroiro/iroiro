@@ -1,7 +1,8 @@
 import React from "react";
-import { Heading, Button, Box, Flex } from "rimble-ui";
+import { Box, Typography, Button, Container } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import { red } from "@material-ui/core/colors";
 import AppHeader from "../../molecules/AppHeader";
-import Container from "../../atoms/Container";
 import CampaignDetail from "../../organisms/CampaignDetail";
 import { AccountToken } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
@@ -14,6 +15,12 @@ export interface CampaignInfoProps {
   campaignDispatch: React.Dispatch<ACTIONS>;
 }
 
+const ColorButton = withStyles(() => ({
+  root: {
+    color: red[500],
+  },
+}))(Button);
+
 const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
   targetNumber,
   campaignData,
@@ -21,44 +28,47 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
 }) => (
   <div>
     <AppHeader />
-    <Container>
-      <Flex style={{ justifyContent: "space-between" }}>
-        <Heading as={"h1"}>Audius Follower Campaign</Heading>
-        <Box mt={4} style={{ textAlign: "center" }}>
-          {campaignData.campaign.status === 0 && !campaignData.canRefund && (
-            <Button.Outline
-              size="small"
-              m="auto"
-              mainColor="danger"
-              onClick={() =>
-                campaignDispatch({
-                  type: "campaign:cancel",
-                  payload: { data: true },
-                })
-              }
-            >
-              Cancel campaign
-            </Button.Outline>
-          )}
-          {campaignData.canRefund && (
-            <Button.Outline
-              size="small"
-              m="auto"
-              mainColor="itblue"
-              onClick={() =>
-                campaignDispatch({
-                  type: "campaign:refund",
-                  payload: { data: true },
-                })
-              }
-            >
-              End campaign and refund tokens
-            </Button.Outline>
-          )}
+    <Box mt={5}>
+      <Container>
+        <Box display="flex" mb={1} style={{ justifyContent: "space-between" }}>
+          <Typography variant={"h3"}>Audius Follower Campaign</Typography>
+          <Box style={{ textAlign: "center" }}>
+            {campaignData.campaign.status === 0 && !campaignData.canRefund && (
+              <ColorButton
+                variant="outlined"
+                size="small"
+                onClick={() =>
+                  campaignDispatch({
+                    type: "campaign:cancel",
+                    payload: { data: true },
+                  })
+                }
+              >
+                Cancel campaign
+              </ColorButton>
+            )}
+            {campaignData.canRefund && (
+              <Button
+                size="small"
+                color="secondary"
+                onClick={() =>
+                  campaignDispatch({
+                    type: "campaign:refund",
+                    payload: { data: true },
+                  })
+                }
+              >
+                End campaign and refund tokens
+              </Button>
+            )}
+          </Box>
         </Box>
-      </Flex>
-      <CampaignDetail campaignData={campaignData} targetNumber={targetNumber} />
-    </Container>
+        <CampaignDetail
+          campaignData={campaignData}
+          targetNumber={targetNumber}
+        />
+      </Container>
+    </Box>
   </div>
 );
 

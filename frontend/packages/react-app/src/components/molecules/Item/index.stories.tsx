@@ -1,20 +1,22 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import AddNewToken, { AddNewTokenProps } from "./index";
 import { BrowserRouter } from "react-router-dom";
+import Item, { ItemProps } from "./index";
+import { distributor, tokenAddress } from "../../../utils/mockData";
 
 export default {
-  title: "Atoms/AddNewToken",
-  component: AddNewToken,
+  title: "Molecules/Item",
+  component: Item,
 } as Meta;
 
-const Template: Story<AddNewTokenProps> = (args) => (
+const Template: Story<ItemProps> = (args) => (
   <BrowserRouter>
-    <AddNewToken {...args} />
+    <Item {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  color: "primary",
+  title: "Title",
+  text: "text",
 };

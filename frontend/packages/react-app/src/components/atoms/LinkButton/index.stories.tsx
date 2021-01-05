@@ -19,5 +19,5 @@ Default.args = {
   m: 4,
   path: "/",
   text: "A button",
-  mainColor: "#92DDE6",
+  color: "primary",
 };

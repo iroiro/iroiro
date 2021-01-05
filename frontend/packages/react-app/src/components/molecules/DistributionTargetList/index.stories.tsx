@@ -24,6 +24,7 @@ export const NoTarget = Template.bind({});
 NoTarget.args = {
   audiusState: {
     ...audiusState,
+    progress: 20,
     followers: [],
   },
 };

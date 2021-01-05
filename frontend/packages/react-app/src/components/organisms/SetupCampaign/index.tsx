@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Box, Heading, Button } from "rimble-ui";
+import { Card, Box, Typography, Button } from "@material-ui/core";
 import SetupCampaignForm from "../../molecules/SetupCampaignForm";
 import {
   createCampaignState,
@@ -15,28 +15,33 @@ const SetupCampaign: React.FC<SetupCampaignFormProps> = ({
   distributorFormState,
   distributorFormDispatch,
 }) => (
-  <Card mt={2}>
-    <Box m={"auto"} width={[3 / 4]}>
-      <Heading>3. Setup basic info</Heading>
-      <SetupCampaignForm
-        distributorFormDispatch={distributorFormDispatch}
-        distributorFormState={distributorFormState}
-      />
-    </Box>
-    <Box my={4} style={{ textAlign: "center" }}>
-      <Button.Outline
-        mainColor="gray"
-        onClick={() => {
-          distributorFormDispatch({
-            type: "step:set",
-            payload: { stepNo: 2 },
-          });
-        }}
-      >
-        Back
-      </Button.Outline>
-    </Box>
-  </Card>
+  <Box mt={2}>
+    <Card>
+      <Box p={4}>
+        <Box m={"auto"} width={[3 / 4]}>
+          <Typography variant={"h3"}>3. Setup basic info</Typography>
+          <SetupCampaignForm
+            distributorFormDispatch={distributorFormDispatch}
+            distributorFormState={distributorFormState}
+          />
+        </Box>
+        <Box my={4} style={{ textAlign: "center" }}>
+          <Button
+            variant="outlined"
+            color="default"
+            onClick={() => {
+              distributorFormDispatch({
+                type: "step:set",
+                payload: { stepNo: 2 },
+              });
+            }}
+          >
+            Back
+          </Button>
+        </Box>
+      </Box>
+    </Card>
+  </Box>
 );
 
 export default SetupCampaign;

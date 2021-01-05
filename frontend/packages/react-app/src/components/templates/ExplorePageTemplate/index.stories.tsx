@@ -29,7 +29,7 @@ NoTokens.args = {
     inputTokenAddress: "",
     tokenAddress: "",
     type: "explore",
-    color: "itred",
+    color: "primary",
   },
 };
 
@@ -42,6 +42,6 @@ Loading.args = {
     inputTokenAddress: "",
     tokenAddress: "",
     type: "explore",
-    color: "itred",
+    color: "primary",
   },
 };

@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, Heading, Text } from "rimble-ui";
+import { Box, Typography } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
 import TokenList from "../../organisms/TokenList";
-import { TokenListState, ACTIONS } from "../../../reducers/tokens";
+import { ACTIONS } from "../../../reducers/tokens";
+import { TokenListState } from "../../../interfaces";
 import SetTokenModal from "../../organisms/SetTokenModal";
 import AddNewToken from "../../atoms/AddNewToken";
 
@@ -18,11 +19,13 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
   <div>
     <AppHeader />
     <Box m={"auto"} my={5} width={[3 / 4, 1 / 2]}>
-      <Heading as={"h1"}>Token Explorer</Heading>
-      <Text>
-        Check the status of the tokens you have been distributed and information
-        on the campaign.
-      </Text>
+      <Typography variant={"h3"}>Token Explorer</Typography>
+      <Box mt={2}>
+        <Typography>
+          Check the status of the tokens you have been distributed and
+          information on the campaign.
+        </Typography>
+      </Box>
       <TokenList state={state} />
       <AddNewToken color={state.color} dispatch={dispatch} />
       <SetTokenModal state={state} dispatch={dispatch} />

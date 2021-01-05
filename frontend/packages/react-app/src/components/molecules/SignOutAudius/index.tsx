@@ -1,6 +1,14 @@
 import React from "react";
-import { Box, Button } from "rimble-ui";
+import { Box, Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import { red } from "@material-ui/core/colors";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
+
+const ColorButton = withStyles(() => ({
+  root: {
+    color: red[500],
+  },
+}))(Button);
 
 export interface SignOutAudiusProps {
   readonly audiusState: AudiusState;
@@ -9,9 +17,9 @@ export interface SignOutAudiusProps {
 
 const SignOutAudius: React.FC<SignOutAudiusProps> = ({ audiusDispatch }) => (
   <Box mt={4} style={{ textAlign: "center" }}>
-    <Button.Outline
+    <ColorButton
       size="small"
-      mainColor="red"
+      variant="outlined"
       onClick={() =>
         audiusDispatch({
           type: "isRequestSignout:set",
@@ -20,7 +28,7 @@ const SignOutAudius: React.FC<SignOutAudiusProps> = ({ audiusDispatch }) => (
       }
     >
       Signout from Audius
-    </Button.Outline>
+    </ColorButton>
   </Box>
 );
 

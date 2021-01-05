@@ -1,8 +1,7 @@
 import React from "react";
-import { Card, Heading, Text, Flex, Button } from "rimble-ui";
+import { Box, Typography, Card, Button } from "@material-ui/core";
 import DistributionTargetList from "../../molecules/DistributionTargetList";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
-import { Box } from "@material-ui/core";
 import { DISTRIBUTOR_ACTIONS } from "../../../reducers/distributorForm";
 import SignOutAudius from "../../molecules/SignOutAudius";
 
@@ -19,31 +18,40 @@ const DistributionTargets: React.FC<TargetsProps> = ({
 }) => (
   <>
     <Card>
-      <Heading>1. Check your followers list</Heading>
-      <Flex style={{ justifyContent: "space-between", alignItems: "center" }}>
-        <Heading as={"h3"}>Audius Followers list</Heading>
-        <Text>Total users: {audiusState.followersCount}</Text>
-      </Flex>
-
-      <DistributionTargetList
-        audiusState={audiusState}
-        audiusDispatch={audiusDispatch}
-      />
-      {audiusState.followers.length > 0 && (
-        <Box my={4} style={{ textAlign: "center" }}>
-          <Button
-            mainColor="itblue"
-            onClick={() => {
-              distributorFormDispatch({
-                type: "step:set",
-                payload: { stepNo: 2 },
-              });
-            }}
-          >
-            Next
-          </Button>
+      <Box p={4}>
+        <Box mt={4}>
+          <Typography variant={"h4"}>1. Check your followers list</Typography>
         </Box>
-      )}
+        <Box
+          mt={4}
+          my={2}
+          display="flex"
+          style={{ justifyContent: "space-between", alignItems: "center" }}
+        >
+          <Typography variant={"h4"}>Audius Followers list</Typography>
+          <Typography>Total users: {audiusState.followersCount}</Typography>
+        </Box>
+        <DistributionTargetList
+          audiusState={audiusState}
+          audiusDispatch={audiusDispatch}
+        />
+        {audiusState.followers.length > 0 && (
+          <Box my={5} style={{ textAlign: "center" }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                distributorFormDispatch({
+                  type: "step:set",
+                  payload: { stepNo: 2 },
+                });
+              }}
+            >
+              Next
+            </Button>
+          </Box>
+        )}
+      </Box>
     </Card>
     {audiusState.followers.length > 0 && (
       <SignOutAudius

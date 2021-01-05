@@ -1,6 +1,5 @@
 import React from "react";
-import { Heading } from "rimble-ui";
-import Container from "../../atoms/Container";
+import { Typography, Box, Container } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
 import { Distributor } from "../../../interfaces";
 import DistributorList from "../../organisms/DistributorList";
@@ -17,13 +16,17 @@ const SelectDistributorsPageTemplate: React.FC<Distributors> = ({
   return (
     <>
       <AppHeader />
-      <Container>
-        <Heading as={"h1"}>Select distributor</Heading>
-        <DistributorList
-          distributors={distributors}
-          tokenAddress={tokenAddress}
-        />
-      </Container>
+      <Box mt={5}>
+        <Container>
+          <Box mb={1}>
+            <Typography variant={"h3"}>Select distributor</Typography>
+          </Box>
+          <DistributorList
+            distributors={distributors}
+            tokenAddress={tokenAddress}
+          />
+        </Container>
+      </Box>
     </>
   );
 };

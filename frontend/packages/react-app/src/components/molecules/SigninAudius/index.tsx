@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Card, Text, Heading, Input } from "rimble-ui";
+import { Paper, Box, Typography, Input, Button } from "@material-ui/core";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 
 export interface SigninAudiusProps {
@@ -11,18 +11,24 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
   audiusState,
   audiusDispatch,
 }) => (
-  <Card>
-    <Box width={[1 / 2]} m={"auto"}>
+  <Paper>
+    <Box
+      width={[1 / 2]}
+      m={"auto"}
+      pt={3}
+      pb={1}
+      style={{ textAlign: "center" }}
+    >
       <Box mb={4} style={{ textAlign: "center" }}>
-        <Heading as={"h1"}>Audius Signin</Heading>
-        <Text mt={2}>Get your followers with signin Audius</Text>
+        <Typography variant={"h3"}>Audius Signin</Typography>
+        <Box mt={2}>
+          <Typography>Get your followers with signin Audius</Typography>
+        </Box>
       </Box>
-      <Box>
+      <Box mb={2}>
         <Input
-          mb={2}
           type="email"
           required
-          width={1}
           placeholder="Email"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             audiusDispatch({
@@ -33,12 +39,10 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
           value={audiusState.email}
         />
       </Box>
-      <Box mt={2}>
+      <Box my={2}>
         <Input
-          mb={2}
           type="password"
           required
-          width={1}
           placeholder="Password"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             audiusDispatch({
@@ -52,19 +56,20 @@ const SigninAudius: React.FC<SigninAudiusProps> = ({
       <Box m={"auto"} my={4} style={{ textAlign: "center" }}>
         {audiusState.libs !== undefined ? (
           <Button
+            variant="contained"
             onClick={() => audiusDispatch({ type: "audius:login" })}
-            mainColor={"#7e1bcc"}
+            color={"primary"}
           >
             Sign In
           </Button>
         ) : (
-          <Button mainColor={"#7e1bcc"} disabled>
+          <Button variant="contained" disabled>
             Sign In
           </Button>
         )}
       </Box>
     </Box>
-  </Card>
+  </Paper>
 );
 
 export default SigninAudius;

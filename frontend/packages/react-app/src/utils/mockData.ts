@@ -5,8 +5,8 @@ import {
   Target,
   Distributor,
   AccountToken,
+  TokenListState,
 } from "../interfaces";
-import { TokenListState } from "../reducers/tokens";
 import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
 
@@ -178,21 +178,21 @@ export const tokenInfo: AccountToken = {
 export const tokenListState: TokenListState = {
   tokens: [
     {
-      tokenAddress: "0xabcd....1234",
+      tokenAddress: "0x9AF70Ab10f94fEAF59B00B2cC20C7AE57e21954e",
       name: "Iroiro Token",
       symbol: "IRO",
       decimals: 8,
       totalSupply: "2000000000",
     },
     {
-      tokenAddress: "0xabcd....1234",
+      tokenAddress: "0x9AF70Ab10f94fEAF59B00B2cC20C7AE57e21954e",
       name: "Storybook Token",
       symbol: "STR",
       decimals: 18,
       totalSupply: "1000000000",
     },
     {
-      tokenAddress: "0xabcd....1234",
+      tokenAddress: "0x9AF70Ab10f94fEAF59B00B2cC20C7AE57e21954e",
       name: "Test Token",
       symbol: "TST",
       decimals: 4,
@@ -201,9 +201,9 @@ export const tokenListState: TokenListState = {
   ],
   isOpen: false,
   inputTokenAddress: "",
-  tokenAddress: "",
+  tokenAddress: "0x9AF70Ab10f94fEAF59B00B2cC20C7AE57e21954e",
   type: "dashboard",
-  color: "itblue",
+  color: "secondary",
 };
 
 export const distributorFormState: createCampaignState = {
@@ -224,7 +224,23 @@ export const audiusTarget: Target = {
 export const audiusState: AudiusState = {
   email: "sample@example.com",
   password: "samplepassword",
-  followers: [audiusTarget, audiusTarget, audiusTarget],
+  followers: [
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+    audiusTarget,
+  ],
   followersCount: 10000,
   isSignin: true,
   requestSignin: true,

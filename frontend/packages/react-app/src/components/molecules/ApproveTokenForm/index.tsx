@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Form, Input } from "rimble-ui";
+import { Box, Button, FormControl, Input } from "@material-ui/core";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
@@ -18,11 +18,10 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
 }) => (
   <Box mt={m}>
     <Box mt={3}>
-      <Form>
+      <FormControl>
         <Input
           type="number"
           required
-          width={1}
           placeholder="0"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             distributorFormDispatch({
@@ -32,11 +31,12 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
           }
           value={distributorFormState.approveAmount}
         />
-      </Form>
+      </FormControl>
+    </Box>
+    <Box mt={2}>
       <Button
-        mainColor="itblue"
-        mt={2}
-        width={1}
+        color="secondary"
+        variant="contained"
         onClick={() => {
           distributorFormDispatch({
             type: "token:approve",

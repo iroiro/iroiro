@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text } from "rimble-ui";
+import { Typography, Box } from "@material-ui/core";
 
 export interface ItemProps {
   readonly title: string;
@@ -9,12 +9,8 @@ export interface ItemProps {
 const Item: React.FC<ItemProps> = ({ title, text }) => {
   return (
     <Box mr={4}>
-      <Text fontSize={2} color="gray">
-        {title}
-      </Text>
-      <Text fontSize={3} fontWeight="bold">
-        {text}
-      </Text>
+      <Typography variant="subtitle1">{title}</Typography>
+      <Typography variant="h4">{text}</Typography>
     </Box>
   );
 };
