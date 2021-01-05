@@ -1,5 +1,5 @@
 import React from "react";
-import { Heading, Card, Flex } from "rimble-ui";
+import { Box, Typography, Card } from "@material-ui/core";
 import { TokenAndCampaignProps } from "../../../interfaces";
 import LinkButton from "../../atoms/LinkButton";
 import CampaignListTable from "../../molecules/CampaignListTable";
@@ -10,17 +10,24 @@ const CampaignList: React.FC<TokenAndCampaignProps> = ({
 }) => {
   return (
     <>
-      <Flex style={{ alignItems: "center", justifyContent: "space-between" }}>
-        <Heading as={"h1"}>{tokenState.token?.name}</Heading>
+      <Box
+        display="flex"
+        style={{ alignItems: "center", justifyContent: "space-between" }}
+        my={1}
+      >
+        <Typography variant={"h3"}>{tokenState.token?.name}</Typography>
         <LinkButton
           m={0}
           path={`/dashboard/${tokenState.token?.tokenAddress}/distributors`}
           text="+ Create New Campaign"
-          mainColor="itblue"
+          color="secondary"
         ></LinkButton>
-      </Flex>
+      </Box>
       <Card>
-        <Heading as={"h2"}>Audius Distributor</Heading>
+        <Box m={2}>
+          <Typography variant={"h4"}>Audius Distributor</Typography>
+        </Box>
+
         <CampaignListTable
           tokenState={tokenState}
           campaignsState={campaignsState}

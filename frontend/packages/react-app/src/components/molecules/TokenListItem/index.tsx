@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, Flex, Text } from "rimble-ui";
+import { Box, Typography } from "@material-ui/core";
 
 export interface TokenListItemProps {
   readonly name: string;
   readonly address: string;
-  readonly color: string;
+  readonly color?: string | undefined;
   readonly type: string;
 }
 
@@ -15,27 +15,30 @@ const TokenListItem: React.FC<TokenListItemProps> = ({
   type,
   color,
 }) => (
-  <Card color="black" mb={1}>
-    <Flex
-      m={1}
-      style={{ justifyContent: "space-between", alignItems: "center" }}
-    >
-      {type === "dashboard" && (
-        <Link to={`/dashboard/${address}`} style={{ textDecoration: "none" }}>
-          <Text fontSize="3" fontWeight="bold" color={color}>
-            {name}
-          </Text>
-        </Link>
-      )}
-      {type === "explore" && (
-        <Link to={`/explore/${address}`} style={{ textDecoration: "none" }}>
-          <Text fontSize="3" fontWeight="bold" color={color}>
-            {name}
-          </Text>
-        </Link>
-      )}
-    </Flex>
-  </Card>
+  <Box
+    display="flex"
+    m={2}
+    style={{ justifyContent: "space-between", alignItems: "center" }}
+  >
+    {type === "dashboard" && (
+      <Link
+        color={color}
+        to={`/dashboard/${address}`}
+        style={{ textDecoration: "none" }}
+      >
+        <Typography>{name}</Typography>
+      </Link>
+    )}
+    {type === "explore" && (
+      <Link
+        color={color}
+        to={`/explore/${address}`}
+        style={{ textDecoration: "none" }}
+      >
+        <Typography>{name}</Typography>
+      </Link>
+    )}
+  </Box>
 );
 
 export default TokenListItem;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Text } from "rimble-ui";
+import { Box, Typography } from "@material-ui/core";
 
 export interface TokenInfo {
   readonly balance: string;
@@ -9,15 +9,15 @@ export interface TokenInfo {
 
 const TokenBalance: React.FC<TokenInfo> = ({ balance, symbol, itemName }) => (
   <>
-    <Flex style={{ alignItems: "baseline" }}>
-      <Text mr={4}>{itemName}</Text>
-      <Text mr={1} fontSize={4} fontWeight={"bold"}>
-        {balance}
-      </Text>
-      <Text fontSize={2} fontWeight={"bold"}>
-        {symbol}
-      </Text>
-    </Flex>
+    <Box display="flex" style={{ alignItems: "baseline" }}>
+      <Box mr={4}>
+        <Typography>{itemName}</Typography>
+      </Box>
+      <Box mr={1}>
+        <Typography variant={"h4"}>{balance}</Typography>
+      </Box>
+      <Typography>{symbol}</Typography>
+    </Box>
   </>
 );
 

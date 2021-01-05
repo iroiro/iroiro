@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "rimble-ui";
+import { Box } from "@material-ui/core";
 import { Distributor } from "../../../interfaces";
 import DistributorListItem from "../../molecules/DistributorListItem";
 

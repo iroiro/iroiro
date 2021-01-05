@@ -1,9 +1,8 @@
 import React from "react";
-import { Box } from "rimble-ui";
+import { Box, Container } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
 import { AccountToken, Campaigns } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
-import Container from "../../atoms/Container";
 import CampaignList from "../../organisms/CampaignList";
 
 export interface ExternalTokenDetailPageTemplateProps {
@@ -20,20 +19,22 @@ const ExternalTokenDetailPageTemplate: React.FC<ExternalTokenDetailPageTemplateP
   return (
     <>
       <AppHeader />
-      <Container>
-        {!active ? (
-          <Box>
-            <WalletConnect />
-          </Box>
-        ) : (
-          <Box>
-            <CampaignList
-              tokenState={tokenState}
-              campaignsState={campaignsState}
-            />
-          </Box>
-        )}
-      </Container>
+      <Box mt={5}>
+        <Container>
+          {!active ? (
+            <Box>
+              <WalletConnect />
+            </Box>
+          ) : (
+            <Box>
+              <CampaignList
+                tokenState={tokenState}
+                campaignsState={campaignsState}
+              />
+            </Box>
+          )}
+        </Container>
+      </Box>
     </>
   );
 };

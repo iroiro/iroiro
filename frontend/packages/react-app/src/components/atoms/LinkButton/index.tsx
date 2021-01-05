@@ -1,25 +1,31 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "rimble-ui";
+import { Button, Box } from "@material-ui/core";
 
 export interface LinkOutlineButtonProps {
   readonly m: number;
   readonly path: string;
   readonly text: string;
-  readonly mainColor: string;
+  readonly color?: "inherit" | "primary" | "secondary" | "default" | undefined;
 }
 
 const LinkOutlineButton: React.FC<LinkOutlineButtonProps> = ({
   m,
   path,
   text,
-  mainColor,
+  color,
 }) => (
-  <Link to={path} style={{ textDecoration: "none" }}>
-    <Button mainColor={mainColor} mr={m}>
+  <Box mr={m}>
+    <Button
+      component={Link}
+      variant="contained"
+      to={path}
+      style={{ textDecoration: "none" }}
+      color={color}
+    >
       {text}
     </Button>
-  </Link>
+  </Box>
 );
 
 export default LinkOutlineButton;

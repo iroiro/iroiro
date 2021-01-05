@@ -1,7 +1,11 @@
-import { Button, Flex, Box } from "rimble-ui";
+import { Box, Button } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
-import { injected } from "./connectors";
+import { injected } from "../connectors";
+
+function ellipseAddress(address = "", width = 5): string {
+  return `${address.slice(0, width)}...${address.slice(-width)}`;
+}
 
 const WalletButton: React.FC = () => {
   const { account, deactivate, active, error, activate } = useWeb3React();
@@ -11,7 +15,6 @@ const WalletButton: React.FC = () => {
       "Currently we only supports Rikneby network. Please change your network to Rinkeby."
     );
   }
-
   useEffect(() => {
     const { ethereum } = window;
     if (ethereum && ethereum.on && !active && !error) {
@@ -51,11 +54,10 @@ const WalletButton: React.FC = () => {
   }, [active, error, activate]);
 
   return (
-    <Flex style={{ alignItems: "center" }}>
-      {active ? <Box mx={4}>{account}</Box> : <div></div>}
-
-      <Button.Outline
-        mainColor="#333"
+    <Box display="flex" style={{ alignItems: "center" }}>
+      <Button
+        variant="outlined"
+        color="primary"
         onClick={() => {
           if (!active) {
             activate(injected);
@@ -64,9 +66,9 @@ const WalletButton: React.FC = () => {
           }
         }}
       >
-        {!active ? "Connect Wallet" : `Disconnect Wallet`}
-      </Button.Outline>
-    </Flex>
+        {active && account ? ellipseAddress(account) : "Wallet Connect"}
+      </Button>
+    </Box>
   );
 };
 

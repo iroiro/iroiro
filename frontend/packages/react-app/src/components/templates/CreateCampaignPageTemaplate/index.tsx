@@ -1,7 +1,6 @@
 import React from "react";
-import { Heading, Box } from "rimble-ui";
+import { Box, Typography, Container } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
-import Container from "../../atoms/Container";
 import ApproveToken from "../../organisms/ApproveToken";
 import SetupCampaign from "../../organisms/SetupCampaign";
 import { AccountToken } from "../../../interfaces";
@@ -32,37 +31,41 @@ const CreateCampaignPageTemaplate: React.FC<CampaignInfo> = ({
 }) => (
   <div>
     <AppHeader />
-    <Container>
-      {!active ? (
-        <Box>
-          <WalletConnect />
-        </Box>
-      ) : (
-        <Box>
-          <Heading as={"h1"}>Audius Follower Campaign</Heading>
-          {distributorFormState.step === 1 && (
-            <DistributionTargets
-              audiusState={audiusState}
-              audiusDispatch={audiusDispatch}
-              distributorFormDispatch={distributorFormDispatch}
-            />
-          )}
-          {distributorFormState.step === 2 && (
-            <ApproveToken
-              tokenInfo={tokenInfo}
-              distributorFormState={distributorFormState}
-              distributorFormDispatch={distributorFormDispatch}
-            />
-          )}
-          {distributorFormState.step === 3 && (
-            <SetupCampaign
-              distributorFormState={distributorFormState}
-              distributorFormDispatch={distributorFormDispatch}
-            />
-          )}
-        </Box>
-      )}
-    </Container>
+    <Box mt={5}>
+      <Container>
+        {!active ? (
+          <Box>
+            <WalletConnect />
+          </Box>
+        ) : (
+          <Box>
+            <Box my={1}>
+              <Typography variant={"h3"}>Audius Follower Campaign</Typography>
+            </Box>
+            {distributorFormState.step === 1 && (
+              <DistributionTargets
+                audiusState={audiusState}
+                audiusDispatch={audiusDispatch}
+                distributorFormDispatch={distributorFormDispatch}
+              />
+            )}
+            {distributorFormState.step === 2 && (
+              <ApproveToken
+                tokenInfo={tokenInfo}
+                distributorFormState={distributorFormState}
+                distributorFormDispatch={distributorFormDispatch}
+              />
+            )}
+            {distributorFormState.step === 3 && (
+              <SetupCampaign
+                distributorFormState={distributorFormState}
+                distributorFormDispatch={distributorFormDispatch}
+              />
+            )}
+          </Box>
+        )}
+      </Container>
+    </Box>
   </div>
 );
 

@@ -2,6 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { Audius } from "./Audius";
+export type { AudiusFollowersCampaign } from "./AudiusFollowersCampaign";
+export type { AudiusFollowersDistributor } from "./AudiusFollowersDistributor";
 export type { AudiusInterface } from "./AudiusInterface";
 export type { CampaignInterface } from "./CampaignInterface";
 export type { CCTWalletCampaign } from "./CCTWalletCampaign";
@@ -30,6 +32,8 @@ export type { Vesting } from "./Vesting";
 export type { VestingInterface } from "./VestingInterface";
 
 export { Audius__factory } from "./factories/Audius__factory";
+export { AudiusFollowersCampaign__factory } from "./factories/AudiusFollowersCampaign__factory";
+export { AudiusFollowersDistributor__factory } from "./factories/AudiusFollowersDistributor__factory";
 export { AudiusInterface__factory } from "./factories/AudiusInterface__factory";
 export { CampaignInterface__factory } from "./factories/CampaignInterface__factory";
 export { CCTWalletCampaign__factory } from "./factories/CCTWalletCampaign__factory";

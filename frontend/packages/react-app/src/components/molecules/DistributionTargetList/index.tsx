@@ -1,5 +1,16 @@
 import React from "react";
-import { Box, Text, Table, Progress } from "rimble-ui";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Typography,
+  Paper,
+  Box,
+  LinearProgress,
+} from "@material-ui/core";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import SigninAudius from "../SigninAudius";
 
@@ -24,35 +35,45 @@ const DistributionTargetList: React.FC<TargetsProps> = ({
   }
   if (audiusState.followersCount <= 0) {
     return (
-      <Box style={{ textAlign: "center" }}>
-        <Text my={4}>No Users</Text>
+      <Box my={4} style={{ textAlign: "center" }}>
+        <Typography>No Users</Typography>
       </Box>
     );
   }
   if (audiusState.followers.length > 0) {
     return (
       <div style={{ overflowY: "scroll", height: "400px" }}>
-        <Table>
-          <thead>
-            <tr>
-              <th>User name</th>
-              <th>Wallet</th>
-            </tr>
-          </thead>
-          <tbody>
-            {audiusState.followers.map((target) => (
-              <tr key={target.wallet}>
-                <td>{target.handle}</td>
-                <td>{target.wallet}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>User name</TableCell>
+                <TableCell>Wallet</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {audiusState.followers.map((target) => (
+                <TableRow key={target.wallet}>
+                  <TableCell>{target.handle}</TableCell>
+                  <TableCell>{target.wallet}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     );
   }
 
-  return <Progress value={audiusState.progress} style={{ width: "100%" }} />;
+  return (
+    <Box py={5}>
+      <LinearProgress
+        variant="determinate"
+        value={audiusState.progress}
+        style={{ width: "100%" }}
+      />
+    </Box>
+  );
 };
 
 export default DistributionTargetList;

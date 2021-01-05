@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Text } from "rimble-ui";
+import { Typography, Paper, Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { Distributor } from "../../../interfaces";
 
@@ -13,18 +13,22 @@ const DistributorListItem: React.FC<DistributorProps> = ({
   tokenAddress,
 }) => {
   return (
-    <Card key={distributor.id}>
-      {"distributorMetadata" in distributor && (
-        <Link
-          to={`/dashboard/${tokenAddress}/distributors/${distributor.id}`}
-          style={{ textDecoration: "none" }}
-        >
-          <Text fontSize={2} fontWeight="bold" color="itblue">
-            {distributor.distributorMetadata.name}
-          </Text>
-        </Link>
-      )}
-    </Card>
+    <Box mb={1}>
+      <Paper key={distributor.id}>
+        {"distributorMetadata" in distributor && (
+          <Box p={2}>
+            <Link
+              to={`/dashboard/${tokenAddress}/distributors/${distributor.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Typography color="secondary">
+                {distributor.distributorMetadata.name}
+              </Typography>
+            </Link>
+          </Box>
+        )}
+      </Paper>
+    </Box>
   );
 };
 
