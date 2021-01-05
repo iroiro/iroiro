@@ -61,3 +61,5 @@ typings/
 .env
 
 build/
+# Local Netlify folder
+.netlify
