@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Form, Input } from "rimble-ui";
+import { Button, Box, FormControl, Input } from "@material-ui/core";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -23,21 +23,22 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
 }) => (
   <Box>
     <Box mt={3}>
-      <Form>
-        <Input
-          mb={2}
-          type="text"
-          required
-          width={1}
-          placeholder="Campaign Name"
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            distributorFormDispatch({
-              type: "campaignName:set",
-              payload: { campaignName: event.target.value },
-            })
-          }
-          value={distributorFormState.campaignName}
-        />
+      <FormControl fullWidth>
+        <Box mb={2}>
+          <Input
+            fullWidth
+            type="text"
+            required
+            placeholder="Campaign Name"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              distributorFormDispatch({
+                type: "campaignName:set",
+                payload: { campaignName: event.target.value },
+              })
+            }
+            value={distributorFormState.campaignName}
+          />
+        </Box>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <div style={{ marginTop: 18 }}>
             <KeyboardDatePicker
@@ -76,20 +77,21 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
             />
           </div>
         </MuiPickersUtilsProvider>
-      </Form>
-      <Button
-        mainColor="itblue"
-        mt={3}
-        width={1}
-        onClick={() => {
-          distributorFormDispatch({
-            type: "campaign:deploy",
-            payload: { requestDeployCampaign: true },
-          });
-        }}
-      >
-        Start Campaign
-      </Button>
+      </FormControl>
+      <Box mt={3}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            distributorFormDispatch({
+              type: "campaign:deploy",
+              payload: { requestDeployCampaign: true },
+            });
+          }}
+        >
+          Start Campaign
+        </Button>
+      </Box>
     </Box>
   </Box>
 );

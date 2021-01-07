@@ -1,20 +1,17 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import AddNewToken, { AddNewTokenProps } from "./index";
+import WalletButton from "./index";
 import { BrowserRouter } from "react-router-dom";
 
 export default {
-  title: "Atoms/AddNewToken",
-  component: AddNewToken,
+  title: "Atoms/WalletButton",
+  component: WalletButton,
 } as Meta;
 
-const Template: Story<AddNewTokenProps> = (args) => (
+const Template: Story = (args) => (
   <BrowserRouter>
-    <AddNewToken {...args} />
+    <WalletButton {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-Default.args = {
-  color: "primary",
-};

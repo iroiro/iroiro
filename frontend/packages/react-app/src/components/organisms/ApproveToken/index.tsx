@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Box, Button, Heading } from "rimble-ui";
+import { Paper, Typography, Box, Button } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
 import ApproveTokenForm from "../../molecules/ApproveTokenForm";
 import TokenBalance from "../../molecules/TokenBalance";
@@ -19,65 +19,88 @@ const ApproveToken: React.FC<TokenInfo> = ({
   distributorFormState,
   distributorFormDispatch,
 }) => (
-  <Card mt={2}>
-    <Box m={"auto"} width={[3 / 4]}>
-      <Heading>2. Approve your tokens</Heading>
-      {tokenInfo.balance && tokenInfo.token ? (
-        <TokenBalance
-          balance={tokenInfo.balance}
-          symbol={tokenInfo.token.symbol}
-          itemName={"Wallet Balance:"}
-        />
-      ) : (
-        <TokenBalance balance={"-"} symbol={""} itemName={"Wallet Balance:"} />
-      )}
-      {tokenInfo.allowance && tokenInfo.token ? (
-        <TokenBalance
-          balance={tokenInfo.allowance}
-          symbol={tokenInfo.token.symbol}
-          itemName={"Approved Amount:"}
-        />
-      ) : (
-        <TokenBalance balance={"-"} symbol={""} itemName={"Approved Amount:"} />
-      )}
-      <ApproveTokenForm
-        m={4}
-        distributorFormState={distributorFormState}
-        distributorFormDispatch={distributorFormDispatch}
-      />
-    </Box>
-    <Box my={4} style={{ textAlign: "center" }}>
-      <Button.Outline
-        mr={4}
-        mainColor="gray"
-        onClick={() => {
-          distributorFormDispatch({
-            type: "step:set",
-            payload: { stepNo: 1 },
-          });
-        }}
-      >
-        Back
-      </Button.Outline>
-      {tokenInfo.allowance === "0" ? (
-        <Button mainColor="itblue" disabled>
-          Next
-        </Button>
-      ) : (
-        <Button
-          mainColor="itblue"
-          onClick={() => {
-            distributorFormDispatch({
-              type: "step:set",
-              payload: { stepNo: 3 },
-            });
-          }}
+  <Box mt={2}>
+    <Paper>
+      <Box p={4}>
+        <Box m={"auto"} width={[3 / 4]} mt={2}>
+          <Typography variant={"h4"}>2. Approve your tokens</Typography>
+          <Box mt={2}>
+            {tokenInfo.balance && tokenInfo.token ? (
+              <TokenBalance
+                balance={tokenInfo.balance}
+                symbol={tokenInfo.token.symbol}
+                itemName={"Wallet Balance:"}
+              />
+            ) : (
+              <TokenBalance
+                balance={"-"}
+                symbol={""}
+                itemName={"Wallet Balance:"}
+              />
+            )}
+            {tokenInfo.allowance && tokenInfo.token ? (
+              <TokenBalance
+                balance={tokenInfo.allowance}
+                symbol={tokenInfo.token.symbol}
+                itemName={"Approved Amount:"}
+              />
+            ) : (
+              <TokenBalance
+                balance={"-"}
+                symbol={""}
+                itemName={"Approved Amount:"}
+              />
+            )}
+          </Box>
+          <ApproveTokenForm
+            m={4}
+            distributorFormState={distributorFormState}
+            distributorFormDispatch={distributorFormDispatch}
+          />
+        </Box>
+        <Box
+          display="flex"
+          my={4}
+          style={{ textAlign: "center", justifyContent: "center" }}
         >
-          Next
-        </Button>
-      )}
-    </Box>
-  </Card>
+          <Box mr={4}>
+            <Button
+              variant="outlined"
+              color="default"
+              onClick={() => {
+                distributorFormDispatch({
+                  type: "step:set",
+                  payload: { stepNo: 1 },
+                });
+              }}
+            >
+              Back
+            </Button>
+          </Box>
+          <Box>
+            {tokenInfo.allowance === "0" ? (
+              <Button variant="contained" color="secondary" disabled>
+                Next
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  distributorFormDispatch({
+                    type: "step:set",
+                    payload: { stepNo: 3 },
+                  });
+                }}
+              >
+                Next
+              </Button>
+            )}
+          </Box>
+        </Box>
+      </Box>
+    </Paper>
+  </Box>
 );
 
 export default ApproveToken;

@@ -4,10 +4,8 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import "./index.css";
 import App from "./App";
-import { ThemeProvider } from "styled-components";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import customTheme from "./theme/rinble-ui-theme";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import muiTheme from "../src/theme/mui-theme";
 
@@ -27,11 +25,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <MuiThemeProvider theme={muiTheme}>
-      <ThemeProvider theme={customTheme}>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <App />
-        </Web3ReactProvider>
-      </ThemeProvider>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <App />
+      </Web3ReactProvider>
     </MuiThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")

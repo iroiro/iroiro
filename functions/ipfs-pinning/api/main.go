@@ -33,7 +33,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 	isOriginMatched := false
 	for _, o := range AllowOrigins {
-		if o == origin {
+		if strings.HasSuffix(origin, o) {
 			isOriginMatched = true
 		}
 	}

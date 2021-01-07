@@ -3,7 +3,7 @@ import { TokenInformationState } from "../../../interfaces";
 import TokenRequestCard from "../../molecules/TokenRequestCard";
 import TokenClaimCard from "../../molecules/TokenClaimCard";
 import TokenCampaignDetail from "../TokenCampaignDetail";
-import { Typography } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import { Dispatch } from "react";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import SigninAudius from "../../molecules/SigninAudius";
@@ -48,33 +48,35 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
   return (
     <div style={{ marginTop: "24px" }}>
       <TokenCampaignDetail campaign={campaign} />
-      {!audiusState.user ? (
-        <SigninAudius
-          audiusState={audiusState}
-          audiusDispatch={audiusDispatch}
-        />
-      ) : (
-        <>
-          <TokenRequestCard
-            state={state}
-            dispatch={dispatch}
+      <Box mt={2}>
+        {!audiusState.user ? (
+          <SigninAudius
             audiusState={audiusState}
+            audiusDispatch={audiusDispatch}
           />
-          {state.isTokenCheckFinished && (
-            <TokenClaimCard
-              campaignAddress={state?.campaignAddress ?? ""}
-              symbol={state.token.symbol}
-              decimals={state.token.decimals}
-              claimAmount={campaign.claimAmount}
-              isClaimable={state.isCampaignClaimable}
-              isClaimed={state.isCampaignClaimed}
-              userAddress={state.userAddress ?? ""}
+        ) : (
+          <>
+            <TokenRequestCard
+              state={state}
               dispatch={dispatch}
               audiusState={audiusState}
             />
-          )}
-        </>
-      )}
+            {state.isTokenCheckFinished && (
+              <TokenClaimCard
+                campaignAddress={state?.campaignAddress ?? ""}
+                symbol={state.token.symbol}
+                decimals={state.token.decimals}
+                claimAmount={campaign.claimAmount}
+                isClaimable={state.isCampaignClaimable}
+                isClaimed={state.isCampaignClaimed}
+                userAddress={state.userAddress ?? ""}
+                dispatch={dispatch}
+                audiusState={audiusState}
+              />
+            )}
+          </>
+        )}
+      </Box>
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Template: Story<TokenListItemProps> = (args) => (
 
 export const Dashboard = Template.bind({});
 Dashboard.args = {
-  color: "itblue",
+  color: "secondary",
   name: "Sample Token",
   address: "0x",
   type: "dashboard",
@@ -25,7 +25,7 @@ Dashboard.args = {
 
 export const Explore = Template.bind({});
 Explore.args = {
-  color: "itred",
+  color: "primary",
   name: "Sample Token",
   address: "0x",
   type: "explore",

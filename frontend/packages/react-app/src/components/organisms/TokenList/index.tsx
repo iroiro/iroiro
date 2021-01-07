@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Heading, Text, Box } from "rimble-ui";
+import { Box, Typography, Paper } from "@material-ui/core";
 import TokenListItem from "../../molecules/TokenListItem";
-import { TokenListState } from "../../../reducers/tokens";
+import { TokenListState } from "../../../interfaces";
 
 export interface TokenListProps {
   readonly state: TokenListState;
@@ -9,22 +9,26 @@ export interface TokenListProps {
 
 const TokenList: React.FC<TokenListProps> = ({ state }) => (
   <div>
-    <Heading as={"h2"} mt={5}>
-      Token List
-    </Heading>
+    <Box mt={5}>
+      <Typography variant={"h4"}>Token List</Typography>
+    </Box>
     {state.tokens.length === 0 ? (
-      <Text>You don&apos;t have any tokens</Text>
+      <Typography>You don&apos;t have any tokens</Typography>
     ) : (
-      <Box>
-        {state.tokens.map((token) => (
-          <TokenListItem
-            key={token.tokenAddress}
-            type={state.type}
-            color={state.color}
-            name={token.name}
-            address={token.tokenAddress}
-          />
-        ))}
+      <Box mt={2}>
+        <Paper>
+          <Box p={2}>
+            {state.tokens.map((token) => (
+              <TokenListItem
+                key={token.tokenAddress}
+                type={state.type}
+                color={state.color}
+                name={token.name}
+                address={token.tokenAddress}
+              />
+            ))}
+          </Box>
+        </Paper>
       </Box>
     )}
   </div>

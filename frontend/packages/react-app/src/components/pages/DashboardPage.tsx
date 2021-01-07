@@ -3,14 +3,15 @@ import Dashboard from "../templates/DashboardPageTemplate";
 import { tokensReducer } from "../../reducers/tokens";
 import { useWeb3React } from "@web3-react/core";
 import { getTokenInfo } from "../../utils/web3";
+import { TokenListState } from "../../interfaces";
 
-const initialState = {
+const initialState: TokenListState = {
   isOpen: false,
   tokens: [],
   tokenAddress: "",
   inputTokenAddress: "",
   type: "dashboard",
-  color: "itblue",
+  color: "secondary",
 };
 
 const DashboardPage: React.FC = () => {

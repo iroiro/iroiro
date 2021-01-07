@@ -1,5 +1,15 @@
 import * as React from "react";
-import { Table, Text, Box } from "rimble-ui";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Typography,
+  Paper,
+  Box,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { TokenAndCampaignProps } from "../../../interfaces";
 
@@ -9,44 +19,47 @@ const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
 }) => (
   <>
     {campaignsState.campaigns.length > 0 ? (
-      <Table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Startdate</th>
-          </tr>
-        </thead>
-        <tbody>
-          {campaignsState.campaigns.length > 0 &&
-            campaignsState.campaigns.map((campaign) => (
-              <tr key={campaign.id}>
-                {"campaignMetadata" in campaign ? (
-                  <td>
-                    <Link
-                      to={`/dashboard/${tokenState.token?.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
-                      style={{ textDecoration: "none", color: "#48C5D5" }}
-                    >
-                      <Text fontSize="2" fontWeight="bold">
-                        {campaign.campaignMetadata.name}
-                      </Text>
-                    </Link>
-                  </td>
-                ) : (
-                  <td>loading...</td>
-                )}
-                {/* TODO: あとで正確な数字にする */}
-                <td>{campaign.claimAmount}</td>
-                <td>
-                  {new Date(parseInt(campaign.startDate)).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Amount</TableCell>
+              <TableCell>Startdate</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {campaignsState.campaigns.length > 0 &&
+              campaignsState.campaigns.map((campaign) => (
+                <TableRow key={campaign.id}>
+                  {"campaignMetadata" in campaign ? (
+                    <TableCell>
+                      <Link
+                        to={`/dashboard/${tokenState.token?.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
+                        style={{ textDecoration: "none", color: "#48C5D5" }}
+                      >
+                        <Typography variant={"body2"}>
+                          {campaign.campaignMetadata.name}
+                        </Typography>
+                      </Link>
+                    </TableCell>
+                  ) : (
+                    <TableCell>loading...</TableCell>
+                  )}
+                  <TableCell>{campaign.claimAmount}</TableCell>
+                  <TableCell>
+                    {new Date(
+                      parseInt(campaign.startDate)
+                    ).toLocaleDateString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     ) : (
-      <Box style={{ textAlign: "center" }}>
-        <Text>No Campaign</Text>
+      <Box style={{ textAlign: "center" }} py={5}>
+        <Typography>No Campaign</Typography>
       </Box>
     )}
   </>

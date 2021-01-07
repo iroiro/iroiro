@@ -1,4 +1,4 @@
-import { TokenBasic } from "../interfaces";
+import { TokenBasic, TokenListState } from "../interfaces";
 import { ethers } from "ethers";
 
 export type ACTIONS =
@@ -9,16 +9,10 @@ export type ACTIONS =
   | { type: "tokenAddress:add" }
   | { type: "tokens:getlocal" };
 
-export interface TokenListState {
-  isOpen: boolean;
-  tokens: TokenBasic[];
-  tokenAddress: string;
-  inputTokenAddress: string;
-  type: string;
-  color: string;
-}
-
-export function tokensReducer(state: TokenListState, action: ACTIONS) {
+export const tokensReducer = (
+  state: TokenListState,
+  action: ACTIONS
+): TokenListState => {
   switch (action.type) {
     case "modal:open":
       return { ...state, isOpen: true };
@@ -64,4 +58,4 @@ export function tokensReducer(state: TokenListState, action: ACTIONS) {
     default:
       throw new Error();
   }
-}
+};

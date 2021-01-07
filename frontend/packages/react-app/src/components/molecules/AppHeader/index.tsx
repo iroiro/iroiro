@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "../../index";
-import { Box, Flex } from "rimble-ui";
+import { Box } from "@material-ui/core";
 
 import LogoButton from "../../atoms/LogoButton";
 import LinkButton from "../../atoms/LinkButton";
@@ -12,18 +12,18 @@ const AppHeader: React.FC = () => (
       <Box ml={4}>
         <LogoButton />
       </Box>
-      <Flex>
+      <Box display="flex">
         <LinkButton
-          m={4}
+          m={2}
           path="/dashboard"
-          text="Dashboard"
-          mainColor={"itblue"}
+          text="Token Distribution"
+          color={"secondary"}
         />
-        <LinkButton m={4} path="/explore" text="Explore" mainColor={"itred"} />
-        <Box mr={4}>
+        <LinkButton m={2} path="/explore" text="Explore" color={"primary"} />
+        <Box mr={2}>
           <WalletButton />
         </Box>
-      </Flex>
+      </Box>
     </Header>
     <hr color={"lightgray"} style={{ margin: "0px" }} />
   </div>

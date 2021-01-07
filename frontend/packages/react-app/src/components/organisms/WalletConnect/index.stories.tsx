@@ -1,18 +1,17 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import TopPageTemplate from "./index";
+import WalletConnect from "./index";
 
 export default {
-  title: "Templates/TopPageTemplate",
-  component: TopPageTemplate,
+  title: "Organisms/WalletConnect",
+  component: WalletConnect,
 } as Meta;
 
-const Template: Story = (args) => (
+const Template: Story = () => (
   <BrowserRouter>
-    <TopPageTemplate {...args} />
+    <WalletConnect />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-Default.args = {};

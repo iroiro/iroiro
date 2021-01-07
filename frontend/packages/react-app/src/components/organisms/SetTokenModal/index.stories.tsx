@@ -30,6 +30,6 @@ NoInput.args = {
     inputTokenAddress: "",
     tokenAddress: "",
     type: "dashboard",
-    color: "itblue",
+    color: "secondary",
   },
 };
