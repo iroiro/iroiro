@@ -141,5 +141,5 @@ export interface TokenListState {
   tokenAddress: string;
   inputTokenAddress: string;
   type: string;
-  color?: string | undefined;
+  color?: "inherit" | "primary" | "secondary" | "default" | undefined;
 }

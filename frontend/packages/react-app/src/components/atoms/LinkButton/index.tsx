@@ -18,7 +18,6 @@ const LinkOutlineButton: React.FC<LinkOutlineButtonProps> = ({
   <Box mr={m}>
     <Button
       component={Link}
-      variant="contained"
       to={path}
       style={{ textDecoration: "none" }}
       color={color}
