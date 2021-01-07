@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "../../index";
-import { Theme, Box } from "@material-ui/core";
+import { Theme, Box, Typography, Link } from "@material-ui/core";
 import LogoButton from "../../atoms/LogoButton";
 import LinkButton from "../../atoms/LinkButton";
 import WalletButton from "../../atoms/WalletButton";
@@ -18,6 +18,18 @@ const MBox = withStyles((theme: Theme) => ({
 const AppHeader: React.FC = () => {
   return (
     <div>
+      <Box bgcolor={"primary.main"} style={{ textAlign: "center" }} py={1}>
+        <Typography style={{ color: "white", fontSize: 12 }}>
+          🎨 Beta - Use at your own risk. Twitter:{" "}
+          <Link
+            href={"https://twitter.com/IroiroTokens"}
+            style={{ color: "white" }}
+          >
+            @IroiroTokens
+          </Link>{" "}
+          🎨
+        </Typography>
+      </Box>
       <Header>
         <MBox>
           <LogoButton />
