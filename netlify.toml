@@ -1,5 +1,6 @@
 [build]
 base="frontend/"
+publish="packages/react-app/build/"
 
 [context.production]
 command = "yarn react-app:build"

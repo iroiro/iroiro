@@ -1,4 +1,4 @@
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, Modal, Paper, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { injected } from "../connectors";
@@ -10,11 +10,7 @@ function ellipseAddress(address = "", width = 5): string {
 const WalletButton: React.FC = () => {
   const { account, deactivate, active, error, activate } = useWeb3React();
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
-  if (isUnsupportedChainIdError) {
-    alert(
-      "Currently we only supports Rikneby network. Please change your network to Rinkeby."
-    );
-  }
+
   useEffect(() => {
     const { ethereum } = window;
     if (ethereum && ethereum.on && !active && !error) {
@@ -54,21 +50,49 @@ const WalletButton: React.FC = () => {
   }, [active, error, activate]);
 
   return (
-    <Box display="flex" style={{ alignItems: "center" }}>
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {
-          if (!active) {
-            activate(injected);
-          } else {
-            deactivate();
-          }
-        }}
-      >
-        {active && account ? ellipseAddress(account) : "Connect"}
-      </Button>
-    </Box>
+    <>
+      <Box display="flex" style={{ alignItems: "center" }}>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => {
+            if (!active) {
+              activate(injected);
+            } else {
+              deactivate();
+            }
+          }}
+        >
+          {active && account ? ellipseAddress(account) : "Wallet Connect"}
+        </Button>
+      </Box>
+      {isUnsupportedChainIdError && (
+        <Modal
+          open
+          disablePortal
+          disableEnforceFocus
+          disableAutoFocus
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Paper>
+            <Box p={5}>
+              <Typography variant={"h3"}>
+                Switch to a supported Ethereum network
+              </Typography>
+              <Box mt={2}>
+                <Typography>
+                  To access Ioriro, please switch to the Rinkeby test network.
+                </Typography>
+              </Box>
+            </Box>
+          </Paper>
+        </Modal>
+      )}
+    </>
   );
 };
 
