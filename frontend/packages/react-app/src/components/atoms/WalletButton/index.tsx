@@ -66,7 +66,7 @@ const WalletButton: React.FC = () => {
           }
         }}
       >
-        {active && account ? ellipseAddress(account) : "Wallet Connect"}
+        {active && account ? ellipseAddress(account) : "Connect"}
       </Button>
     </Box>
   );

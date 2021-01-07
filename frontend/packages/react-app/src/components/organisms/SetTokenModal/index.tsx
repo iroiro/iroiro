@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  Box,
-  Typography,
-  Card,
-  Button,
-  IconButton,
-  Modal,
-} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { Box, Typography, Card, Button, Modal } from "@material-ui/core";
 import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
 import AddressFormInput from "../../molecules/AddressFormInput";
 
@@ -16,6 +8,9 @@ const SetTokenModal: React.FC<ExplorePageTemplateProps> = ({
   dispatch,
 }) => (
   <Modal
+    disablePortal
+    disableEnforceFocus
+    disableAutoFocus
     open={state.isOpen}
     onClose={() => dispatch({ type: "modal:close" })}
     style={{
@@ -25,21 +20,6 @@ const SetTokenModal: React.FC<ExplorePageTemplateProps> = ({
     }}
   >
     <Card>
-      <IconButton
-        aria-label="close"
-        color={"default"}
-        onClick={() => dispatch({ type: "modal:close" })}
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          marginTop: 20,
-          marginRight: 20,
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-
       <Box p={4} mb={3}>
         <Typography variant={"h4"}>Set your token address</Typography>
         <Box mt={2}>
