@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import { getBalanceDevidedByDecimals } from "../../../utils/web3";
+import TokenAmount from "../../atoms/TokenAmount";
 
 export interface TokenInfo {
   readonly balance: string;
@@ -21,11 +21,14 @@ const TokenBalance: React.FC<TokenInfo> = ({
         <Typography>{itemName}</Typography>
       </Box>
       <Box mr={1}>
-        <Typography variant={"h4"}>
-          {getBalanceDevidedByDecimals(balance, decimals)}
-        </Typography>
+        <TokenAmount
+          amount={balance}
+          decimals={decimals}
+          symbol={symbol}
+          align={"left"}
+          variant={"h4"}
+        />
       </Box>
-      <Typography>{symbol}</Typography>
     </Box>
   </>
 );
