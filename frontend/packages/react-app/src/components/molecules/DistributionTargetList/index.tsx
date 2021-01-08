@@ -42,26 +42,10 @@ const DistributionTargetList: React.FC<TargetsProps> = ({
   }
   if (audiusState.followers.length > 0) {
     return (
-      <div style={{ overflowY: "scroll", height: "400px" }}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>User name</TableCell>
-                <TableCell>Wallet</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {audiusState.followers.map((target) => (
-                <TableRow key={target.wallet}>
-                  <TableCell>{target.handle}</TableCell>
-                  <TableCell>{target.wallet}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+      <Box my={4} style={{ textAlign: "center" }}>
+        <Typography>Total Followers</Typography>
+        <Typography variant="h2">{audiusState.followers.length}</Typography>
+      </Box>
     );
   }
 
