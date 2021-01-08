@@ -9,6 +9,7 @@ import {
   Container,
 } from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
+import { getBalanceDevidedByDecimals } from "../../../utils/web3";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -52,7 +53,12 @@ const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
                 <Box display="flex" justifyContent="start" my={2}>
                   <Box>
                     <Typography variant="subtitle1">Total Supply:</Typography>
-                    <Typography variant="h4">{token.totalSupply}</Typography>
+                    <Typography variant="h4">
+                      {getBalanceDevidedByDecimals(
+                        token.totalSupply,
+                        token.decimals
+                      )}
+                    </Typography>
                   </Box>
                   <Box ml={8}>
                     <Typography variant="subtitle1">Decimals:</Typography>

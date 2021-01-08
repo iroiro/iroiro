@@ -7,6 +7,7 @@ import BN from "bn.js";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
+import { utils } from "ethers";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -55,17 +56,22 @@ export const getContractTokenBalance = async (
   const signer = library.getSigner();
   const erc20 = FanTokenFactory.connect(tokenAddress, signer);
   const balance = await erc20.balanceOf(contractAddress);
-  return balance.toString();
+  const decimals = await erc20.decimals();
+  const formatBalance = utils.formatUnits(balance, decimals.toString());
+  return formatBalance;
 };
 
 export const getBalanceDevidedByDecimals = (
   balance: string,
   decimals: number
 ): string => {
-  // TODO support decimal points
-  const balanceBN = new BN(balance);
-  const divided = balanceBN.div(new BN(10).pow(new BN(decimals)));
+  const divided = utils.formatUnits(balance, decimals.toString());
   return divided.toString();
+};
+
+export const parseUnits = (balance: string, decimals: number): string => {
+  const parsedBalance = utils.parseUnits(balance, decimals.toString());
+  return parsedBalance.toString();
 };
 
 export const getAllowance = async (
@@ -87,16 +93,18 @@ export const setApproveAmount = async (
   library: Web3Provider | undefined,
   tokenAddress: string,
   distributorAddress: string,
-  approveAmount: string
+  approveAmount: string,
+  decimals: number
 ): Promise<ContractTransaction | undefined> => {
   if (!library || distributorAddress === "") {
     return undefined;
   }
   const signer = library.getSigner();
-  // const walletAddress = await signer.getAddress();
   const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+  const parsedApproveAmount = parseUnits(approveAmount, decimals);
+
   return erc20
-    .approve(distributorAddress, approveAmount)
+    .approve(distributorAddress, parsedApproveAmount)
     .then((transaction) => {
       return transaction;
     });
