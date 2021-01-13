@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PropTypes, Typography } from "@material-ui/core";
-import Decimal from "decimal.js";
 import { Variant } from "@material-ui/core/styles/createTypography";
+import { getBalanceDevidedByDecimals } from "../../../utils/web3";
 
 export interface TokenAmountProps {
   readonly amount: string;
@@ -18,10 +18,8 @@ const TokenAmount: React.FC<TokenAmountProps> = ({
   align,
   variant,
 }) => {
-  const decimal = new Decimal(`${amount}e-${decimals}`);
-  const display = symbol
-    ? `${decimal.toString()} $${symbol}`
-    : decimal.toString();
+  const processedAmount = getBalanceDevidedByDecimals(amount, decimals);
+  const display = symbol ? `${processedAmount} $${symbol}` : processedAmount;
 
   return (
     <Typography align={align} variant={variant}>

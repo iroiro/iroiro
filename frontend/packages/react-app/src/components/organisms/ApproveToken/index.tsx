@@ -29,12 +29,14 @@ const ApproveToken: React.FC<TokenInfo> = ({
               <TokenBalance
                 balance={tokenInfo.balance}
                 symbol={tokenInfo.token.symbol}
+                decimals={tokenInfo.token.decimals}
                 itemName={"Wallet Balance:"}
               />
             ) : (
               <TokenBalance
                 balance={"-"}
                 symbol={""}
+                decimals={0}
                 itemName={"Wallet Balance:"}
               />
             )}
@@ -42,12 +44,14 @@ const ApproveToken: React.FC<TokenInfo> = ({
               <TokenBalance
                 balance={tokenInfo.allowance}
                 symbol={tokenInfo.token.symbol}
+                decimals={tokenInfo.token.decimals}
                 itemName={"Approved Amount:"}
               />
             ) : (
               <TokenBalance
                 balance={"-"}
                 symbol={""}
+                decimals={0}
                 itemName={"Approved Amount:"}
               />
             )}

@@ -7,6 +7,7 @@ import {
   getAllowance,
   setApproveAmount,
   createCampaign,
+  parseUnits,
 } from "../../utils/web3";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import {
@@ -25,10 +26,12 @@ import { IPFS_PINNING_API } from "../../utils/const";
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
-const CreateCampaignPage: React.FC<RouteComponentProps<{
-  tokenAddress: string;
-  distributorAddress: string;
-}>> = (props) => {
+const CreateCampaignPage: React.FC<
+  RouteComponentProps<{
+    tokenAddress: string;
+    distributorAddress: string;
+  }>
+> = (props) => {
   const { library, active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const distributorAddress = props.match.params.distributorAddress;
@@ -119,12 +122,13 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   );
 
   const approve = useCallback(
-    async (library, approveAmount) => {
+    async (library, approveAmount, decimals) => {
       setApproveAmount(
         library,
         tokenAddress,
         distributorAddress,
-        approveAmount
+        approveAmount,
+        decimals
       ).then((transaction) => {
         if (transaction === undefined) {
           return;
@@ -133,7 +137,7 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
           if (result.status === 1) {
             tokenDispatch({
               type: "token:setAllowance",
-              payload: { allowance: approveAmount },
+              payload: { allowance: parseUnits(approveAmount, decimals) },
             });
           }
         });
@@ -216,7 +220,11 @@ const CreateCampaignPage: React.FC<RouteComponentProps<{
   useEffect(() => {
     const f = async () => {
       if (distributorFormState.approveRequest && library) {
-        approve(library, distributorFormState.approveAmount);
+        approve(
+          library,
+          distributorFormState.approveAmount,
+          tokenState.token?.decimals
+        );
       }
       if (distributorFormState.requestDeployCampaign) {
         const campaignInfo = {
