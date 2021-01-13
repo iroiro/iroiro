@@ -18,6 +18,7 @@ const Template: Story<TokenInfo> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   balance: tokenInfo.balance,
+  decimals: 6,
   symbol: tokenInfo.token?.symbol,
   itemName: "Wallet Balance",
 };

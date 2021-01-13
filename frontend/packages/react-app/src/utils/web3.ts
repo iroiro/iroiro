@@ -66,7 +66,7 @@ export const getBalanceDevidedByDecimals = (
   decimals: number
 ): string => {
   const divided = utils.formatUnits(balance, decimals.toString());
-  return divided.toString();
+  return divided;
 };
 
 export const parseUnits = (balance: string, decimals: number): string => {
