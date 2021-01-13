@@ -1,7 +1,8 @@
 import { Box, Button, Modal, Paper, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
-import { injected } from "../connectors";
+import { injected } from "../../../utils/connectors";
+import WalletDialog from "../../molecules/WalletDialog";
 
 function ellipseAddress(address = "", width = 5): string {
   return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -10,6 +11,7 @@ function ellipseAddress(address = "", width = 5): string {
 const WalletButton: React.FC = () => {
   const { account, deactivate, active, error, activate } = useWeb3React();
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const { ethereum } = window;
@@ -49,6 +51,14 @@ const WalletButton: React.FC = () => {
     }
   }, [active, error, activate]);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <Box display="flex" style={{ alignItems: "center" }}>
@@ -56,11 +66,7 @@ const WalletButton: React.FC = () => {
           variant="outlined"
           color="primary"
           onClick={() => {
-            if (!active) {
-              activate(injected);
-            } else {
-              deactivate();
-            }
+            handleClickOpen();
           }}
         >
           {active && account ? ellipseAddress(account) : "Wallet Connect"}
@@ -92,6 +98,7 @@ const WalletButton: React.FC = () => {
           </Paper>
         </Modal>
       )}
+      <WalletDialog selectedValue={""} open={open} onClose={handleClose} />
     </>
   );
 };
