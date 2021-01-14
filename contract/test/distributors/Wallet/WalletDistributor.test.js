@@ -7,7 +7,7 @@ const Campaign = contract.fromArtifact("WalletCampaign");
 const FanToken = contract.fromArtifact("FanToken");
 
 describe("WalletDistributor", () => {
-  const [owner, alice, link] = accounts;
+  const [owner, alice] = accounts;
 
   let now, future;
 
@@ -17,7 +17,7 @@ describe("WalletDistributor", () => {
   const recipientsNum = 100;
 
   beforeEach(async () => {
-    this.distributor = await Distributor.new("distributor info cid", link, {
+    this.distributor = await Distributor.new("distributor info cid", {
       from: owner,
     });
     this.abctoken = await FanToken.new(
