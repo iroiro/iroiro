@@ -9,7 +9,7 @@ import "../interfaces/DistributorInterfaceV2.sol";
 import "../SafeMath64.sol";
 
 contract WalletDistributor is DistributorInterfaceV2 {
-    constructor (string memory _distributorInfoCid, address _link) public
+    constructor (string memory _distributorInfoCid) public
     DistributorInterfaceV2(_distributorInfoCid) {}
 
     function createCampaign(
@@ -57,7 +57,6 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
 
     string public merkleTreeCid;
 
-    // TODO Integrate with parent constructor
     constructor(
         bytes32 merkleRoot,
         address payable _campaignToken,
@@ -88,6 +87,6 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
     ) public override mustBeActive inTime {
         super.claim(index, account, amount, merkleProof);
 
-        emit Claim(msg.sender, msg.sender);
+        emit Claim(account, account);
     }
 }
