@@ -3,7 +3,6 @@ pragma solidity ^0.6.0;
 
 import "@iroiro/merkle-distributor/contracts/MerkleDistributor.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@chainlink/contracts/src/v0.6/interfaces/LinkTokenInterface.sol";
 import "../interfaces/CampaignInterfaceV2.sol";
 import "../interfaces/DistributorInterfaceV2.sol";
 import "../SafeMath64.sol";
