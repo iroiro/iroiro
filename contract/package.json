@@ -13,7 +13,7 @@
     "migrate:rinkeby": "npx truffle migrate --reset --network rinkeby",
     "migrate:kovan": "npx truffle migrate --reset --network kovan",
     "migrate:live": "npx truffle migrate --network live",
-    "test": "oz compile && npx truffle test",
+    "test": "yarn compile && npx truffle test",
     "format": "yarn prettier --write .",
     "generate-types:web3": "typechain --target=web3-v1 'build/contracts/*.json' --outDir=../types/web3",
     "generate-types:ethers": "typechain --target=ethers-v5 'build/contracts/*.json' --outDir=../frontend/packages/react-app/src/types",
@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "@chainlink/contracts": "^0.0.10",
+    "@iroiro/merkle-distributor": "^1.0.3",
     "@openzeppelin/cli": "^2.8.2",
     "@openzeppelin/contracts": "^3.2.0",
     "@truffle/hdwallet-provider": "^1.0.40",
