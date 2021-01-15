@@ -1,15 +1,21 @@
 ![logo](https://github.com/TART-tokyo/iroiro/blob/develop/frontend/packages/react-app/public/iroiro_logo.svg)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/dab965fd-9df5-42b1-8786-1c6f18f3deb5/deploy-status)](https://app.netlify.com/sites/iroiro/deploys)
   
-# iroiro
+# Iroiro
 
 This is a project build for ETHOnline Hackathon.
 
 - [Project Description on ETHOnline](https://hack.ethglobal.co/showcase/iroiro-rec1kljmTWH9KjdDG)
 - [Demo video](https://youtu.be/HyvpCEV-mc8)
 
+## Interface 
+
+To use Iroiro, visit [app.iroiro.social](app.iroiro.social). 
+
 ## Description
 
-iroiro is a decentralized creators support platform.
+Iroiro is a decentralized creators support platform.
 
 There two types of users: creators and fans.
 
@@ -31,7 +37,7 @@ They can use token for own purpose but this time we made a staking feature on th
 
 If user want more creator token they can stake tokens on a platform, and user can mint a new token according to staked amount and time (we plant that user can get a original creator's NFT by staking a creator token as supporting creator and motivation).
 
-Finally, project name "iroiro" means a diversity, various, or colorful in Japanese, we hope this application create "iroiro" tokens for creators and fans.
+Finally, project name "Iroiro" means a diversity, various, or colorful in Japanese, we hope this application create "Iroiro" tokens for creators and fans.
 
 ## How It's Made
 
