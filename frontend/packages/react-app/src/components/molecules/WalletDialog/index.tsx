@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { useEffect } from "react";
+import React from "react";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { useEagerConnect } from "../../../hooks/web3react/useEagerConnect";
@@ -22,7 +22,6 @@ import {
   authereum,
   fortmatic,
   portis,
-  torus,
 } from "../../../utils/connectors";
 
 enum ConnectorNames {
@@ -31,7 +30,6 @@ enum ConnectorNames {
   Authereum = "Authereum",
   Fortmatic = "Fortmatic",
   Portis = "Portis",
-  Torus = "Torus",
 }
 
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
@@ -40,7 +38,6 @@ const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Authereum]: authereum,
   [ConnectorNames.Fortmatic]: fortmatic,
   [ConnectorNames.Portis]: portis,
-  [ConnectorNames.Torus]: torus,
 };
 
 export interface WalletDialogProps {
@@ -144,35 +141,35 @@ const WalletDialog: React.FC<WalletDialogProps> = ({
               );
             })}
           </List>
-          <Divider style={{ margin: "20px 0px" }} />
-          <Box textAlign="center">
-            {connector !== undefined && (
-              <Box mb={1}>
-                <Button
-                  variant="outlined"
-                  color="default"
-                  onClick={() => {
-                    deactivate();
-                  }}
-                >
-                  Disconnect
-                </Button>
-              </Box>
-            )}
-            {connector !== undefined &&
-              connector !== connectorsByName[ConnectorNames.Injected] && (
-                <Box>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      (connector as any).close();
-                    }}
-                  >
-                    Kill Wallet Session
-                  </Button>
+          {connector !== undefined &&
+            connector !== connectorsByName[ConnectorNames.Injected] && (
+              <>
+                <Divider style={{ margin: "20px 0px" }} />
+                <Box textAlign="center">
+                  <Box mb={1}>
+                    <Button
+                      variant="outlined"
+                      color="default"
+                      onClick={() => {
+                        deactivate();
+                      }}
+                    >
+                      Disconnect
+                    </Button>
+                  </Box>
+                  <Box>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        (connector as any).close();
+                      }}
+                    >
+                      Kill Wallet Session
+                    </Button>
+                  </Box>
                 </Box>
-              )}
-          </Box>
+              </>
+            )}
         </Box>
       </Dialog>
     </>
