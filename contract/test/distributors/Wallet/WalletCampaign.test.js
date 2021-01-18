@@ -28,7 +28,7 @@ describe("WalletCampaign", () => {
     "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
   ];
   const campaignInfoCid = "campaign info cid";
-  const recipientsCid = "recipients cid";
+  const merkleTreeCid = "merkle tree cid";
   const recipientsNum = 100;
 
   beforeEach(async () => {
@@ -56,7 +56,7 @@ describe("WalletCampaign", () => {
       abctoken.address,
       consumer,
       campaignInfoCid,
-      recipientsCid,
+      merkleTreeCid,
       recipientsNum,
       now,
       future,
@@ -64,6 +64,11 @@ describe("WalletCampaign", () => {
     );
     const campaignAddress = await distributor.campaignList(1);
     cc = await Campaign.at(campaignAddress);
+  });
+
+  it("has merkle tree cid", async () => {
+    const merkleTreeCid = await cc.merkleTreeCid();
+    expect(merkleTreeCid).to.equal("merkle tree cid");
   });
 
   describe("claim", () => {
@@ -82,7 +87,7 @@ describe("WalletCampaign", () => {
           abctoken.address,
           consumer,
           campaignInfoCid,
-          recipientsCid,
+          merkleTreeCid,
           recipientsNum,
           oneweeklater,
           twoweeklater,
@@ -123,7 +128,7 @@ describe("WalletCampaign", () => {
           abctoken.address,
           consumer,
           campaignInfoCid,
-          recipientsCid,
+          merkleTreeCid,
           recipientsNum,
           now,
           oneweeklater,

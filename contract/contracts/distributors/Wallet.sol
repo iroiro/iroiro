@@ -60,7 +60,7 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
         bytes32 merkleRoot,
         address payable _campaignToken,
         string memory _campaignInfoCid,
-        string memory _recipientsCid,
+        string memory _merkleTreeCid,
         uint256 _claimAmount,
         address _refundDestination,
         uint256 _startDate,
@@ -69,14 +69,15 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
     CampaignInterfaceV2(
         _campaignToken,
         _campaignInfoCid,
-        _recipientsCid,
         _claimAmount,
         _refundDestination,
         _startDate,
         _endDate
     )
     MerkleDistributor(_campaignToken, merkleRoot)
-    {}
+    {
+        merkleTreeCid = _merkleTreeCid;
+    }
 
     function claim(
         uint256 index,

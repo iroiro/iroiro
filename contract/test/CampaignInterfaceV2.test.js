@@ -42,7 +42,6 @@ describe("CampaignInterfaceV2", () => {
     this.campaign = await Campaign.new(
       this.abctoken.address,
       "campaign info cid",
-      "recipients cid",
       100000,
       alice,
       now,
@@ -53,11 +52,12 @@ describe("CampaignInterfaceV2", () => {
 
   describe("constructor", async () => {
     it("has a state variables", async () => {
-      expect(await this.campaign.campaignToken()).to.be.equal(this.abctoken.address);
+      expect(await this.campaign.campaignToken()).to.be.equal(
+        this.abctoken.address
+      );
       expect(await this.campaign.campaignInfoCid()).to.be.equal(
         "campaign info cid"
       );
-      expect(await this.campaign.recipientsCid()).to.be.equal("recipients cid");
       expect((await this.campaign.claimAmount()).toString()).to.be.equal(
         "100000"
       );
@@ -73,7 +73,6 @@ describe("CampaignInterfaceV2", () => {
         await Campaign.new(
           this.abctoken.address,
           "campaign info cid",
-          "recipients cid",
           100000,
           alice,
           future,
@@ -89,7 +88,6 @@ describe("CampaignInterfaceV2", () => {
         await Campaign.new(
           this.abctoken.address,
           "campaign info cid",
-          "recipients cid",
           100000,
           alice,
           now,
@@ -113,7 +111,6 @@ describe("CampaignInterfaceV2", () => {
         campaign = await Campaign.new(
           this.abctoken.address,
           "campaign info cid",
-          "recipients cid",
           100000,
           owner,
           oneweeklater,
@@ -155,7 +152,6 @@ describe("CampaignInterfaceV2", () => {
         campaign = await Campaign.new(
           this.abctoken.address,
           "campaign info cid",
-          "recipients cid",
           100000,
           owner,
           now,
@@ -199,7 +195,6 @@ describe("CampaignInterfaceV2", () => {
         campaign = await Campaign.new(
           this.abctoken.address,
           "campaign info cid",
-          "recipients cid",
           100000,
           owner,
           now,
@@ -233,7 +228,6 @@ describe("CampaignInterfaceV2", () => {
         campaign = await Campaign.new(
           this.abctoken.address,
           "campaign info cid",
-          "recipients cid",
           100000,
           owner,
           now,
