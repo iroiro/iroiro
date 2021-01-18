@@ -3,28 +3,6 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: TokenFactory
-    network: rinkeby
-    #    network: mainnet # This is for local graph node
-    source:
-      address: "0x12E9153D1e8036C4F197F3Edf4f73707d3c77E98" # TokenFactory contract address on rinkeby
-      # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
-      abi: TokenFactory
-      startBlock: 7602285 # for Rinkeby. Comment out this line for local graph node
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - CreateToken
-      abis:
-        - name: TokenFactory
-          file: ../contract/build/contracts/TokenFactory.json
-      eventHandlers:
-        - event: CreateToken(indexed address,indexed address,string,string,uint256,uint8,uint8,bool,uint8,bool)
-          handler: handleCreateToken
-      file: ./src/mapping.ts
-  - kind: ethereum/contract
     name: CCTWalletDistributor
     network: rinkeby
     #    network: mainnet # This is for local graph node
@@ -74,25 +52,6 @@ dataSources:
 #          handler: handleDonate
 #      file: ./src/donator.ts
 templates:
-  - kind: ethereum/contract
-    name: FanToken
-    network: rinkeby
-    #    network: mainnet # This is for local graph node
-    source:
-      abi: FanToken
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - FanToken
-      abis:
-        - name: FanToken
-          file: ../contract/build/contracts/FanToken.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/mapping.ts
   - kind: ethereum/contract
     name: CCTWalletCampaign
     network: rinkeby
