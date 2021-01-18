@@ -165,6 +165,19 @@ describe("WalletCampaign", () => {
         );
       });
 
+      it("increment claimedNum", async () => {
+        const claimedNumBefore = await cc.claimedNum();
+        expect(claimedNumBefore).to.be.bignumber.equal(new BN(0));
+        await cc.claim(
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          new BN(100),
+          proof
+        );
+        const claimedNumAfter = await cc.claimedNum();
+        expect(claimedNumAfter).to.be.bignumber.equal(new BN(1));
+      });
+
       it("emits event", async () => {
         const receipt = await cc.claim(
           1,
