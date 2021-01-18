@@ -22,6 +22,7 @@ import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
 import { useGetAudiusFollowers } from "../../hooks/audius/useGetAudiusFollowers";
 import useAxios from "axios-hooks";
 import { IPFS_PINNING_API } from "../../utils/const";
+import { Recipients } from "../../interfaces";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
@@ -236,7 +237,10 @@ const CreateCampaignPage: React.FC<
         const followersAddress: string[] = audiusState.followers.map(
           (follower) => follower.wallet
         );
-        const addresses = { addresses: followersAddress };
+        const addresses: Recipients = {
+          targets: followersAddress,
+          type: "address",
+        };
         await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
         await uploadJsonIpfs(addresses, "recipientsCid");
       }
