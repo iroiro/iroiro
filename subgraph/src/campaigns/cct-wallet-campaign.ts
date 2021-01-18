@@ -1,4 +1,4 @@
-import { Claim, Campaign, CheckRequest, Account } from "./types/schema";
+import { Claim, Campaign, CheckRequest, Account } from "../types/schema";
 import {
   CCTWalletCampaign,
   ChainlinkCancelled,
@@ -6,7 +6,7 @@ import {
   ChainlinkRequested,
   Claim as ClaimEvent,
   UpdateStatus,
-} from "./types/templates/CCTWalletCampaign/CCTWalletCampaign";
+} from "../types/templates/CCTWalletCampaign/CCTWalletCampaign";
 import { Address, log } from "@graphprotocol/graph-ts/index";
 import { BigInt } from "@graphprotocol/graph-ts";
 

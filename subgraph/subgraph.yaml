@@ -55,7 +55,6 @@ templates:
   - kind: ethereum/contract
     name: CCTWalletCampaign
     network: rinkeby
-    #    network: mainnet # This is for local graph node
     source:
       abi: CCTWalletCampaign
     mapping:
@@ -79,4 +78,4 @@ templates:
           handler: handleClaim
         - event: UpdateStatus()
           handler: handleUpdateStatus
-      file: ./src/campaign.ts
+      file: ./src/campaigns/cct-wallet-campaign.ts
