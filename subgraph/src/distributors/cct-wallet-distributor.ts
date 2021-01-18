@@ -1,11 +1,11 @@
 import { log } from "@graphprotocol/graph-ts";
-import { Campaign, Creator, Distributor } from "./types/schema";
-import { CCTWalletCampaign as CampaignTemplate } from "./types/templates";
+import { Campaign, Creator, Distributor } from "../types/schema";
+import { CCTWalletCampaign as CampaignTemplate } from "../types/templates";
 import {
   CCTWalletDistributor,
   CreateCampaign,
-} from "./types/CCTWalletDistributor/CCTWalletDistributor";
-import { CCTWalletCampaign } from "./types/templates/CCTWalletCampaign/CCTWalletCampaign";
+} from "../types/CCTWalletDistributor/CCTWalletDistributor";
+import { CCTWalletCampaign } from "../types/templates/CCTWalletCampaign/CCTWalletCampaign";
 
 export function handleCreateCampaign(event: CreateCampaign): void {
   let distributorId = event.address.toHexString();
