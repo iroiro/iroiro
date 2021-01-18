@@ -5,15 +5,12 @@ dataSources:
   - kind: ethereum/contract
     name: TokenFactory
     network: rinkeby
-    #    network: kovan
     #    network: mainnet # This is for local graph node
     source:
       address: "0x12E9153D1e8036C4F197F3Edf4f73707d3c77E98" # TokenFactory contract address on rinkeby
-      #      address: "0xf9cEA626332927ccc88e18BC497aaDA7E82Ce91f" # TokenFactory contract address on kovan
       # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
       abi: TokenFactory
       startBlock: 7602285 # for Rinkeby. Comment out this line for local graph node
-    #      startBlock: 22251031 # for Kovan. Comment out this line for local graph node
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -30,16 +27,13 @@ dataSources:
   - kind: ethereum/contract
     name: CCTWalletDistributor
     network: rinkeby
-    #    network: kovan
     #    network: mainnet # This is for local graph node
     source:
       # TODO: Investigate omitting address is available
       address: "0x590b4465a94bE635bF2F760025c61Ec3680f687C" # CCTWalletDistributor contract address on rinkeby
-      #      address: "0x02e00DD6c22223B7d459aB472C947544f1619921" # CCTWalletDistributor contract address on kovan
       # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
       abi: CCTWalletDistributor
       startBlock: 7643514  # for Rinkeby. Comment out this line for local graph node
-    #      startBlock: 22251048 # for Kovan. Comment out this line for local graph node
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -83,7 +77,6 @@ templates:
   - kind: ethereum/contract
     name: FanToken
     network: rinkeby
-    #    network: kovan
     #    network: mainnet # This is for local graph node
     source:
       abi: FanToken
@@ -103,7 +96,6 @@ templates:
   - kind: ethereum/contract
     name: CCTWalletCampaign
     network: rinkeby
-    #    network: kovan
     #    network: mainnet # This is for local graph node
     source:
       abi: CCTWalletCampaign
