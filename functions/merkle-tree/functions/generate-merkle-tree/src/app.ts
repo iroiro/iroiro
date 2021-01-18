@@ -2,26 +2,33 @@ import {
   APIGatewayEventRequestContext,
   APIGatewayProxyEvent,
 } from "aws-lambda";
+import {
+  parseBalanceMap,
+  MerkleDistributorInfo,
+} from "@iroiro/merkle-distributor/src/parse-balance-map";
 
-function getRandomInt(max: number): number {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-/**
- * Sample Lambda function which mocks the operation of checking the current price of a stock.
- * For demonstration purposes this Lambda function simply returns a random integer between 0 and 100 as the stock price.
- *
- * @param {Object} event - Input event to the Lambda function
- * @param {Object} context - Lambda Context runtime methods and attributes
- *
- * @returns {Object} object - Object containing the current price of the stock
- *
- */
 exports.lambdaHandler = async (
   event: APIGatewayProxyEvent,
   context: APIGatewayEventRequestContext
 ) => {
-  // Check current price of the stock
-  const stock_price: number = getRandomInt(100); // Current stock price is mocked as a random integer between 0 and 100
-  return { stock_price: stock_price };
+  // if type is not address, return error
+
+  // if targets contain non-address value, return error
+
+  // TODO: just for test. remove and use S3 ARN after this.
+  const input = {
+    "0x4B8619890fa9C3cF11C497961eB4b970D440127F": 100,
+    "0x84d800DaE0Bdb31A4DE9918782bffCc8D041c1b8": 100,
+  };
+
+  const merkleTree: MerkleDistributorInfo = parseBalanceMap(input);
+  console.debug(merkleTree);
+
+  // Upload merkle tree to S3
+
+  // Get upload objects ARN
+
+  return {
+    // return object ARN
+  };
 };
