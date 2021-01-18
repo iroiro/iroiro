@@ -58,8 +58,6 @@ export interface CampaignInterfaceV2 extends BaseContract {
      */
     owner(): NonPayableTransactionObject<string>;
 
-    recipientsCid(): NonPayableTransactionObject<string>;
-
     refundDestination(): NonPayableTransactionObject<string>;
 
     /**
