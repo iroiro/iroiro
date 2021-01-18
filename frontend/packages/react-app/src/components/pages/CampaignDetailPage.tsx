@@ -12,7 +12,7 @@ import {
 } from "../../utils/web3";
 import { useWeb3React } from "@web3-react/core";
 import dayjs from "dayjs";
-import { CampaignInfo } from "../../interfaces";
+import { CampaignInfo, Recipients } from "../../interfaces";
 
 const CampaignDetailPage: React.FC<
   RouteComponentProps<{
@@ -51,8 +51,8 @@ const CampaignDetailPage: React.FC<
     const cid = campaign.recipientsCid;
     const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
     const response = await fetch(url);
-    const recipients = await response.json();
-    setTartgetNumber(String(recipients.addresses.length));
+    const recipients: Recipients = await response.json();
+    setTartgetNumber(String(recipients.targets.length));
   }, []);
 
   const getDateString = (timestamp: number) => {

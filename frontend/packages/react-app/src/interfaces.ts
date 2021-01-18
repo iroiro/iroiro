@@ -1,6 +1,11 @@
 // TODO Update type
 import { Web3Provider } from "@ethersproject/providers";
 
+export interface Recipients {
+  readonly targets: string[];
+  readonly type: string;
+}
+
 export interface Web3Props {
   readonly provider: Web3Provider | undefined;
   readonly loadWeb3Modal: () => void;
