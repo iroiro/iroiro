@@ -2,45 +2,49 @@ import {
   APIGatewayEventRequestContext,
   APIGatewayProxyEvent,
 } from "aws-lambda";
-import {
-  parseBalanceMap,
-  MerkleDistributorInfo,
-  OldFormat,
-} from "@iroiro/merkle-distributor/src/parse-balance-map";
+import { OldFormat } from "@iroiro/merkle-distributor/src/parse-balance-map";
+import web3 from "web3";
+
+const ipfsClient = require("ipfs-http-client");
 
 interface Targets {
   readonly targets: string[];
   readonly type: string;
 }
 
+const ipfs = ipfsClient("https://gateway.pinata.cloud/");
+
 exports.lambdaHandler = async (
   event: APIGatewayProxyEvent,
   context: APIGatewayEventRequestContext
 ) => {
-  const cid = "";
+  // get cid from input
 
-  // TODO get targets
+  const cid = "QmNvbpz6i5FymwMpoTi2e5HJGmFP6WarKTrpzNzY26BTd5";
+  const targets = await getFile(cid);
 
-  const targets: Targets = {
-    targets: [
-      "0x4B8619890fa9C3cF11C497961eB4b970D440127F",
-      "0x84d800DaE0Bdb31A4DE9918782bffCc8D041c1b8",
-    ],
-    type: "address",
-  };
-
-  // if type is not address, return error
   if (targets.type !== "address") {
-    return;
+    // TODO throw error
   }
 
   // if targets contain non-address value, return error
+  if (!isAllAddress(targets)) {
+    // TODO throw error
+  }
+
+  // get amount from input
+  // get amount from both of number or string
   const amount = 100;
+  if (!amount || amount < 0) {
+    // TODO throw error
+  }
 
   const input: OldFormat = {};
-  targets.targets.forEach((target) => {
-    input[target] = amount;
-  });
+  targets.targets
+    .map((target) => target.toLowerCase())
+    .forEach((target) => {
+      input[target] = amount;
+    });
   console.debug(input);
 
   // Upload merkle tree input to S3
@@ -50,4 +54,25 @@ exports.lambdaHandler = async (
   return {
     // return object ARN
   };
+};
+
+const isAllAddress = (targets: Targets): boolean => {
+  return (
+    targets.targets.find((address) => {
+      return !web3.utils.isAddress(address);
+    }) === undefined
+  );
+};
+
+const getFile = async (cid: string): Promise<Targets> => {
+  for await (const file of ipfs.get(cid)) {
+    if (!file.content) {
+      continue;
+    }
+    const content = [];
+    for await (const chunk of file.content) {
+      content.push(chunk);
+    }
+    return JSON.parse(content.toString());
+  }
 };

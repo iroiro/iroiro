@@ -10,7 +10,9 @@
     "@iroiro/merkle-distributor": "^1.0.6",
     "@types/aws-lambda": "^8.10.70",
     "@types/node": "^14.14.21",
-    "typescript": "^4.1.3"
+    "ipfs-http-client": "^48.2.0",
+    "typescript": "^4.1.3",
+    "web3": "^1.3.1"
   },
   "scripts": {
     "test": "ts-mocha -p tsconfig.json tests/**/*.spec.ts",
@@ -18,6 +20,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^8.2.0",
+    "@types/web3": "^1.2.2",
     "chai": "^4.2.0",
     "mocha": "^8.2.1"
   }
