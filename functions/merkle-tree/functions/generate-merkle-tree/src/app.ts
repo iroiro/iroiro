@@ -11,10 +11,6 @@ exports.lambdaHandler = async (
   event: APIGatewayProxyEvent,
   context: APIGatewayEventRequestContext
 ) => {
-  // if type is not address, return error
-
-  // if targets contain non-address value, return error
-
   // TODO: just for test. remove and use S3 ARN after this.
   const input = {
     "0x4B8619890fa9C3cF11C497961eB4b970D440127F": 100,
