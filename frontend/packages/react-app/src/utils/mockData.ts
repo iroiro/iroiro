@@ -6,6 +6,7 @@ import {
   Distributor,
   AccountToken,
   TokenListState,
+  WalletListState,
 } from "../interfaces";
 import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
@@ -25,7 +26,8 @@ export const distributor: Distributor = {
       "This distributer enables creators to distributes tokens for their followers on Auduis.",
     image: "https://example.com/distributerimage.jpg",
   },
-  depositAmount: "100000",
+  type: "audius",
+  version: "1",
 };
 
 export const campaign: CampaignInfo = {
@@ -249,4 +251,15 @@ export const audiusState: AudiusState = {
   isRequestFollowers: false,
   isRequestSignout: false,
   progress: 0,
+};
+
+export const walletListState: WalletListState = {
+  targets: [
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+  ],
+  type: "address",
 };

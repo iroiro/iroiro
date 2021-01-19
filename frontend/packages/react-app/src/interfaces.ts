@@ -43,9 +43,10 @@ export interface TokenBasic {
 
 export interface Distributor {
   id: string;
-  depositAmount: string;
   distributorCid: string;
   distributorMetadata: DistributorMetadata;
+  type: string;
+  version: string;
 }
 
 export interface DistributorMetadata {
@@ -147,4 +148,9 @@ export interface TokenListState {
   inputTokenAddress: string;
   type: string;
   color?: "inherit" | "primary" | "secondary" | "default" | undefined;
+}
+
+export interface WalletListState {
+  targets: string[];
+  type: string;
 }

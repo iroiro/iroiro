@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import CreateCampaignPageTemaplate, { CampaignInfo } from "./index";
+import CreateAudiusCampaignPageTemaplate, { CampaignInfo } from "./index";
 import {
   audiusState,
   distributorFormState,
@@ -9,13 +9,13 @@ import {
 } from "../../../utils/mockData";
 
 export default {
-  title: "Templates/CreateCampaignPageTemaplate",
-  component: CreateCampaignPageTemaplate,
+  title: "Templates/CreateAudiusCampaignPageTemaplate",
+  component: CreateAudiusCampaignPageTemaplate,
 } as Meta;
 
 const Template: Story<CampaignInfo> = (args) => (
   <BrowserRouter>
-    <CreateCampaignPageTemaplate {...args} />
+    <CreateAudiusCampaignPageTemaplate {...args} />
   </BrowserRouter>
 );
 

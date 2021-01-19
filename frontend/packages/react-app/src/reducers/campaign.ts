@@ -74,7 +74,8 @@ const distributor: Distributor = {
     description: "",
     image: "",
   },
-  depositAmount: "",
+  type: "",
+  version: "",
 };
 
 const campaignMetadata: CampaignMetadata = {

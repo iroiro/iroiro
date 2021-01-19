@@ -1,29 +1,29 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import DistributionTargets, { TargetsProps } from "./index";
-import { audiusState } from "../../../utils/mockData";
+import WalletDistributionTargets, { TargetsProps } from "./index";
+import { walletListState } from "../../../utils/mockData";
 
 export default {
-  title: "Organisms/DistributionTargets",
-  component: DistributionTargets,
+  title: "Organisms/WalletDistributionTargets",
+  component: WalletDistributionTargets,
 } as Meta;
 
 const Template: Story<TargetsProps> = (args) => (
   <BrowserRouter>
-    <DistributionTargets {...args} />
+    <WalletDistributionTargets {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  audiusState,
+  walletListState,
 };
 
 export const NoTarget = Template.bind({});
 NoTarget.args = {
-  audiusState: {
-    ...audiusState,
-    followers: [],
+  walletListState: {
+    ...walletListState,
+    targets: [],
   },
 };

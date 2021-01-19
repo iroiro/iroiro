@@ -11,7 +11,7 @@ export interface TargetsProps {
   distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
-const DistributionTargets: React.FC<TargetsProps> = ({
+const AudiusDistributionTargets: React.FC<TargetsProps> = ({
   audiusState,
   audiusDispatch,
   distributorFormDispatch,
@@ -62,4 +62,4 @@ const DistributionTargets: React.FC<TargetsProps> = ({
   </>
 );
 
-export default DistributionTargets;
+export default AudiusDistributionTargets;

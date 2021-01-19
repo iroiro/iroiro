@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
-import CreateCampaignPageTemaplate from "../templates/CreateCampaignPageTemaplate";
+import CreateCampaignPageTemaplate from "../templates/CreateAudiusCampaignPageTemaplate";
 import {
   getWalletBalance,
   getAllowance,
@@ -27,15 +27,17 @@ import { Recipients } from "../../interfaces";
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
-const CreateCampaignPage: React.FC<
-  RouteComponentProps<{
-    tokenAddress: string;
-    distributorAddress: string;
-  }>
-> = (props) => {
+interface CreateAudiusCampaignPageProps {
+  readonly props: RouteComponentProps<{ tokenAddress: string }>;
+  readonly distributorAddress: string;
+}
+
+const CreateAudiusCampaignPage: React.FC<CreateAudiusCampaignPageProps> = ({
+  props,
+  distributorAddress,
+}) => {
   const { library, active } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
-  const distributorAddress = props.match.params.distributorAddress;
 
   const [tokenState, tokenDispatch] = useReducer(
     tokenReducer,
@@ -304,4 +306,4 @@ const CreateCampaignPage: React.FC<
   );
 };
 
-export default CreateCampaignPage;
+export default CreateAudiusCampaignPage;

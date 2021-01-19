@@ -4,12 +4,14 @@ import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
 import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
 import SelectDistributorsPage from "./components/pages/SelectDistributorsPage";
-import CreateCampaignPage from "./components/pages/CreateCampaignPage";
 import CampaignDetailPage from "./components/pages/CampaignDetailPage";
 import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
 import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
 import TokenHistoryPage from "./components/pages/TokenHistoryPage";
 import TokenInformationPage from "./components/pages/TokenInformationPage";
+import CreateAudiusCampaignPage from "./components/pages/CreateAudiusCampaignPage";
+import CreateWalletCampaignPage from "./components/pages/CreateWalletCampaignPage";
+import distributors from "./utils/distributors";
 
 const App: React.FC = () => {
   return (
@@ -30,11 +32,39 @@ const App: React.FC = () => {
             path="/dashboard/:tokenAddress/distributors"
             component={SelectDistributorsPage}
           />
-          <Route
-            exact
-            path="/dashboard/:tokenAddress/distributors/:distributorAddress"
-            component={CreateCampaignPage}
-          />
+          {distributors.map((distributor) => {
+            if (distributor.type === "audius") {
+              return (
+                <Route
+                  key={distributor.id}
+                  exact
+                  path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                  render={(props) => (
+                    <CreateAudiusCampaignPage
+                      distributorAddress={distributor.id}
+                      props={props}
+                    />
+                  )}
+                />
+              );
+            }
+            if (distributor.type === "wallet") {
+              return (
+                <Route
+                  key={distributor.id}
+                  exact
+                  path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                  render={(props) => (
+                    <CreateWalletCampaignPage
+                      distributorAddress={distributor.id}
+                      props={props}
+                    />
+                  )}
+                />
+              );
+            }
+          })}
+
           <Route
             exact
             path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"

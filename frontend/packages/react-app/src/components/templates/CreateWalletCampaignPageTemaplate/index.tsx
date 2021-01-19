@@ -4,7 +4,7 @@ import AppHeader from "../../molecules/AppHeader";
 import ApproveToken from "../../organisms/ApproveToken";
 import SetupCampaign from "../../organisms/SetupCampaign";
 import { AccountToken } from "../../../interfaces";
-import DistributionTargets from "../../organisms/DistributionTargets";
+import DistributionTargets from "../../organisms/AudiusDistributionTargets";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
@@ -17,17 +17,13 @@ export interface CampaignInfo {
   readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
   distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
-  readonly audiusState: AudiusState;
-  readonly audiusDispatch: React.Dispatch<AUDIUS_ACTIONS>;
 }
 
-const CreateCampaignPageTemaplate: React.FC<CampaignInfo> = ({
+const CreateWalletCampaignPageTemaplate: React.FC<CampaignInfo> = ({
   active,
   tokenInfo,
   distributorFormState,
   distributorFormDispatch,
-  audiusState,
-  audiusDispatch,
 }) => (
   <div>
     <AppHeader />
@@ -40,14 +36,15 @@ const CreateCampaignPageTemaplate: React.FC<CampaignInfo> = ({
         ) : (
           <Box>
             <Box my={1}>
-              <Typography variant={"h3"}>Audius Follower Campaign</Typography>
+              <Typography variant={"h3"}>Wallet Address Campaign</Typography>
             </Box>
             {distributorFormState.step === 1 && (
-              <DistributionTargets
-                audiusState={audiusState}
-                audiusDispatch={audiusDispatch}
-                distributorFormDispatch={distributorFormDispatch}
-              />
+              // <DistributionTargets
+              //   audiusState={audiusState}
+              //   audiusDispatch={audiusDispatch}
+              //   distributorFormDispatch={distributorFormDispatch}
+              // />
+              <div>AAÀAAAA</div>
             )}
             {distributorFormState.step === 2 && (
               <ApproveToken
@@ -69,4 +66,4 @@ const CreateCampaignPageTemaplate: React.FC<CampaignInfo> = ({
   </div>
 );
 
-export default CreateCampaignPageTemaplate;
+export default CreateWalletCampaignPageTemaplate;
