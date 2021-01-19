@@ -26,10 +26,14 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
   const [searchText, setSearchText] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
-    const filter = campaigns.filter((campaign) => {
-      return campaign.creator.id === e.target.value;
-    });
-    setFilteredCampaigns(filter);
+    if (e.target.value === "") {
+      setFilteredCampaigns(campaigns);
+    } else {
+      const filter = campaigns.filter((campaign) => {
+        return campaign.creator.id === e.target.value;
+      });
+      setFilteredCampaigns(filter);
+    }
   };
 
   return (

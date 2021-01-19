@@ -74,14 +74,25 @@ export const tokenInformationState: TokenInformationState = {
   isTokenRequested: false,
   isTokenCheckFinished: false, // TODO: Replace with subgraph response
   campaigns: [
-    campaign,
+    {
+      ...campaign,
+      creator: {
+        id: "0x0000000000000000000000000000000000000001"
+      }
+    },
     {
       ...campaign,
       status: 1,
+      creator: {
+        id: "0x0000000000000000000000000000000000000002"
+      }
     },
     {
       ...campaign,
       status: 2,
+      creator: {
+        id: "0x0000000000000000000000000000000000000003"
+      }
     },
   ],
   isCampaignClaimable: false,
