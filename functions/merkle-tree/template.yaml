@@ -33,12 +33,24 @@ Resources:
         - DynamoDBWritePolicy:
             TableName: !Ref TransactionTable
 
+  GenerateMerkleTreeInputFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/generate-merkle-tree-input/
+      Handler: built/app.lambdaHandler
+      Runtime: nodejs12.x
+      Timeout: 120
+      Environment:
+        Variables:
+          INPUT_BUCKET: ""
+
   GenerateMerkleTreeFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions/generate-merkle-tree/
       Handler: built/app.lambdaHandler
       Runtime: nodejs12.x
+      Timeout: 120
       Environment:
         Variables:
           INPUT_BUCKET: ""
