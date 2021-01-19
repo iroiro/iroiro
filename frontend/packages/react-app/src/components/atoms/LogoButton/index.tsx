@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: "auto",
     },
     imageSmall: {
-      width: 52,
+      width: 74,
       height: "auto",
     },
   })
