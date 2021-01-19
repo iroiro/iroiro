@@ -2,23 +2,37 @@ import {
   APIGatewayEventRequestContext,
   APIGatewayProxyEvent,
 } from "aws-lambda";
-import {
-  parseBalanceMap,
-  MerkleDistributorInfo,
-} from "@iroiro/merkle-distributor/src/parse-balance-map";
+// import {
+//   parseBalanceMap,
+//   MerkleDistributorInfo,
+// } from "@iroiro/merkle-distributor/src/parse-balance-map";
+import { S3 } from "aws-sdk";
+const s3 = new S3();
 
 exports.lambdaHandler = async (
   event: APIGatewayProxyEvent,
   context: APIGatewayEventRequestContext
 ) => {
-  // TODO: just for test. remove and use S3 ARN after this.
-  const input = {
-    "0x4B8619890fa9C3cF11C497961eB4b970D440127F": 100,
-    "0x84d800DaE0Bdb31A4DE9918782bffCc8D041c1b8": 100,
-  };
+  // TODO get arn from input
 
-  const merkleTree: MerkleDistributorInfo = parseBalanceMap(input);
-  console.debug(merkleTree);
+  const inputBucket = process.env.INPUT_BUCKET;
+  const params: S3.Types.GetObjectRequest = {
+    Bucket: inputBucket,
+    Key: "developeraddresses.json",
+  };
+  await s3
+    .getObject(params)
+    .promise()
+    .then((data) => {
+      console.info(data.Body.toString());
+    })
+    .catch((err) => {
+      console.error("Error getting object", err);
+    });
+
+  // TODO enable
+  // const merkleTree: MerkleDistributorInfo = parseBalanceMap(input);
+  // console.debug(merkleTree);
 
   // Upload merkle tree to S3
 
