@@ -3,6 +3,7 @@ import { Box, Typography, Card } from "@material-ui/core";
 import { TokenAndCampaignProps } from "../../../interfaces";
 import LinkButton from "../../atoms/LinkButton";
 import CampaignListTable from "../../molecules/CampaignListTable";
+import { TitleBox } from "./style";
 
 const CampaignList: React.FC<TokenAndCampaignProps> = ({
   tokenState,
@@ -10,8 +11,7 @@ const CampaignList: React.FC<TokenAndCampaignProps> = ({
 }) => {
   return (
     <>
-      <Box
-        display="flex"
+      <TitleBox
         style={{ alignItems: "center", justifyContent: "space-between" }}
         my={1}
       >
@@ -22,7 +22,7 @@ const CampaignList: React.FC<TokenAndCampaignProps> = ({
           text="+ Create New Campaign"
           color="secondary"
         ></LinkButton>
-      </Box>
+      </TitleBox>
       <Card>
         <Box m={2}>
           <Typography variant={"h4"}>Audius Distributor</Typography>
