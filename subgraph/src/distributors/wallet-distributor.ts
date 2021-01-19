@@ -1,11 +1,11 @@
 import { log } from "@graphprotocol/graph-ts";
-import { Campaign, Creator, Distributor } from "./types/schema";
-import { CCTWalletCampaign as CampaignTemplate } from "./types/templates";
+import { Campaign, Creator, Distributor } from "../types/schema";
+import { WalletCampaign as CampaignTemplate } from "../types/templates";
 import {
-  CCTWalletDistributor,
+  WalletDistributor,
   CreateCampaign,
-} from "./types/CCTWalletDistributor/CCTWalletDistributor";
-import { CCTWalletCampaign } from "./types/templates/CCTWalletCampaign/CCTWalletCampaign";
+} from "../types/WalletDistributor/WalletDistributor";
+import { WalletCampaign } from "../types/templates/WalletCampaign/WalletCampaign";
 
 export function handleCreateCampaign(event: CreateCampaign): void {
   let distributorId = event.address.toHexString();
@@ -13,7 +13,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   if (distributor == null) {
     distributor = new Distributor(distributorId);
   }
-  let distributorContract = CCTWalletDistributor.bind(event.address);
+  let distributorContract = WalletDistributor.bind(event.address);
   let callDistributorCid = distributorContract.try_distributorInfoCid();
   if (callDistributorCid.reverted) {
     log.warning("Distributor cid not found. Campaign: {}", [distributorId]);
@@ -36,7 +36,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   campaign.token = event.params.token.toHexString();
   campaign.creator = event.params.creator.toHexString();
 
-  let campaignContract = CCTWalletCampaign.bind(event.params.campaign);
+  let campaignContract = WalletCampaign.bind(event.params.campaign);
   let callStartDate = campaignContract.try_startDate();
   if (callStartDate.reverted) {
     log.warning("Start date not found. Campaign: {}", [campaignId]);
@@ -67,11 +67,17 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   } else {
     campaign.campaignInfoCid = callCampaignInfoCid.value;
   }
-  let callRecipientsCid = campaignContract.try_recipientsCid();
-  if (callRecipientsCid.reverted) {
-    log.warning("Recipients cid not found. Campaign: {}", [campaignId]);
+  let merkleTreeCid = campaignContract.try_merkleTreeCid();
+  if (merkleTreeCid.reverted) {
+    log.warning("Merkle tree cid not found. Campaign: {}", [campaignId]);
   } else {
-    campaign.recipientsCid = callRecipientsCid.value;
+    campaign.merkleTreeCid = merkleTreeCid.value;
+  }
+  let merkleRoot = campaignContract.try_merkleRoot();
+  if (merkleRoot.reverted) {
+    log.warning("Merkle root not found. Campaign: {}", [campaignId]);
+  } else {
+    campaign.merkleRoot = merkleRoot.value;
   }
   let callStatus = campaignContract.try_status();
   if (callStatus.reverted) {

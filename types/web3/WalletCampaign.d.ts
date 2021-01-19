@@ -74,8 +74,6 @@ export interface WalletCampaign extends BaseContract {
      */
     owner(): NonPayableTransactionObject<string>;
 
-    recipientsCid(): NonPayableTransactionObject<string>;
-
     refundDestination(): NonPayableTransactionObject<string>;
 
     refundRemainingTokens(): NonPayableTransactionObject<void>;

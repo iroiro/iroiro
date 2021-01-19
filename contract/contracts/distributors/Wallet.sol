@@ -5,7 +5,7 @@ import "@iroiro/merkle-distributor/contracts/MerkleDistributor.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/CampaignInterfaceV2.sol";
 import "../interfaces/DistributorInterfaceV2.sol";
-import "../SafeMath64.sol";
+import "../SafeMath32.sol";
 
 contract WalletDistributor is DistributorInterfaceV2 {
     constructor (string memory _distributorInfoCid) public
@@ -52,7 +52,7 @@ contract WalletDistributor is DistributorInterfaceV2 {
 }
 
 contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
-    using SafeMath64 for uint64;
+    using SafeMath32 for uint32;
 
     string public merkleTreeCid;
 
@@ -60,7 +60,7 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
         bytes32 merkleRoot,
         address payable _campaignToken,
         string memory _campaignInfoCid,
-        string memory _recipientsCid,
+        string memory _merkleTreeCid,
         uint256 _claimAmount,
         address _refundDestination,
         uint256 _startDate,
@@ -69,14 +69,15 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
     CampaignInterfaceV2(
         _campaignToken,
         _campaignInfoCid,
-        _recipientsCid,
         _claimAmount,
         _refundDestination,
         _startDate,
         _endDate
     )
     MerkleDistributor(_campaignToken, merkleRoot)
-    {}
+    {
+        merkleTreeCid = _merkleTreeCid;
+    }
 
     function claim(
         uint256 index,
@@ -85,6 +86,7 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
         bytes32[] calldata merkleProof
     ) public override mustBeActive inTime {
         super.claim(index, account, amount, merkleProof);
+        claimedNum = claimedNum.add(1);
 
         emit Claim(account, account);
     }
