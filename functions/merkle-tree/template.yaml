@@ -44,6 +44,20 @@ Resources:
           INPUT_BUCKET: ""
           MERKLE_TREE_BUCKET: ""
 
+  UploadMerkleTreeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/upload-merkle-tree/
+      Handler: built/app.lambdaHandler
+      Runtime: nodejs12.x
+      Timeout: 120
+      Environment:
+        Variables:
+          PINATA_API_KEY: ""
+          PINATA_SECRET_API_KEY: ""
+          # TODO just for testing. remove after implementation
+          MERKLE_TREE_BUCKET: ""
+
   StockCheckerFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
     Properties:
