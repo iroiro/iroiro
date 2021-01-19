@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: "auto",
     },
     imageSmall: {
-      width: 20,
+      width: 52,
       height: "auto",
     },
   })
@@ -33,7 +33,7 @@ const LogoButton: React.FC = () => {
       ) : (
         <img
           alt="logo"
-          src={`${window.location.origin}/icon.png`}
+          src={`${window.location.origin}/iroiro_logo.svg`}
           className={classes.imageSmall}
         />
       )}
