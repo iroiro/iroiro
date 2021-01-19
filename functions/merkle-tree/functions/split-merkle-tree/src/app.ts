@@ -47,7 +47,6 @@ exports.lambdaHandler = async (
     },
   };
 
-  // TODO upload each claims
   // TODO error handling
   await Promise.all(
     Object.entries(merkleTree.claims).map(async ([address, proof]) => {
@@ -72,5 +71,6 @@ exports.lambdaHandler = async (
 
   return {
     cid,
+    merkleRoot: merkleTree.merkleRoot,
   };
 };
