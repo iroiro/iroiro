@@ -33,6 +33,16 @@ Resources:
         - DynamoDBWritePolicy:
             TableName: !Ref TransactionTable
 
+  GenerateMerkleTreeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/generate-merkle-tree/
+      Handler: built/app.lambdaHandler
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          INPUT_BUCKET: ""
+
   StockCheckerFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
     Properties:
