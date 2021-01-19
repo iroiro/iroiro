@@ -70,6 +70,19 @@ Resources:
           # TODO just for testing. remove after implementation
           MERKLE_TREE_BUCKET: ""
 
+  SplitMerkleTreeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/split-merkle-tree/
+      Handler: built/app.lambdaHandler
+      Runtime: nodejs12.x
+      Timeout: 120
+      Environment:
+        Variables:
+          MERKLE_PROOF_BUCKET: ""
+          # TODO just for testing. remove after implementation
+          MERKLE_TREE_BUCKET: ""
+
   StockCheckerFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
     Properties:
