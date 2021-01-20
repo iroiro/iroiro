@@ -48,10 +48,14 @@ exports.lambdaHandler = async (
   };
 
   // TODO error handling
+  const merkleProofBucket = process.env.MERKLE_PROOF_BUCKET;
+  if (!merkleProofBucket) {
+    // TODO error handling
+    return;
+  }
   await Promise.all(
     Object.entries(merkleTree.claims).map(async ([address, proof]) => {
       const merkleTreeKey = `${cid}/${address}.json`;
-      const merkleProofBucket = process.env.MERKLE_PROOF_BUCKET;
       const putObjectParams: S3.Types.PutObjectRequest = {
         Bucket: merkleProofBucket,
         Key: merkleTreeKey,
@@ -68,6 +72,8 @@ exports.lambdaHandler = async (
         });
     })
   );
+
+  // TODO error handling if upload failed
 
   return {
     cid,
