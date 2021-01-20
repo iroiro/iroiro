@@ -5,6 +5,7 @@ import {
 import { OldFormat } from "@iroiro/merkle-distributor/src/parse-balance-map";
 import { isAddress } from "web3-utils";
 import { S3 } from "aws-sdk";
+import { uploadFile } from "../../upload-merkle-tree/src/app";
 
 const s3 = new S3();
 
@@ -31,7 +32,7 @@ exports.lambdaHandler = async (
   }
 
   // TODO error handling
-  const targets: Targets = await getFile(cid);
+  const targets = (await getFile(cid)) as Targets;
   if (targets.type !== "address") {
     // TODO throw error
   }
@@ -48,30 +49,11 @@ exports.lambdaHandler = async (
       input[target] = amount;
     });
 
-  // Upload merkle tree input to S3
-  const merkleTreeBucket = process.env.INPUT_BUCKET;
-  console.log(merkleTreeBucket);
-  // TODO Get merkle tree cid
-  const merkleTreeInputKey = "input.json";
-  // Upload merkle tree to S3
-  const putObjectParams = {
-    Bucket: merkleTreeBucket,
-    Key: merkleTreeInputKey,
-    Body: JSON.stringify(input),
-  };
-  await s3
-    .putObject(putObjectParams)
-    .promise()
-    .then((result) => {
-      console.info(result);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+  // TODO error handling
+  const result = await uploadFile(JSON.stringify(input), "input.json");
 
   return {
-    bucket: merkleTreeBucket,
-    key: merkleTreeInputKey,
+    cid: result.IpfsHash,
   };
 };
 
@@ -83,7 +65,7 @@ const isAllAddress = (targets: Targets): boolean => {
   );
 };
 
-export const getFile = async (cid: string): Promise<Targets> => {
+export const getFile = async (cid: string): Promise<object> => {
   for await (const file of ipfs.get(cid)) {
     if (!file.content) {
       continue;

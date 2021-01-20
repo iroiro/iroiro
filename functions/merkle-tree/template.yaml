@@ -41,7 +41,8 @@ Resources:
       Timeout: 120
       Environment:
         Variables:
-          INPUT_BUCKET: "iroiro-wallet-campaign-merkle-tree-inputs"
+          PINATA_API_KEY: ""
+          PINATA_SECRET_API_KEY: ""
       Policies:
         - S3WritePolicy:
             BucketName: "iroiro-wallet-campaign-merkle-tree-inputs"

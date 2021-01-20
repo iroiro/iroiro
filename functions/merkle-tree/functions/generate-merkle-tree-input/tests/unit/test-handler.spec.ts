@@ -17,11 +17,10 @@ describe("Tests Input Generator", function () {
     console.debug("result: ", result);
 
     expect(result).to.be.an("object");
-    expect(result.bucket).to.be.an("string");
-    expect(result.bucket).to.equal(process.env.INPUT_BUCKET);
-    expect(result.key).to.be.an("string");
-    // TODO update
-    expect(result.key).to.equal("input.json");
+    expect(result.cid).to.be.an("string");
+    expect(result.cid).to.equal(
+      "QmbJWAESqCsf4RFCqEY7jecCashj8usXiyDNfKtZCwwzGb"
+    );
   });
 });
 
