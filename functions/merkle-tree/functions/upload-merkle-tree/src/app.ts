@@ -18,16 +18,14 @@ exports.lambdaHandler = async (
   context: APIGatewayEventRequestContext
 ) => {
   // @ts-ignore
-  const bucket = event["bucket"];
-  // @ts-ignore
   const key = event["key"];
+  console.debug("key", key);
 
+  const merkleTreeBucket = process.env.MERKLE_TREE_BUCKET;
   const params: S3.Types.GetObjectRequest = {
-    Bucket: bucket,
+    Bucket: merkleTreeBucket,
     Key: key,
   };
-  console.debug("bucket", bucket);
-  console.debug("key", key);
 
   // TODO check is present
   const s3Stream = s3.getObject(params).createReadStream();
@@ -39,6 +37,7 @@ exports.lambdaHandler = async (
 
   return {
     cid: result.IpfsHash,
+    key,
   };
 };
 

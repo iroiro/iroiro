@@ -43,9 +43,6 @@ Resources:
         Variables:
           PINATA_API_KEY: ""
           PINATA_SECRET_API_KEY: ""
-      Policies:
-        - S3WritePolicy:
-            BucketName: "iroiro-wallet-campaign-merkle-tree-inputs"
 
   GenerateMerkleTreeFunction:
     Type: AWS::Serverless::Function
@@ -56,11 +53,8 @@ Resources:
       Timeout: 120
       Environment:
         Variables:
-          INPUT_BUCKET: "iroiro-wallet-campaign-merkle-tree-inputs"
           MERKLE_TREE_BUCKET: "iroiro-wallet-campaign-merkle-trees"
       Policies:
-        - S3ReadPolicy:
-            BucketName: "iroiro-wallet-campaign-merkle-tree-inputs"
         - S3WritePolicy:
             BucketName: "iroiro-wallet-campaign-merkle-trees"
 
@@ -75,6 +69,7 @@ Resources:
         Variables:
           PINATA_API_KEY: ""
           PINATA_SECRET_API_KEY: ""
+          MERKLE_TREE_BUCKET: "iroiro-wallet-campaign-merkle-trees"
       Policies:
         - S3ReadPolicy:
             BucketName: "iroiro-wallet-campaign-merkle-trees"
@@ -88,6 +83,7 @@ Resources:
       Timeout: 120
       Environment:
         Variables:
+          MERKLE_TREE_BUCKET: "iroiro-wallet-campaign-merkle-trees"
           MERKLE_PROOF_BUCKET: "iroiro-wallet-campaign-merkle-proofs"
       Policies:
         - S3ReadPolicy:

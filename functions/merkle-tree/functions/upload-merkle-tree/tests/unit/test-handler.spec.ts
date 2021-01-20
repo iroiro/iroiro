@@ -14,8 +14,6 @@ let event: APIGatewayProxyEvent, context: APIGatewayEventRequestContext;
 describe("Tests Stock Checker", function () {
   it("Verifies response", async () => {
     event = {
-      bucket: process.env.MERKLE_TREE_BUCKET,
-      // TODO update key
       key: "testcid.json",
     };
     const result = await app.lambdaHandler(event, context);
@@ -26,6 +24,8 @@ describe("Tests Stock Checker", function () {
     expect(result.cid).to.equal(
       "QmR6oHSLTeTMVdyYWmNZyYLUEYMe6HHQxhBLZajWdSK2MJ"
     );
+    expect(result.key).to.be.an("string");
+    expect(result.key).to.equal("testcid.json");
   });
 });
 
