@@ -7,6 +7,7 @@ import {
 //   MerkleDistributorInfo,
 // } from "@iroiro/merkle-distributor/src/parse-balance-map";
 import { S3 } from "aws-sdk";
+import { getFile } from "../../generate-merkle-tree-input/src/app";
 const s3 = new S3();
 
 exports.lambdaHandler = async (
@@ -14,22 +15,10 @@ exports.lambdaHandler = async (
   context: APIGatewayEventRequestContext
 ) => {
   // @ts-ignore
-  const inputBucket = event["bucket"];
-  // @ts-ignore
-  const key = event["key"];
-  const params: S3.Types.GetObjectRequest = {
-    Bucket: inputBucket,
-    Key: key,
-  };
-  await s3
-    .getObject(params)
-    .promise()
-    .then((data) => {
-      console.info(data.Body.toString());
-    })
-    .catch((err) => {
-      console.error("Error getting object", err);
-    });
+  const cid = event["cid"];
+
+  // error handling
+  const input = await getFile(cid);
 
   // TODO enable
   // const merkleTree: MerkleDistributorInfo = parseBalanceMap(input);
@@ -86,6 +75,8 @@ exports.lambdaHandler = async (
     .catch((err) => {
       console.error(err);
     });
+
+  // unpin used input cid
 
   return {
     bucket: merkleTreeBucket,
