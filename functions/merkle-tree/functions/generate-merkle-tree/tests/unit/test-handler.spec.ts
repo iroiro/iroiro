@@ -13,9 +13,7 @@ let event: APIGatewayProxyEvent, context: APIGatewayEventRequestContext;
 describe("Tests Generator", function () {
   it("Verifies response", async () => {
     event = {
-      object: process.env.INPUT_BUCKET,
-      // TODO update key
-      key: "input.json",
+      cid: "QmbJWAESqCsf4RFCqEY7jecCashj8usXiyDNfKtZCwwzGb",
     };
     const result = await app.lambdaHandler(event, context);
     console.debug("result", result);

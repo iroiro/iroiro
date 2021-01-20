@@ -15,10 +15,10 @@ exports.lambdaHandler = async (
   context: APIGatewayEventRequestContext
 ) => {
   // @ts-ignore
-  const cid = event["cid"];
+  const inputCid = event["cid"];
 
   // error handling
-  const input = await getFile(cid);
+  const input = await getFile(inputCid);
 
   // TODO enable
   // const merkleTree: MerkleDistributorInfo = parseBalanceMap(input);
