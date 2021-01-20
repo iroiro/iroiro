@@ -12,11 +12,18 @@ let event: APIGatewayProxyEvent, context: APIGatewayEventRequestContext;
 
 describe("Tests Stock Checker", function () {
   it("Verifies response", async () => {
+    event = {
+      bucket: process.env.MERKLE_TREE_BUCKET,
+      // TODO update key
+      key: "testcid.json",
+    };
     const result = await app.lambdaHandler(event, context);
+    console.debug("result", result);
 
     expect(result).to.be.an("object");
-    expect(result.stock_price).to.be.an("number");
-    expect(result.stock_price).to.be.at.least(0);
-    expect(result.stock_price).to.be.at.most(100);
+    expect(result.cid).to.be.an("string");
+    expect(result.cid).to.equal(
+      "QmR6oHSLTeTMVdyYWmNZyYLUEYMe6HHQxhBLZajWdSK2MJ"
+    );
   });
 });
