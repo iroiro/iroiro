@@ -12,9 +12,10 @@ exports.lambdaHandler = async (
   event: APIGatewayProxyEvent,
   context: APIGatewayEventRequestContext
 ) => {
-  // TODO get bucket and key from input
-  const bucket = process.env.MERKLE_TREE_BUCKET;
-  const key = "testcid.json";
+  // @ts-ignore
+  const bucket = event["bucket"];
+  // @ts-ignore
+  const key = event["key"];
 
   const params: S3.Types.GetObjectRequest = {
     Bucket: bucket,

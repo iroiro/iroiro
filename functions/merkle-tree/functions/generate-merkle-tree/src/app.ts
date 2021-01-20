@@ -13,12 +13,13 @@ exports.lambdaHandler = async (
   event: APIGatewayProxyEvent,
   context: APIGatewayEventRequestContext
 ) => {
-  // TODO get arn from input
-
-  const inputBucket = process.env.INPUT_BUCKET;
+  // @ts-ignore
+  const inputBucket = event["bucket"];
+  // @ts-ignore
+  const key = event["key"];
   const params: S3.Types.GetObjectRequest = {
     Bucket: inputBucket,
-    Key: "developer_address_input.json",
+    Key: key,
   };
   await s3
     .getObject(params)
