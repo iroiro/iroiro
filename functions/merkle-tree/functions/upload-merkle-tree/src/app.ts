@@ -5,8 +5,13 @@ import {
 import { S3 } from "aws-sdk";
 import axios, { AxiosRequestConfig } from "axios";
 import * as FormData from "form-data";
+import * as stream from "stream";
 
 const s3 = new S3();
+
+export interface PinFileResult {
+  readonly IpfsHash: string;
+}
 
 exports.lambdaHandler = async (
   event: APIGatewayProxyEvent,
@@ -27,9 +32,23 @@ exports.lambdaHandler = async (
   // TODO check is present
   const s3Stream = s3.getObject(params).createReadStream();
 
+  const result = await uploadFile(s3Stream, key);
+  if (result === undefined) {
+    // TODO error
+  }
+
+  return {
+    cid: result.IpfsHash,
+  };
+};
+
+export const uploadFile = async (
+  file: stream.Readable | string,
+  filename: string
+): Promise<PinFileResult | undefined> => {
   const form = new FormData();
-  form.append("file", s3Stream, {
-    filename: key,
+  form.append("file", file, {
+    filename,
   });
 
   const url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
@@ -45,19 +64,11 @@ exports.lambdaHandler = async (
     data: form,
   };
 
-  const result = await axios(config)
+  return await axios(config)
     .then(function (response) {
-      console.log(JSON.stringify(response.data));
       return response.data;
     })
     .catch(function (error) {
       console.error(error);
     });
-  if (result === undefined) {
-    // TODO error
-  }
-
-  return {
-    cid: result.IpfsHash,
-  };
 };
