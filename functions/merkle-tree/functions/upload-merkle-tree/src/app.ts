@@ -21,13 +21,14 @@ exports.lambdaHandler = async (
     Bucket: bucket,
     Key: key,
   };
+  console.debug("bucket", bucket);
+  console.debug("key", key);
 
   // TODO check is present
   const s3Stream = s3.getObject(params).createReadStream();
 
   const form = new FormData();
   form.append("file", s3Stream, {
-    // TOdO Get file name from key
     filename: key,
   });
 
