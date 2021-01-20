@@ -10,7 +10,7 @@ Resources:
     Type: AWS::Serverless::StateMachine # More info about State Machine Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
     Properties:
       # TODO update file name
-      DefinitionUri: statemachine/stock_trader.asl.json
+      DefinitionUri: statemachine/merkle_tree.asl.json
       DefinitionSubstitutions:
         GenerateMerkleTreeInputFunction: !GetAtt GenerateMerkleTreeInputFunction.Arn
         GenerateMerkleTreeFunction: !GetAtt GenerateMerkleTreeFunction.Arn
