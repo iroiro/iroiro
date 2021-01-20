@@ -1,10 +1,10 @@
 {
-    "Comment": "A state machine that does mock stock trading.",
-    "StartAt": "Check Stock Value",
+    "Comment": "A state machine that generate, upload to IPFS and split as merkle proofs with address list.",
+    "StartAt": "Generate Input",
     "States": {
-        "Check Stock Value": {
+        "Generate Input": {
             "Type": "Task",
-            "Resource": "${StockCheckerFunctionArn}",
+            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-GenerateMerkleTreeInputFunction-48IZ6GVRJ1VN",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -15,22 +15,11 @@
                     "BackoffRate": 1.5
                 }
             ],
-            "Next": "Buy or Sell?"
+            "Next": "Generate"
         },
-        "Buy or Sell?": {
-            "Type": "Choice",
-            "Choices": [
-                {
-                    "Variable": "$.stock_price",
-                    "NumericLessThanEquals": 50,
-                    "Next": "Buy Stock"
-                }
-            ],
-            "Default": "Sell Stock"
-        },
-        "Sell Stock": {
+        "Generate": {
             "Type": "Task",
-            "Resource": "${StockSellerFunctionArn}",
+            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-GenerateMerkleTreeFunction-1VV9FY1PHNEB3",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -41,11 +30,11 @@
                     "BackoffRate": 1
                 }
             ],
-            "Next": "Record Transaction"
+            "Next": "Upload"
         },
-        "Buy Stock": {
+        "Upload": {
             "Type": "Task",
-            "Resource": "${StockBuyerFunctionArn}",
+            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-UploadMerkleTreeFunction-M9L6MR3GPPTH",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -56,39 +45,19 @@
                     "BackoffRate": 1
                 }
             ],
-            "Next": "Record Transaction"
+            "Next": "Split"
         },
-        "Record Transaction": {
+        "Split": {
             "Type": "Task",
-            "Resource": "${DDBPutItem}",
-            "Parameters": {
-                "TableName": "${DDBTable}",
-                "Item": {
-                    "Id": {
-                        "S.$": "$.id"
-                    },
-                    "Type": {
-                        "S.$": "$.type"
-                    },
-                    "Price": {
-                        "N.$": "$.price"
-                    },
-                    "Quantity": {
-                        "N.$": "$.qty"
-                    },
-                    "Timestamp": {
-                        "S.$": "$.timestamp"
-                    }
-                }
-            },
+            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-SplitMerkleTreeFunction-169JE6AQ8BZN0",
             "Retry": [
                 {
                     "ErrorEquals": [
                         "States.TaskFailed"
                     ],
-                    "IntervalSeconds": 20,
-                    "MaxAttempts": 5,
-                    "BackoffRate": 10
+                    "IntervalSeconds": 2,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 1
                 }
             ],
             "End": true
