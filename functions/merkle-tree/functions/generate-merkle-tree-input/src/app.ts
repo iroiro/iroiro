@@ -5,7 +5,6 @@ import {
 import { OldFormat } from "@iroiro/merkle-distributor/src/parse-balance-map";
 import { isAddress } from "web3-utils";
 import { S3 } from "aws-sdk";
-import axios from "axios";
 
 const s3 = new S3();
 
@@ -32,12 +31,7 @@ exports.lambdaHandler = async (
   }
 
   // TODO error handling
-  const targets: Targets = await axios
-    .get(`https://gateway.pinata.cloud/ipfs/${cid}`)
-    .then((result) => {
-      return result.data;
-    });
-
+  const targets: Targets = await getFile(cid);
   if (targets.type !== "address") {
     // TODO throw error
   }
@@ -89,7 +83,7 @@ const isAllAddress = (targets: Targets): boolean => {
   );
 };
 
-const getFile = async (cid: string): Promise<Targets> => {
+export const getFile = async (cid: string): Promise<Targets> => {
   for await (const file of ipfs.get(cid)) {
     if (!file.content) {
       continue;
