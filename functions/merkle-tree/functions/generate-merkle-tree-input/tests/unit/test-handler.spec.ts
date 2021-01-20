@@ -8,10 +8,13 @@ import {
 const app = require("../../src/app");
 const chai = require("chai");
 const expect = chai.expect;
-let event: APIGatewayProxyEvent, context: APIGatewayEventRequestContext;
+let event, context: APIGatewayEventRequestContext;
 
 describe("Tests Stock Checker", function () {
   it("Verifies response", async () => {
+    event = {
+      cid: "QmNvbpz6i5FymwMpoTi2e5HJGmFP6WarKTrpzNzY26BTd5",
+    };
     const result = await app.lambdaHandler(event, context);
 
     expect(result).to.be.an("object");
