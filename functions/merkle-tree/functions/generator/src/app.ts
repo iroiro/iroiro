@@ -42,8 +42,6 @@ exports.lambdaHandler = async (
       console.error(err);
     });
 
-  // unpin used input cid
-
   return {
     bucket: merkleTreeBucket,
     key: merkleTreeKey,
