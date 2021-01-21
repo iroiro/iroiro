@@ -32,9 +32,9 @@ dataSources:
     name: WalletDistributor
     network: rinkeby
     source:
-      address: "0xca5cfda415F884883dBff5a843a415190cA4f80C"
+      address: "0xb562Cf605A0f8a123Bf7AbFDfe1317671A8B5EAd"
       abi: WalletDistributor
-      startBlock: 7915185
+      startBlock: 7931096
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

@@ -67,6 +67,12 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   } else {
     campaign.campaignInfoCid = callCampaignInfoCid.value;
   }
+  let callRecipientsCid = campaignContract.try_recipientsCid();
+  if (callRecipientsCid.reverted) {
+    log.warning("Recipients cid not found. Campaign: {}", [campaignId]);
+  } else {
+    campaign.recipientsCid = callRecipientsCid.value;
+  }
   let merkleTreeCid = campaignContract.try_merkleTreeCid();
   if (merkleTreeCid.reverted) {
     log.warning("Merkle tree cid not found. Campaign: {}", [campaignId]);
