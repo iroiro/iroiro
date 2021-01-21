@@ -12,21 +12,21 @@ Resources:
       # TODO update file name
       DefinitionUri: statemachine/merkle_tree.asl.json
       DefinitionSubstitutions:
-        GenerateMerkleTreeInputFunction: !GetAtt GenerateMerkleTreeInputFunction.Arn
-        GenerateMerkleTreeFunction: !GetAtt GenerateMerkleTreeFunction.Arn
-        UploadMerkleTreeFunction: !GetAtt UploadMerkleTreeFunction.Arn
-        SplitMerkleTreeFunction: !GetAtt SplitMerkleTreeFunction.Arn
+        InputGeneratorFunction: !GetAtt InputGeneratorFunction.Arn
+        GeneratorFunction: !GetAtt GeneratorFunction.Arn
+        UploaderFunction: !GetAtt UploaderFunction.Arn
+        SplitterFunction: !GetAtt SplitterFunction.Arn
       Policies: # Find out more about SAM policy templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
         - LambdaInvokePolicy:
-            FunctionName: !Ref GenerateMerkleTreeInputFunction
+            FunctionName: !Ref InputGeneratorFunction
         - LambdaInvokePolicy:
-            FunctionName: !Ref GenerateMerkleTreeFunction
+            FunctionName: !Ref GeneratorFunction
         - LambdaInvokePolicy:
-            FunctionName: !Ref UploadMerkleTreeFunction
+            FunctionName: !Ref UploaderFunction
         - LambdaInvokePolicy:
-            FunctionName: !Ref SplitMerkleTreeFunction
+            FunctionName: !Ref SplitterFunction
 
-  GenerateMerkleTreeInputFunction:
+  InputGeneratorFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions/input-generator/
@@ -38,7 +38,7 @@ Resources:
           PINATA_API_KEY: ""
           PINATA_SECRET_API_KEY: ""
 
-  GenerateMerkleTreeFunction:
+  GeneratorFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions/generator/
@@ -52,7 +52,7 @@ Resources:
         - S3WritePolicy:
             BucketName: "iroiro-wallet-campaign-merkle-trees"
 
-  UploadMerkleTreeFunction:
+  UploaderFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions/uploader/
@@ -68,7 +68,7 @@ Resources:
         - S3ReadPolicy:
             BucketName: "iroiro-wallet-campaign-merkle-trees"
 
-  SplitMerkleTreeFunction:
+  SplitterFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions/splitter/
@@ -93,13 +93,13 @@ Outputs:
     Description: "Merkle Tree state machine ARN"
     Value: !Ref MerkleTreeStateMachine
   GenerateMerkleTreeInputFunction:
-    Value: !GetAtt GenerateMerkleTreeInputFunction.Arn
+    Value: !GetAtt InputGeneratorFunction.Arn
   GenerateMerkleTreeFunction:
-    Value: !GetAtt GenerateMerkleTreeFunction.Arn
+    Value: !GetAtt GeneratorFunction.Arn
   UploadMerkleTreeFunction:
-    Value: !GetAtt UploadMerkleTreeFunction.Arn
+    Value: !GetAtt UploaderFunction.Arn
   SplitMerkleTreeFunction:
-    Value: !GetAtt SplitMerkleTreeFunction.Arn
+    Value: !GetAtt SplitterFunction.Arn
   MerkleTreeStateMachineRole:
     Description: "IAM Role created for Merkle Tree state machine based on the specified SAM Policy Templates"
     Value: !GetAtt MerkleTreeStateMachineRole.Arn
