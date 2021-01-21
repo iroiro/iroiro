@@ -8,12 +8,12 @@ import {
 const app = require("../../src/app");
 const chai = require("chai");
 const expect = chai.expect;
-let event: APIGatewayProxyEvent, context: APIGatewayEventRequestContext;
+let event: any, context: APIGatewayEventRequestContext;
 
 describe("Tests Generator", function () {
   it("Verifies response", async () => {
     event = {
-      cid: "QmbJWAESqCsf4RFCqEY7jecCashj8usXiyDNfKtZCwwzGb",
+      cid: "QmV9ZNxdwamcxx9CuhBpwZCTSLXgwFths5GRRdBDubi3gB",
     };
     const result = await app.lambdaHandler(event, context);
     console.debug("result", result);
@@ -22,7 +22,8 @@ describe("Tests Generator", function () {
     expect(result.bucket).to.be.an("string");
     expect(result.bucket).to.equal(process.env.MERKLE_TREE_BUCKET);
     expect(result.key).to.be.an("string");
-    // TODO update
-    expect(result.key).to.equal("testcid.json");
+    expect(result.key).to.equal(
+      "0x6ff9dfec88bddca62d41745d6afedab6889fcebec5e3de5624e5bbbdb096150e.json"
+    );
   });
 });
