@@ -46,6 +46,7 @@ exports.lambdaHandler = async (
         Bucket: merkleProofBucket,
         Key: merkleTreeKey,
         Body: JSON.stringify(proof),
+        ContentType: "application/json",
       };
       return s3
         .putObject(putObjectParams)

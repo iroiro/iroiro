@@ -2,9 +2,11 @@ import {
   APIGatewayEventRequestContext,
   APIGatewayProxyEvent,
 } from "aws-lambda";
-import { OldFormat } from "@iroiro/merkle-distributor/src/parse-balance-map";
+import { OldFormat } from "@iroiro/merkle-distributor";
 import { isAddress } from "web3-utils";
-import { uploadFile } from "../../uploader/src/app";
+import * as FormData from "form-data";
+import * as stream from "stream";
+import axios, { AxiosRequestConfig } from "axios";
 
 const ipfsClient = require("ipfs-http-client");
 
@@ -73,4 +75,41 @@ export const getFile = async (cid: string): Promise<object> => {
     }
     return JSON.parse(content.toString());
   }
+};
+
+// TODO Remove and use uploaders function
+
+export interface PinFileResult {
+  readonly IpfsHash: string;
+}
+
+export const uploadFile = async (
+  file: stream.Readable | string,
+  filename: string
+): Promise<PinFileResult | undefined> => {
+  const form = new FormData();
+  form.append("file", file, {
+    filename,
+  });
+
+  const url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
+  const config: AxiosRequestConfig = {
+    method: "post",
+    url: url,
+    maxBodyLength: Infinity,
+    headers: {
+      pinata_api_key: process.env.PINATA_API_KEY,
+      pinata_secret_api_key: process.env.PINATA_SECRET_API_KEY,
+      ...form.getHeaders(),
+    },
+    data: form,
+  };
+
+  return await axios(config)
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
 };
