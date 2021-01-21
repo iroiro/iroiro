@@ -17,6 +17,7 @@ contract WalletDistributor is DistributorInterfaceV2 {
         address tokenSender,
         string memory campaignInfoCid,
         string memory recipientsCid,
+        string memory merkleTreeCid,
         uint32 recipientsNum,
         uint256 startDate,
         uint256 endDate
@@ -33,6 +34,7 @@ contract WalletDistributor is DistributorInterfaceV2 {
             token,
             campaignInfoCid,
             recipientsCid,
+            merkleTreeCid,
             claimAmount,
             tokenSender,
             startDate,
@@ -60,6 +62,7 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
         bytes32 merkleRoot,
         address payable _campaignToken,
         string memory _campaignInfoCid,
+        string memory _recipientsCid,
         string memory _merkleTreeCid,
         uint256 _claimAmount,
         address _refundDestination,
@@ -69,6 +72,7 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
     CampaignInterfaceV2(
         _campaignToken,
         _campaignInfoCid,
+        _recipientsCid,
         _claimAmount,
         _refundDestination,
         _startDate,

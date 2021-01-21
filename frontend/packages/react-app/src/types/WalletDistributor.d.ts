@@ -25,7 +25,7 @@ interface WalletDistributorInterface extends ethers.utils.Interface {
     "campaignList(uint256)": FunctionFragment;
     "distributorInfoCid()": FunctionFragment;
     "nextCampaignId()": FunctionFragment;
-    "createCampaign(bytes32,address,address,string,string,uint32,uint256,uint256)": FunctionFragment;
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -44,6 +44,7 @@ interface WalletDistributorInterface extends ethers.utils.Interface {
     functionFragment: "createCampaign",
     values: [
       BytesLike,
+      string,
       string,
       string,
       string,
@@ -116,18 +117,20 @@ export class WalletDistributor extends Contract {
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createCampaign(bytes32,address,address,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
       merkleRoot: BytesLike,
       token: string,
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
@@ -156,18 +159,20 @@ export class WalletDistributor extends Contract {
     tokenSender: string,
     campaignInfoCid: string,
     recipientsCid: string,
+    merkleTreeCid: string,
     recipientsNum: BigNumberish,
     startDate: BigNumberish,
     endDate: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createCampaign(bytes32,address,address,string,string,uint32,uint256,uint256)"(
+  "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
     merkleRoot: BytesLike,
     token: string,
     tokenSender: string,
     campaignInfoCid: string,
     recipientsCid: string,
+    merkleTreeCid: string,
     recipientsNum: BigNumberish,
     startDate: BigNumberish,
     endDate: BigNumberish,
@@ -199,18 +204,20 @@ export class WalletDistributor extends Contract {
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createCampaign(bytes32,address,address,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
       merkleRoot: BytesLike,
       token: string,
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
@@ -251,18 +258,20 @@ export class WalletDistributor extends Contract {
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createCampaign(bytes32,address,address,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
       merkleRoot: BytesLike,
       token: string,
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
@@ -301,18 +310,20 @@ export class WalletDistributor extends Contract {
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createCampaign(bytes32,address,address,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
       merkleRoot: BytesLike,
       token: string,
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,

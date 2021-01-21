@@ -50,6 +50,7 @@ export interface DistributorInterfaceV2 extends BaseContract {
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: number | string,
       startDate: number | string,
       endDate: number | string

@@ -32,6 +32,7 @@ interface WalletCampaignInterface extends ethers.utils.Interface {
     "merkleRoot()": FunctionFragment;
     "merkleTreeCid()": FunctionFragment;
     "owner()": FunctionFragment;
+    "recipientsCid()": FunctionFragment;
     "refundDestination()": FunctionFragment;
     "refundRemainingTokens()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -76,6 +77,10 @@ interface WalletCampaignInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "recipientsCid",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "refundDestination",
     values?: undefined
@@ -125,6 +130,10 @@ interface WalletCampaignInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "recipientsCid",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "refundDestination",
     data: BytesLike
@@ -224,6 +233,10 @@ export class WalletCampaign extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<[string]>;
+
+    recipientsCid(overrides?: CallOverrides): Promise<[string]>;
+
+    "recipientsCid()"(overrides?: CallOverrides): Promise<[string]>;
 
     refundDestination(overrides?: CallOverrides): Promise<[string]>;
 
@@ -339,6 +352,10 @@ export class WalletCampaign extends Contract {
    */
   "owner()"(overrides?: CallOverrides): Promise<string>;
 
+  recipientsCid(overrides?: CallOverrides): Promise<string>;
+
+  "recipientsCid()"(overrides?: CallOverrides): Promise<string>;
+
   refundDestination(overrides?: CallOverrides): Promise<string>;
 
   "refundDestination()"(overrides?: CallOverrides): Promise<string>;
@@ -452,6 +469,10 @@ export class WalletCampaign extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<string>;
+
+    recipientsCid(overrides?: CallOverrides): Promise<string>;
+
+    "recipientsCid()"(overrides?: CallOverrides): Promise<string>;
 
     refundDestination(overrides?: CallOverrides): Promise<string>;
 
@@ -582,6 +603,10 @@ export class WalletCampaign extends Contract {
      */
     "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    recipientsCid(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "recipientsCid()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     refundDestination(overrides?: CallOverrides): Promise<BigNumber>;
 
     "refundDestination()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -699,6 +724,10 @@ export class WalletCampaign extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    recipientsCid(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "recipientsCid()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     refundDestination(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

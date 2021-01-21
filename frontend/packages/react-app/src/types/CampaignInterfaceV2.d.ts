@@ -28,6 +28,7 @@ interface CampaignInterfaceV2Interface extends ethers.utils.Interface {
     "claimedNum()": FunctionFragment;
     "endDate()": FunctionFragment;
     "owner()": FunctionFragment;
+    "recipientsCid()": FunctionFragment;
     "refundDestination()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "startDate()": FunctionFragment;
@@ -55,6 +56,10 @@ interface CampaignInterfaceV2Interface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "endDate", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "recipientsCid",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "refundDestination",
     values?: undefined
@@ -93,6 +98,10 @@ interface CampaignInterfaceV2Interface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "claimedNum", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "endDate", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "recipientsCid",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "refundDestination",
     data: BytesLike
@@ -170,6 +179,10 @@ export class CampaignInterfaceV2 extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<[string]>;
+
+    recipientsCid(overrides?: CallOverrides): Promise<[string]>;
+
+    "recipientsCid()"(overrides?: CallOverrides): Promise<[string]>;
 
     refundDestination(overrides?: CallOverrides): Promise<[string]>;
 
@@ -250,6 +263,10 @@ export class CampaignInterfaceV2 extends Contract {
    */
   "owner()"(overrides?: CallOverrides): Promise<string>;
 
+  recipientsCid(overrides?: CallOverrides): Promise<string>;
+
+  "recipientsCid()"(overrides?: CallOverrides): Promise<string>;
+
   refundDestination(overrides?: CallOverrides): Promise<string>;
 
   "refundDestination()"(overrides?: CallOverrides): Promise<string>;
@@ -328,6 +345,10 @@ export class CampaignInterfaceV2 extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<string>;
+
+    recipientsCid(overrides?: CallOverrides): Promise<string>;
+
+    "recipientsCid()"(overrides?: CallOverrides): Promise<string>;
 
     refundDestination(overrides?: CallOverrides): Promise<string>;
 
@@ -418,6 +439,10 @@ export class CampaignInterfaceV2 extends Contract {
      */
     "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    recipientsCid(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "recipientsCid()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     refundDestination(overrides?: CallOverrides): Promise<BigNumber>;
 
     "refundDestination()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -497,6 +522,10 @@ export class CampaignInterfaceV2 extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    recipientsCid(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "recipientsCid()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     refundDestination(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
