@@ -35,7 +35,7 @@ Resources:
   GenerateMerkleTreeInputFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/generate-merkle-tree-input/
+      CodeUri: functions/input-generator/
       Handler: built/app.lambdaHandler
       Runtime: nodejs12.x
       Timeout: 120
@@ -47,7 +47,7 @@ Resources:
   GenerateMerkleTreeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/generate-merkle-tree/
+      CodeUri: functions/generator/
       Handler: built/app.lambdaHandler
       Runtime: nodejs12.x
       Timeout: 120
@@ -61,7 +61,7 @@ Resources:
   UploadMerkleTreeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/upload-merkle-tree/
+      CodeUri: functions/uploader/
       Handler: built/app.lambdaHandler
       Runtime: nodejs12.x
       Timeout: 120
@@ -77,7 +77,7 @@ Resources:
   SplitMerkleTreeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/split-merkle-tree/
+      CodeUri: functions/splitter/
       Handler: built/app.lambdaHandler
       Runtime: nodejs12.x
       Timeout: 120

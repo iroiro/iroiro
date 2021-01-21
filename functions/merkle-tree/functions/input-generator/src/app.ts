@@ -5,7 +5,7 @@ import {
 import { OldFormat } from "@iroiro/merkle-distributor/src/parse-balance-map";
 import { isAddress } from "web3-utils";
 import { S3 } from "aws-sdk";
-import { uploadFile } from "../../upload-merkle-tree/src/app";
+import { uploadFile } from "../../uploader/src/app";
 
 const s3 = new S3();
 

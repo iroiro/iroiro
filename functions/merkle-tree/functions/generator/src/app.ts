@@ -8,7 +8,7 @@ import {
   OldFormat,
 } from "@iroiro/merkle-distributor";
 import { S3 } from "aws-sdk";
-import { getFile } from "../../generate-merkle-tree-input/src/app";
+import { getFile } from "../../input-generator/src/app";
 const s3 = new S3();
 
 exports.lambdaHandler = async (
