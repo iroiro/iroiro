@@ -13,10 +13,7 @@ export interface PinFileResult {
   readonly IpfsHash: string;
 }
 
-exports.lambdaHandler = async (
-  event: APIGatewayProxyEvent,
-  context: APIGatewayEventRequestContext
-) => {
+exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
   // @ts-ignore
   const key = event["key"];
   console.debug("key", key);

@@ -12,10 +12,7 @@ const s3 = new S3();
 const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
 
-exports.lambdaHandler = async (
-  event: APIGatewayProxyEvent,
-  context: APIGatewayEventRequestContext
-) => {
+exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
   // @ts-ignore
   const inputCid = event["cid"];
 

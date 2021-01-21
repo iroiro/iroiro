@@ -17,28 +17,27 @@ interface Targets {
 
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
 
-exports.lambdaHandler = async (
-  event: APIGatewayProxyEvent,
-  context: APIGatewayEventRequestContext
-) => {
+exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
   // @ts-ignore
   const cid: string = event["cid"];
+
+  // TODO treat string amount
   // @ts-ignore
-  const amount: number | string = event["amount"];
+  const amount: number = event["amount"];
+
   // get amount from both of number or string
   if (!amount || amount < 0) {
-    // TODO throw error
+    throw Error(`amount is invalid. passed: ${amount}`);
   }
 
   // TODO error handling
   const targets = (await getFile(cid)) as Targets;
-  if (targets.type !== "address") {
-    // TODO throw error
+  if (targets.type !== "address" || !Array.isArray(targets.targets)) {
+    throw Error("given file is invalid.");
   }
 
-  // if targets contain non-address value, return error
   if (!isAllAddress(targets)) {
-    // TODO throw error
+    throw Error("Non address value is contained in targets.");
   }
 
   const input: OldFormat = {};

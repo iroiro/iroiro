@@ -6,11 +6,7 @@ import { S3 } from "aws-sdk";
 
 const s3 = new S3();
 
-exports.lambdaHandler = async (
-  event: APIGatewayProxyEvent,
-  context: APIGatewayEventRequestContext
-) => {
-  // TODO error handling
+exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
   // @ts-ignore
   const cid = event["cid"];
   // @ts-ignore
@@ -35,10 +31,6 @@ exports.lambdaHandler = async (
 
   // TODO error handling
   const merkleProofBucket = process.env.MERKLE_PROOF_BUCKET;
-  if (!merkleProofBucket) {
-    // TODO error handling
-    return;
-  }
   await Promise.all(
     Object.entries(merkleTree.claims).map(async ([address, proof]) => {
       const merkleTreeKey = `${cid}/${address.toLowerCase()}.json`;
