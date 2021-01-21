@@ -9,12 +9,13 @@ import { uploadFile } from "../../src/app";
 const app = require("../../src/app");
 const chai = require("chai");
 const expect = chai.expect;
-let event: APIGatewayProxyEvent, context: APIGatewayEventRequestContext;
+let event: any, context: APIGatewayEventRequestContext;
 
 describe("Tests Stock Checker", function () {
   it("Verifies response", async () => {
     event = {
-      key: "testcid.json",
+      key:
+        "0x6ff9dfec88bddca62d41745d6afedab6889fcebec5e3de5624e5bbbdb096150e.json",
     };
     const result = await app.lambdaHandler(event, context);
     console.debug("result", result);
@@ -25,7 +26,9 @@ describe("Tests Stock Checker", function () {
       "QmR6oHSLTeTMVdyYWmNZyYLUEYMe6HHQxhBLZajWdSK2MJ"
     );
     expect(result.key).to.be.an("string");
-    expect(result.key).to.equal("testcid.json");
+    expect(result.key).to.equal(
+      "0x6ff9dfec88bddca62d41745d6afedab6889fcebec5e3de5624e5bbbdb096150e.json"
+    );
   });
 });
 

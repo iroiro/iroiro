@@ -11,7 +11,8 @@ let event, context: APIGatewayEventRequestContext;
 describe("Tests Input Generator", function () {
   it("Verifies response", async () => {
     event = {
-      cid: "QmNvbpz6i5FymwMpoTi2e5HJGmFP6WarKTrpzNzY26BTd5",
+      cid: "QmVrBcK6WZvcKvnJXLq1RM8fVkyAdiDXJFvfXxCtQF73MX",
+      amount: 100,
     };
     const result = await app.lambdaHandler(event, context);
     console.debug("result: ", result);
@@ -19,7 +20,7 @@ describe("Tests Input Generator", function () {
     expect(result).to.be.an("object");
     expect(result.cid).to.be.an("string");
     expect(result.cid).to.equal(
-      "QmbJWAESqCsf4RFCqEY7jecCashj8usXiyDNfKtZCwwzGb"
+      "QmV9ZNxdwamcxx9CuhBpwZCTSLXgwFths5GRRdBDubi3gB"
     );
   });
 });

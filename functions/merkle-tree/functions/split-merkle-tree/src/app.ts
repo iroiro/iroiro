@@ -41,7 +41,7 @@ exports.lambdaHandler = async (
   }
   await Promise.all(
     Object.entries(merkleTree.claims).map(async ([address, proof]) => {
-      const merkleTreeKey = `${cid}/${address}.json`;
+      const merkleTreeKey = `${cid}/${address.toLowerCase()}.json`;
       const putObjectParams: S3.Types.PutObjectRequest = {
         Bucket: merkleProofBucket,
         Key: merkleTreeKey,

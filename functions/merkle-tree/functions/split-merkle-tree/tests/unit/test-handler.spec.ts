@@ -8,14 +8,13 @@ import {
 const app = require("../../src/app");
 const chai = require("chai");
 const expect = chai.expect;
-let event: APIGatewayProxyEvent, context: APIGatewayEventRequestContext;
+let event: any, context: APIGatewayEventRequestContext;
 
 describe("Tests Stock Checker", function () {
   it("Verifies response", async () => {
     event = {
-      bucket: process.env.MERKLE_TREE_BUCKET,
-      // TODO update key
-      key: "testcid.json",
+      key:
+        "0x6ff9dfec88bddca62d41745d6afedab6889fcebec5e3de5624e5bbbdb096150e.json",
       cid: "QmR6oHSLTeTMVdyYWmNZyYLUEYMe6HHQxhBLZajWdSK2MJ",
     };
     const result = await app.lambdaHandler(event, context);
