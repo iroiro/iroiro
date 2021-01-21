@@ -8,8 +8,9 @@ import {
   OldFormat,
 } from "@iroiro/merkle-distributor";
 import { S3 } from "aws-sdk";
-import { getFile } from "../../input-generator/src/app";
 const s3 = new S3();
+const ipfsClient = require("ipfs-http-client");
+const ipfs = ipfsClient("https://gateway.pinata.cloud/");
 
 exports.lambdaHandler = async (
   event: APIGatewayProxyEvent,
@@ -46,4 +47,18 @@ exports.lambdaHandler = async (
     bucket: merkleTreeBucket,
     key: merkleTreeKey,
   };
+};
+
+// TODO integrate with input-generator
+export const getFile = async (cid: string): Promise<object> => {
+  for await (const file of ipfs.get(cid)) {
+    if (!file.content) {
+      continue;
+    }
+    const content = [];
+    for await (const chunk of file.content) {
+      content.push(chunk);
+    }
+    return JSON.parse(content.toString());
+  }
 };
