@@ -28,6 +28,7 @@ describe("WalletCampaign", () => {
     "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
   ];
   const campaignInfoCid = "campaign info cid";
+  const recipientsCid = "recipients cid";
   const merkleTreeCid = "merkle tree cid";
   const recipientsNum = 100;
 
@@ -56,6 +57,7 @@ describe("WalletCampaign", () => {
       abctoken.address,
       consumer,
       campaignInfoCid,
+      recipientsCid,
       merkleTreeCid,
       recipientsNum,
       now,
@@ -87,6 +89,7 @@ describe("WalletCampaign", () => {
           abctoken.address,
           consumer,
           campaignInfoCid,
+          recipientsCid,
           merkleTreeCid,
           recipientsNum,
           oneweeklater,
@@ -128,6 +131,7 @@ describe("WalletCampaign", () => {
           abctoken.address,
           consumer,
           campaignInfoCid,
+          recipientsCid,
           merkleTreeCid,
           recipientsNum,
           now,

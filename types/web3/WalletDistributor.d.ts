@@ -50,6 +50,7 @@ export interface WalletDistributor extends BaseContract {
       tokenSender: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: number | string,
       startDate: number | string,
       endDate: number | string
