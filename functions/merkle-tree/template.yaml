@@ -25,12 +25,6 @@ Resources:
             FunctionName: !Ref UploadMerkleTreeFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref SplitMerkleTreeFunction
-        - S3CrudPolicy:
-            BucketName: "iroiro-wallet-campaign-merkle-tree-inputs"
-        - S3CrudPolicy:
-            BucketName: "iroiro-wallet-campaign-merkle-trees"
-        - S3CrudPolicy:
-            BucketName: "iroiro-wallet-campaign-merkle-proofs"
 
   GenerateMerkleTreeInputFunction:
     Type: AWS::Serverless::Function
