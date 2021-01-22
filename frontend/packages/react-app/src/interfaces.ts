@@ -91,6 +91,8 @@ export interface CampaignInfo {
   readonly checkRequests: CheckRequest[];
   readonly campaignMetadata: CampaignMetadata;
   readonly claimed: number;
+  readonly merkleRoot: string;
+  readonly merkleTreeCid: string;
 }
 
 export interface CampaignMetadata {
@@ -125,6 +127,7 @@ export interface TokenInformationState {
   activities: Activity[];
   balances: Balance[];
   now: Date;
+  distributorType: string;
 }
 
 export interface Campaigns {
@@ -153,4 +156,5 @@ export interface TokenListState {
 export interface WalletListState {
   targets: string[];
   type: string;
+  filelist: FileList | null;
 }

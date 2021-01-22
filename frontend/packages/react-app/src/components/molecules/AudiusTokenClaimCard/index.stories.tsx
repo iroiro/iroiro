@@ -1,18 +1,18 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import TokenClaimCard from "./index";
-import { TokenClaimCardProps } from "./index";
+import AudiusTokenClaimCard from "./index";
+import { AudiusTokenClaimCardProps } from "./index";
 import { audiusState } from "../../../utils/mockData";
 
 export default {
-  title: "Molecules/TokenClaimCard",
-  component: TokenClaimCard,
+  title: "Molecules/AudiusTokenClaimCard",
+  component: AudiusTokenClaimCard,
 } as Meta;
 
-const Template: Story<TokenClaimCardProps> = (args) => (
+const Template: Story<AudiusTokenClaimCardProps> = (args) => (
   <BrowserRouter>
-    <TokenClaimCard {...args} />
+    <AudiusTokenClaimCard {...args} />
   </BrowserRouter>
 );
 

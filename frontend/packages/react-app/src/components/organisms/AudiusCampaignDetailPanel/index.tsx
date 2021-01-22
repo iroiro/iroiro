@@ -1,7 +1,7 @@
 import * as React from "react";
 import { TokenInformationState } from "../../../interfaces";
 import TokenRequestCard from "../../molecules/TokenRequestCard";
-import TokenClaimCard from "../../molecules/TokenClaimCard";
+import AudiusTokenClaimCard from "../../molecules/AudiusTokenClaimCard";
 import TokenCampaignDetail from "../TokenCampaignDetail";
 import { Typography, Box } from "@material-ui/core";
 import { Dispatch } from "react";
@@ -9,7 +9,7 @@ import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import SigninAudius from "../../molecules/SigninAudius";
 import { AUDIUS_ACTIONS, AudiusState } from "../../../reducers/audius";
 
-export interface TokenDetailCampaignPanelProps {
+export interface AudiusCampaignDetailPanelProps {
   readonly state: TokenInformationState;
   readonly dispatch: Dispatch<TokenInformationAction>;
   readonly audiusState: AudiusState;
@@ -17,7 +17,7 @@ export interface TokenDetailCampaignPanelProps {
 }
 
 // TODO: Add waiting transactions
-const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
+const AudiusCampaignDetailPanel: React.FC<AudiusCampaignDetailPanelProps> = ({
   state,
   dispatch,
   audiusState,
@@ -62,7 +62,7 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
               audiusState={audiusState}
             />
             {state.isTokenCheckFinished && (
-              <TokenClaimCard
+              <AudiusTokenClaimCard
                 campaignAddress={state?.campaignAddress ?? ""}
                 symbol={state.token.symbol}
                 decimals={state.token.decimals}
@@ -72,6 +72,7 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
                 userAddress={state.userAddress ?? ""}
                 dispatch={dispatch}
                 audiusState={audiusState}
+                distributorType={state.distributorType}
               />
             )}
           </>
@@ -81,4 +82,4 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
   );
 };
 
-export default TokenDetailCampaignPanel;
+export default AudiusCampaignDetailPanel;

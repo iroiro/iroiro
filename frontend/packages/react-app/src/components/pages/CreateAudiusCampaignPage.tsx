@@ -6,7 +6,7 @@ import {
   getWalletBalance,
   getAllowance,
   setApproveAmount,
-  createCampaign,
+  createAudiusCampaign,
   parseUnits,
 } from "../../utils/web3";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
@@ -179,7 +179,7 @@ const CreateAudiusCampaignPage: React.FC<CreateAudiusCampaignPageProps> = ({
       const secondsStartDate = startDate / 1000;
       const secondsEndDate = endDate / 1000;
 
-      createCampaign(
+      createAudiusCampaign(
         library,
         tokenAddress,
         campaignInfoCid,

@@ -4,15 +4,18 @@ import { Box, Typography, Card, Button } from "@material-ui/core";
 // import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import { DISTRIBUTOR_ACTIONS } from "../../../reducers/distributorForm";
 import { WalletListState } from "../../../interfaces";
+import { WALLET_ACTIONS } from "../../../reducers/wallet";
 
 export interface TargetsProps {
   readonly walletListState: WalletListState;
-  distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
 }
 
 const WalletDistributionTargets: React.FC<TargetsProps> = ({
   walletListState,
   distributorFormDispatch,
+  walletDispatch,
 }) => (
   <>
     <Card>
@@ -60,8 +63,21 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
             </Box>
             <Button variant="contained" component="label">
               Upload File
-              <input type="file" accept="application/json" hidden />
+              <input
+                type="file"
+                accept="application/json"
+                hidden
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  walletDispatch({
+                    type: "walletlistFile:upload",
+                    payload: {
+                      walletlistFile: event.target.files,
+                    },
+                  })
+                }
+              />
             </Button>
+            <Box>{walletListState.targets[0]}</Box>
           </>
         )}
       </Box>

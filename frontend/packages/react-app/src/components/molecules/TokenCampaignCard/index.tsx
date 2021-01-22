@@ -20,11 +20,21 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
   campaign,
   dispatch,
 }) => {
-  const onClickDetail = () => {
+  const onClickDetail = (distributorAddress: string) => {
+    let type = "";
+    if (distributorAddress === "0x590b4465a94be635bf2f760025c61ec3680f687c") {
+      type = "audius";
+    }
+    if (distributorAddress === "0xb562cf605a0f8a123bf7abfdfe1317671a8b5ead") {
+      type = "wallet";
+    }
+    console.log(type);
+    console.log(distributorAddress);
     dispatch({
       type: "campaignAddress:set",
       payload: {
         campaignAddress: campaign.id,
+        distributorType: type,
       },
     });
   };
@@ -34,7 +44,10 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
       <CardContent>
         <Container>
           <Box display="flex" justifyContent="space-between">
-            <Link component="button" onClick={() => onClickDetail()}>
+            <Link
+              component="button"
+              onClick={() => onClickDetail(campaign.distributor.id)}
+            >
               <Typography variant="h5">
                 {campaign.campaignMetadata.name}
               </Typography>

@@ -11,9 +11,11 @@ import { useWeb3React } from "@web3-react/core";
 const campaignsInitialState = {
   campaigns: new Array<CampaignInfo>(),
 };
-const ExternalTokenDetailPage: React.FC<RouteComponentProps<{
-  tokenAddress: string;
-}>> = (props) => {
+const ExternalTokenDetailPage: React.FC<
+  RouteComponentProps<{
+    tokenAddress: string;
+  }>
+> = (props) => {
   const { active, account } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const [tokenState, tokenDispatch] = useReducer(

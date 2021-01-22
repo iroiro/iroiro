@@ -65,6 +65,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const { isClaimable } = useIsClaimable(
     library,
     state?.campaignAddress ?? "",
+    state?.distributorType ?? "",
     user?.wallet ?? ""
   );
 
@@ -124,7 +125,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
     // TODO: After made campaign creation function, change dynamic value
     getCampaigns({
       variables: {
-        creator: "0x84d800dae0bdb31a4de9918782bffcc8d041c1b8",
+        creator: "0x4B8619890fa9C3cF11C497961eB4b970D440127F".toLowerCase(),
         token: tokenAddress.toLowerCase(),
       },
     });

@@ -4,19 +4,22 @@ import AppHeader from "../../molecules/AppHeader";
 import ApproveToken from "../../organisms/ApproveToken";
 import SetupCampaign from "../../organisms/SetupCampaign";
 import { AccountToken } from "../../../interfaces";
-import DistributionTargets from "../../organisms/AudiusDistributionTargets";
+import WalletDistributionTargets from "../../organisms/WalletDistributionTargets";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
+import { WALLET_ACTIONS } from "../../../reducers/wallet";
+import { WalletListState } from "../../../interfaces";
 
 export interface CampaignInfo {
   readonly active: boolean;
   readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
-  distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly walletListState: WalletListState;
+  readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
 }
 
 const CreateWalletCampaignPageTemaplate: React.FC<CampaignInfo> = ({
@@ -24,6 +27,8 @@ const CreateWalletCampaignPageTemaplate: React.FC<CampaignInfo> = ({
   tokenInfo,
   distributorFormState,
   distributorFormDispatch,
+  walletListState,
+  walletDispatch,
 }) => (
   <div>
     <AppHeader />
@@ -39,12 +44,11 @@ const CreateWalletCampaignPageTemaplate: React.FC<CampaignInfo> = ({
               <Typography variant={"h3"}>Wallet Address Campaign</Typography>
             </Box>
             {distributorFormState.step === 1 && (
-              // <DistributionTargets
-              //   audiusState={audiusState}
-              //   audiusDispatch={audiusDispatch}
-              //   distributorFormDispatch={distributorFormDispatch}
-              // />
-              <div>AAÀAAAA</div>
+              <WalletDistributionTargets
+                walletListState={walletListState}
+                distributorFormDispatch={distributorFormDispatch}
+                walletDispatch={walletDispatch}
+              />
             )}
             {distributorFormState.step === 2 && (
               <ApproveToken

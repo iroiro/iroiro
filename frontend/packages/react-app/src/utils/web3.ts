@@ -2,12 +2,13 @@ import { Web3Provider } from "@ethersproject/providers";
 import { TokenBasic } from "../interfaces";
 import { FanToken__factory as FanTokenFactory } from "../types";
 import { CCTWalletDistributor__factory as CCTWalletDistributor } from "../types";
+import { WalletDistributor__factory as WalletDistributor } from "../types";
 import { CampaignInterface__factory as Campaign } from "../types";
-import BN from "bn.js";
+import { WalletCampaign__factory as WalletCampaign } from "../types";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
-import { utils } from "ethers";
+import { Bytes, utils } from "ethers";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -110,7 +111,7 @@ export const setApproveAmount = async (
     });
 };
 
-export const createCampaign = async (
+export const createAudiusCampaign = async (
   library: Web3Provider | undefined,
   tokenAddress: string,
   campaignInfoCid: string,
@@ -131,6 +132,42 @@ export const createCampaign = async (
 
   return distributor
     .createCampaign(
+      tokenAddress,
+      walletAddress,
+      campaignInfoCid,
+      recipientsCid,
+      recipientsNum,
+      startDate,
+      endDate
+    )
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const createWalletCampaign = async (
+  library: Web3Provider | undefined,
+  merkleRoot: string,
+  tokenAddress: string,
+  campaignInfoCid: string,
+  recipientsCid: string,
+  recipientsNum: number,
+  startDate: number,
+  endDate: number
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const walletAddress = await signer.getAddress();
+  const distributor = WalletDistributor.connect(
+    addresses.WalletDistributor,
+    signer
+  );
+
+  return distributor
+    .createCampaign(
+      merkleRoot,
       tokenAddress,
       walletAddress,
       campaignInfoCid,
@@ -174,6 +211,41 @@ export const refundCampaign = async (
 
   return campaignContract
     .refundRemainingTokens()
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const walletClaim = async (
+  library: Web3Provider | undefined,
+  campaignAddress: string,
+  merkleTreeCid: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const walletAddress = await signer.getAddress();
+
+  // const baseUrl =
+  //   "https://iroiro-wallet-campaign-merkle-proofs.s3-ap-northeast-1.amazonaws.com/";
+  // const url = `${baseUrl}${merkleTreeCid}/${walletAddress.toLowerCase()}.json`;
+  // const response = await fetch(url, {
+  //   method: "GET",
+  //   mode: "no-cors",
+  // });
+  // console.log(response);
+  // const sample = await response.json();
+  // console.log(sample);
+
+  const campaignContract = WalletCampaign.connect(campaignAddress, signer);
+
+  // TODO
+  return campaignContract
+    .claim(0, walletAddress, "0x64", [
+      "0x7311552d5f9556294eef04cdff6a9cc8e52a4495f176f4afd05703eee0965701",
+      "0xc97b2929d684f9ccf38caadfa13e3661db2f2f54dbbaec067ea5cddffc5119bc",
+    ])
     .then((transaction: ContractTransaction) => {
       return transaction;
     });

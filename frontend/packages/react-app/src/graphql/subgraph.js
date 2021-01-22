@@ -74,6 +74,8 @@ export const GET_CAMPAIGNS = gql`
       endDate
       claimAmount
       status
+      merkleRoot
+      merkleTreeCid
     }
   }
 `;

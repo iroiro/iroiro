@@ -1,44 +1,41 @@
 import * as React from "react";
 import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
-import { useClaim } from "../../../hooks/distributors/cct-wallet/useClaim";
 import { Dispatch, useCallback } from "react";
-import { AudiusState } from "../../../reducers/audius";
 import TokenAmount from "../../atoms/TokenAmount";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { walletClaim } from "../../../utils/web3";
 
-export interface TokenClaimCardProps {
+export interface WalletTokenClaimCardProps {
   campaignAddress: string;
   symbol: string;
   claimAmount: string;
   isClaimable: boolean;
   isClaimed: boolean;
-  userAddress: string;
   decimals: number;
   readonly dispatch: Dispatch<TokenInformationAction>;
-  readonly audiusState: AudiusState;
+  merkleTreeCid: string;
 }
 
-const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
+const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
   campaignAddress,
   symbol,
   claimAmount,
   isClaimable,
   isClaimed,
-  userAddress, // TODO enable switching Audius address and web wallet address
   decimals,
   dispatch,
-  audiusState,
+  merkleTreeCid,
 }) => {
   const { library } = useWeb3React();
-  const claim = useClaim(
-    library,
-    campaignAddress,
-    audiusState.libs,
-    userAddress
-  );
+
   const onClickClaim = useCallback(async () => {
-    const transaction = await claim();
+    const transaction = await walletClaim(
+      library,
+      campaignAddress,
+      merkleTreeCid
+    );
+
     if (transaction === undefined) {
       console.error("Transaction failed");
       return;
@@ -46,7 +43,7 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
     dispatch({ type: "isCampaignClaimed:setTrue" });
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
-  }, [claim, dispatch]);
+  }, [dispatch]);
 
   let text = "We are sorry but you can not claim token.";
   if (isClaimable) {
@@ -89,4 +86,4 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
   );
 };
 
-export default TokenClaimCard;
+export default WalletTokenClaimCard;

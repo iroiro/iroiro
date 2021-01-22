@@ -112,6 +112,8 @@ export const campaignInitialState: CampaignData = {
     claimedNum: "-",
     claims: [],
     checkRequests: [],
+    merkleRoot: "",
+    merkleTreeCid: "",
   },
   isCancelRequest: false,
   isRefundRequest: false,

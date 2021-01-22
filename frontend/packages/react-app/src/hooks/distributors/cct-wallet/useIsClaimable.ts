@@ -5,6 +5,7 @@ import { CCTWalletCampaign__factory } from "../../../types";
 export const useIsClaimable = (
   library: Web3Provider | undefined,
   campaignAddress: string,
+  distributorType: string,
   fromAddress: string
 ): {
   isClaimable: boolean;
@@ -16,7 +17,7 @@ export const useIsClaimable = (
   const [error, setError] = useState<any | undefined>();
 
   useEffect(() => {
-    const f = async () => {
+    const checkAudiusState = async () => {
       if (!library || fromAddress === "" || campaignAddress === "") {
         setError("Invalid arguments.");
         return;
@@ -36,7 +37,20 @@ export const useIsClaimable = (
       setLoading(false);
       setResult(isClaimable);
     };
-    f();
+
+    const checkWalletState = async () => {
+      // TODO
+      setError(undefined);
+      setLoading(false);
+      setResult(true);
+    };
+
+    if (distributorType === "audius") {
+      checkAudiusState();
+    }
+    if (distributorType === "wallet") {
+      checkWalletState();
+    }
   }, [library, fromAddress, campaignAddress]);
   return { isClaimable: result, loading, error };
 };

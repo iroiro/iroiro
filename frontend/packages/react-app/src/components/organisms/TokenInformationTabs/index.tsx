@@ -10,7 +10,8 @@ import {
 import TokenInformationBar from "../TokenInformationBar";
 import BasicTokenInformation from "../BasicTokenInformation";
 import TokenCampaigns from "../TokenCampaigns";
-import TokenDetailCampaignPanel from "../TokenCampaignDetailPanel";
+import AudiusCampaignDetailPanel from "../AudiusCampaignDetailPanel";
+import WalletCampaignDetailPanel from "../WalletCampaignDetailPanel";
 import UserHistory from "../UserHistory";
 import { TokenInformationState } from "../../../interfaces";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
@@ -62,6 +63,33 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+function CampaignDetailPanel({
+  state,
+  dispatch,
+  audiusState,
+  audiusDispatch,
+}: TokenInformationProps) {
+  if (state.campaignAddress) {
+    if (state.distributorType === "") {
+      return <TokenCampaigns state={state} dispatch={dispatch} />;
+    }
+    if (state.distributorType === "audius") {
+      return (
+        <AudiusCampaignDetailPanel
+          state={state}
+          dispatch={dispatch}
+          audiusState={audiusState}
+          audiusDispatch={audiusDispatch}
+        />
+      );
+    }
+    if (state.distributorType === "wallet") {
+      return <WalletCampaignDetailPanel state={state} dispatch={dispatch} />;
+    }
+  }
+  return <TokenCampaigns state={state} dispatch={dispatch} />;
+}
+
 export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
   state,
   dispatch,
@@ -102,16 +130,12 @@ export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
           <BasicTokenInformation state={state} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {!state.campaignAddress ? (
-            <TokenCampaigns state={state} dispatch={dispatch} />
-          ) : (
-            <TokenDetailCampaignPanel
-              state={state}
-              dispatch={dispatch}
-              audiusState={audiusState}
-              audiusDispatch={audiusDispatch}
-            />
-          )}
+          <CampaignDetailPanel
+            state={state}
+            dispatch={dispatch}
+            audiusState={audiusState}
+            audiusDispatch={audiusDispatch}
+          />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Box pt={8} textAlign="center">

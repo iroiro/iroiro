@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import Web3 from "web3";
 import { Sign } from "web3-core";
 
-export const useClaim = (
+export const useAudiusClaim = (
   library: Web3Provider | undefined,
   campaignAddress: string,
   audiusLibs: any,

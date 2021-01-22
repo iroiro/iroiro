@@ -62,6 +62,8 @@ export const campaign: CampaignInfo = {
   claimedNum: "100",
   claims: [],
   checkRequests: [],
+  merkleRoot: "",
+  merkleTreeCid: "",
 };
 
 export const tokenInformationState: TokenInformationState = {
@@ -131,6 +133,7 @@ export const tokenInformationState: TokenInformationState = {
     },
   ],
   now: new Date(),
+  distributorType: "audius",
 };
 
 export const distributionTargets: Target[] = [
@@ -262,4 +265,5 @@ export const walletListState: WalletListState = {
     "0x0000000000000000000000000000000000000000",
   ],
   type: "address",
+  filelist: null,
 };
