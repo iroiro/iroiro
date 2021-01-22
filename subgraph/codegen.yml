@@ -1,0 +1,12 @@
+schema: ./frontend_schema.graphql
+documents: "src/queries/**/*.graphql"
+generates:
+  ./../frontend/packages/react-app/src/generated/graphql.tsx:
+    config:
+      scalars:
+        BigInt: string
+        Bytes: string
+    plugins:
+      - "typescript"
+      - "typescript-react-apollo"
+      - "typescript-operations"
