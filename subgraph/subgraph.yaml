@@ -3,43 +3,15 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: TokenFactory
-    network: rinkeby
-    #    network: kovan
-    #    network: mainnet # This is for local graph node
-    source:
-      address: "0x12E9153D1e8036C4F197F3Edf4f73707d3c77E98" # TokenFactory contract address on rinkeby
-      #      address: "0xf9cEA626332927ccc88e18BC497aaDA7E82Ce91f" # TokenFactory contract address on kovan
-      # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
-      abi: TokenFactory
-      startBlock: 7602285 # for Rinkeby. Comment out this line for local graph node
-    #      startBlock: 22251031 # for Kovan. Comment out this line for local graph node
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - CreateToken
-      abis:
-        - name: TokenFactory
-          file: ../contract/build/contracts/TokenFactory.json
-      eventHandlers:
-        - event: CreateToken(indexed address,indexed address,string,string,uint256,uint8,uint8,bool,uint8,bool)
-          handler: handleCreateToken
-      file: ./src/mapping.ts
-  - kind: ethereum/contract
     name: CCTWalletDistributor
     network: rinkeby
-    #    network: kovan
     #    network: mainnet # This is for local graph node
     source:
       # TODO: Investigate omitting address is available
       address: "0x590b4465a94bE635bF2F760025c61Ec3680f687C" # CCTWalletDistributor contract address on rinkeby
-      #      address: "0x02e00DD6c22223B7d459aB472C947544f1619921" # CCTWalletDistributor contract address on kovan
       # address: "[REWRITE WITH ADDRESS HERE]" # This is for local graph node
       abi: CCTWalletDistributor
       startBlock: 7643514  # for Rinkeby. Comment out this line for local graph node
-    #      startBlock: 22251048 # for Kovan. Comment out this line for local graph node
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -55,7 +27,30 @@ dataSources:
       eventHandlers:
         - event: CreateCampaign(indexed address,indexed address,indexed address)
           handler: handleCreateCampaign
-      file: ./src/distributor.ts
+      file: ./src/distributors/cct-wallet-distributor.ts
+  - kind: ethereum/contract
+    name: WalletDistributor
+    network: rinkeby
+    source:
+      address: "0xb562Cf605A0f8a123Bf7AbFDfe1317671A8B5EAd"
+      abi: WalletDistributor
+      startBlock: 7931096
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Campaign
+        - Distributor
+      abis:
+        - name: WalletDistributor
+          file: ../contract/build/contracts/WalletDistributor.json
+        - name: WalletCampaign
+          file: ../contract/build/contracts/WalletCampaign.json
+      eventHandlers:
+        - event: CreateCampaign(indexed address,indexed address,indexed address)
+          handler: handleCreateCampaign
+      file: ./src/distributors/wallet-distributor.ts
 # TODO Not deployed in this phase.
 #  - kind: ethereum/contract
 #    name: Donator
@@ -81,30 +76,8 @@ dataSources:
 #      file: ./src/donator.ts
 templates:
   - kind: ethereum/contract
-    name: FanToken
-    network: rinkeby
-    #    network: kovan
-    #    network: mainnet # This is for local graph node
-    source:
-      abi: FanToken
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - FanToken
-      abis:
-        - name: FanToken
-          file: ../contract/build/contracts/FanToken.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/mapping.ts
-  - kind: ethereum/contract
     name: CCTWalletCampaign
     network: rinkeby
-    #    network: kovan
-    #    network: mainnet # This is for local graph node
     source:
       abi: CCTWalletCampaign
     mapping:
@@ -128,4 +101,25 @@ templates:
           handler: handleClaim
         - event: UpdateStatus()
           handler: handleUpdateStatus
-      file: ./src/campaign.ts
+      file: ./src/campaigns/cct-wallet-campaign.ts
+  - kind: ethereum/contract
+    name: WalletCampaign
+    network: rinkeby
+    source:
+      abi: WalletCampaign
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Campaign
+        - Claim
+      abis:
+        - name: WalletCampaign
+          file: ../contract/build/contracts/WalletCampaign.json
+      eventHandlers:
+        - event: Claim(indexed address,indexed address)
+          handler: handleClaim
+        - event: UpdateStatus()
+          handler: handleUpdateStatus
+      file: ./src/campaigns/wallet-campaign.ts

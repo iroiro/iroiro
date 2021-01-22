@@ -22,7 +22,7 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
         <Input
           type="number"
           required
-          placeholder="0"
+          placeholder="0.0"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             distributorFormDispatch({
               type: "approveAmount:set",

@@ -53,7 +53,9 @@ describe("CampaignInterfaceV2", () => {
 
   describe("constructor", async () => {
     it("has a state variables", async () => {
-      expect(await this.campaign.campaignToken()).to.be.equal(this.abctoken.address);
+      expect(await this.campaign.campaignToken()).to.be.equal(
+        this.abctoken.address
+      );
       expect(await this.campaign.campaignInfoCid()).to.be.equal(
         "campaign info cid"
       );

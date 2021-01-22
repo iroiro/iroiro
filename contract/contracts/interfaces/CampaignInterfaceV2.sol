@@ -17,7 +17,7 @@ contract CampaignInterfaceV2 is Ownable {
 
     address payable public campaignToken;
     string public campaignInfoCid; // Contains campaign name and description as JSON
-    string public recipientsCid; // Contains recipients value as JSON
+    string public recipientsCid;
     // TODO Consider a gap between actual JSON elements and claim amounts.
     uint256 public claimAmount;
     uint32 public claimedNum = 0;

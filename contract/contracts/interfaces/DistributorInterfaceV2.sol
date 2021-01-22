@@ -41,6 +41,7 @@ contract DistributorInterfaceV2 {
         address tokenHolder, // Not only TokenHolder contract address but include creator address
         string memory campaignInfoCid,
         string memory recipientsCid,
+        string memory merkleTreeCid,
         uint32 recipientsNum,
         uint256 startDate,
         uint256 endDate

@@ -29,6 +29,7 @@ describe("WalletCampaign", () => {
   ];
   const campaignInfoCid = "campaign info cid";
   const recipientsCid = "recipients cid";
+  const merkleTreeCid = "merkle tree cid";
   const recipientsNum = 100;
 
   beforeEach(async () => {
@@ -57,6 +58,7 @@ describe("WalletCampaign", () => {
       consumer,
       campaignInfoCid,
       recipientsCid,
+      merkleTreeCid,
       recipientsNum,
       now,
       future,
@@ -64,6 +66,11 @@ describe("WalletCampaign", () => {
     );
     const campaignAddress = await distributor.campaignList(1);
     cc = await Campaign.at(campaignAddress);
+  });
+
+  it("has merkle tree cid", async () => {
+    const merkleTreeCid = await cc.merkleTreeCid();
+    expect(merkleTreeCid).to.equal("merkle tree cid");
   });
 
   describe("claim", () => {
@@ -83,6 +90,7 @@ describe("WalletCampaign", () => {
           consumer,
           campaignInfoCid,
           recipientsCid,
+          merkleTreeCid,
           recipientsNum,
           oneweeklater,
           twoweeklater,
@@ -124,6 +132,7 @@ describe("WalletCampaign", () => {
           consumer,
           campaignInfoCid,
           recipientsCid,
+          merkleTreeCid,
           recipientsNum,
           now,
           oneweeklater,
@@ -158,6 +167,19 @@ describe("WalletCampaign", () => {
           new BN(100),
           proof
         );
+      });
+
+      it("increment claimedNum", async () => {
+        const claimedNumBefore = await cc.claimedNum();
+        expect(claimedNumBefore).to.be.bignumber.equal(new BN(0));
+        await cc.claim(
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          new BN(100),
+          proof
+        );
+        const claimedNumAfter = await cc.claimedNum();
+        expect(claimedNumAfter).to.be.bignumber.equal(new BN(1));
       });
 
       it("emits event", async () => {
