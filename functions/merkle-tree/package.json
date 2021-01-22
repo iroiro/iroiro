@@ -1,0 +1,36 @@
+{
+  "name": "merkle-tree",
+  "version": "1.0.0",
+  "description": "This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders:",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "compile:all": "yarn compile:input-generator && yarn compile:generator && yarn compile:uploader && yarn compile:splitter",
+    "compile:input-generator": "yarn workspace input-generator compile",
+    "compile:generator": "yarn workspace generator compile",
+    "compile:uploader": "yarn workspace uploader compile",
+    "compile:splitter": "yarn workspace splitter compile",
+    "build:all": "sam build",
+    "build:input-generator": "sam build InputGeneratorFunction",
+    "build:generator": "sam build GeneratorFunction",
+    "build:uploader": "sam build UploaderFunction",
+    "build:splitter": "sam build SplitterFunction",
+    "invoke:all": "yarn invoke:input-generator && yarn invoke:generator && yarn invoke:uploader && yarn invoke:splitter",
+    "invoke:input-generator": "sam local invoke InputGeneratorFunction --env-vars env.json -e events/input-generator.json",
+    "invoke:generator": "sam local invoke GeneratorFunction --env-vars env.json -e events/generator.json",
+    "invoke:uploader": "sam local invoke UploaderFunction --env-vars env.json -e events/uploader.json",
+    "invoke:splitter": "sam local invoke SplitterFunction --env-vars env.json -e events/splitter.json",
+    "test:all": "yarn test:input-generator && yarn test:generator && yarn test:uploader && yarn test:splitter",
+    "test:input-generator": "yarn workspace input-generator test",
+    "test:generator": "yarn workspace generator test",
+    "test:uploader": "yarn workspace uploader test",
+    "test:splitter": "yarn workspace splitter test"
+  },
+  "author": "",
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "functions/*"
+    ]
+  }
+}
