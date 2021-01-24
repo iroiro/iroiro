@@ -81,7 +81,11 @@ export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
 
   return (
     <div className={classes.root}>
-      <TokenInformationBar state={state} />
+      <TokenInformationBar
+        token={state.token}
+        userAddress={state.userAddress}
+        userBalance={state.userBalance}
+      />
       <Tabs
         value={value}
         onChange={handleChange}
@@ -103,7 +107,7 @@ export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
         </TabPanel>
         <TabPanel value={value} index={1}>
           {!state.campaignAddress ? (
-            <TokenCampaigns state={state} dispatch={dispatch} />
+            <TokenCampaigns campaigns={state.campaigns} dispatch={dispatch} />
           ) : (
             <TokenDetailCampaignPanel
               state={state}

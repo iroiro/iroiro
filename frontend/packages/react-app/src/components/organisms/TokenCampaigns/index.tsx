@@ -8,18 +8,18 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import TokenCampaignCard from "../../molecules/TokenCampaignCard";
-import { TokenInformationState } from "../../../interfaces";
 import { Dispatch, useState } from "react";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
+import { CampaignInfo } from "../../../interfaces";
 
 export interface TokenCampaignsProps {
-  state: TokenInformationState;
+  campaigns: CampaignInfo[];
   dispatch: Dispatch<TokenInformationAction>;
 }
 
 const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
-  state: { campaigns },
+  campaigns,
   dispatch,
 }) => {
   const [filteredCampaigns, setFilteredCampaigns] = useState(campaigns);
@@ -53,9 +53,9 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
           }}
         />
       </div>
-      <Grid container spacing={4} direction="column">
+      <Grid container>
         {filteredCampaigns.length === 0 ? (
-          <Box mt={4}>
+          <Box mt={4} width={"100%"}>
             <Paper>
               <Box p={8} textAlign="center">
                 <Typography>No campaigns.</Typography>
@@ -63,7 +63,7 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
             </Paper>
           </Box>
         ) : (
-          <Box mt={4}>
+          <Box mt={4} width={"100%"}>
             {filteredCampaigns.map((campaign) => (
               <TokenCampaignCard
                 key={campaign.id}

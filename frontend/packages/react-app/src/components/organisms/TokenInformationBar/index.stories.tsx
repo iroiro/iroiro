@@ -17,14 +17,14 @@ const Template: Story<TokenInformationBarProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenInformationState,
+  token: tokenInformationState.token,
+  userAddress: tokenInformationState.userAddress,
+  userBalance: tokenInformationState.userBalance,
 };
 
 export const Loading = Template.bind({});
 Loading.args = {
-  state: {
-    ...tokenInformationState,
-    token: undefined,
-    campaigns: [],
-  },
+  token: undefined,
+  userAddress: tokenInformationState.userAddress,
+  userBalance: tokenInformationState.userBalance,
 };

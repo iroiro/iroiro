@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TokenInformationState } from "../../../interfaces";
+import { TokenBasic, TokenInformationState } from "../../../interfaces";
 import {
   Container,
   makeStyles,
@@ -11,7 +11,9 @@ import EtherscanLink from "../../atoms/EtherscanLink";
 import { getBalanceDevidedByDecimals } from "../../../utils/web3";
 
 export interface TokenInformationBarProps {
-  readonly state: TokenInformationState;
+  readonly token: TokenBasic | undefined;
+  readonly userAddress: string | undefined;
+  readonly userBalance: string | undefined;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -21,7 +23,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const TokenInformationBar: React.FC<TokenInformationBarProps> = ({
-  state: { token, userAddress, userBalance },
+  token,
+  userAddress,
+  userBalance,
 }: TokenInformationBarProps) => {
   const classes = useStyles();
 
