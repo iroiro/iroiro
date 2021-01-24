@@ -23,6 +23,7 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
   audiusState,
   audiusDispatch,
 }) => {
+  // TODO: move to template
   const campaign = state.campaigns.find(
     (campaign) => campaign.id === state.campaignAddress
   );
@@ -58,6 +59,7 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
           <>
             <TokenRequestCard
               state={state}
+              campaignAddress={state.campaignAddress}
               dispatch={dispatch}
               audiusState={audiusState}
             />

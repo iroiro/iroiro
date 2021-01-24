@@ -1,11 +1,11 @@
-import React, { useState, Dispatch } from "react";
+import React, { useState } from "react";
 import AppHeader from "../../molecules/AppHeader";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFanPage";
 import TokenCampaigns from "../../organisms/TokenCampaigns";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import TokenInformationBar from "../../organisms/TokenInformationBar";
-import { TokenCampaignsState } from "../../../reducers/TokenCampaigns";
+import { TokenCampaignsState } from "../../../reducers/tokenCampaigns";
 
 export interface TokenCampaignsTemplateProps {
   state: TokenCampaignsState;

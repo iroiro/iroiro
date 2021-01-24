@@ -5,9 +5,10 @@ import { RouteComponentProps } from "react-router-dom";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { CampaignInfo, CampaignMetadata } from "../../interfaces";
 import {
-  tokenCampaignsReducer,
   initialState,
-} from "../../reducers/TokenCampaigns";
+  tokenCampaignsReducer,
+} from "../../reducers/tokenCampaigns";
+
 import { getTokenInfo, getWalletBalance } from "../../utils/web3";
 import { TokenCampaignsTemplate } from "../templates/TokenCampaignsTemplate";
 

@@ -20,6 +20,7 @@ export interface TokenRequestCardProps {
   state: TokenInformationState;
   dispatch: Dispatch<TokenInformationAction>;
   readonly audiusState: AudiusState;
+  readonly campaignAddress: string | undefined;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -42,6 +43,7 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
   state,
   dispatch,
   audiusState,
+  campaignAddress,
 }) => {
   const classes = useStyles();
   const { library } = useWeb3React();
@@ -49,7 +51,7 @@ const TokenRequestCard: React.FC<TokenRequestCardProps> = ({
     library,
     ORACLE_ADDRESS,
     JOB_ID_CCT_WALLET_EA,
-    state?.campaignAddress ?? "",
+    campaignAddress ?? "",
     audiusState?.user?.wallet ?? ""
   );
 
