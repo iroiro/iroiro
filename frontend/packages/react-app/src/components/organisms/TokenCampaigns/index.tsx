@@ -8,20 +8,15 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import TokenCampaignCard from "../../molecules/TokenCampaignCard";
-import { Dispatch, useState } from "react";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { useState } from "react";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import { CampaignInfo } from "../../../interfaces";
 
 export interface TokenCampaignsProps {
   campaigns: CampaignInfo[];
-  dispatch: Dispatch<TokenInformationAction>;
 }
 
-const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
-  campaigns,
-  dispatch,
-}) => {
+const TokenCampaigns: React.FC<TokenCampaignsProps> = ({ campaigns }) => {
   const [filteredCampaigns, setFilteredCampaigns] = useState(campaigns);
   const [searchText, setSearchText] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +30,10 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
       setFilteredCampaigns(filter);
     }
   };
+
+  React.useEffect(() => {
+    setFilteredCampaigns(campaigns);
+  }, [campaigns]);
 
   return (
     <>
@@ -65,11 +64,7 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
         ) : (
           <Box mt={4} width={"100%"}>
             {filteredCampaigns.map((campaign) => (
-              <TokenCampaignCard
-                key={campaign.id}
-                campaign={campaign}
-                dispatch={dispatch}
-              />
+              <TokenCampaignCard key={campaign.id} campaign={campaign} />
             ))}
           </Box>
         )}

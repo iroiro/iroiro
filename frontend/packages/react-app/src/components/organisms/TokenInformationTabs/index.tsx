@@ -107,7 +107,7 @@ export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
         </TabPanel>
         <TabPanel value={value} index={1}>
           {!state.campaignAddress ? (
-            <TokenCampaigns campaigns={state.campaigns} dispatch={dispatch} />
+            <TokenCampaigns campaigns={state.campaigns} />
           ) : (
             <TokenDetailCampaignPanel
               state={state}

@@ -1,21 +1,18 @@
 import React, { useState, Dispatch } from "react";
-import { TokenInformationState } from "../../../interfaces";
 import AppHeader from "../../molecules/AppHeader";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFanPage";
 import TokenCampaigns from "../../organisms/TokenCampaigns";
 import Container from "@material-ui/core/Container";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import Box from "@material-ui/core/Box";
 import TokenInformationBar from "../../organisms/TokenInformationBar";
+import { TokenCampaignsState } from "../../../reducers/TokenCampaigns";
 
 export interface TokenCampaignsTemplateProps {
-  state: TokenInformationState;
-  dispatch: Dispatch<TokenInformationAction>;
+  state: TokenCampaignsState;
 }
 
 export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
   state,
-  dispatch,
 }) => {
   const [tabNumber, setTubNumber] = useState(1);
   return (
@@ -29,7 +26,7 @@ export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
       <TabMenuForFanPage value={tabNumber} onChange={(n) => setTubNumber(n)} />
       <Container>
         <Box style={{ padding: 24 }}>
-          <TokenCampaigns campaigns={state.campaigns} dispatch={dispatch} />
+          <TokenCampaigns campaigns={state.campaigns} />
         </Box>
       </Container>
     </div>

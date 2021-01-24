@@ -9,24 +9,19 @@ import {
 } from "@material-ui/core";
 import { CampaignInfo } from "../../../interfaces";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
 
 export interface TokenCampaignCardProps {
   readonly campaign: CampaignInfo;
-  readonly dispatch: React.Dispatch<TokenInformationAction>;
 }
 
-const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
-  campaign,
-  dispatch,
-}) => {
+const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({ campaign }) => {
   const onClickDetail = () => {
-    dispatch({
-      type: "campaignAddress:set",
-      payload: {
-        campaignAddress: campaign.id,
-      },
-    });
+    // dispatch({
+    //   type: "campaignAddress:set",
+    //   payload: {
+    //     campaignAddress: campaign.id,
+    //   },
+    // });
   };
 
   return (
