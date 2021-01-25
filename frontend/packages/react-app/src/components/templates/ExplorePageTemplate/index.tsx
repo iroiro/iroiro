@@ -18,7 +18,14 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
 }) => (
   <div>
     <AppHeader />
-    <Box m={"auto"} my={5} width={[3 / 4, 1 / 2]}>
+    <Box
+      m={"auto"}
+      my={5}
+      width={[4 / 5, 1 / 2]}
+      p={2}
+      minWidth={320}
+      style={{ boxSizing: "border-box" }}
+    >
       <Typography variant={"h3"}>Token Explorer</Typography>
       <Box mt={2}>
         <Typography>

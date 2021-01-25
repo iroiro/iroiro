@@ -13,6 +13,12 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: ['"Helvetica Neue"'],
   },
+  breakpoints: {
+    values: {
+      xs: 320,
+      sm: 600,
+    },
+  },
 });
 
 theme.typography.h3 = {
