@@ -1,0 +1,66 @@
+{
+    "Comment": "A state machine that generate, upload to IPFS and split as merkle proofs with address list.",
+    "StartAt": "Generate Input",
+    "States": {
+        "Generate Input": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-InputGeneratorFunction-1KFXUQRPHICKG",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "IntervalSeconds": 3,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 1.5
+                }
+            ],
+            "Next": "Generate"
+        },
+        "Generate": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-GeneratorFunction-1L0LAM4M92HUQ",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "IntervalSeconds": 2,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 1
+                }
+            ],
+            "Next": "Upload"
+        },
+        "Upload": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-UploaderFunction-PNGHG81PEHZU",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "IntervalSeconds": 2,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 1
+                }
+            ],
+            "Next": "Split"
+        },
+        "Split": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-SplitterFunction-19WPI9VUM7LGP",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "IntervalSeconds": 2,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 1
+                }
+            ],
+            "End": true
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Card, CardContent, Typography, Box } from "@material-ui/core";
 import { Activity, TokenBasic } from "../../../interfaces";
+import { getBalanceDevidedByDecimals } from "../../../utils/web3";
 
 export interface UserActivityCardProps {
   readonly activity: Activity;
@@ -11,6 +12,10 @@ const UserActivityCard: React.FC<UserActivityCardProps> = ({
   activity,
   token,
 }) => {
+  const amount = token
+    ? getBalanceDevidedByDecimals(activity.amount, token.decimals)
+    : activity.amount;
+
   return (
     <Card>
       <CardContent>
@@ -20,7 +25,7 @@ const UserActivityCard: React.FC<UserActivityCardProps> = ({
         <Box display="flex" justifyContent="space-between">
           <Typography>{activity.name}</Typography>
           <Typography variant="h4">
-            {activity.amount} ${token?.symbol}
+            {amount} ${token?.symbol}
           </Typography>
         </Box>
       </CardContent>

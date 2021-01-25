@@ -1,51 +1,73 @@
 import React from "react";
-import { Header } from "../../index";
-import { Theme, Box, Typography, Link } from "@material-ui/core";
+import { Box, Typography, Link, IconButton } from "@material-ui/core";
 import LogoButton from "../../atoms/LogoButton";
 import LinkButton from "../../atoms/LinkButton";
 import WalletButton from "../../atoms/WalletButton";
-import { withStyles } from "@material-ui/core/styles";
-
-const MBox = withStyles((theme: Theme) => ({
-  root: {
-    marginLeft: theme.spacing(1),
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(4),
-    },
-  },
-}))(Box);
+import {
+  Header,
+  IconBox,
+  SpMenuBox,
+  PcMenuBox,
+  LogoBox,
+  WalletButtonBox,
+  SpMenuWrapper,
+} from "./style";
+import { useState } from "react";
+import MenuIcon from "@material-ui/icons/Menu";
+import CloseIcon from "@material-ui/icons/Close";
 
 const AppHeader: React.FC = () => {
+  const [show, setShow] = useState(false);
+
+  const Menu = (
+    <>
+      <LinkButton
+        m={1}
+        path="/dashboard"
+        text="Distribution"
+        color={"secondary"}
+      />
+      <LinkButton m={1} path="/explore" text="Explore" color={"primary"} />
+      <WalletButtonBox mr={1}>
+        <WalletButton />
+      </WalletButtonBox>
+    </>
+  );
+
   return (
     <div>
-      <Box bgcolor={"primary.main"} style={{ textAlign: "center" }} py={1}>
+      <Box
+        bgcolor={"primary.main"}
+        style={{ textAlign: "center", minWidth: 320 }}
+        py={1}
+      >
         <Typography style={{ color: "white", fontSize: 12 }}>
-          🎨 Beta - Use at your own risk. Twitter:{" "}
+          🎨 Beta - Use at your own risk. Twitter:
           <Link
             href={"https://twitter.com/IroiroTokens"}
             style={{ color: "white" }}
           >
             @IroiroTokens
-          </Link>{" "}
+          </Link>
           🎨
         </Typography>
       </Box>
       <Header>
-        <MBox>
+        <LogoBox>
           <LogoButton />
-        </MBox>
-        <Box display="flex">
-          <LinkButton
-            m={1}
-            path="/dashboard"
-            text="Distribution"
-            color={"secondary"}
-          />
-          <LinkButton m={1} path="/explore" text="Explore" color={"primary"} />
-          <Box mr={1}>
-            <WalletButton />
-          </Box>
-        </Box>
+        </LogoBox>
+        <IconBox>
+          <IconButton aria-label="menu" onClick={() => setShow(!show)}>
+            {show && <CloseIcon />}
+            {!show && <MenuIcon />}
+          </IconButton>
+        </IconBox>
+
+        <SpMenuWrapper style={{ paddingBottom: show ? 180 : 0 }}>
+          <SpMenuBox style={{ opacity: show ? 1 : 0 }}>{Menu}</SpMenuBox>
+        </SpMenuWrapper>
+
+        <PcMenuBox display={"flex"}>{Menu}</PcMenuBox>
       </Header>
       <hr color={"lightgray"} style={{ margin: "0px" }} />
     </div>

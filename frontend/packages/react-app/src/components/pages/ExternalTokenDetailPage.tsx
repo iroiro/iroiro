@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useReducer } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import { campaignsReducer } from "../../reducers/campaigns";
-import { GET_CAMPAIGNS } from "../../graphql/subgraph";
+import { GET_CAMPAIGNS_BY_CREATOR_AND_TOKEN } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { CampaignInfo } from "../../interfaces";
 import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
@@ -26,7 +26,9 @@ const ExternalTokenDetailPage: React.FC<
     campaignsReducer,
     campaignsInitialState
   );
-  const [getCampaigns, { data }] = useLazyQuery(GET_CAMPAIGNS);
+  const [getCampaignsByCreatorAndToken, { data }] = useLazyQuery(
+    GET_CAMPAIGNS_BY_CREATOR_AND_TOKEN
+  );
 
   const getLocalToken = useCallback(() => {
     tokenDispatch({
@@ -54,14 +56,14 @@ const ExternalTokenDetailPage: React.FC<
 
   useEffect(() => {
     if (tokenAddress !== "" && account !== undefined && account !== null) {
-      getCampaigns({
+      getCampaignsByCreatorAndToken({
         variables: {
           creator: account.toLowerCase(),
           token: tokenAddress.toLowerCase(),
         },
       });
     }
-  }, [account, tokenAddress, getCampaigns]);
+  }, [account, tokenAddress, getCampaignsByCreatorAndToken]);
 
   useEffect(() => {
     if (data !== undefined) {
