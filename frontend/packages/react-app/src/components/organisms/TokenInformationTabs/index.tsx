@@ -80,58 +80,59 @@ export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
   };
 
   return (
-    <div className={classes.root}>
-      <TokenInformationBar
-        token={state.token}
-        userAddress={state.userAddress}
-        userBalance={state.userBalance}
-      />
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        scrollButtons="auto"
-        indicatorColor="primary"
-        textColor="primary"
-        style={{ backgroundColor: "white" }}
-        centered
-      >
-        <Tab label="Basic" {...a11yProps(0)} />
-        <Tab label="Campaigns" {...a11yProps(1)} />
-        <Tab label="Creator Log" {...a11yProps(2)} />
-        <Tab label="Donation" {...a11yProps(3)} />
-        <Tab label="User History" {...a11yProps(4)} />
-      </Tabs>
-      <Container maxWidth="md">
-        <TabPanel value={value} index={0}>
-          <BasicTokenInformation state={state} />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          {!state.campaignAddress ? (
-            <TokenCampaigns campaigns={state.campaigns} />
-          ) : (
-            <TokenDetailCampaignPanel
-              state={state}
-              dispatch={dispatch}
-              audiusState={audiusState}
-              audiusDispatch={audiusDispatch}
-            />
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Box pt={8} textAlign="center">
-            Coming soon...
-          </Box>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <Box pt={8} textAlign="center">
-            Coming soon...
-          </Box>
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <UserHistory state={state} />
-        </TabPanel>
-      </Container>
-    </div>
+    <div>infoTab</div>
+    // <div className={classes.root}>
+    //   <TokenInformationBar
+    //     token={state.token}
+    //     userAddress={state.userAddress}
+    //     userBalance={state.userBalance}
+    //   />
+    //   <Tabs
+    //     value={value}
+    //     onChange={handleChange}
+    //     scrollButtons="auto"
+    //     indicatorColor="primary"
+    //     textColor="primary"
+    //     style={{ backgroundColor: "white" }}
+    //     centered
+    //   >
+    //     <Tab label="Basic" {...a11yProps(0)} />
+    //     <Tab label="Campaigns" {...a11yProps(1)} />
+    //     <Tab label="Creator Log" {...a11yProps(2)} />
+    //     <Tab label="Donation" {...a11yProps(3)} />
+    //     <Tab label="User History" {...a11yProps(4)} />
+    //   </Tabs>
+    //   <Container maxWidth="md">
+    //     <TabPanel value={value} index={0}>
+    //       <BasicTokenInformation state={state} />
+    //     </TabPanel>
+    //     <TabPanel value={value} index={1}>
+    //       {!state.campaignAddress ? (
+    //         <TokenCampaigns campaigns={state.campaigns} />
+    //       ) : (
+    //         <TokenDetailCampaignPanel
+    //           state={state}
+    //           dispatch={dispatch}
+    //           audiusState={audiusState}
+    //           audiusDispatch={audiusDispatch}
+    //         />
+    //       )}
+    //     </TabPanel>
+    //     <TabPanel value={value} index={2}>
+    //       <Box pt={8} textAlign="center">
+    //         Coming soon...
+    //       </Box>
+    //     </TabPanel>
+    //     <TabPanel value={value} index={3}>
+    //       <Box pt={8} textAlign="center">
+    //         Coming soon...
+    //       </Box>
+    //     </TabPanel>
+    //     <TabPanel value={value} index={4}>
+    //       <UserHistory state={state} />
+    //     </TabPanel>
+    //   </Container>
+    // </div>
   );
 };
 

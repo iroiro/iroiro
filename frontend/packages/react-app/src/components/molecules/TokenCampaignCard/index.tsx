@@ -9,19 +9,20 @@ import {
 } from "@material-ui/core";
 import { CampaignInfo } from "../../../interfaces";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
+import { useHistory, withRouter } from "react-router-dom";
 
 export interface TokenCampaignCardProps {
   readonly campaign: CampaignInfo;
+  readonly tokenAddress: string;
 }
 
-const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({ campaign }) => {
+const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
+  campaign,
+  tokenAddress,
+}) => {
+  const history = useHistory();
   const onClickDetail = () => {
-    // dispatch({
-    //   type: "campaignAddress:set",
-    //   payload: {
-    //     campaignAddress: campaign.id,
-    //   },
-    // });
+    history.push(`/explore/${tokenAddress}/campaigns/${campaign.id}`);
   };
 
   return (

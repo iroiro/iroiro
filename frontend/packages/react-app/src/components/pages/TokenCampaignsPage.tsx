@@ -101,7 +101,7 @@ const TokenCampaignsPage: React.FC<
     f();
   }, [tokenAddress, campaignData]);
 
-  return <TokenCampaignsTemplate state={state} />;
+  return <TokenCampaignsTemplate state={state} tokenAddress={tokenAddress} />;
 };
 
 export default TokenCampaignsPage;

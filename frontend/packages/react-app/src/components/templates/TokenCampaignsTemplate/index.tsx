@@ -9,10 +9,12 @@ import { TokenCampaignsState } from "../../../reducers/tokenCampaigns";
 
 export interface TokenCampaignsTemplateProps {
   state: TokenCampaignsState;
+  tokenAddress: string;
 }
 
 export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
   state,
+  tokenAddress,
 }) => {
   const [tabNumber, setTubNumber] = useState(1);
   return (
@@ -26,7 +28,10 @@ export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
       <TabMenuForFanPage value={tabNumber} onChange={(n) => setTubNumber(n)} />
       <Container>
         <Box style={{ padding: 24 }}>
-          <TokenCampaigns campaigns={state.campaigns} />
+          <TokenCampaigns
+            campaigns={state.campaigns}
+            tokenAddress={tokenAddress}
+          />
         </Box>
       </Container>
     </div>

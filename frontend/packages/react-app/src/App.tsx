@@ -49,6 +49,7 @@ const App: React.FC = () => {
             component={TokenInformationPage}
           />
           <Route
+            exact
             path="/explore/:tokenAddress/campaigns"
             component={TokenCampaignsPage}
           />

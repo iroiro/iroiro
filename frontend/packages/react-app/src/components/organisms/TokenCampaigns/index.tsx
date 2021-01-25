@@ -14,9 +14,13 @@ import { CampaignInfo } from "../../../interfaces";
 
 export interface TokenCampaignsProps {
   campaigns: CampaignInfo[];
+  tokenAddress: string;
 }
 
-const TokenCampaigns: React.FC<TokenCampaignsProps> = ({ campaigns }) => {
+const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
+  campaigns,
+  tokenAddress,
+}) => {
   const [filteredCampaigns, setFilteredCampaigns] = useState(campaigns);
   const [searchText, setSearchText] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +68,11 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({ campaigns }) => {
         ) : (
           <Box mt={4} width={"100%"}>
             {filteredCampaigns.map((campaign) => (
-              <TokenCampaignCard key={campaign.id} campaign={campaign} />
+              <TokenCampaignCard
+                key={campaign.id}
+                campaign={campaign}
+                tokenAddress={tokenAddress}
+              />
             ))}
           </Box>
         )}

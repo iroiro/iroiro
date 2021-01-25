@@ -5,17 +5,17 @@ import { useClaim } from "../../../hooks/distributors/cct-wallet/useClaim";
 import { Dispatch, useCallback } from "react";
 import { AudiusState } from "../../../reducers/audius";
 import TokenAmount from "../../atoms/TokenAmount";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { CampaignDetailAction } from "../../../reducers/campaignDetail";
 
 export interface TokenClaimCardProps {
   campaignAddress: string;
-  symbol: string;
+  symbol: string | undefined;
   claimAmount: string;
   isClaimable: boolean;
   isClaimed: boolean;
   userAddress: string;
-  decimals: number;
-  readonly dispatch: Dispatch<TokenInformationAction>;
+  decimals: number | undefined;
+  readonly dispatch: Dispatch<CampaignDetailAction>;
   readonly audiusState: AudiusState;
 }
 
@@ -65,7 +65,7 @@ const TokenClaimCard: React.FC<TokenClaimCardProps> = ({
               <Box my={2}>
                 <TokenAmount
                   amount={claimAmount}
-                  decimals={decimals}
+                  decimals={decimals === undefined ? 0 : decimals}
                   align="center"
                   variant="h2"
                   symbol={symbol}

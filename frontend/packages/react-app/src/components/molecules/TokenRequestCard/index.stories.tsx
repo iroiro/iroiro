@@ -2,7 +2,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import TokenRequestCard, { TokenRequestCardProps } from "./index";
-import { tokenInformationState } from "../../../utils/mockData";
+import { campaignDetailState } from "../../../utils/mockData";
 
 export default {
   title: "Molecules/TokenRequestCard",
@@ -18,7 +18,7 @@ const Template: Story<TokenRequestCardProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   state: {
-    ...tokenInformationState,
+    ...campaignDetailState,
     isTokenRequested: false,
   },
 };
@@ -26,7 +26,7 @@ Default.args = {
 export const Requested = Template.bind({});
 Requested.args = {
   state: {
-    ...tokenInformationState,
+    ...campaignDetailState,
     isTokenRequested: true,
   },
 };

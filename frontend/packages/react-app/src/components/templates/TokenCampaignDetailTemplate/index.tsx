@@ -3,15 +3,18 @@ import AppHeader from "../../molecules/AppHeader";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFanPage";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 import TokenInformationBar from "../../organisms/TokenInformationBar";
 import TokenDetailCampaignPanel from "../../organisms/TokenCampaignDetailPanel";
-import { TokenInformationState } from "../../../interfaces";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
+import {
+  CampaignDetailAction,
+  CampaignDetailState,
+} from "../../../reducers/campaignDetail";
 
 export interface TokenCampaignsDetailTemplateProps {
-  state: TokenInformationState;
-  readonly dispatch: Dispatch<TokenInformationAction>;
+  state: CampaignDetailState;
+  readonly dispatch: Dispatch<CampaignDetailAction>;
   readonly audiusState: AudiusState;
   readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
 }
@@ -34,12 +37,19 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
       <TabMenuForFanPage value={tabNumber} onChange={(n) => setTubNumber(n)} />
       <Container>
         <Box style={{ padding: 24 }}>
-          <TokenDetailCampaignPanel
-            state={state}
-            dispatch={dispatch}
-            audiusState={audiusState}
-            audiusDispatch={audiusDispatch}
-          />
+          {state.campaign !== null && (
+            <TokenDetailCampaignPanel
+              state={state}
+              dispatch={dispatch}
+              audiusState={audiusState}
+              audiusDispatch={audiusDispatch}
+            />
+          )}
+          {state.campaign === null && (
+            <div>
+              <Typography>Campaign not found.</Typography>
+            </div>
+          )}
         </Box>
       </Container>
     </div>

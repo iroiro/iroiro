@@ -8,17 +8,19 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
-import { TokenInformationState } from "../../../interfaces";
 import { useWeb3React } from "@web3-react/core";
 import { JOB_ID_CCT_WALLET_EA, ORACLE_ADDRESS } from "../../../utils/const";
 import { Dispatch, useCallback } from "react";
 import { useRequestCheckingIsClaimable } from "../../../hooks/distributors/cct-wallet/useRequestCheckingIsClaimable";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import { AudiusState } from "../../../reducers/audius";
+import {
+  CampaignDetailAction,
+  CampaignDetailState,
+} from "../../../reducers/campaignDetail";
 
 export interface TokenRequestCardProps {
-  state: TokenInformationState;
-  dispatch: Dispatch<TokenInformationAction>;
+  state: CampaignDetailState;
+  dispatch: Dispatch<CampaignDetailAction>;
   readonly audiusState: AudiusState;
   readonly campaignAddress: string | undefined;
 }

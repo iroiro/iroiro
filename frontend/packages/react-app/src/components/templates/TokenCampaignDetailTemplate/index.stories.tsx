@@ -5,7 +5,7 @@ import {
   TokenCampaignsDetailTemplate,
   TokenCampaignsDetailTemplateProps,
 } from "./index";
-import { audiusState, tokenInformationState } from "../../../utils/mockData";
+import { audiusState, campaignDetailState } from "../../../utils/mockData";
 
 export default {
   title: "Templates/TokenCampaignsDeteilTemplate",
@@ -20,6 +20,6 @@ const Template: Story<TokenCampaignsDetailTemplateProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenInformationState,
+  state: campaignDetailState,
   audiusState,
 };

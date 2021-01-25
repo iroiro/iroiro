@@ -9,6 +9,7 @@ import {
 } from "../interfaces";
 import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
+import { CampaignDetailState } from "../reducers/campaignDetail";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -261,3 +262,16 @@ export const audiusState: AudiusState = {
   isRequestSignout: false,
   progress: 0,
 };
+
+export const campaignDetailState: CampaignDetailState = {
+  token: undefined,
+  userAddress: undefined,
+  userBalance: undefined,
+  isTokenRequested: false,
+  isTokenCheckFinished: false,
+  campaign: null,
+  campaignAddress: '',
+  isCampaignClaimable: false,
+  isCampaignClaimed: false,
+  now: new Date()
+}
