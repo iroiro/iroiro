@@ -28,8 +28,6 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
     if (distributorAddress === "0xb562cf605a0f8a123bf7abfdfe1317671a8b5ead") {
       type = "wallet";
     }
-    console.log(type);
-    console.log(distributorAddress);
     dispatch({
       type: "campaignAddress:set",
       payload: {

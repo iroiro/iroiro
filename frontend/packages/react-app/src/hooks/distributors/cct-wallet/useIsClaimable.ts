@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { CCTWalletCampaign__factory } from "../../../types";
+import { WalletCampaign__factory } from "../../../types";
 
 export const useIsClaimable = (
   library: Web3Provider | undefined,
@@ -39,9 +40,27 @@ export const useIsClaimable = (
     };
 
     const checkWalletState = async () => {
-      // TODO
+      if (!library || campaignAddress === "") {
+        setError("Invalid arguments.");
+        return;
+      }
+      setLoading(true);
       setError(undefined);
+      const signer = library.getSigner();
+      const walletAddress = await signer.getAddress();
+      const campaign = WalletCampaign__factory.connect(campaignAddress, signer);
+      const recipientsCid = await campaign.recipientsCid();
+      const url = `https://cloudflare-ipfs.com/ipfs/${recipientsCid}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      const index = data.targets.findIndex(
+        (item: string) => item === walletAddress
+      );
       setLoading(false);
+      if (index === -1) {
+        setResult(false);
+        return;
+      }
       setResult(true);
     };
 

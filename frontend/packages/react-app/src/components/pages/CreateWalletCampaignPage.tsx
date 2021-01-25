@@ -210,7 +210,6 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     async (allowance, targetNum, recipientsCid, account) => {
       const BNAllowance = BigNumber.from(allowance);
       const BNTargetsNum = BigNumber.from(targetNum);
-      // TODO
       const amount = BNAllowance.div(BNTargetsNum).toString();
 
       /*eslint-disable no-useless-escape*/
