@@ -10,24 +10,13 @@ export type ACTIONS =
   | {
       type: "describeStatus:update";
       payload: { status: string };
-    }
-  | {
-      type: "merkleProof:set";
-      payload: { merkleProof: MerkleProof };
     };
-
-interface MerkleProof {
-  index: number;
-  amount: string;
-  proof: string[];
-}
 
 export interface MerkltreeData {
   executionArn: string;
   status: string;
   merkleRoot: string;
   merkleTreeCid: string;
-  merkleProof?: MerkleProof;
 }
 
 export const merkletreeReducer = (
@@ -52,8 +41,6 @@ export const merkletreeReducer = (
         ...state,
         status: action.payload.status,
       };
-    case "merkleProof:set":
-      return { ...state, merkleProof: action.payload.merkleProof };
     default:
       return state;
   }
@@ -64,5 +51,4 @@ export const merkltreeInitialState: MerkltreeData = {
   status: "",
   merkleRoot: "",
   merkleTreeCid: "",
-  merkleProof: undefined,
 };

@@ -27,7 +27,6 @@ import {
   IPFS_PINNING_API,
   MERKLE_ROOT_API_START,
   MERKLE_ROOT_API_DESCRIBE,
-  MERKLE_PROOF_API,
 } from "../../utils/const";
 import { BigNumber } from "ethers";
 
@@ -259,18 +258,6 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     }
   }, []);
 
-  const getMerkleProof = useCallback(async (merkleTreeCid, account) => {
-    const accountLow = account.toLowerCase();
-    await fetch(`${MERKLE_PROOF_API}/${merkleTreeCid}/${accountLow}.json`)
-      .then((response) => response.json())
-      .then((data) => {
-        merkletreeDispatch({
-          type: "merkleProof:set",
-          payload: { merkleProof: data },
-        });
-      });
-  }, []);
-
   useEffect(() => {
     if (library) {
       getBalance(library);
@@ -364,17 +351,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         describeMerkleProof(merkletreeState.executionArn);
         return;
       }
-      if (
-        merkletreeState.status === "SUCCEEDED" &&
-        merkletreeState.merkleProof === undefined
-      ) {
-        getMerkleProof(merkletreeState.merkleTreeCid, account);
-        return;
-      }
-      if (
-        merkletreeState.status === "SUCCEEDED" &&
-        merkletreeState.merkleProof !== undefined
-      ) {
+      if (merkletreeState.status === "SUCCEEDED") {
         deployCampaign(
           library,
           merkletreeState.merkleRoot,

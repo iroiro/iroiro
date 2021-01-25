@@ -8,7 +8,8 @@ import { WalletCampaign__factory as WalletCampaign } from "../types";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
-import { Bytes, utils } from "ethers";
+import { utils } from "ethers";
+import { MERKLE_PROOF_API } from "../utils/const";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -227,27 +228,15 @@ export const walletClaim = async (
     return undefined;
   }
   const signer = library.getSigner();
-  const walletAddress = await signer.getAddress();
-
-  // const baseUrl =
-  //   "https://iroiro-wallet-campaign-merkle-proofs.s3-ap-northeast-1.amazonaws.com/";
-  // const url = `${baseUrl}${merkleTreeCid}/${walletAddress.toLowerCase()}.json`;
-  // const response = await fetch(url, {
-  //   method: "GET",
-  //   mode: "no-cors",
-  // });
-  // console.log(response);
-  // const sample = await response.json();
-  // console.log(sample);
-
   const campaignContract = WalletCampaign.connect(campaignAddress, signer);
-
-  // TODO
+  const walletAddress = await signer.getAddress();
+  const walletAddressLow = walletAddress.toLowerCase();
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddressLow}.json`
+  );
+  const data = await response.json();
   return campaignContract
-    .claim(0, walletAddress, "0x64", [
-      "0x7311552d5f9556294eef04cdff6a9cc8e52a4495f176f4afd05703eee0965701",
-      "0xc97b2929d684f9ccf38caadfa13e3661db2f2f54dbbaec067ea5cddffc5119bc",
-    ])
+    .claim(data.index, walletAddress, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {
       return transaction;
     });
