@@ -1,4 +1,4 @@
-import { WalletListState } from "../interfaces";
+import { WalletList } from "../interfaces";
 
 export type WALLET_ACTIONS =
   | {
@@ -11,9 +11,9 @@ export type WALLET_ACTIONS =
     };
 
 export const walletReducer = (
-  state: WalletListState,
+  state: WalletList,
   action: WALLET_ACTIONS
-): WalletListState => {
+): WalletList => {
   switch (action.type) {
     case "walletlistFile:upload": {
       if (action.payload.walletlistFile === null) {
@@ -23,14 +23,14 @@ export const walletReducer = (
       return { ...state, filelist: action.payload.walletlistFile };
     }
     case "walletlist:set": {
-      return { ...state, targets: action.payload.targets };
+      return { ...state, targets: action.payload.targets, filelist: null };
     }
     default:
       throw new Error();
   }
 };
 
-export const walletInitialState: WalletListState = {
+export const walletInitialState: WalletList = {
   filelist: null,
   targets: [],
   type: "address",

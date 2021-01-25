@@ -13,6 +13,7 @@ export interface CampaignInfoProps {
   readonly targetNumber: string;
   readonly campaignData: CampaignData;
   campaignDispatch: React.Dispatch<ACTIONS>;
+  readonly distributorType: string;
 }
 
 const ColorButton = withStyles(() => ({
@@ -25,13 +26,19 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
   targetNumber,
   campaignData,
   campaignDispatch,
+  distributorType,
 }) => (
   <div>
     <AppHeader />
     <Box mt={5}>
       <Container>
         <Box display="flex" mb={1} style={{ justifyContent: "space-between" }}>
-          <Typography variant={"h3"}>Audius Follower Campaign</Typography>
+          {distributorType === "audius" && (
+            <Typography variant={"h3"}>Audius Follower Campaign</Typography>
+          )}
+          {distributorType === "wallet" && (
+            <Typography variant={"h3"}>Wallet Address Distributor</Typography>
+          )}
           <Box style={{ textAlign: "center" }}>
             {campaignData.campaign.status === 0 && !campaignData.canRefund && (
               <ColorButton

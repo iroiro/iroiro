@@ -15,11 +15,20 @@ import {
   distributorFormInitialState,
 } from "../../reducers/distributorForm";
 import { walletReducer, walletInitialState } from "../../reducers/wallet";
-import { WalletListState } from "../../interfaces";
+import {
+  merkletreeReducer,
+  merkltreeInitialState,
+} from "../../reducers/merkletree";
+import { WalletList } from "../../interfaces";
 
 import IpfsHttpClient from "ipfs-http-client";
 import useAxios from "axios-hooks";
-import { IPFS_PINNING_API, MERKLE_ROOT_API } from "../../utils/const";
+import {
+  IPFS_PINNING_API,
+  MERKLE_ROOT_API_START,
+  MERKLE_ROOT_API_DESCRIBE,
+  MERKLE_PROOF_API,
+} from "../../utils/const";
 import { BigNumber } from "ethers";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
@@ -49,7 +58,10 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     walletReducer,
     walletInitialState
   );
-
+  const [merkletreeState, merkletreeDispatch] = useReducer(
+    merkletreeReducer,
+    merkltreeInitialState
+  );
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
   const [{ error: pinningError }, postPinning] = useAxios(
@@ -60,13 +72,15 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     { manual: true }
   );
 
-  const [{ error: proofError }, postMakeProof] = useAxios(
-    {
-      url: MERKLE_ROOT_API,
-      method: "POST",
-    },
-    { manual: true }
-  );
+  const [{ error: proofError }, postMakeProof] = useAxios({
+    url: MERKLE_ROOT_API_START,
+    method: "post",
+  });
+
+  const [{ error: describeError }, describeMakeProof] = useAxios({
+    url: MERKLE_ROOT_API_DESCRIBE,
+    method: "post",
+  });
 
   const [merkleRoot, setMerkleRoot] = useState("");
 
@@ -133,18 +147,13 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
 
   const uploadJsonIpfs = useCallback(
     async (data, type) => {
-      // const { path } = await ipfs.add(JSON.stringify(data));
-      // console.log(path);
-      // await postPinning({ data: { hashToPin: path } });
+      const { path } = await ipfs.add(JSON.stringify(data));
+      await postPinning({ data: { hashToPin: path } });
       if (type === "campaignInfoCid") {
-        // setCampaignInfoCid(path);
-        // TODO:
-        setCampaignInfoCid("Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA");
+        setCampaignInfoCid(path);
       }
       if (type === "recipientsCid") {
-        // setRecipientsCid(path);
-        // TODO:
-        setRecipientsCid("QmVrBcK6WZvcKvnJXLq1RM8fVkyAdiDXJFvfXxCtQF73MX");
+        setRecipientsCid(path);
       }
     },
     [postPinning]
@@ -156,6 +165,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       merkleRoot,
       campaignInfoCid,
       recipientsCid,
+      merkleTreeCid,
       recipientsNum,
       startDate,
       endDate
@@ -174,6 +184,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         tokenAddress,
         campaignInfoCid,
         recipientsCid,
+        merkleTreeCid,
         recipientsNum,
         secondsStartDate,
         secondsEndDate
@@ -202,31 +213,63 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       const BNTargetsNum = BigNumber.from(targetNum);
       // TODO
       const amount = BNAllowance.div(BNTargetsNum).toString();
+
+      /*eslint-disable no-useless-escape*/
       const data = JSON.stringify({
-        input: {
-          cid: recipientsCid,
-          amount: amount,
-        },
+        input: `{\"cid\": \"${recipientsCid}\",\"amount\": ${amount}}`,
         name: `${account}-${Date.now()}`,
         stateMachineArn:
           "arn:aws:states:ap-northeast-1:179855544942:stateMachine:MerkleTreeStateMachine-LhKmb5ybYQV3",
       });
-      // await postPinning({ data: { hashToPin: path } });
-      console.log(data);
       const response = await postMakeProof({ data: data });
-      // const response = await fetch(url, {
-      //   method: "post",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: data,
-      // });
-      console.log(response);
-      // const result = await response.json();
-      // console.log(result);
+      merkletreeDispatch({
+        type: "startExecution:result",
+        payload: { executionArn: response.data.executionArn },
+      });
     },
     []
   );
+
+  const describeMerkleProof = useCallback(async (executionArn) => {
+    const data = JSON.stringify({
+      executionArn: executionArn,
+    });
+    const response = await describeMakeProof({ data: data });
+    if (response.data.status === "RUNNING") {
+      console.log("RUNNING");
+      merkletreeDispatch({
+        type: "describeStatus:update",
+        payload: { status: response.data.status },
+      });
+    }
+    if (response.data.status === "FAILED") {
+      console.log("FAILED");
+      merkletreeDispatch({
+        type: "describeStatus:update",
+        payload: { status: response.data.status },
+      });
+    }
+    if (response.data.status === "SUCCEEDED") {
+      console.log("SUCCEEDED");
+      const data = JSON.parse(response.data.output);
+      merkletreeDispatch({
+        type: "merkleroot:set",
+        payload: { merkleRoot: data.merkleRoot, merkleTreeCid: data.cid },
+      });
+    }
+  }, []);
+
+  const getMerkleProof = useCallback(async (merkleTreeCid, account) => {
+    const accountLow = account.toLowerCase();
+    await fetch(`${MERKLE_PROOF_API}/${merkleTreeCid}/${accountLow}.json`)
+      .then((response) => response.json())
+      .then((data) => {
+        merkletreeDispatch({
+          type: "merkleProof:set",
+          payload: { merkleProof: data },
+        });
+      });
+  }, []);
 
   useEffect(() => {
     if (library) {
@@ -269,7 +312,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       }
     };
     f();
-  }, [library, distributorFormState, approve, uploadJsonIpfs, walletListState]);
+  }, [library, distributorFormState]);
 
   useEffect(() => {
     if (!distributorFormState.requestDeployCampaign) {
@@ -295,28 +338,58 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       return;
     }
 
-    // TODO: change merkleRoot value dynamically
-    const merkleRoot =
-      "0x6ff9dfec88bddca62d41745d6afedab6889fcebec5e3de5624e5bbbdb096150e";
-    // if (merkleRoot === "") {
-    //   makeMerkleProof(
-    //     tokenState.allowance,
-    //     walletListState.targets.length,
-    //     recipientsCid,
-    //     account
-    //   );
-    // } else {
-    deployCampaign(
-      library,
-      merkleRoot,
-      campaignInfoCid,
-      recipientsCid,
+    makeMerkleProof(
+      tokenState.allowance,
       walletListState.targets.length,
-      distributorFormState.startDate,
-      distributorFormState.endDate
+      recipientsCid,
+      account
     );
-    // }
-  }, [distributorFormState]);
+  }, [distributorFormState, campaignInfoCid, recipientsCid]);
+
+  useEffect(() => {
+    const f = async () => {
+      const _sleep = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms));
+      if (
+        merkletreeState.executionArn === "" ||
+        merkletreeState.status === "FAILED"
+      ) {
+        return;
+      }
+      if (
+        merkletreeState.status === "" ||
+        merkletreeState.status === "RUNNING"
+      ) {
+        await _sleep(5000);
+        describeMerkleProof(merkletreeState.executionArn);
+        return;
+      }
+      if (
+        merkletreeState.status === "SUCCEEDED" &&
+        merkletreeState.merkleProof === undefined
+      ) {
+        getMerkleProof(merkletreeState.merkleTreeCid, account);
+        return;
+      }
+      if (
+        merkletreeState.status === "SUCCEEDED" &&
+        merkletreeState.merkleProof !== undefined
+      ) {
+        deployCampaign(
+          library,
+          merkletreeState.merkleRoot,
+          campaignInfoCid,
+          recipientsCid,
+          merkletreeState.merkleTreeCid,
+          walletListState.targets.length,
+          distributorFormState.startDate,
+          distributorFormState.endDate
+        );
+        return;
+      }
+    };
+    f();
+  }, [merkletreeState]);
 
   useEffect(() => {
     if (walletListState.filelist === null) {
@@ -324,7 +397,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     }
     const file = walletListState.filelist[0];
     const reader = new FileReader();
-    let walletList: WalletListState;
+    let walletList: WalletList;
     reader.onloadend = () => {
       if (reader.result?.toString() === undefined) {
         return;

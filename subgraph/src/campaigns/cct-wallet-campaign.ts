@@ -1,4 +1,4 @@
-import { Claim, Campaign, CheckRequest, Account } from "./types/schema";
+import { Claim, Campaign, CheckRequest, Account } from "../types/schema";
 import {
   CCTWalletCampaign,
   ChainlinkCancelled,
@@ -6,8 +6,9 @@ import {
   ChainlinkRequested,
   Claim as ClaimEvent,
   UpdateStatus,
-} from "./types/templates/CCTWalletCampaign/CCTWalletCampaign";
+} from "../types/templates/CCTWalletCampaign/CCTWalletCampaign";
 import { Address, log } from "@graphprotocol/graph-ts/index";
+import { BigInt } from "@graphprotocol/graph-ts";
 
 export function handleClaim(event: ClaimEvent): void {
   let accountId = event.transaction.from.toHexString();
@@ -17,6 +18,12 @@ export function handleClaim(event: ClaimEvent): void {
   if (claim == null) {
     claim = new Claim(claimId);
   }
+
+  let campaign = Campaign.load(campaignId);
+  if (campaign == null) {
+    campaign = new Campaign(campaignId);
+  }
+  campaign.claimedNum = campaign.claimedNum.plus(BigInt.fromI32(1));
 
   claim.account = event.params.to.toHexString();
   claim.campaign = event.address.toHexString();
@@ -34,6 +41,7 @@ export function handleClaim(event: ClaimEvent): void {
     claim.amount = callClaimAmount.value;
   }
 
+  campaign.save();
   claim.save();
 }
 

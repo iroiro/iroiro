@@ -3,11 +3,11 @@ import { Box, Typography, Card, Button } from "@material-ui/core";
 // import DistributionTargetList from "../../molecules/DistributionTargetList";
 // import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import { DISTRIBUTOR_ACTIONS } from "../../../reducers/distributorForm";
-import { WalletListState } from "../../../interfaces";
+import { WalletList } from "../../../interfaces";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
 
 export interface TargetsProps {
-  readonly walletListState: WalletListState;
+  readonly walletListState: WalletList;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
 }

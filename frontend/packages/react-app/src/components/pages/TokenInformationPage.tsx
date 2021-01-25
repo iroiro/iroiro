@@ -122,10 +122,8 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   }, [library, state.token]);
 
   useEffect(() => {
-    // TODO: After made campaign creation function, change dynamic value
     getCampaigns({
       variables: {
-        creator: "0x4B8619890fa9C3cF11C497961eB4b970D440127F".toLowerCase(),
         token: tokenAddress.toLowerCase(),
       },
     });

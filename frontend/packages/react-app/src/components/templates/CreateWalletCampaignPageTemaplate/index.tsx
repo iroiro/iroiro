@@ -11,14 +11,14 @@ import {
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
-import { WalletListState } from "../../../interfaces";
+import { WalletList } from "../../../interfaces";
 
 export interface CampaignInfo {
   readonly active: boolean;
   readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
-  readonly walletListState: WalletListState;
+  readonly walletListState: WalletList;
   readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
 }
 

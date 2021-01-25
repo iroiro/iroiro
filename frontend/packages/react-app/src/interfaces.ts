@@ -153,7 +153,7 @@ export interface TokenListState {
   color?: "inherit" | "primary" | "secondary" | "default" | undefined;
 }
 
-export interface WalletListState {
+export interface WalletList {
   targets: string[];
   type: string;
   filelist: FileList | null;

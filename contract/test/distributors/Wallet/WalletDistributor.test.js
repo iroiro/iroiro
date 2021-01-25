@@ -14,6 +14,7 @@ describe("WalletDistributor", () => {
   const merkleRoot = web3.utils.soliditySha3("merkleRoot");
   const campaignInfoCid = "campaign info cid";
   const recipientsCid = "recipients cid";
+  const merkleTreeCid = "merkle tree cid";
   const recipientsNum = 100;
 
   beforeEach(async () => {
@@ -55,6 +56,7 @@ describe("WalletDistributor", () => {
           owner,
           campaignInfoCid,
           recipientsCid,
+          merkleTreeCid,
           recipientsNum,
           now,
           future,
@@ -75,6 +77,7 @@ describe("WalletDistributor", () => {
           owner,
           campaignInfoCid,
           recipientsCid,
+          merkleTreeCid,
           recipientsNum,
           now,
           future,
@@ -98,6 +101,7 @@ describe("WalletDistributor", () => {
           owner,
           campaignInfoCid,
           recipientsCid,
+          merkleTreeCid,
           recipientsNum,
           now,
           future,
@@ -124,6 +128,7 @@ describe("WalletDistributor", () => {
           owner,
           campaignInfoCid,
           recipientsCid,
+          merkleTreeCid,
           recipientsNum,
           now,
           future,

@@ -29,6 +29,8 @@ type Campaign @entity {
   creator: Creator!
   campaignInfoCid: String
   recipientsCid: String
+  merkleTreeCid: String
+  merkleRoot: Bytes
   claimAmount: BigInt
   claimedNum: BigInt
   status: Int

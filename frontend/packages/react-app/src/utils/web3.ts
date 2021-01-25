@@ -151,6 +151,7 @@ export const createWalletCampaign = async (
   tokenAddress: string,
   campaignInfoCid: string,
   recipientsCid: string,
+  merkleTreeCid: string,
   recipientsNum: number,
   startDate: number,
   endDate: number
@@ -172,6 +173,7 @@ export const createWalletCampaign = async (
       walletAddress,
       campaignInfoCid,
       recipientsCid,
+      merkleTreeCid,
       recipientsNum,
       startDate,
       endDate
