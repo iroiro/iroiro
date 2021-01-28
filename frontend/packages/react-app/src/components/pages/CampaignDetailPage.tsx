@@ -23,6 +23,7 @@ const CampaignDetailPage: React.FC<
 > = (props) => {
   const tokenAddress = props.match.params.tokenAddress;
   const campaignAddress = props.match.params.campaignAddress;
+  const distributorAddress = props.match.params.distributorAddress;
 
   const { library } = useWeb3React();
   const [getCampaign, { data }] = useLazyQuery(GET_CAMPAIGN);
@@ -35,6 +36,7 @@ const CampaignDetailPage: React.FC<
   );
 
   const [tartgetNumber, setTartgetNumber] = useState("0");
+  const [distributorType, setDistributorType] = useState("");
 
   const getCampaignMetadata = async (campaign: CampaignInfo) => {
     const cid = campaign.campaignInfoCid;
@@ -120,6 +122,15 @@ const CampaignDetailPage: React.FC<
   );
 
   useEffect(() => {
+    if (distributorAddress === "0x590b4465a94be635bf2f760025c61ec3680f687c") {
+      setDistributorType("audius");
+    }
+    if (distributorAddress === "0xb562cf605a0f8a123bf7abfdfe1317671a8b5ead") {
+      setDistributorType("wallet");
+    }
+  }, [distributorType]);
+
+  useEffect(() => {
     getCampaign({
       variables: {
         id: campaignAddress.toLowerCase(),
@@ -131,6 +142,7 @@ const CampaignDetailPage: React.FC<
     if (data !== undefined) {
       let canRefund = false;
 
+      console.log(data);
       if (data.campaign.endDate * 1000 < new Date().getTime()) {
         canRefund = true;
       }
@@ -181,6 +193,7 @@ const CampaignDetailPage: React.FC<
         targetNumber={tartgetNumber}
         campaignData={campaignState}
         campaignDispatch={campaignDispatch}
+        distributorType={distributorType}
       />
     </>
   );

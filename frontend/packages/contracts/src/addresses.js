@@ -8,6 +8,7 @@ const addresses = {
   Audius: "0x4273503fc36E02004C6FEb242253046Bc2d59870",
   Oracle: "0x80041A05d87a9355e154460c6Aba3dB589F44793",
   CCTWalletDistributor: "0x590b4465a94bE635bF2F760025c61Ec3680f687C",
+  WalletDistributor: "0xb562cf605a0f8a123bf7abfdfe1317671a8b5ead",
 };
 
 export default addresses;

@@ -6,6 +6,7 @@ import {
   Distributor,
   AccountToken,
   TokenListState,
+  WalletList,
 } from "../interfaces";
 import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
@@ -25,7 +26,8 @@ export const distributor: Distributor = {
       "This distributer enables creators to distributes tokens for their followers on Auduis.",
     image: "https://example.com/distributerimage.jpg",
   },
-  depositAmount: "100000",
+  type: "audius",
+  version: "1",
 };
 
 export const campaign: CampaignInfo = {
@@ -60,6 +62,8 @@ export const campaign: CampaignInfo = {
   claimedNum: "100",
   claims: [],
   checkRequests: [],
+  merkleRoot: "",
+  merkleTreeCid: "",
 };
 
 export const tokenInformationState: TokenInformationState = {
@@ -77,22 +81,22 @@ export const tokenInformationState: TokenInformationState = {
     {
       ...campaign,
       creator: {
-        id: "0x0000000000000000000000000000000000000001"
-      }
+        id: "0x0000000000000000000000000000000000000001",
+      },
     },
     {
       ...campaign,
       status: 1,
       creator: {
-        id: "0x0000000000000000000000000000000000000002"
-      }
+        id: "0x0000000000000000000000000000000000000002",
+      },
     },
     {
       ...campaign,
       status: 2,
       creator: {
-        id: "0x0000000000000000000000000000000000000003"
-      }
+        id: "0x0000000000000000000000000000000000000003",
+      },
     },
   ],
   isCampaignClaimable: false,
@@ -140,6 +144,7 @@ export const tokenInformationState: TokenInformationState = {
     },
   ],
   now: new Date(),
+  distributorType: "audius",
 };
 
 export const distributionTargets: Target[] = [
@@ -260,4 +265,16 @@ export const audiusState: AudiusState = {
   isRequestFollowers: false,
   isRequestSignout: false,
   progress: 0,
+};
+
+export const walletListState: WalletList = {
+  targets: [
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+  ],
+  type: "address",
+  filelist: null,
 };

@@ -2,12 +2,14 @@ import { Web3Provider } from "@ethersproject/providers";
 import { TokenBasic } from "../interfaces";
 import { FanToken__factory as FanTokenFactory } from "../types";
 import { CCTWalletDistributor__factory as CCTWalletDistributor } from "../types";
+import { WalletDistributor__factory as WalletDistributor } from "../types";
 import { CampaignInterface__factory as Campaign } from "../types";
-import BN from "bn.js";
+import { WalletCampaign__factory as WalletCampaign } from "../types";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
 import { utils } from "ethers";
+import { MERKLE_PROOF_API } from "../utils/const";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -110,7 +112,7 @@ export const setApproveAmount = async (
     });
 };
 
-export const createCampaign = async (
+export const createAudiusCampaign = async (
   library: Web3Provider | undefined,
   tokenAddress: string,
   campaignInfoCid: string,
@@ -135,6 +137,44 @@ export const createCampaign = async (
       walletAddress,
       campaignInfoCid,
       recipientsCid,
+      recipientsNum,
+      startDate,
+      endDate
+    )
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const createWalletCampaign = async (
+  library: Web3Provider | undefined,
+  merkleRoot: string,
+  tokenAddress: string,
+  campaignInfoCid: string,
+  recipientsCid: string,
+  merkleTreeCid: string,
+  recipientsNum: number,
+  startDate: number,
+  endDate: number
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const walletAddress = await signer.getAddress();
+  const distributor = WalletDistributor.connect(
+    addresses.WalletDistributor,
+    signer
+  );
+
+  return distributor
+    .createCampaign(
+      merkleRoot,
+      tokenAddress,
+      walletAddress,
+      campaignInfoCid,
+      recipientsCid,
+      merkleTreeCid,
       recipientsNum,
       startDate,
       endDate
@@ -174,6 +214,29 @@ export const refundCampaign = async (
 
   return campaignContract
     .refundRemainingTokens()
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const walletClaim = async (
+  library: Web3Provider | undefined,
+  campaignAddress: string,
+  merkleTreeCid: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const campaignContract = WalletCampaign.connect(campaignAddress, signer);
+  const walletAddress = await signer.getAddress();
+  const walletAddressLow = walletAddress.toLowerCase();
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddressLow}.json`
+  );
+  const data = await response.json();
+  return campaignContract
+    .claim(data.index, walletAddress, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {
       return transaction;
     });

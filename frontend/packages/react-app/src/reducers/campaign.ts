@@ -74,7 +74,8 @@ const distributor: Distributor = {
     description: "",
     image: "",
   },
-  depositAmount: "",
+  type: "",
+  version: "",
 };
 
 const campaignMetadata: CampaignMetadata = {
@@ -111,6 +112,8 @@ export const campaignInitialState: CampaignData = {
     claimedNum: "-",
     claims: [],
     checkRequests: [],
+    merkleRoot: "",
+    merkleTreeCid: "",
   },
   isCancelRequest: false,
   isRefundRequest: false,

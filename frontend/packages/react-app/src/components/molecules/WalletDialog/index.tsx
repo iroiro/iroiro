@@ -87,7 +87,7 @@ const WalletDialog: React.FC<WalletDialogProps> = ({
                 !triedEager || !!activatingConnector || connected || !!error;
 
               return (
-                <>
+                <div key={name}>
                   {!connected ? (
                     <Box mb={1}>
                       <ListItem
@@ -137,7 +137,7 @@ const WalletDialog: React.FC<WalletDialogProps> = ({
                       </ListItem>
                     </Box>
                   )}
-                </>
+                </div>
               );
             })}
           </List>

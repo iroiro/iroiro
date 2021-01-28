@@ -11,6 +11,7 @@ import { BigNumber } from "ethers";
 import { LINK_APPROVE_AMOUNT } from "../utils/const";
 import { Event } from "@ethersproject/contracts";
 import { Block } from "@ethersproject/providers";
+import { act } from "@testing-library/react";
 
 export type TokenInformationAction =
   | {
@@ -53,6 +54,7 @@ export type TokenInformationAction =
       type: "campaignAddress:set";
       payload: {
         campaignAddress: string;
+        distributorType: string;
       };
     }
   | {
@@ -181,6 +183,7 @@ export const tokenInformationReducer = (
       return {
         ...state,
         campaignAddress: action.payload.campaignAddress,
+        distributorType: action.payload.distributorType,
       };
     case "campaignAddress:remove":
       return {
@@ -319,4 +322,5 @@ export const initialState: TokenInformationState = {
   activities: [],
   balances: [],
   now: new Date(),
+  distributorType: "",
 };

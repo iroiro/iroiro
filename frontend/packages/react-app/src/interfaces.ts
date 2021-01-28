@@ -43,9 +43,10 @@ export interface TokenBasic {
 
 export interface Distributor {
   id: string;
-  depositAmount: string;
   distributorCid: string;
   distributorMetadata: DistributorMetadata;
+  type: string;
+  version: string;
 }
 
 export interface DistributorMetadata {
@@ -90,6 +91,8 @@ export interface CampaignInfo {
   readonly checkRequests: CheckRequest[];
   readonly campaignMetadata: CampaignMetadata;
   readonly claimed: number;
+  readonly merkleRoot: string;
+  readonly merkleTreeCid: string;
 }
 
 export interface CampaignMetadata {
@@ -124,6 +127,7 @@ export interface TokenInformationState {
   activities: Activity[];
   balances: Balance[];
   now: Date;
+  distributorType: string;
 }
 
 export interface Campaigns {
@@ -147,4 +151,10 @@ export interface TokenListState {
   inputTokenAddress: string;
   type: string;
   color?: "inherit" | "primary" | "secondary" | "default" | undefined;
+}
+
+export interface WalletList {
+  targets: string[];
+  type: string;
+  filelist: FileList | null;
 }

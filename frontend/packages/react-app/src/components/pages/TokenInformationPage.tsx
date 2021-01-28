@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useCallback } from "react";
 import { useWeb3React } from "@web3-react/core";
 import TokenInformationTemplate from "../templates/TokenInformationTemplate";
 import {
@@ -65,6 +65,7 @@ const TokenInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const { isClaimable } = useIsClaimable(
     library,
     state?.campaignAddress ?? "",
+    state?.distributorType ?? "",
     user?.wallet ?? ""
   );
 
