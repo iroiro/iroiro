@@ -1,21 +1,17 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import CreateWalletCampaignPageTemaplate, { CampaignInfo } from "./index";
-import {
-  audiusState,
-  distributorFormState,
-  tokenInfo,
-} from "../../../utils/mockData";
+import CreateWalletCampaignPageTemplate, { CampaignInfo } from "./index";
+import { distributorFormState, tokenInfo } from "../../../utils/mockData";
 
 export default {
   title: "Templates/CreateWalletCampaignPageTemaplate",
-  component: CreateWalletCampaignPageTemaplate,
+  component: CreateWalletCampaignPageTemplate,
 } as Meta;
 
 const Template: Story<CampaignInfo> = (args) => (
   <BrowserRouter>
-    <CreateWalletCampaignPageTemaplate {...args} />
+    <CreateWalletCampaignPageTemplate {...args} />
   </BrowserRouter>
 );
 

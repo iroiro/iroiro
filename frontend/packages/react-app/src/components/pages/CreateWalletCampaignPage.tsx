@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
-import CreateWalletCampaignPageTemaplate from "../templates/CreateWalletCampaignPageTemaplate";
+import CreateWalletCampaignPageTemplate from "../templates/CreateWalletCampaignPageTemaplate";
 import {
   getWalletBalance,
   getAllowance,
@@ -389,7 +389,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
 
   return (
     <>
-      <CreateWalletCampaignPageTemaplate
+      <CreateWalletCampaignPageTemplate
         active={active}
         tokenInfo={tokenState}
         distributorFormDispatch={distributorFormDispatch}

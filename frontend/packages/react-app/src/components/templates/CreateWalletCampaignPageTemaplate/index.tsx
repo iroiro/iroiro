@@ -22,7 +22,7 @@ export interface CampaignInfo {
   readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
 }
 
-const CreateWalletCampaignPageTemaplate: React.FC<CampaignInfo> = ({
+const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
   tokenInfo,
   distributorFormState,
@@ -70,4 +70,4 @@ const CreateWalletCampaignPageTemaplate: React.FC<CampaignInfo> = ({
   </div>
 );
 
-export default CreateWalletCampaignPageTemaplate;
+export default CreateWalletCampaignPageTemplate;
