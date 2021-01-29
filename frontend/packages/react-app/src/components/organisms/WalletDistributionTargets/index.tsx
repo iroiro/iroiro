@@ -80,7 +80,7 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
             {!walletListState.fileformat && (
               <Box mt={1}>
                 <Typography color={"error"}>
-                  Set the file in the correct format.
+                  Set a file in the correct format.
                 </Typography>
               </Box>
             )}

@@ -71,15 +71,21 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     { manual: true }
   );
 
-  const [{ error: proofError }, postMakeProof] = useAxios({
-    url: MERKLE_ROOT_API_START,
-    method: "post",
-  });
+  const [{ error: proofError }, postMakeProof] = useAxios(
+    {
+      url: MERKLE_ROOT_API_START,
+      method: "post",
+    },
+    { manual: true }
+  );
 
-  const [{ error: describeError }, describeMakeProof] = useAxios({
-    url: MERKLE_ROOT_API_DESCRIBE,
-    method: "post",
-  });
+  const [{ error: describeError }, describeMakeProof] = useAxios(
+    {
+      url: MERKLE_ROOT_API_DESCRIBE,
+      method: "post",
+    },
+    { manual: true }
+  );
 
   const [merkleRoot, setMerkleRoot] = useState("");
 
@@ -219,7 +225,6 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         stateMachineArn:
           "arn:aws:states:ap-northeast-1:179855544942:stateMachine:MerkleTreeStateMachine-LhKmb5ybYQV3",
       });
-      console.log("postMakeProofpostMakeProofpostMakeProof");
       const response = await postMakeProof({ data: data });
       merkletreeDispatch({
         type: "startExecution:result",
@@ -233,7 +238,6 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     const data = JSON.stringify({
       executionArn: executionArn,
     });
-    console.log("describeMakeProofdescribeMakeProofdescribeMakeProof");
     const response = await describeMakeProof({ data: data });
     if (response.data.status === "RUNNING") {
       console.log("RUNNING");
