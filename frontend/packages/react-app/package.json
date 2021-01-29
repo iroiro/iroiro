@@ -15,6 +15,7 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "^3.3.7",
     "@apollo/react-hooks": "^3.1.5",
     "@audius/libs": "^0.13.3",
     "@audius/stems": "^0.2.5",
