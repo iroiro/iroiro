@@ -219,6 +219,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         stateMachineArn:
           "arn:aws:states:ap-northeast-1:179855544942:stateMachine:MerkleTreeStateMachine-LhKmb5ybYQV3",
       });
+      console.log("postMakeProofpostMakeProofpostMakeProof");
       const response = await postMakeProof({ data: data });
       merkletreeDispatch({
         type: "startExecution:result",
@@ -232,6 +233,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     const data = JSON.stringify({
       executionArn: executionArn,
     });
+    console.log("describeMakeProofdescribeMakeProofdescribeMakeProof");
     const response = await describeMakeProof({ data: data });
     if (response.data.status === "RUNNING") {
       console.log("RUNNING");
@@ -379,6 +381,21 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         return;
       }
       walletList = JSON.parse(reader.result?.toString());
+      if (Object.keys(walletList).indexOf("targets") === -1) {
+        walletListDispatch({
+          type: "fileformat:set",
+          payload: { status: false },
+        });
+        return;
+      }
+      if (!Array.isArray(walletList.targets)) {
+        walletListDispatch({
+          type: "fileformat:set",
+          payload: { status: false },
+        });
+        return;
+      }
+
       walletListDispatch({
         type: "walletlist:set",
         payload: { targets: walletList.targets },

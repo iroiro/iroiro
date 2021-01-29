@@ -157,4 +157,5 @@ export interface WalletList {
   targets: string[];
   type: string;
   filelist: FileList | null;
+  fileformat: boolean;
 }

@@ -8,7 +8,8 @@ export type WALLET_ACTIONS =
   | {
       type: "walletlist:set";
       payload: { targets: string[] };
-    };
+    }
+  | { type: "fileformat:set"; payload: { status: boolean } };
 
 export const walletReducer = (
   state: WalletList,
@@ -19,11 +20,21 @@ export const walletReducer = (
       if (action.payload.walletlistFile === null) {
         return { ...state };
       }
-
-      return { ...state, filelist: action.payload.walletlistFile };
+      return {
+        ...state,
+        filelist: action.payload.walletlistFile,
+      };
     }
     case "walletlist:set": {
-      return { ...state, targets: action.payload.targets, filelist: null };
+      return {
+        ...state,
+        targets: action.payload.targets,
+        filelist: null,
+        fileformat: true,
+      };
+    }
+    case "fileformat:set": {
+      return { ...state, fileformat: action.payload.status };
     }
     default:
       throw new Error();
@@ -32,6 +43,7 @@ export const walletReducer = (
 
 export const walletInitialState: WalletList = {
   filelist: null,
+  fileformat: true,
   targets: [],
   type: "address",
 };

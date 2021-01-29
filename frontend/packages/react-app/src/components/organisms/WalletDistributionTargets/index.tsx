@@ -56,7 +56,7 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
                 <Typography variant={"body1"}>Format: </Typography>
                 <Box ml={2}>
                   <Typography variant={"body1"} color={"secondary"}>
-                    {`{"targets": ["walletaddress1", "walletaddress2"], "type": "address"}`}
+                    {`{"targets": ["walletaddress1", "walletaddress2"]}`}
                   </Typography>
                 </Box>
               </Box>
@@ -77,7 +77,13 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
                 }
               />
             </Button>
-            <Box>{walletListState.targets[0]}</Box>
+            {!walletListState.fileformat && (
+              <Box mt={1}>
+                <Typography color={"error"}>
+                  Set the file in the correct format.
+                </Typography>
+              </Box>
+            )}
           </>
         )}
       </Box>
