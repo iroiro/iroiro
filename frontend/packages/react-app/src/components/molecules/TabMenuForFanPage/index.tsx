@@ -34,8 +34,8 @@ export const TabMenuForFanPage: React.FC<TabMenuForFanPageProps> = ({
       >
         <Tab label="Basic" {...a11yProps(0)} />
         <Tab label="Campaigns" {...a11yProps(1)} />
-        <Tab label="Creator Log" {...a11yProps(2)} />
-        <Tab label="Donation" {...a11yProps(3)} />
+        <Tab label="🚧 Creator Log" {...a11yProps(2)} disabled />
+        <Tab label="🚧 Donation" {...a11yProps(3)} disabled />
         <Tab label="User History" {...a11yProps(4)} />
       </Tabs>
     </>

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { TokenInformationState } from "../../../interfaces";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
 } from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
 import { getBalanceDevidedByDecimals } from "../../../utils/web3";
+import { TokenBasic } from "../../../interfaces";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -21,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export interface BasicTokenInformationProps {
-  readonly state: TokenInformationState;
+  readonly token?: TokenBasic;
 }
 
 const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
-  state: { token },
+  token,
 }) => {
   const classes = useStyles();
 

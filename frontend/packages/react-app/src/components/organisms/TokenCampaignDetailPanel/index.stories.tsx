@@ -4,7 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 import TokenDetailCampaignPanel, {
   TokenDetailCampaignPanelProps,
 } from "./index";
-import { audiusState, campaignDetailState } from "../../../utils/mockData";
+import {
+  audiusState,
+  campaignDetailState,
+  tokenInformationState,
+} from "../../../utils/mockData";
 
 export default {
   title: "Organisms/TokenDetailCampaignPanel",
@@ -29,6 +33,11 @@ IsNotStarted.args = {
 export const NotLoggedIn = Template.bind({});
 NotLoggedIn.args = {
   state: campaignDetailState,
+  tokenState: {
+    token: tokenInformationState.token,
+    userAddress: "",
+    userBalance: "",
+  },
   audiusState: {
     ...audiusState,
     user: null,
@@ -38,6 +47,11 @@ NotLoggedIn.args = {
 export const Default = Template.bind({});
 Default.args = {
   state: campaignDetailState,
+  tokenState: {
+    token: tokenInformationState.token,
+    userAddress: "",
+    userBalance: "",
+  },
   audiusState,
 };
 
@@ -46,6 +60,11 @@ Requested.args = {
   state: {
     ...campaignDetailState,
     isTokenRequested: true,
+  },
+  tokenState: {
+    token: tokenInformationState.token,
+    userAddress: "",
+    userBalance: "",
   },
   audiusState,
 };
@@ -58,6 +77,11 @@ IsClaimable.args = {
     isTokenCheckFinished: true,
     isCampaignClaimable: true,
   },
+  tokenState: {
+    token: tokenInformationState.token,
+    userAddress: "",
+    userBalance: "",
+  },
   audiusState,
 };
 
@@ -68,6 +92,11 @@ IsNotClaimable.args = {
     isTokenCheckFinished: true,
     isTokenRequested: true,
     isCampaignClaimable: false,
+  },
+  tokenState: {
+    token: tokenInformationState.token,
+    userAddress: "",
+    userBalance: "",
   },
   audiusState,
 };
@@ -81,6 +110,11 @@ IsClaimed.args = {
     isCampaignClaimable: true,
     isCampaignClaimed: true,
   },
+  tokenState: {
+    token: tokenInformationState.token,
+    userAddress: "",
+    userBalance: "",
+  },
   audiusState,
 };
 
@@ -88,8 +122,11 @@ export const NotFound = Template.bind({});
 NotFound.args = {
   state: {
     ...campaignDetailState,
-    token: undefined,
     campaign: null,
+  },
+  tokenState: {
+    token: undefined,
+    userAddress: "",
     userBalance: "",
   },
   audiusState,

@@ -1,9 +1,6 @@
 import { CampaignInfo, CheckRequest, Claim, TokenBasic } from "../interfaces";
 
 export interface CampaignDetailState {
-  token?: TokenBasic;
-  userAddress?: string;
-  userBalance?: string;
   isTokenRequested: boolean;
   isTokenCheckFinished: boolean;
   campaign: CampaignInfo | null;
@@ -13,14 +10,7 @@ export interface CampaignDetailState {
   now: Date;
 }
 
-export type CampaignDetailAction =
-| {
-    type: "token:set";
-    payload: {
-      token: TokenBasic;
-    };
-  }
-| {
+export type CampaignDetailAction = | {
     type: "isTokenRequested:setTrue";
   }
 | {
@@ -71,31 +61,12 @@ export type CampaignDetailAction =
 | {
     type: "isCampaignClaimed:remove";
   }
-| {
-    type: "userAddress:set";
-    payload: {
-      address: string;
-    };
-  }
-| {
-    type: "userBalance:set";
-    payload: {
-      balance: string;
-    };
-  }
 
 export const campaignDetailReducer = (
   state: CampaignDetailState,
   action: CampaignDetailAction
 ): CampaignDetailState => {
   switch(action.type) {
-    case "token:set":
-      return {
-        ...state,
-        token: {
-          ...action.payload.token,
-        },
-      };
     case "isTokenRequested:setTrue": {
       return {
         ...state,
@@ -176,27 +147,12 @@ export const campaignDetailReducer = (
         isCampaignClaimed: false,
       };
     }
-    case "userAddress:set": {
-      return {
-        ...state,
-        userAddress: action.payload.address,
-      };
-    }
-    case "userBalance:set": {
-      return {
-        ...state,
-        userBalance: action.payload.balance,
-      };
-    }
     default:
       return state;
   }
 }
 
 export const initialState: CampaignDetailState = {
-  token: undefined,
-  userAddress: undefined,
-  userBalance: undefined,
   isTokenRequested: false,
   isTokenCheckFinished: false,
   campaign: null,

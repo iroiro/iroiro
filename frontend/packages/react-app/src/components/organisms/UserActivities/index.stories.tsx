@@ -17,10 +17,12 @@ const Template: Story<UserActivitiesProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenInformationState,
+  activities: tokenInformationState.activities,
+  token: tokenInformationState.token,
 };
 
 export const NoActivities = Template.bind({});
 NoActivities.args = {
-  state: { ...tokenInformationState, activities: [] },
+  token: tokenInformationState.token,
+  activities: [],
 };

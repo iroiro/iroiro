@@ -1,36 +1,32 @@
-import React, { useCallback, useState } from "react";
+import { Box, Container } from "@material-ui/core";
+import React, { useState } from "react";
+import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import { useTokenContext } from "../../context/token";
 import AppHeader from "../../molecules/AppHeader";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFanPage";
-import TokenCampaigns from "../../organisms/TokenCampaigns";
-import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
+import BasicTokenInformation from "../../organisms/BasicTokenInformation";
 import TokenInformationBar from "../../organisms/TokenInformationBar";
-import { TokenCampaignsState } from "../../../reducers/tokenCampaigns";
-import { useHistory } from "react-router-dom";
-import { TokenState } from "../../../reducers/tokenContext";
 
-export interface TokenCampaignsTemplateProps {
-  state: TokenCampaignsState;
-  tokenState: TokenState;
+export interface TokenBasicInformationProps {
   tokenAddress: string;
 }
 
-export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
-  state,
-  tokenState,
+export const TokenBasicInformationTemplate: React.FC<TokenBasicInformationProps> = ({
   tokenAddress,
 }) => {
+  const [tokenState, _] = useTokenContext();
   const history = useHistory();
-  const [tabNumber, setTabNumber] = useState(1);
+  const [tabNumber, setTabNumber] = useState(0);
   const handleChangeTabs = useCallback(
     (n: number) => {
       setTabNumber(n);
       switch (n) {
-        case 0:
-          history.push(`/explore/${tokenAddress}`);
+        case 1:
+          history.push(`/explore/${tokenAddress}/campaigns/`);
           break;
         case 4:
-          history.push(`/explore/${tokenAddress}/history/`);
+          history.push(`/explore/${tokenAddress}/history`);
           break;
         default:
           break;
@@ -49,10 +45,7 @@ export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
       <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
       <Container maxWidth="md">
         <Box style={{ padding: 24 }}>
-          <TokenCampaigns
-            campaigns={state.campaigns}
-            tokenAddress={tokenAddress}
-          />
+          <BasicTokenInformation token={tokenState.token} />
         </Box>
       </Container>
     </div>

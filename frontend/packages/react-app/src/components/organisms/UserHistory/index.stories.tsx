@@ -17,13 +17,18 @@ const Template: Story<UserHistoryProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenInformationState,
+  state: {
+    userAddress: "",
+    activities: tokenInformationState.activities,
+    balances: tokenInformationState.balances,
+  },
 };
 
 export const NoActivities = Template.bind({});
 NoActivities.args = {
   state: {
-    ...tokenInformationState,
+    userAddress: "",
     activities: [],
+    balances: tokenInformationState.balances,
   },
 };

@@ -10,6 +10,7 @@ import {
 } from "../../reducers/tokenCampaigns";
 
 import { getTokenInfo, getWalletBalance } from "../../utils/web3";
+import { useTokenContext } from "../context/token";
 import { TokenCampaignsTemplate } from "../templates/TokenCampaignsTemplate";
 
 const TokenCampaignsPage: React.FC<
@@ -20,7 +21,62 @@ const TokenCampaignsPage: React.FC<
   const { library } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const [state, dispatch] = useReducer(tokenCampaignsReducer, initialState);
+  const [tokenState, tokenStateDispatch] = useTokenContext();
   const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
+
+  useEffect(() => {
+    if (
+      tokenState.token === undefined ||
+      tokenState.token.tokenAddress !== tokenAddress
+    ) {
+      const f = async () => {
+        const token = await getTokenInfo(library, tokenAddress);
+        if (token === undefined) {
+          return;
+        }
+        tokenStateDispatch({ type: "token:set", payload: { token } });
+      };
+      f();
+    }
+  }, [library, tokenAddress]);
+  useEffect(() => {
+    if (
+      tokenState.userAddress === "" ||
+      tokenState.token.tokenAddress !== tokenAddress
+    ) {
+      const f = async () => {
+        if (library === undefined) {
+          return;
+        }
+        const address = await library.getSigner().getAddress();
+        tokenStateDispatch({
+          type: "userAddress:set",
+          payload: {
+            address,
+          },
+        });
+      };
+      f();
+    }
+  }, [library, tokenStateDispatch]);
+  useEffect(() => {
+    if (
+      tokenState.userBalance === "" ||
+      tokenState.token.tokenAddress !== tokenAddress
+    ) {
+      if (!library) {
+        return;
+      }
+      const f = async () => {
+        const balance = await getWalletBalance(library, tokenAddress);
+        if (balance === undefined) {
+          return;
+        }
+        tokenStateDispatch({ type: "userBalance:set", payload: { balance } });
+      };
+      f();
+    }
+  }, [library, tokenState.token, tokenStateDispatch]);
 
   useEffect(() => {
     getCampaigns({
@@ -29,47 +85,6 @@ const TokenCampaignsPage: React.FC<
       },
     });
   }, [tokenAddress, getCampaigns]);
-  useEffect(() => {
-    const f = async () => {
-      if (library === undefined) {
-        return;
-      }
-      const address = await library.getSigner().getAddress();
-      dispatch({
-        type: "userAddress:set",
-        payload: {
-          address,
-        },
-      });
-    };
-    f();
-  }, [library, dispatch]);
-  useEffect(() => {
-    const f = async () => {
-      const token = await getTokenInfo(library, tokenAddress);
-      if (token === undefined) {
-        return;
-      }
-      dispatch({ type: "token:set", payload: { token } });
-    };
-    f();
-  }, [library, tokenAddress]);
-  useEffect(() => {
-    if (!library) {
-      return;
-    }
-    const f = async () => {
-      const balance = await getWalletBalance(
-        library,
-        state.token?.tokenAddress ?? ""
-      );
-      if (balance === undefined) {
-        return;
-      }
-      dispatch({ type: "userBalance:set", payload: { balance } });
-    };
-    f();
-  }, [library, state.token]);
   useEffect(() => {
     const f = async () => {
       if (!tokenAddress) {
@@ -101,7 +116,13 @@ const TokenCampaignsPage: React.FC<
     f();
   }, [tokenAddress, campaignData]);
 
-  return <TokenCampaignsTemplate state={state} tokenAddress={tokenAddress} />;
+  return (
+    <TokenCampaignsTemplate
+      state={state}
+      tokenState={tokenState}
+      tokenAddress={tokenAddress}
+    />
+  );
 };
 
 export default TokenCampaignsPage;

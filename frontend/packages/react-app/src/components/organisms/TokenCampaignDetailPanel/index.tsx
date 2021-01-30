@@ -10,9 +10,11 @@ import {
   CampaignDetailAction,
   CampaignDetailState,
 } from "../../../reducers/campaignDetail";
+import { TokenState } from "../../../reducers/tokenContext";
 
 export interface TokenDetailCampaignPanelProps {
   readonly state: CampaignDetailState;
+  readonly tokenState: TokenState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
   readonly audiusState: AudiusState;
   readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
@@ -21,6 +23,7 @@ export interface TokenDetailCampaignPanelProps {
 // TODO: Add waiting transactions
 const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
   state,
+  tokenState,
   dispatch,
   audiusState,
   audiusDispatch,
@@ -61,12 +64,12 @@ const TokenDetailCampaignPanel: React.FC<TokenDetailCampaignPanelProps> = ({
             {state.isTokenCheckFinished && (
               <TokenClaimCard
                 campaignAddress={state?.campaignAddress ?? ""}
-                symbol={state.token?.symbol}
-                decimals={state.token?.decimals}
+                symbol={tokenState.token?.symbol}
+                decimals={tokenState.token?.decimals}
                 claimAmount={campaign.claimAmount}
                 isClaimable={state.isCampaignClaimable}
                 isClaimed={state.isCampaignClaimed}
-                userAddress={state.userAddress ?? ""}
+                userAddress={tokenState.userAddress ?? ""}
                 dispatch={dispatch}
                 audiusState={audiusState}
               />

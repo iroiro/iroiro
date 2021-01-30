@@ -17,15 +17,5 @@ const Template: Story<BasicTokenInformationProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenInformationState,
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-  state: {
-    ...tokenInformationState,
-    token: undefined,
-    campaigns: [],
-    userBalance: "",
-  },
+  token: tokenInformationState.token,
 };

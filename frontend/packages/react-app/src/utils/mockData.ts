@@ -264,9 +264,6 @@ export const audiusState: AudiusState = {
 };
 
 export const campaignDetailState: CampaignDetailState = {
-  token: undefined,
-  userAddress: undefined,
-  userBalance: undefined,
   isTokenRequested: false,
   isTokenCheckFinished: false,
   campaign: null,
