@@ -5,6 +5,7 @@ import TokenInformationTabs from "../../organisms/TokenInformationTabs";
 import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import WalletConnect from "../../organisms/WalletConnect";
 import { AUDIUS_ACTIONS, AudiusState } from "../../../reducers/audius";
+import { AppFooter } from "../../molecules/AppFooter";
 
 export interface TokenInformationTemplateProps {
   readonly state: TokenInformationState;
@@ -22,7 +23,7 @@ const TokenInformationTemplate: React.FC<TokenInformationTemplateProps> = ({
   audiusDispatch,
 }) => {
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ height: "100vh" }}>
       <AppHeader />
       {!active ? (
         <WalletConnect />
@@ -34,6 +35,7 @@ const TokenInformationTemplate: React.FC<TokenInformationTemplateProps> = ({
           audiusDispatch={audiusDispatch}
         />
       )}
+      <AppFooter />
     </div>
   );
 };
