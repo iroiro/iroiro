@@ -16,7 +16,7 @@ interface Params {
 const TokenHistoryPage: React.FC = () => {
   const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokenHistoryReducer, initialState);
-  const [tokenState, tokenStateDispatch] = useTokenContext();
+  const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
   const { tokenAddress } = useParams<Params>();
   const { result: allTransferEvents } = useGetTransferEvents(
     library,
@@ -41,7 +41,7 @@ const TokenHistoryPage: React.FC = () => {
   useEffect(() => {
     if (
       tokenState.userAddress === "" ||
-      tokenState.token.tokenAddress !== tokenAddress
+      tokenState.token?.tokenAddress !== tokenAddress
     ) {
       const f = async () => {
         if (library === undefined) {
@@ -61,7 +61,7 @@ const TokenHistoryPage: React.FC = () => {
   useEffect(() => {
     if (
       tokenState.userBalance === "" ||
-      tokenState.token.tokenAddress !== tokenAddress
+      tokenState.token?.tokenAddress !== tokenAddress
     ) {
       if (!library) {
         return;

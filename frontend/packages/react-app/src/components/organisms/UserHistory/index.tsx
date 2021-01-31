@@ -10,12 +10,15 @@ export interface UserHistoryProps {
 }
 
 const UserHistory: React.FC<UserHistoryProps> = ({ state }) => {
-  const [tokenState, _] = useTokenContext();
+  const { state: tokenState } = useTokenContext();
   return (
     <div style={{ marginTop: "24px" }}>
       <Grid container spacing={4} direction="column">
         <Grid item xs={12}>
-          <UserActivities token={tokenState} activities={state.activities} />
+          <UserActivities
+            token={tokenState.token}
+            activities={state.activities}
+          />
         </Grid>
         <Grid item xs={12}>
           <BalanceHistoryChart balances={state.balances} />

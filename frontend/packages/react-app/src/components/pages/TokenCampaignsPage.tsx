@@ -21,7 +21,7 @@ const TokenCampaignsPage: React.FC<
   const { library } = useWeb3React();
   const tokenAddress = props.match.params.tokenAddress;
   const [state, dispatch] = useReducer(tokenCampaignsReducer, initialState);
-  const [tokenState, tokenStateDispatch] = useTokenContext();
+  const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
   const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const TokenCampaignsPage: React.FC<
   useEffect(() => {
     if (
       tokenState.userAddress === "" ||
-      tokenState.token.tokenAddress !== tokenAddress
+      tokenState.token?.tokenAddress !== tokenAddress
     ) {
       const f = async () => {
         if (library === undefined) {
@@ -62,7 +62,7 @@ const TokenCampaignsPage: React.FC<
   useEffect(() => {
     if (
       tokenState.userBalance === "" ||
-      tokenState.token.tokenAddress !== tokenAddress
+      tokenState.token?.tokenAddress !== tokenAddress
     ) {
       if (!library) {
         return;

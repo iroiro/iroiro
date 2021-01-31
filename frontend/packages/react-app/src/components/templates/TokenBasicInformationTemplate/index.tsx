@@ -15,7 +15,7 @@ export interface TokenBasicInformationProps {
 export const TokenBasicInformationTemplate: React.FC<TokenBasicInformationProps> = ({
   tokenAddress,
 }) => {
-  const [tokenState, _] = useTokenContext();
+  const { state: tokenState } = useTokenContext();
   const history = useHistory();
   const [tabNumber, setTabNumber] = useState(0);
   const handleChangeTabs = useCallback(

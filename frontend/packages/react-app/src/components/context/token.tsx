@@ -1,16 +1,28 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { ProviderValue } from "../../reducers/tokenContext";
+import React, { createContext, Dispatch, useContext, useReducer } from "react";
+import {
+  ProviderValue,
+  TokenAction,
+  TokenState,
+} from "../../reducers/tokenContext";
 
-export const TokenContext: any = createContext({});
+interface TokenContextInterface {
+  readonly state: TokenState;
+  readonly dispatch: Dispatch<TokenAction>;
+}
+
+export const TokenContext = createContext({} as TokenContextInterface);
 
 export const TokenProvider = ({
   reducer,
   initialValue,
   children,
-}: ProviderValue) => (
-  <TokenContext.Provider value={useReducer(reducer, initialValue)}>
-    {children}
-  </TokenContext.Provider>
-);
+}: ProviderValue) => {
+  const [state, dispatch] = useReducer(reducer, initialValue);
+  return (
+    <TokenContext.Provider value={{ state, dispatch }}>
+      {children}
+    </TokenContext.Provider>
+  );
+};
 
-export const useTokenContext: any = () => useContext(TokenContext);
+export const useTokenContext = () => useContext(TokenContext);

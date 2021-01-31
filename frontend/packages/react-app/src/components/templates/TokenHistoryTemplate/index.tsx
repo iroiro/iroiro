@@ -17,7 +17,7 @@ export const TokenhistoryTemplate: React.FC<TokenHistoryTemplateProps> = ({
   state,
   tokenAddress,
 }) => {
-  const [tokenState, _] = useTokenContext();
+  const { state: tokenState } = useTokenContext();
   const history = useHistory();
   const [tabNumber, setTabNumber] = useState(4);
   const handleChangeTabs = useCallback(

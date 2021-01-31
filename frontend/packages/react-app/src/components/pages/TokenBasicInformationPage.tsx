@@ -13,7 +13,7 @@ interface Params {
 const TokenBasicInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const { library } = useWeb3React();
   const { tokenAddress } = useParams<Params>();
-  const [tokenState, tokenStateDispatch] = useTokenContext();
+  const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
 
   useEffect(() => {
     if (
@@ -33,7 +33,7 @@ const TokenBasicInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   useEffect(() => {
     if (
       tokenState.userAddress === "" ||
-      tokenState.token.tokenAddress !== tokenAddress
+      tokenState.token?.tokenAddress !== tokenAddress
     ) {
       const f = async () => {
         if (library === undefined) {
@@ -53,7 +53,7 @@ const TokenBasicInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   useEffect(() => {
     if (
       tokenState.userBalance === "" ||
-      tokenState.token.tokenAddress !== tokenAddress
+      tokenState.token?.tokenAddress !== tokenAddress
     ) {
       if (!library) {
         return;
