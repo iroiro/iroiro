@@ -71,15 +71,21 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     { manual: true }
   );
 
-  const [{ error: proofError }, postMakeProof] = useAxios({
-    url: MERKLE_ROOT_API_START,
-    method: "post",
-  });
+  const [{ error: proofError }, postMakeProof] = useAxios(
+    {
+      url: MERKLE_ROOT_API_START,
+      method: "post",
+    },
+    { manual: true }
+  );
 
-  const [{ error: describeError }, describeMakeProof] = useAxios({
-    url: MERKLE_ROOT_API_DESCRIBE,
-    method: "post",
-  });
+  const [{ error: describeError }, describeMakeProof] = useAxios(
+    {
+      url: MERKLE_ROOT_API_DESCRIBE,
+      method: "post",
+    },
+    { manual: true }
+  );
 
   const [merkleRoot, setMerkleRoot] = useState("");
 
@@ -379,6 +385,21 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         return;
       }
       walletList = JSON.parse(reader.result?.toString());
+      if (Object.keys(walletList).indexOf("targets") === -1) {
+        walletListDispatch({
+          type: "fileformat:set",
+          payload: { status: false },
+        });
+        return;
+      }
+      if (!Array.isArray(walletList.targets)) {
+        walletListDispatch({
+          type: "fileformat:set",
+          payload: { status: false },
+        });
+        return;
+      }
+
       walletListDispatch({
         type: "walletlist:set",
         payload: { targets: walletList.targets },
