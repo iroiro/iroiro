@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import {
   TokenCampaignsDetailTemplate,
   TokenCampaignsDetailTemplateProps,
-} from ".";
+} from "./index";
 import { audiusState, tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
 import { tokenReducer } from "../../../reducers/tokenContext";

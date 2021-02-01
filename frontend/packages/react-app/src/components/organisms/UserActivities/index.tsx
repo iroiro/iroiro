@@ -27,7 +27,7 @@ const UserActivities: React.FC<UserActivitiesProps> = ({
       ) : (
         <Grid container spacing={1} direction="column">
           {activities.map((activity) => (
-            <Grid key={activity.timestamp} item xs={12}>
+            <Grid key={activity.timestamp + activity.amount} item xs={12}>
               <UserActivityCard activity={activity} token={tokenState.token} />
             </Grid>
           ))}
