@@ -18,7 +18,7 @@ export const campaignMetadata: CampaignMetadata = {
 };
 
 export const distributor: Distributor = {
-  id: "0x48889feca4574810e5a5b30b6b93146a837500fb",
+  id: "0x590b4465a94be635bf2f760025c61ec3680f687c",
   distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
   distributorMetadata: {
     name: "Audius Followers Distributor",
