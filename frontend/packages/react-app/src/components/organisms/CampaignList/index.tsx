@@ -24,10 +24,6 @@ const CampaignList: React.FC<TokenAndCampaignProps> = ({
         ></LinkButton>
       </TitleBox>
       <Card>
-        <Box m={2}>
-          <Typography variant={"h4"}>Audius Distributor</Typography>
-        </Box>
-
         <CampaignListTable
           tokenState={tokenState}
           campaignsState={campaignsState}
