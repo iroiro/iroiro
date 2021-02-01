@@ -11,6 +11,7 @@ import {
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
+import { AppFooter } from "../../molecules/AppFooter";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -29,9 +30,16 @@ const CreateAudiusCampaignPageTemaplate: React.FC<CampaignInfo> = ({
   audiusState,
   audiusDispatch,
 }) => (
-  <div>
+  <div style={{ height: "100vh" }}>
     <AppHeader />
-    <Box mt={5}>
+    <Box
+      mt={5}
+      style={{
+        boxSizing: "border-box",
+        height: "calc(100% - 266px)",
+        minHeight: "300px",
+      }}
+    >
       <Container>
         {!active ? (
           <Box>
@@ -66,6 +74,7 @@ const CreateAudiusCampaignPageTemaplate: React.FC<CampaignInfo> = ({
         )}
       </Container>
     </Box>
+    <AppFooter />
   </div>
 );
 

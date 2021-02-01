@@ -12,6 +12,7 @@ import {
 } from "../../../reducers/distributorForm";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import { WalletList } from "../../../interfaces";
+import { AppFooter } from "../../molecules/AppFooter";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -30,9 +31,16 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
   walletListState,
   walletDispatch,
 }) => (
-  <div>
+  <div style={{ height: "100vh" }}>
     <AppHeader />
-    <Box mt={5}>
+    <Box
+      mt={5}
+      style={{
+        boxSizing: "border-box",
+        height: "calc(100% - 266px)",
+        minHeight: "300px",
+      }}
+    >
       <Container>
         {!active ? (
           <Box>
@@ -67,6 +75,7 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
         )}
       </Container>
     </Box>
+    <AppFooter />
   </div>
 );
 

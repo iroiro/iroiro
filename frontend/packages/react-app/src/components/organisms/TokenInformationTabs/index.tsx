@@ -57,6 +57,7 @@ function a11yProps(index: number) {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
+    minHeight: "86vh",
   },
   chart: {
     paddingTop: theme.spacing(6),
@@ -125,7 +126,15 @@ export const TokenInformationTabs: React.FC<TokenInformationProps> = ({
         <Tab label="Donation" {...a11yProps(3)} />
         <Tab label="User History" {...a11yProps(4)} />
       </Tabs>
-      <Container maxWidth="md">
+      <Container
+        maxWidth="md"
+        style={{
+          boxSizing: "border-box",
+          height: "calc(100% - 266px)",
+          minHeight: "300px",
+          paddingBottom: 36,
+        }}
+      >
         <TabPanel value={value} index={0}>
           <BasicTokenInformation state={state} />
         </TabPanel>
