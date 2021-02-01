@@ -1,11 +1,11 @@
 import * as React from "react";
-import { TokenInformationState } from "../../../interfaces";
 import { Grid } from "@material-ui/core";
 import UserActivities from "../UserActivities";
 import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
+import { TokenHistoryState } from "../../../reducers/tokenHistory";
 
 export interface UserHistoryProps {
-  readonly state: TokenInformationState;
+  readonly state: TokenHistoryState;
 }
 
 const UserHistory: React.FC<UserHistoryProps> = ({ state }) => {

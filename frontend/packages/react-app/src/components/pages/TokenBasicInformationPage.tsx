@@ -1,25 +1,19 @@
 import { useWeb3React } from "@web3-react/core";
-import React, { useEffect, useReducer } from "react";
-import { useParams } from "react-router-dom";
-import { useGetTransferEvents } from "../../hooks/useGetTransferEvents";
-import { tokenHistoryReducer, initialState } from "../../reducers/tokenHistory";
+import * as React from "react";
+import { useEffect } from "react";
+import { RouteComponentProps, useParams } from "react-router-dom";
 import { getTokenInfo, getWalletBalance } from "../../utils/web3";
-import { Block } from "@ethersproject/providers";
-import { Event } from "@ethersproject/contracts";
 import { useTokenContext } from "../../context/token";
-import { TokenHistoryTemplate } from "../templates/TokenHistoryPageTemplate";
+import { TokenBasicInformationTemplate } from "../templates/TokenBasicInformationTemplate";
+
 interface Params {
   tokenAddress: string;
 }
-const TokenHistoryPage: React.FC = () => {
+
+const TokenBasicInformationPage: React.FC<RouteComponentProps<Params>> = () => {
   const { library } = useWeb3React();
-  const [state, dispatch] = useReducer(tokenHistoryReducer, initialState);
-  const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
   const { tokenAddress } = useParams<Params>();
-  const { result: allTransferEvents } = useGetTransferEvents(
-    library,
-    tokenAddress
-  );
+  const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
 
   useEffect(() => {
     if (
@@ -75,38 +69,7 @@ const TokenHistoryPage: React.FC = () => {
     }
   }, [library, tokenState.token, tokenStateDispatch]);
 
-  useEffect(() => {
-    const f = async () => {
-      if (allTransferEvents === undefined || state.userAddress === undefined) {
-        return;
-      }
-      const eventBlockPairs: {
-        event: Event;
-        block: Block;
-      }[] = await Promise.all(
-        allTransferEvents.map(async (event) => {
-          const block = await event.getBlock();
-          return { event, block };
-        })
-      );
-      dispatch({
-        type: "activities:setTransfers",
-        payload: {
-          eventBlockPairs,
-        },
-      });
-      dispatch({
-        type: "balances:set",
-        payload: {
-          walletAddress: state.userAddress,
-          eventBlockPairs,
-        },
-      });
-    };
-    f();
-  }, [allTransferEvents, state.userAddress]);
-
-  return <TokenHistoryTemplate state={state} tokenAddress={tokenAddress} />;
+  return <TokenBasicInformationTemplate tokenAddress={tokenAddress} />;
 };
 
-export default TokenHistoryPage;
+export default TokenBasicInformationPage;

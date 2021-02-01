@@ -8,22 +8,25 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import TokenCampaignCard from "../../molecules/TokenCampaignCard";
-import { TokenInformationState } from "../../../interfaces";
-import { Dispatch, useState } from "react";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { CampaignInfo } from "../../../interfaces";
+import { useEffect, useState } from "react";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 
 export interface TokenCampaignsProps {
-  state: TokenInformationState;
-  dispatch: Dispatch<TokenInformationAction>;
+  campaigns: CampaignInfo[];
+  tokenAddress: string;
 }
 
 const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
-  state: { campaigns },
-  dispatch,
+  campaigns,
+  tokenAddress,
 }) => {
   const [filteredCampaigns, setFilteredCampaigns] = useState(campaigns);
   const [searchText, setSearchText] = useState("");
+  useEffect(() => {
+    setFilteredCampaigns(campaigns);
+  }, [campaigns]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
     if (e.target.value === "") {
@@ -68,7 +71,7 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
               <TokenCampaignCard
                 key={campaign.id}
                 campaign={campaign}
-                dispatch={dispatch}
+                tokenAddress={tokenAddress}
               />
             ))}
           </Box>
