@@ -13,6 +13,17 @@ const distributors: Distributor[] = [
     version: "",
   },
   {
+    id: "0x360557300E0B373bDb451f07fA292320CC4df136",
+    distributorCid: "QmRBHkjbuLExQPia1wiLgwjqXaBXowPDVVPPoTJv9wJnYP",
+    distributorMetadata: {
+      name: "UUID Distributor",
+      description: "",
+      image: "https://example.com/distributorimage.jpg",
+    },
+    type: "uuid",
+    version: "",
+  },
+  {
     id: "0x590b4465a94be635bf2f760025c61ec3680f687c",
     distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
     distributorMetadata: {
