@@ -277,4 +277,5 @@ export const walletListState: WalletList = {
   ],
   type: "address",
   filelist: null,
+  fileformat: true,
 };
