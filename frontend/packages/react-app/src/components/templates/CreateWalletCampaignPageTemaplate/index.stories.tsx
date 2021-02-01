@@ -2,7 +2,11 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import CreateWalletCampaignPageTemplate, { CampaignInfo } from "./index";
-import { distributorFormState, tokenInfo } from "../../../utils/mockData";
+import {
+  walletListState,
+  distributorFormState,
+  tokenInfo,
+} from "../../../utils/mockData";
 
 export default {
   title: "Templates/CreateWalletCampaignPageTemaplate",
@@ -15,11 +19,35 @@ const Template: Story<CampaignInfo> = (args) => (
   </BrowserRouter>
 );
 
-export const Step1 = Template.bind({});
-Step1.args = {
+export const Step1NoFile = Template.bind({});
+Step1NoFile.args = {
   active: true,
   tokenInfo: tokenInfo,
   distributorFormState,
+  walletListState: {
+    ...walletListState,
+    targets: [],
+  },
+};
+
+export const Step1HaveFile = Template.bind({});
+Step1HaveFile.args = {
+  active: true,
+  tokenInfo: tokenInfo,
+  distributorFormState,
+  walletListState,
+};
+
+export const Step1Invalid = Template.bind({});
+Step1Invalid.args = {
+  active: true,
+  tokenInfo: tokenInfo,
+  distributorFormState,
+  walletListState: {
+    ...walletListState,
+    targets: [],
+    fileformat: false,
+  },
 };
 
 export const Step2 = Template.bind({});
