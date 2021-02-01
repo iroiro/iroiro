@@ -7,6 +7,7 @@ import TokenInformationBar from "../../organisms/TokenInformationBar";
 import { useHistory } from "react-router-dom";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
 import { TokenCampaignsState } from "../../../reducers/tokenCampaigns";
+import { AppFooter } from "../../molecules/AppFooter";
 
 export interface TokenCampaignsTemplateProps {
   state: TokenCampaignsState;
@@ -36,18 +37,36 @@ export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
     [tabNumber, tokenAddress]
   );
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ height: "100%", minHeight: "100vh" }}>
       <AppHeader />
-      <TokenInformationBar />
-      <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
-      <Container maxWidth="md">
-        <Box style={{ padding: 24, maxWidth: 860, margin: "0 auto" }}>
-          <TokenCampaigns
-            campaigns={state.campaigns}
-            tokenAddress={tokenAddress}
-          />
-        </Box>
-      </Container>
+      <Box
+        m={"auto"}
+        minWidth={320}
+        style={{
+          boxSizing: "border-box",
+          height: "calc(100vh - 190px)",
+          minHeight: "600px",
+        }}
+      >
+        <TokenInformationBar />
+        <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
+        <Container maxWidth="md">
+          <Box
+            style={{
+              padding: 24,
+              maxWidth: 860,
+              margin: "0 auto",
+              minWidth: 320,
+            }}
+          >
+            <TokenCampaigns
+              campaigns={state.campaigns}
+              tokenAddress={tokenAddress}
+            />
+          </Box>
+        </Container>
+      </Box>
+      <AppFooter />
     </div>
   );
 };

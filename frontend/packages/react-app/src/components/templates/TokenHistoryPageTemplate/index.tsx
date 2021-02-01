@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useTokenContext } from "../../../context/token";
 import { TokenHistoryState } from "../../../reducers/tokenHistory";
+import { AppFooter } from "../../molecules/AppFooter";
 import AppHeader from "../../molecules/AppHeader";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
 
@@ -37,15 +38,33 @@ export const TokenHistoryTemplate: React.FC<TokenHistoryTemplateProps> = ({
     [tabNumber, tokenAddress]
   );
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ height: "100%", minHeight: "100vh" }}>
       <AppHeader />
-      <TokenInformationBar />
-      <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
-      <Container maxWidth="md">
-        <Box style={{ padding: 24, maxWidth: 860, margin: "0 auto" }}>
-          <UserHistory state={state} />
-        </Box>
-      </Container>
+      <Box
+        m={"auto"}
+        minWidth={320}
+        style={{
+          boxSizing: "border-box",
+          height: "calc(100vh - 190px)",
+          minHeight: "600px",
+        }}
+      >
+        <TokenInformationBar />
+        <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
+        <Container maxWidth="md">
+          <Box
+            style={{
+              padding: 24,
+              maxWidth: 860,
+              margin: "0 auto",
+              minWidth: 320,
+            }}
+          >
+            <UserHistory state={state} />
+          </Box>
+        </Container>
+      </Box>
+      <AppFooter />
     </div>
   );
 };

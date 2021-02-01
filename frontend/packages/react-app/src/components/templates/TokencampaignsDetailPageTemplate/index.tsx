@@ -15,6 +15,7 @@ import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
 import AudiusCampaignDetailPanel from "../../organisms/AudiusCampaignDetailPanel";
 import WalletCampaignDetailPanel from "../../organisms/WalletCampaignDetailPanel";
 import { useMemo } from "react";
+import { AppFooter } from "../../molecules/AppFooter";
 
 export interface TokenCampaignsDetailTemplateProps {
   state: CampaignDetailState;
@@ -85,30 +86,48 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
   }, [state]);
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ height: "100%", minHeight: "100vh" }}>
       <AppHeader />
-      <TokenInformationBar />
-      <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
-      <Container maxWidth="md">
-        <Box style={{ padding: 24, maxWidth: 860, margin: "0 auto" }}>
-          {state.campaign !== null &&
-            state.campaign.campaignMetadata &&
-            CampaignDetailPanel}
-          {state.campaign === null && (
-            <Paper
-              style={{
-                padding: 24,
-                margin: "40px 0",
-                textAlign: "center",
-                lineHeight: "240px",
-                height: 240,
-              }}
-            >
-              <Typography>Campaign not found.</Typography>
-            </Paper>
-          )}
-        </Box>
-      </Container>
+      <Box
+        m={"auto"}
+        minWidth={320}
+        style={{
+          boxSizing: "border-box",
+          height: "calc(100vh - 170px)",
+          minHeight: "600px",
+        }}
+      >
+        <TokenInformationBar />
+        <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
+        <Container maxWidth="md">
+          <Box
+            style={{
+              padding: 24,
+              margin: "0 auto",
+              maxWidth: 860,
+              minWidth: 320,
+            }}
+          >
+            {state.campaign !== null &&
+              state.campaign.campaignMetadata &&
+              CampaignDetailPanel}
+            {state.campaign === null && (
+              <Paper
+                style={{
+                  padding: 24,
+                  margin: "40px 0",
+                  textAlign: "center",
+                  lineHeight: "240px",
+                  height: 240,
+                }}
+              >
+                <Typography>Campaign not found.</Typography>
+              </Paper>
+            )}
+          </Box>
+        </Container>
+      </Box>
+      <AppFooter />
     </div>
   );
 };
