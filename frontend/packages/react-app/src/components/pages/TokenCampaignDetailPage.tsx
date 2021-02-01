@@ -20,7 +20,7 @@ import {
 } from "../../reducers/campaignDetail";
 import { LINK_TOKEN_ADDRESS } from "../../utils/const";
 import { getTokenInfo, getWalletBalance } from "../../utils/web3";
-import { TokenCampaignsDetailTemplate } from "../templates/TokencampaignsDetailPageTemplate";
+import { TokenCampaignsDetailTemplate } from "../templates/TokenCampaignsDetailPageTemplate";
 
 const TokenCampaignDetailPage: React.FC<
   RouteComponentProps<{
