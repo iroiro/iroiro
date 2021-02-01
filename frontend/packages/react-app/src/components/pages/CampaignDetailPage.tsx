@@ -139,27 +139,27 @@ const CampaignDetailPage: React.FC<
   }, [getCampaign, campaignAddress]);
 
   useEffect(() => {
-    if (data !== undefined) {
-      let canRefund = false;
-
-      console.log(data);
-      if (data.campaign.endDate * 1000 < new Date().getTime()) {
-        canRefund = true;
-      }
-
-      const startDate = getDateString(data.campaign.startDate);
-      const endDate = getDateString(data.campaign.endDate);
-      data.campaign.startDate = startDate;
-      data.campaign.endDate = endDate;
-
-      campaignDispatch({
-        type: "campaign:set",
-        payload: { data: { campaign: data.campaign, canRefund: canRefund } },
-      });
-
-      getCampaignMetadata(data.campaign);
-      getTargets(data.campaign);
+    if (data === undefined || data === null) {
+      return;
     }
+    let canRefund = false;
+
+    if (data.campaign.endDate * 1000 < new Date().getTime()) {
+      canRefund = true;
+    }
+
+    const startDate = getDateString(data.campaign.startDate);
+    const endDate = getDateString(data.campaign.endDate);
+    data.campaign.startDate = startDate;
+    data.campaign.endDate = endDate;
+
+    campaignDispatch({
+      type: "campaign:set",
+      payload: { data: { campaign: data.campaign, canRefund: canRefund } },
+    });
+
+    getCampaignMetadata(data.campaign);
+    getTargets(data.campaign);
   }, [data, getTargets]);
 
   useEffect(() => {
