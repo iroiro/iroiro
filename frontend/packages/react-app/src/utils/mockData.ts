@@ -28,6 +28,7 @@ export const distributor: Distributor = {
   },
   type: "audius",
   version: "1",
+  disabled: false,
 };
 
 export const campaign: CampaignInfo = {

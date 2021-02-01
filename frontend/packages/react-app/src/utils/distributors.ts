@@ -11,6 +11,7 @@ const distributors: Distributor[] = [
     },
     type: "wallet",
     version: "",
+    disabled: false,
   },
   {
     id: "0x590b4465a94be635bf2f760025c61ec3680f687c",
@@ -23,6 +24,7 @@ const distributors: Distributor[] = [
     },
     type: "audius",
     version: "",
+    disabled: true,
   },
 ];
 

@@ -33,6 +33,9 @@ const App: React.FC = () => {
             component={SelectDistributorsPage}
           />
           {distributors.map((distributor) => {
+            if (distributor.disabled) {
+              return;
+            }
             if (distributor.type === "audius") {
               return (
                 <Route
