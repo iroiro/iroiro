@@ -28,7 +28,7 @@ const UUIDURLList: React.FC<UUIDURLListProps> = ({
       <Paper>
         <Box p={4}>
           <Box m={"auto"} width={[3 / 4]} mt={2}>
-            <Typography variant={"h4"}>4. UUID URL List</Typography>
+            <Typography variant={"h4"}>4. URL List</Typography>
             <Box mt={2}>
               <Typography display="inline">
                 A campaign is created successfully and

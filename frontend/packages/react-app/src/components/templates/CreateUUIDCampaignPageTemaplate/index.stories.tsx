@@ -65,7 +65,7 @@ Step3.args = {
   },
   distributorFormState: {
     ...distributorFormState,
-    campaignName: "UUID Campaign",
+    campaignName: "URL Campaign",
     step: 3,
   },
 };
@@ -80,7 +80,7 @@ Step4.args = {
   },
   distributorFormState: {
     ...distributorFormState,
-    campaignName: "UUID Campaign",
+    campaignName: "URL Campaign",
     step: 4,
   },
 };

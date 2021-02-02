@@ -25,7 +25,7 @@ const ColorButton = withStyles(() => ({
 
 const campaignNames: { [type: string]: string } = {
   wallet: "Wallet Address Campaign",
-  uuid: "UUID Campaign",
+  uuid: "URL Campaign",
   audius: "Audius Follower Campaign",
 };
 

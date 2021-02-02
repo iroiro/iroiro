@@ -43,7 +43,7 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
         ) : (
           <Box>
             <Box my={1}>
-              <Typography variant={"h3"}>UUID Campaign</Typography>
+              <Typography variant={"h3"}>URL Campaign</Typography>
             </Box>
             {distributorFormState.step === 1 && (
               <UUIDDistributionTargets
