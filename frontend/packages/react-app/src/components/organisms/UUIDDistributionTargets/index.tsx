@@ -23,7 +23,7 @@ const UUIDDistributionTargets: React.FC<TargetsProps> = ({
         </Box>
         <>
           <Box my={4} style={{ textAlign: "center" }}>
-            <Typography>Distribution target quantity</Typography>
+            <Typography>Number of unique URLs</Typography>
           </Box>
           <Box my={2} style={{ textAlign: "center" }}>
             <TextField
