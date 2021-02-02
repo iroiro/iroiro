@@ -22,61 +22,70 @@ const ColorButton = withStyles(() => ({
   },
 }))(Button);
 
+const campaignNames: { [type: string]: string } = {
+  wallet: "Wallet Address Campaign",
+  uuid: "UUID Campaign",
+  audius: "Audius Follower Campaign",
+};
+
 const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
   targetNumber,
   campaignData,
   campaignDispatch,
   distributorType,
-}) => (
-  <div>
-    <AppHeader />
-    <Box mt={5}>
-      <Container>
-        <Box display="flex" mb={1} style={{ justifyContent: "space-between" }}>
-          {distributorType === "audius" && (
-            <Typography variant={"h3"}>Audius Follower Campaign</Typography>
-          )}
-          {distributorType === "wallet" && (
-            <Typography variant={"h3"}>Wallet Address Distributor</Typography>
-          )}
-          <Box style={{ textAlign: "center" }}>
-            {campaignData.campaign.status === 0 && !campaignData.canRefund && (
-              <ColorButton
-                variant="outlined"
-                size="small"
-                onClick={() =>
-                  campaignDispatch({
-                    type: "campaign:cancel",
-                    payload: { data: true },
-                  })
-                }
-              >
-                Cancel campaign
-              </ColorButton>
-            )}
-            {campaignData.canRefund && (
-              <Button
-                size="small"
-                color="secondary"
-                onClick={() =>
-                  campaignDispatch({
-                    type: "campaign:refund",
-                    payload: { data: true },
-                  })
-                }
-              >
-                End campaign and refund tokens
-              </Button>
-            )}
+}) => {
+  return (
+    <div>
+      <AppHeader />
+      <Box mt={5}>
+        <Container>
+          <Box
+            display="flex"
+            mb={1}
+            style={{ justifyContent: "space-between" }}
+          >
+            <Typography variant={"h3"}>
+              {campaignNames[distributorType]}
+            </Typography>
+            <Box style={{ textAlign: "center" }}>
+              {campaignData.campaign.status === 0 && !campaignData.canRefund && (
+                <ColorButton
+                  variant="outlined"
+                  size="small"
+                  onClick={() =>
+                    campaignDispatch({
+                      type: "campaign:cancel",
+                      payload: { data: true },
+                    })
+                  }
+                >
+                  Cancel campaign
+                </ColorButton>
+              )}
+              {campaignData.canRefund && (
+                <Button
+                  size="small"
+                  color="secondary"
+                  onClick={() =>
+                    campaignDispatch({
+                      type: "campaign:refund",
+                      payload: { data: true },
+                    })
+                  }
+                >
+                  End campaign and refund tokens
+                </Button>
+              )}
+            </Box>
           </Box>
-        </Box>
-        <CampaignDetail
-          campaignData={campaignData}
-          targetNumber={targetNumber}
-        />
-      </Container>
-    </Box>
-  </div>
-);
+          <CampaignDetail
+            campaignData={campaignData}
+            targetNumber={targetNumber}
+          />
+        </Container>
+      </Box>
+    </div>
+  );
+};
 
 export default CampaignDetailPageTemplate;

@@ -26,4 +26,5 @@ Default.args = {
     canRefund: false,
     depositTokens: "100000",
   },
+  distributorType: "audius",
 };

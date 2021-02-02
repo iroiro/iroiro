@@ -13,6 +13,7 @@ import {
 import { useWeb3React } from "@web3-react/core";
 import dayjs from "dayjs";
 import { CampaignInfo, Recipients } from "../../interfaces";
+import distributors from "../../utils/distributors";
 
 const CampaignDetailPage: React.FC<
   RouteComponentProps<{
@@ -122,13 +123,11 @@ const CampaignDetailPage: React.FC<
   );
 
   useEffect(() => {
-    if (distributorAddress === "0x590b4465a94be635bf2f760025c61ec3680f687c") {
-      setDistributorType("audius");
-    }
-    if (distributorAddress === "0xb562cf605a0f8a123bf7abfdfe1317671a8b5ead") {
-      setDistributorType("wallet");
-    }
-  }, [distributorType]);
+    const distributor = distributors.find(
+      (distributor) => distributor.id === distributorAddress
+    );
+    setDistributorType(distributor?.type ?? "");
+  }, [distributorAddress]);
 
   useEffect(() => {
     getCampaign({
@@ -139,7 +138,7 @@ const CampaignDetailPage: React.FC<
   }, [getCampaign, campaignAddress]);
 
   useEffect(() => {
-    if (data === undefined || data === null) {
+    if (data === undefined || data === null || data.campaign == undefined) {
       return;
     }
     let canRefund = false;
