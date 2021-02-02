@@ -6,6 +6,7 @@ import { ACTIONS } from "../../../reducers/tokens";
 import { TokenListState } from "../../../interfaces";
 import SetTokenModal from "../../organisms/SetTokenModal";
 import AddNewToken from "../../atoms/AddNewToken";
+import { AppFooter } from "../../molecules/AppFooter";
 
 export interface ExplorePageTemplateProps {
   readonly state: TokenListState;
@@ -16,7 +17,7 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
   state,
   dispatch,
 }) => (
-  <div>
+  <div style={{ height: "100vh" }}>
     <AppHeader />
     <Box
       m={"auto"}
@@ -24,7 +25,11 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
       width={[4 / 5, 1 / 2]}
       p={2}
       minWidth={320}
-      style={{ boxSizing: "border-box" }}
+      style={{
+        boxSizing: "border-box",
+        height: "calc(100% - 266px)",
+        minHeight: "300px",
+      }}
     >
       <Typography variant={"h3"}>Token Explorer</Typography>
       <Box mt={2}>
@@ -37,6 +42,7 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
       <AddNewToken color={state.color} dispatch={dispatch} />
       <SetTokenModal state={state} dispatch={dispatch} />
     </Box>
+    <AppFooter />
   </div>
 );
 

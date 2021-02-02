@@ -7,6 +7,7 @@ import CampaignDetail from "../../organisms/CampaignDetail";
 import { AccountToken } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
 import { ACTIONS } from "../../../reducers/campaign";
+import { AppFooter } from "../../molecules/AppFooter";
 
 export interface CampaignInfoProps {
   readonly tokenInfo: AccountToken;
@@ -28,9 +29,16 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
   campaignDispatch,
   distributorType,
 }) => (
-  <div>
+  <div style={{ height: "100vh" }}>
     <AppHeader />
-    <Box mt={5}>
+    <Box
+      mt={5}
+      style={{
+        boxSizing: "border-box",
+        height: "calc(100% - 266px)",
+        minHeight: "300px",
+      }}
+    >
       <Container>
         <Box display="flex" mb={1} style={{ justifyContent: "space-between" }}>
           {distributorType === "audius" && (
@@ -76,6 +84,7 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
         />
       </Container>
     </Box>
+    <AppFooter />
   </div>
 );
 

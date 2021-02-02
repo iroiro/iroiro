@@ -353,15 +353,10 @@
     "@ethersproject/properties" "^5.0.7"
     "@ethersproject/strings" "^5.0.8"
 
-"@iroiro/merkle-distributor@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@iroiro/merkle-distributor/-/merkle-distributor-1.0.8.tgz#eaeff593180df2f3d1c2f2385cb1e29763efab88"
-  integrity sha512-yUnfwez1IqYRTuSka74T4+XtNAaQAYFMX2AKZWv/lag20LgIxts03/uy8Rr/zhDMuhRTIc94oBJFgpEGJjTj6A==
-
-"@iroiro/merkle-distributor@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@iroiro/merkle-distributor/-/merkle-distributor-1.0.9.tgz#6af636c828f0c04a6e19aa80b0b8b6e56b015314"
-  integrity sha512-CoXe70hnPmUJFWJK7oZOxAKJ1H7s+6L50UaAbqrwfLIFNJ07T3db4PYESbjB48oe2qiHpw4zxMj/D7eYdk+YtA==
+"@iroiro/merkle-distributor@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@iroiro/merkle-distributor/-/merkle-distributor-1.1.1.tgz#5deb3d3ae40194b5f2d5d00b272313949e19484a"
+  integrity sha512-mCcYWu0F78z/4jGuGClpzE8E/fWn3gfGayMRxMvih+Skf4cqy0i+QdVCP3bUB1YeEflTh1pIkS2NYwMnT0xi4w==
   dependencies:
     ethers "^5.0.1"
 
@@ -1728,7 +1723,7 @@ ethereumjs-util@^7.0.7:
     ethjs-util "0.1.6"
     rlp "^2.2.4"
 
-ethers@^5.0.1:
+ethers@^5.0.1, ethers@^5.0.26:
   version "5.0.26"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.0.26.tgz#ef43c6b6aad71f10c1a184003f69b142d7d03bae"
   integrity sha512-MqA8Fvutn3qEW0yBJOHeV6KZmRpF2rqlL2B5058AGkUFsuu6j5Ns/FRlMsbGeQwBz801IB23jQp7vjRfFsKSkg==

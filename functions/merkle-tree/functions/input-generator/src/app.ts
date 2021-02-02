@@ -1,18 +1,26 @@
-import {
-  APIGatewayEventRequestContext,
-  APIGatewayProxyEvent,
-} from "aws-lambda";
-import { OldFormat } from "@iroiro/merkle-distributor";
+import { APIGatewayProxyEvent } from "aws-lambda";
 import { isAddress } from "web3-utils";
 import * as FormData from "form-data";
 import * as stream from "stream";
 import axios, { AxiosRequestConfig } from "axios";
+import { ethers } from "ethers";
+import {
+  BalanceMapOldFormat,
+  StringBalanceMapOldFormat,
+} from "@iroiro/merkle-distributor";
 
 const ipfsClient = require("ipfs-http-client");
 
+type TargetType = "address" | "keccak256";
+
 interface Targets {
   readonly targets: string[];
-  readonly type: string;
+  readonly type: TargetType;
+}
+
+interface Output {
+  readonly cid: string;
+  readonly type: TargetType;
 }
 
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
@@ -32,15 +40,11 @@ exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
 
   // TODO error handling
   const targets = (await getFile(cid)) as Targets;
-  if (targets.type !== "address" || !Array.isArray(targets.targets)) {
+  if (!isValidTargets(targets)) {
     throw Error("given file is invalid.");
   }
 
-  if (!isAllAddress(targets)) {
-    throw Error("Non address value is contained in targets.");
-  }
-
-  const input: OldFormat = {};
+  const input: BalanceMapOldFormat | StringBalanceMapOldFormat = {};
   targets.targets
     .map((target) => target.toLowerCase())
     .forEach((target) => {
@@ -50,9 +54,11 @@ exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
   // TODO error handling
   const result = await uploadFile(JSON.stringify(input), "input.json");
 
-  return {
+  const output: Output = {
     cid: result.IpfsHash,
+    type: targets.type,
   };
+  return output;
 };
 
 const isAllAddress = (targets: Targets): boolean => {
@@ -62,6 +68,35 @@ const isAllAddress = (targets: Targets): boolean => {
     }) === undefined
   );
 };
+
+const isAllHashed = (targets: Targets): boolean => {
+  return (
+    targets.targets.find((hashed) => {
+      if (hashed.length != 66) {
+        return true;
+      }
+      if (!ethers.utils.isHexString(hashed)) {
+        return true;
+      }
+      return false;
+    }) === undefined
+  );
+};
+
+function isValidTargets(targets: Targets): boolean {
+  if (!Array.isArray(targets.targets)) {
+    return false;
+  }
+
+  switch (targets.type) {
+    case "address":
+      return isAllAddress(targets);
+    case "keccak256":
+      return isAllHashed(targets);
+    default:
+      return false;
+  }
+}
 
 export const getFile = async (cid: string): Promise<object> => {
   for await (const file of ipfs.get(cid)) {
@@ -77,7 +112,6 @@ export const getFile = async (cid: string): Promise<object> => {
 };
 
 // TODO Remove and use uploaders function
-
 export interface PinFileResult {
   readonly IpfsHash: string;
 }

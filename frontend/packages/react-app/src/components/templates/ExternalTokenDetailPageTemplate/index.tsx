@@ -4,6 +4,7 @@ import AppHeader from "../../molecules/AppHeader";
 import { AccountToken, Campaigns } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import CampaignList from "../../organisms/CampaignList";
+import { AppFooter } from "../../molecules/AppFooter";
 
 export interface ExternalTokenDetailPageTemplateProps {
   readonly active: boolean;
@@ -17,9 +18,16 @@ const ExternalTokenDetailPageTemplate: React.FC<ExternalTokenDetailPageTemplateP
   campaignsState,
 }) => {
   return (
-    <>
+    <div style={{ height: "100vh" }}>
       <AppHeader />
-      <Box mt={5}>
+      <Box
+        mt={5}
+        style={{
+          boxSizing: "border-box",
+          height: "calc(100% - 266px)",
+          minHeight: "300px",
+        }}
+      >
         <Container>
           {!active ? (
             <Box>
@@ -35,7 +43,8 @@ const ExternalTokenDetailPageTemplate: React.FC<ExternalTokenDetailPageTemplateP
           )}
         </Container>
       </Box>
-    </>
+      <AppFooter />
+    </div>
   );
 };
 
