@@ -19,9 +19,7 @@ const UUIDDistributionTargets: React.FC<TargetsProps> = ({
     <Card>
       <Box p={4}>
         <Box mt={4}>
-          <Typography variant={"h4"}>
-            1. Input distribution target quantity
-          </Typography>
+          <Typography variant={"h4"}>1. Input number of unique URLs</Typography>
         </Box>
         <>
           <Box my={4} style={{ textAlign: "center" }}>

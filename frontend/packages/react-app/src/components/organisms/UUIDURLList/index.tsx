@@ -31,7 +31,7 @@ const UUIDURLList: React.FC<UUIDURLListProps> = ({
             <Typography variant={"h4"}>4. UUID URL List</Typography>
             <Box mt={2}>
               <Typography display="inline">
-                Campaign is created successfully and
+                A campaign is created successfully and
               </Typography>
               <Typography display="inline" color="primary">
                 {" "}
@@ -41,8 +41,8 @@ const UUIDURLList: React.FC<UUIDURLListProps> = ({
                 are generated for your fans.
               </Typography>
               <Typography>
-                Copy and distribute it!(Please note, this url will be deleted
-                after you move from this page, so please be careful. )
+                Copy and distribute it! Please note, this URL will be deleted
+                after you move from this page, so please be careful.
               </Typography>
             </Box>
           </Box>
