@@ -22,7 +22,6 @@ const App: React.FC = () => {
         <div>
           <Switch>
             <Route exact path="/" component={ExplorePage} />
-
             {/* For Creator */}
             <Route exact path="/dashboard" component={DashboardPage} />
             <Route
@@ -36,38 +35,9 @@ const App: React.FC = () => {
               component={SelectDistributorsPage}
             />
             {distributors.map((distributor) => {
-              if (distributor.type === "audius") {
-                return (
-                  <Route
-                    key={distributor.id}
-                    exact
-                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
-                    render={(props) => (
-                      <CreateAudiusCampaignPage
-                        distributorAddress={distributor.id}
-                        props={props}
-                      />
-                    )}
-                  />
-                );
+              if (distributor.disabled) {
+                return;
               }
-              if (distributor.type === "wallet") {
-                return (
-                  <Route
-                    key={distributor.id}
-                    exact
-                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
-                    render={(props) => (
-                      <CreateWalletCampaignPage
-                        distributorAddress={distributor.id}
-                        props={props}
-                      />
-                    )}
-                  />
-                );
-              }
-            })}
-            {distributors.map((distributor) => {
               if (distributor.type === "audius") {
                 return (
                   <Route

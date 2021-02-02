@@ -55,7 +55,13 @@ const CampaignDetailPage: React.FC<
     const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
     const response = await fetch(url);
     const recipients: Recipients = await response.json();
-    setTartgetNumber(String(recipients.targets.length));
+    if (Object.keys(recipients).indexOf("targets") !== -1) {
+      setTartgetNumber(String(recipients.targets.length));
+    }
+    if (Object.keys(recipients).indexOf("addresses") !== -1) {
+      //@ts-ignore
+      setTartgetNumber(String(recipients.addresses.length));
+    }
   }, []);
 
   const getDateString = (timestamp: number) => {
@@ -146,7 +152,7 @@ const CampaignDetailPage: React.FC<
     if (data.campaign.endDate * 1000 < new Date().getTime()) {
       canRefund = true;
     }
-
+    
     const startDate = getDateString(data.campaign.startDate);
     const endDate = getDateString(data.campaign.endDate);
     data.campaign.startDate = startDate;

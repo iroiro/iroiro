@@ -47,6 +47,7 @@ export interface Distributor {
   distributorMetadata: DistributorMetadata;
   type: string;
   version: string;
+  disabled: boolean;
 }
 
 export interface DistributorMetadata {
