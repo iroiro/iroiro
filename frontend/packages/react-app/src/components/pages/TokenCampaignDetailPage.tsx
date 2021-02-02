@@ -20,6 +20,8 @@ import {
 import { LINK_TOKEN_ADDRESS } from "../../utils/const";
 import { getTokenInfo, getWalletBalance } from "../../utils/web3";
 import { TokenCampaignsDetailTemplate } from "../templates/TokenCampaignsDetailPageTemplate";
+import distributors from "../../utils/distributors";
+import { ethers } from "ethers";
 
 const TokenCampaignDetailPage: React.FC<
   RouteComponentProps<{
@@ -39,6 +41,11 @@ const TokenCampaignDetailPage: React.FC<
   const tokenAddress = props.match.params.tokenAddress;
   const campaignAddress = props.match.params.campaignAddress;
   const distributorAddress = props.match.params.distributorAddress;
+
+  const uuid: string =
+    new URLSearchParams(props.location.search)?.get("uuid") ?? "";
+  const hashedUUID: string = ethers.utils.solidityKeccak256(["string"], [uuid]);
+
   const [getCheckRequests, { data: checkRequestsData }] = useLazyQuery(
     GET_CHECK_REQUEST
   );
@@ -51,8 +58,9 @@ const TokenCampaignDetailPage: React.FC<
   const { isClaimable } = useIsClaimable(
     library,
     state?.campaignAddress ?? "",
-    state?.distributorType ?? "",
-    user?.wallet ?? ""
+    state?.distributorType,
+    user?.wallet ?? "",
+    hashedUUID
   );
   const { allowance } = useGetAllowance(
     library,
@@ -62,6 +70,10 @@ const TokenCampaignDetailPage: React.FC<
   const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
     GET_CLAIM
   );
+
+  useEffect(() => {
+    dispatch({ type: "hashedUUID:set", payload: { hashedUUID } });
+  }, [hashedUUID]);
 
   useEffect(() => {
     dispatch({ type: "campaignAddress:set", payload: { campaignAddress } });
@@ -163,18 +175,13 @@ const TokenCampaignDetailPage: React.FC<
   }, [tokenAddress, campaignData]);
 
   useEffect(() => {
-    if (distributorAddress === "0x590b4465a94be635bf2f760025c61ec3680f687c") {
-      dispatch({
-        type: "distributorType:set",
-        payload: { distributorType: "audius" },
-      });
-    }
-    if (distributorAddress === "0xb562cf605a0f8a123bf7abfdfe1317671a8b5ead") {
-      dispatch({
-        type: "distributorType:set",
-        payload: { distributorType: "wallet" },
-      });
-    }
+    const distributor = distributors.find(
+      (distributor) => distributor.id === distributorAddress
+    );
+    dispatch({
+      type: "distributorType:set",
+      payload: { distributorType: distributor?.type ?? "" },
+    });
   }, [distributorAddress]);
 
   useEffect(() => {

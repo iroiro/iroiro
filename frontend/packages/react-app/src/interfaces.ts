@@ -45,7 +45,7 @@ export interface Distributor {
   id: string;
   distributorCid: string;
   distributorMetadata: DistributorMetadata;
-  type: string;
+  type: DistributorTypes | string; // TODO remove string
   version: string;
   disabled: boolean;
 }
@@ -160,3 +160,5 @@ export interface WalletList {
   filelist: FileList | null;
   fileformat: boolean;
 }
+
+export type DistributorTypes = "audius" | "wallet" | "uuid";

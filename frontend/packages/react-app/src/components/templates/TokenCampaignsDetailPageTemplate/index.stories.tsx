@@ -41,6 +41,7 @@ Audius.args = {
     isTokenApproved: true,
     isTokenCheckFinished: false,
     isTokenRequested: false,
+    hashedUUID: "",
   },
   audiusState: audiusState,
 };
@@ -57,6 +58,24 @@ Wallet.args = {
     isTokenApproved: true,
     isTokenCheckFinished: false,
     isTokenRequested: false,
+    hashedUUID: "",
+  },
+  audiusState: audiusState,
+};
+
+export const UUID = Template.bind({});
+UUID.args = {
+  state: {
+    campaign: tokenInformationState.campaigns[0],
+    campaignAddress: "",
+    isCampaignClaimable: true,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "uuid",
+    isTokenApproved: true,
+    isTokenCheckFinished: false,
+    isTokenRequested: false,
+    hashedUUID: "",
   },
   audiusState: audiusState,
 };

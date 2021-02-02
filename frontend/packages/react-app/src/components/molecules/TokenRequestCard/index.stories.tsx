@@ -27,6 +27,7 @@ Default.args = {
     distributorType: "",
     isTokenRequested: false,
     isTokenApproved: true,
+    hashedUUID: "",
   },
 };
 
@@ -42,5 +43,6 @@ Requested.args = {
     distributorType: "",
     isTokenRequested: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
 };

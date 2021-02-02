@@ -48,6 +48,8 @@ const WalletCampaignDetailPanel: React.FC<WalletCampaignDetailPanelProps> = ({
           isClaimed={state.isCampaignClaimed}
           dispatch={dispatch}
           merkleTreeCid={state.campaign.merkleTreeCid}
+          distributorType={state.distributorType}
+          hashedUUID={state.hashedUUID}
         />
       </Box>
     </div>
