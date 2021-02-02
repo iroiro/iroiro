@@ -1,25 +1,48 @@
 import {
-  APIGatewayEventRequestContext,
-  APIGatewayProxyEvent,
-} from "aws-lambda";
-import {
   parseBalanceMap,
   MerkleDistributorInfo,
-  OldFormat,
+  BalanceMapOldFormat,
+  StringBalanceMapOldFormat,
 } from "@iroiro/merkle-distributor";
 import { S3 } from "aws-sdk";
+import { parseStringBalanceMap } from "@iroiro/merkle-distributor/dist/parse-string-balance-map";
 const s3 = new S3();
 const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
 
-exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
-  // @ts-ignore
-  const inputCid = event["cid"];
+type TargetType = "address" | "keccak256";
 
-  // error handling
-  const input = (await getFile(inputCid)) as OldFormat;
+interface Input {
+  readonly cid: string;
+  readonly type: TargetType;
+}
 
-  const merkleTree: MerkleDistributorInfo = parseBalanceMap(input);
+interface Output {
+  readonly bucket: string;
+  readonly key: string;
+}
+
+exports.lambdaHandler = async (event: Input) => {
+  const inputCid: string = event["cid"];
+  const type: TargetType = event["type"];
+
+  let merkleTree: MerkleDistributorInfo;
+  switch (type) {
+    case "address":
+      // error handling
+      const balanceMap = (await getFile(inputCid)) as BalanceMapOldFormat;
+      merkleTree = parseBalanceMap(balanceMap);
+      break;
+    case "keccak256":
+      // error handling
+      const stringBalanceMap = (await getFile(
+        inputCid
+      )) as StringBalanceMapOldFormat;
+      merkleTree = parseStringBalanceMap(stringBalanceMap);
+      break;
+    default:
+      throw Error("Unexpected type.");
+  }
 
   const merkleTreeBucket = process.env.MERKLE_TREE_BUCKET;
   const merkleRoot = merkleTree.merkleRoot;
@@ -40,10 +63,11 @@ exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
       console.error(err);
     });
 
-  return {
+  const output: Output = {
     bucket: merkleTreeBucket,
     key: merkleTreeKey,
   };
+  return output;
 };
 
 // TODO integrate with input-generator

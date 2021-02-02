@@ -76,6 +76,7 @@ const distributor: Distributor = {
   },
   type: "",
   version: "",
+  disabled: false,
 };
 
 const campaignMetadata: CampaignMetadata = {
