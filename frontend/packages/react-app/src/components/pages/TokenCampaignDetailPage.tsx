@@ -64,6 +64,10 @@ const TokenCampaignDetailPage: React.FC<
   );
 
   useEffect(() => {
+    dispatch({ type: "campaignAddress:set", payload: { campaignAddress } });
+  }, [campaignAddress]);
+
+  useEffect(() => {
     if (
       tokenState.token === undefined ||
       tokenState.token.tokenAddress !== tokenAddress
@@ -124,7 +128,9 @@ const TokenCampaignDetailPage: React.FC<
       },
     });
   }, [campaignAddress, getCampaign]);
+
   useEffect(() => {
+    console.debug(campaignData);
     const f = async () => {
       if (!tokenAddress) {
         return;
