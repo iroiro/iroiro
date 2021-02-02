@@ -17,7 +17,7 @@ const distributors: Distributor[] = [
     id: "0x360557300E0B373bDb451f07fA292320CC4df136",
     distributorCid: "QmRBHkjbuLExQPia1wiLgwjqXaBXowPDVVPPoTJv9wJnYP",
     distributorMetadata: {
-      name: "UUID Distributor",
+      name: "URL Distributor",
       description: "",
       image: "https://example.com/distributorimage.jpg",
     },
