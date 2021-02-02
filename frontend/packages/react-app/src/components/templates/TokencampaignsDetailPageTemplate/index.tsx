@@ -93,7 +93,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
         minWidth={320}
         style={{
           boxSizing: "border-box",
-          height: "calc(100vh - 170px)",
+          height: "calc(100% - 170px)",
           minHeight: "600px",
         }}
       >
