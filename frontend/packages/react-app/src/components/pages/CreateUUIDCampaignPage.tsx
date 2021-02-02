@@ -1,25 +1,24 @@
 import React, { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
-import CreateWalletCampaignPageTemplate from "../templates/CreateWalletCampaignPageTemaplate";
+import CreateUUIDCampaignPageTemplate from "../templates/CreateUUIDCampaignPageTemaplate";
 import {
   getWalletBalance,
   getAllowance,
   setApproveAmount,
   createWalletCampaign,
   parseUnits,
+  createUUIDCampaign,
 } from "../../utils/web3";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import {
   distributorFormReducer,
   distributorFormInitialState,
 } from "../../reducers/distributorForm";
-import { walletReducer, walletInitialState } from "../../reducers/wallet";
 import {
   merkletreeReducer,
   merkltreeInitialState,
 } from "../../reducers/merkletree";
-import { WalletList } from "../../interfaces";
 
 import IpfsHttpClient from "ipfs-http-client";
 import useAxios from "axios-hooks";
@@ -29,16 +28,17 @@ import {
   MERKLE_ROOT_API_DESCRIBE,
 } from "../../utils/const";
 import { BigNumber } from "ethers";
+import { uuidInitialState, uuidReducer } from "../../reducers/uuid";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
-interface CreateWalletCampaignPageProps {
+interface CreateUUIDCampaignPageProps {
   readonly props: RouteComponentProps<{ tokenAddress: string }>;
   readonly distributorAddress: string;
 }
 
-const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
+const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   props,
   distributorAddress,
 }) => {
@@ -53,10 +53,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     distributorFormReducer,
     distributorFormInitialState
   );
-  const [walletListState, walletListDispatch] = useReducer(
-    walletReducer,
-    walletInitialState
-  );
+  const [uuidState, uuidDispatch] = useReducer(uuidReducer, uuidInitialState);
   const [merkletreeState, merkletreeDispatch] = useReducer(
     merkletreeReducer,
     merkltreeInitialState
@@ -181,7 +178,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       const secondsStartDate = startDate / 1000;
       const secondsEndDate = endDate / 1000;
 
-      createWalletCampaign(
+      createUUIDCampaign(
         library,
         merkleRoot,
         tokenAddress,
@@ -196,13 +193,19 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
           return;
         }
         transaction.wait().then((result) => {
-          if (result.status === 1) {
-            if (result.events && result.events[4].args) {
-              const campaignAddress = result.events[4].args.campaign;
-              props.history.push(
-                window.location.pathname + `/campaigns/${campaignAddress}`
-              );
-            }
+          if (result.status !== 1) {
+            return;
+          }
+          if (result.events && result.events[4].args) {
+            const campaignAddress = result.events[4].args.campaign;
+            distributorFormDispatch({
+              type: "createdCampaignAddress:set",
+              payload: { address: campaignAddress },
+            });
+            distributorFormDispatch({
+              type: "step:set",
+              payload: { stepNo: 4 },
+            });
           }
         });
       });
@@ -262,6 +265,20 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
   }, []);
 
   useEffect(() => {
+    if (!uuidState.moveToCampaignPage) {
+      return;
+    }
+    props.history.push(
+      window.location.pathname +
+        `/campaigns/${distributorFormState.createdCampaignAddress}`
+    );
+  }, [
+    props.history,
+    uuidState.moveToCampaignPage,
+    distributorFormState.createdCampaignAddress,
+  ]);
+
+  useEffect(() => {
     if (library) {
       getBalance(library);
       getAllowanceAmount(library);
@@ -292,13 +309,13 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
           name: distributorFormState.campaignName,
         };
 
-        const addresses = {
-          targets: walletListState.targets,
-          type: walletListState.type,
+        const targets = {
+          targets: uuidState.targets,
+          type: uuidState.type,
         };
 
         await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
-        await uploadJsonIpfs(addresses, "recipientsCid");
+        await uploadJsonIpfs(targets, "recipientsCid");
       }
     };
     f();
@@ -320,7 +337,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
-      walletListState.targets.length === 0 ||
+      !uuidState.isValidQuantity ||
       distributorFormState.startDate == null ||
       distributorFormState.endDate == null ||
       tokenState.allowance === ""
@@ -330,7 +347,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
 
     makeMerkleProof(
       tokenState.allowance,
-      walletListState.targets.length,
+      uuidState.quantity,
       recipientsCid,
       account
     );
@@ -361,7 +378,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
           campaignInfoCid,
           recipientsCid,
           merkletreeState.merkleTreeCid,
-          walletListState.targets.length,
+          uuidState.quantity,
           distributorFormState.startDate,
           distributorFormState.endDate
         );
@@ -371,53 +388,17 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     f();
   }, [merkletreeState]);
 
-  useEffect(() => {
-    if (walletListState.filelist === null) {
-      return;
-    }
-    const file = walletListState.filelist[0];
-    const reader = new FileReader();
-    let walletList: WalletList;
-    reader.onloadend = () => {
-      if (reader.result?.toString() === undefined) {
-        return;
-      }
-      walletList = JSON.parse(reader.result?.toString());
-      if (Object.keys(walletList).indexOf("targets") === -1) {
-        walletListDispatch({
-          type: "fileformat:set",
-          payload: { status: false },
-        });
-        return;
-      }
-      if (!Array.isArray(walletList.targets)) {
-        walletListDispatch({
-          type: "fileformat:set",
-          payload: { status: false },
-        });
-        return;
-      }
-
-      walletListDispatch({
-        type: "walletlist:set",
-        payload: { targets: walletList.targets },
-      });
-    };
-    reader.readAsText(file);
-  }, [walletListState]);
-
   return (
-    <>
-      <CreateWalletCampaignPageTemplate
-        active={active}
-        tokenInfo={tokenState}
-        distributorFormDispatch={distributorFormDispatch}
-        distributorFormState={distributorFormState}
-        walletDispatch={walletListDispatch}
-        walletListState={walletListState}
-      />
-    </>
+    <CreateUUIDCampaignPageTemplate
+      active={active}
+      tokenAddress={tokenAddress}
+      tokenInfo={tokenState}
+      distributorFormDispatch={distributorFormDispatch}
+      distributorFormState={distributorFormState}
+      uuidState={uuidState}
+      uuidDispatch={uuidDispatch}
+    />
   );
 };
 
-export default CreateWalletCampaignPage;
+export default CreateUUIDCampaignPage;

@@ -231,6 +231,7 @@ export const distributorFormState: createCampaignState = {
   endDate: new Date("2021-01-01T00:00:00").getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
+  createdCampaignAddress: "",
 };
 
 export const audiusTarget: Target = {

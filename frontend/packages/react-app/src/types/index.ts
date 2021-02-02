@@ -21,6 +21,8 @@ export type { LinkTokenInterface } from "./LinkTokenInterface";
 export type { Migrations } from "./Migrations";
 export type { Ownable } from "./Ownable";
 export type { PointerInterface } from "./PointerInterface";
+export type { UUIDCampaign } from "./UUIDCampaign";
+export type { UUIDDistributor } from "./UUIDDistributor";
 export type { WalletCampaign } from "./WalletCampaign";
 export type { WalletDistributor } from "./WalletDistributor";
 
@@ -44,5 +46,7 @@ export { LinkTokenInterface__factory } from "./factories/LinkTokenInterface__fac
 export { Migrations__factory } from "./factories/Migrations__factory";
 export { Ownable__factory } from "./factories/Ownable__factory";
 export { PointerInterface__factory } from "./factories/PointerInterface__factory";
+export { UUIDCampaign__factory } from "./factories/UUIDCampaign__factory";
+export { UUIDDistributor__factory } from "./factories/UUIDDistributor__factory";
 export { WalletCampaign__factory } from "./factories/WalletCampaign__factory";
 export { WalletDistributor__factory } from "./factories/WalletDistributor__factory";

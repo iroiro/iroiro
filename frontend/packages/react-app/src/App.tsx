@@ -12,6 +12,7 @@ import TokenInformationPage from "./components/pages/TokenInformationPage";
 import CreateAudiusCampaignPage from "./components/pages/CreateAudiusCampaignPage";
 import CreateWalletCampaignPage from "./components/pages/CreateWalletCampaignPage";
 import distributors from "./utils/distributors";
+import CreateUUIDCampaignPage from "./components/pages/CreateUUIDCampaignPage";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
 
 const App: React.FC = () => {
@@ -60,6 +61,21 @@ const App: React.FC = () => {
                     path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
                     render={(props) => (
                       <CreateWalletCampaignPage
+                        distributorAddress={distributor.id}
+                        props={props}
+                      />
+                    )}
+                  />
+                );
+              }
+              if (distributor.type === "uuid") {
+                return (
+                  <Route
+                    key={distributor.id}
+                    exact
+                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                    render={(props) => (
+                      <CreateUUIDCampaignPage
                         distributorAddress={distributor.id}
                         props={props}
                       />

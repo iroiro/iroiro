@@ -7,11 +7,12 @@ import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
+import { UUID_ACTIONS } from "../../../reducers/uuid";
 
 export interface TokenInfo {
   readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
-  distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
 const ApproveToken: React.FC<TokenInfo> = ({
