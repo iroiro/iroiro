@@ -17,7 +17,8 @@ export type DISTRIBUTOR_ACTIONS =
   | {
       type: "campaign:deploy";
       payload: { requestDeployCampaign: boolean };
-    };
+    }
+  | { type: "createdCampaignAddress:set"; payload: { address: string } };
 
 export interface createCampaignState {
   step: number;
@@ -27,6 +28,7 @@ export interface createCampaignState {
   endDate: number;
   approveRequest: boolean;
   requestDeployCampaign: boolean;
+  createdCampaignAddress: string;
 }
 
 export const distributorFormReducer = (
@@ -64,6 +66,9 @@ export const distributorFormReducer = (
         requestDeployCampaign: action.payload.requestDeployCampaign,
       };
     }
+    case "createdCampaignAddress:set": {
+      return { ...state, createdCampaignAddress: action.payload.address };
+    }
     default:
       throw new Error();
   }
@@ -77,4 +82,5 @@ export const distributorFormInitialState: createCampaignState = {
   endDate: new Date("2021-01-01T00:00:00").getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
+  createdCampaignAddress: "",
 };

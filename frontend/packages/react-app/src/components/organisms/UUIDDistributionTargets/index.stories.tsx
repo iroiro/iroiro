@@ -2,7 +2,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import UUIDDistributionTargets, { TargetsProps } from "./index";
-import { walletListState } from "../../../utils/mockData";
+import { uuidInitialState } from "../../../reducers/uuid";
 
 export default {
   title: "Organisms/UUIDDistributionTargets",
@@ -17,13 +17,14 @@ const Template: Story<TargetsProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  walletListState,
+  uuidState: {
+    ...uuidInitialState,
+    quantity: "100",
+    isValidQuantity: true,
+  },
 };
 
 export const NoTarget = Template.bind({});
 NoTarget.args = {
-  walletListState: {
-    ...walletListState,
-    targets: [],
-  },
+  uuidState: uuidInitialState,
 };

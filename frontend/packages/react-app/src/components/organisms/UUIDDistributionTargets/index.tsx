@@ -1,20 +1,19 @@
 import * as React from "react";
 import { Box, Typography, Card, Button, TextField } from "@material-ui/core";
 import { DISTRIBUTOR_ACTIONS } from "../../../reducers/distributorForm";
-import { WalletList } from "../../../interfaces";
-import { WALLET_ACTIONS } from "../../../reducers/wallet";
+import { UUID_ACTIONS, UUIDState } from "../../../reducers/uuid";
 
 export interface TargetsProps {
-  readonly walletListState: WalletList;
+  readonly uuidState: UUIDState;
+  readonly uuidDispatch: React.Dispatch<UUID_ACTIONS>;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
-  readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
 }
 
 // TODO add input form
 const UUIDDistributionTargets: React.FC<TargetsProps> = ({
-  walletListState,
+  uuidState,
+  uuidDispatch,
   distributorFormDispatch,
-  walletDispatch,
 }) => (
   <>
     <Card>
@@ -30,17 +29,25 @@ const UUIDDistributionTargets: React.FC<TargetsProps> = ({
           </Box>
           <Box my={2} style={{ textAlign: "center" }}>
             <TextField
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                uuidDispatch({
+                  type: "quantity:set",
+                  payload: { quantity: event.target.value },
+                })
+              }
               placeholder="100"
               type="number"
               inputProps={{ min: 1 }}
+              value={uuidState.quantity}
             />
           </Box>
           <Box my={5} style={{ textAlign: "center" }}>
             <Button
               variant="contained"
               color="secondary"
-              disabled={!(walletListState.targets.length > 0)}
+              disabled={!uuidState.isValidQuantity}
               onClick={() => {
+                uuidDispatch({ type: "targets:generate" });
                 distributorFormDispatch({
                   type: "step:set",
                   payload: { stepNo: 2 },

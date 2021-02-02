@@ -9,26 +9,28 @@ import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import { WALLET_ACTIONS } from "../../../reducers/wallet";
-import { WalletList } from "../../../interfaces";
 import UUIDDistributionTargets from "../../organisms/UUIDDistributionTargets";
+import { UUID_ACTIONS, UUIDState } from "../../../reducers/uuid";
+import UUIDURLList from "../../organisms/UUIDURLList";
 
 export interface CampaignInfo {
   readonly active: boolean;
+  readonly tokenAddress: string;
   readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
-  readonly walletListState: WalletList;
-  readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
+  readonly uuidState: UUIDState;
+  readonly uuidDispatch: React.Dispatch<UUID_ACTIONS>;
 }
 
 const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
+  tokenAddress,
   tokenInfo,
   distributorFormState,
   distributorFormDispatch,
-  walletListState,
-  walletDispatch,
+  uuidState,
+  uuidDispatch,
 }) => (
   <div>
     <AppHeader />
@@ -41,13 +43,13 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
         ) : (
           <Box>
             <Box my={1}>
-              <Typography variant={"h3"}>Wallet Address Campaign</Typography>
+              <Typography variant={"h3"}>UUID Campaign</Typography>
             </Box>
             {distributorFormState.step === 1 && (
               <UUIDDistributionTargets
-                walletListState={walletListState}
+                uuidState={uuidState}
+                uuidDispatch={uuidDispatch}
                 distributorFormDispatch={distributorFormDispatch}
-                walletDispatch={walletDispatch}
               />
             )}
             {distributorFormState.step === 2 && (
@@ -61,6 +63,13 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
               <SetupCampaign
                 distributorFormState={distributorFormState}
                 distributorFormDispatch={distributorFormDispatch}
+              />
+            )}
+            {distributorFormState.step === 4 && (
+              <UUIDURLList
+                tokenAddress={tokenAddress}
+                uuidState={uuidState}
+                uuidDispatch={uuidDispatch}
               />
             )}
           </Box>
