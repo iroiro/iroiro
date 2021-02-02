@@ -11,6 +11,7 @@ import TokenHistoryPage from "./components/pages/TokenHistoryPage";
 import CreateAudiusCampaignPage from "./components/pages/CreateAudiusCampaignPage";
 import CreateWalletCampaignPage from "./components/pages/CreateWalletCampaignPage";
 import distributors from "./utils/distributors";
+import CreateUUIDCampaignPage from "./components/pages/CreateUUIDCampaignPage";
 import { TokenProvider } from "./context/token";
 import { initialValue, tokenReducer } from "./reducers/tokenContext";
 import TokenBasicInformationPage from "./components/pages/TokenBasicInformationPage";
@@ -63,6 +64,21 @@ const App: React.FC = () => {
                     path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
                     render={(props) => (
                       <CreateWalletCampaignPage
+                        distributorAddress={distributor.id}
+                        props={props}
+                      />
+                    )}
+                  />
+                );
+              }
+              if (distributor.type === "uuid") {
+                return (
+                  <Route
+                    key={distributor.id}
+                    exact
+                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                    render={(props) => (
+                      <CreateUUIDCampaignPage
                         distributorAddress={distributor.id}
                         props={props}
                       />

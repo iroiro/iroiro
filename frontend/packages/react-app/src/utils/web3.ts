@@ -1,10 +1,13 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { TokenBasic } from "../interfaces";
 import { FanToken__factory as FanTokenFactory } from "../types";
-import { CCTWalletDistributor__factory as CCTWalletDistributor } from "../types";
-import { WalletDistributor__factory as WalletDistributor } from "../types";
-import { CampaignInterface__factory as Campaign } from "../types";
-import { WalletCampaign__factory as WalletCampaign } from "../types";
+import {
+  CCTWalletDistributor__factory as CCTWalletDistributor,
+  WalletDistributor__factory as WalletDistributor,
+  CampaignInterface__factory as Campaign,
+  WalletCampaign__factory as WalletCampaign,
+  UUIDDistributor__factory as UUIDDistributor,
+} from "../types";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
@@ -164,6 +167,45 @@ export const createWalletCampaign = async (
   const walletAddress = await signer.getAddress();
   const distributor = WalletDistributor.connect(
     addresses.WalletDistributor,
+    signer
+  );
+
+  return distributor
+    .createCampaign(
+      merkleRoot,
+      tokenAddress,
+      walletAddress,
+      campaignInfoCid,
+      recipientsCid,
+      merkleTreeCid,
+      recipientsNum,
+      startDate,
+      endDate
+    )
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+// TODO move as custom hooks
+export const createUUIDCampaign = async (
+  library: Web3Provider | undefined,
+  merkleRoot: string,
+  tokenAddress: string,
+  campaignInfoCid: string,
+  recipientsCid: string,
+  merkleTreeCid: string,
+  recipientsNum: number,
+  startDate: number,
+  endDate: number
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const walletAddress = await signer.getAddress();
+  const distributor = UUIDDistributor.connect(
+    addresses.UUIDDistributor,
     signer
   );
 
