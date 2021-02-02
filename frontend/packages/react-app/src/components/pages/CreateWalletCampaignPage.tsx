@@ -87,8 +87,6 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
     { manual: true }
   );
 
-  const [merkleRoot, setMerkleRoot] = useState("");
-
   const getBalance = useCallback(
     async (library) => {
       const balance = await getWalletBalance(library, tokenAddress);

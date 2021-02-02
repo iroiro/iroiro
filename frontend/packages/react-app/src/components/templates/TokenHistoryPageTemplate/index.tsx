@@ -1,7 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useTokenContext } from "../../../context/token";
 import { TokenHistoryState } from "../../../reducers/tokenHistory";
 import { AppFooter } from "../../molecules/AppFooter";
 import AppHeader from "../../molecules/AppHeader";

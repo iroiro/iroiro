@@ -1,4 +1,4 @@
-import { Activity, Balance, TokenBasic } from "../interfaces";
+import { Activity, Balance } from "../interfaces";
 import { BigNumber } from "ethers";
 import { Event } from "@ethersproject/contracts";
 import { Block } from "@ethersproject/providers";

@@ -1,4 +1,4 @@
-import { CampaignInfo, TokenBasic } from "../interfaces";
+import { CampaignInfo } from "../interfaces";
 
 export interface TokenCampaignsState {
   campaigns: CampaignInfo[];

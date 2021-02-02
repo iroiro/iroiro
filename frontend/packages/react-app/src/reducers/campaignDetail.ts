@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import { CampaignInfo, CheckRequest, Claim, TokenBasic } from "../interfaces";
+import { CampaignInfo, CheckRequest, Claim } from "../interfaces";
 import { LINK_APPROVE_AMOUNT } from "../utils/const";
 
 export interface CampaignDetailState {

@@ -11,7 +11,6 @@ import {
 import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
 import { useIsClaimable } from "../../hooks/distributors/cct-wallet/useIsClaimable";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
-import { useGetTransferEvents } from "../../hooks/useGetTransferEvents";
 import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
 import { audiusInitialState, audiusReducer } from "../../reducers/audius";
 import {
@@ -62,10 +61,6 @@ const TokenCampaignDetailPage: React.FC<
   );
   const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
     GET_CLAIM
-  );
-  const { result: allTransferEvents } = useGetTransferEvents(
-    library,
-    tokenAddress
   );
 
   useEffect(() => {
