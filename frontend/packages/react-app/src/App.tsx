@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
 import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
@@ -13,99 +13,134 @@ import CreateAudiusCampaignPage from "./components/pages/CreateAudiusCampaignPag
 import CreateWalletCampaignPage from "./components/pages/CreateWalletCampaignPage";
 import distributors from "./utils/distributors";
 import CreateUUIDCampaignPage from "./components/pages/CreateUUIDCampaignPage";
+import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
 
 const App: React.FC = () => {
   return (
     <div>
       <Router>
         <div>
-          <Route exact path="/" component={ExplorePage} />
+          <Switch>
+            <Route exact path="/" component={ExplorePage} />
 
-          {/* For Creator */}
-          <Route exact path="/dashboard" component={DashboardPage} />
-          <Route
-            exact
-            path="/dashboard/:tokenAddress"
-            component={ExternalTokenDetailPage}
-          />
-          <Route
-            exact
-            path="/dashboard/:tokenAddress/distributors"
-            component={SelectDistributorsPage}
-          />
-          {distributors.map((distributor) => {
-            if (distributor.type === "audius") {
-              return (
-                <Route
-                  key={distributor.id}
-                  exact
-                  path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
-                  render={(props) => (
-                    <CreateAudiusCampaignPage
-                      distributorAddress={distributor.id}
-                      props={props}
-                    />
-                  )}
-                />
-              );
-            }
-            if (distributor.type === "wallet") {
-              return (
-                <Route
-                  key={distributor.id}
-                  exact
-                  path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
-                  render={(props) => (
-                    <CreateWalletCampaignPage
-                      distributorAddress={distributor.id}
-                      props={props}
-                    />
-                  )}
-                />
-              );
-            }
-            if (distributor.type === "uuid") {
-              return (
-                <Route
-                  key={distributor.id}
-                  exact
-                  path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
-                  render={(props) => (
-                    <CreateUUIDCampaignPage
-                      distributorAddress={distributor.id}
-                      props={props}
-                    />
-                  )}
-                />
-              );
-            }
-          })}
+            {/* For Creator */}
+            <Route exact path="/dashboard" component={DashboardPage} />
+            <Route
+              exact
+              path="/dashboard/:tokenAddress"
+              component={ExternalTokenDetailPage}
+            />
+            <Route
+              exact
+              path="/dashboard/:tokenAddress/distributors"
+              component={SelectDistributorsPage}
+            />
+            {distributors.map((distributor) => {
+              if (distributor.type === "audius") {
+                return (
+                  <Route
+                    key={distributor.id}
+                    exact
+                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                    render={(props) => (
+                      <CreateAudiusCampaignPage
+                        distributorAddress={distributor.id}
+                        props={props}
+                      />
+                    )}
+                  />
+                );
+              }
+              if (distributor.type === "wallet") {
+                return (
+                  <Route
+                    key={distributor.id}
+                    exact
+                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                    render={(props) => (
+                      <CreateWalletCampaignPage
+                        distributorAddress={distributor.id}
+                        props={props}
+                      />
+                    )}
+                  />
+                );
+              }
+            })}
+            {distributors.map((distributor) => {
+              if (distributor.type === "audius") {
+                return (
+                  <Route
+                    key={distributor.id}
+                    exact
+                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                    render={(props) => (
+                      <CreateAudiusCampaignPage
+                        distributorAddress={distributor.id}
+                        props={props}
+                      />
+                    )}
+                  />
+                );
+              }
+              if (distributor.type === "wallet") {
+                return (
+                  <Route
+                    key={distributor.id}
+                    exact
+                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                    render={(props) => (
+                      <CreateWalletCampaignPage
+                        distributorAddress={distributor.id}
+                        props={props}
+                      />
+                    )}
+                  />
+                );
+              }
+              if (distributor.type === "uuid") {
+                return (
+                  <Route
+                    key={distributor.id}
+                    exact
+                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                    render={(props) => (
+                      <CreateUUIDCampaignPage
+                        distributorAddress={distributor.id}
+                        props={props}
+                      />
+                    )}
+                  />
+                );
+              }
+            })}
+            <Route
+              exact
+              path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
+              component={CampaignDetailPage}
+            />
 
-          <Route
-            exact
-            path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
-            component={CampaignDetailPage}
-          />
-
-          {/* For Fan */}
-          <Route exact path="/explore" component={ExplorePage} />
-          <Route
-            exact
-            path="/explore/:tokenAddress"
-            component={TokenInformationPage}
-          />
-          <Route
-            path="/explore/:tokenAddress/campaigns"
-            component={TokenCampaignsPage}
-          />
-          <Route
-            path="/explore/:tokenAddress/campaigns/:campaignAddress"
-            component={TokenCampaignDetailPage}
-          />
-          <Route
-            path="/explore/:tokenAddress/history"
-            component={TokenHistoryPage}
-          />
+            {/* For Fan */}
+            <Route exact path="/explore" component={ExplorePage} />
+            <Route
+              exact
+              path="/explore/:tokenAddress"
+              component={TokenInformationPage}
+            />
+            <Route
+              path="/explore/:tokenAddress/campaigns"
+              component={TokenCampaignsPage}
+            />
+            <Route
+              path="/explore/:tokenAddress/campaigns/:campaignAddress"
+              component={TokenCampaignDetailPage}
+            />
+            <Route
+              path="/explore/:tokenAddress/history"
+              component={TokenHistoryPage}
+            />
+            <Route component={NotFoundPageTemplate} />
+          </Switch>
         </div>
       </Router>
     </div>
