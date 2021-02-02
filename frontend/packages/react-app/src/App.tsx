@@ -21,7 +21,6 @@ const App: React.FC = () => {
         <div>
           <Switch>
             <Route exact path="/" component={ExplorePage} />
-
             {/* For Creator */}
             <Route exact path="/dashboard" component={DashboardPage} />
             <Route
@@ -35,6 +34,9 @@ const App: React.FC = () => {
               component={SelectDistributorsPage}
             />
             {distributors.map((distributor) => {
+              if (distributor.disabled) {
+                return;
+              }
               if (distributor.type === "audius") {
                 return (
                   <Route
@@ -66,7 +68,6 @@ const App: React.FC = () => {
                 );
               }
             })}
-
             <Route
               exact
               path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
