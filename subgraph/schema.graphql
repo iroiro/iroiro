@@ -1,6 +1,3 @@
-scalar BigInt
-scalar Bytes
-
 type Creator @entity {
   id: ID!
   tokens: [Token!]! @derivedFrom(field: "creator")
