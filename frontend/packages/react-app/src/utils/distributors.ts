@@ -38,6 +38,11 @@ const distributors: Distributor[] = [
     version: "",
     disabled: true,
   },
-];
+].map((dist) => {
+  return {
+    ...dist,
+    id: dist.id.toLowerCase(),
+  };
+});
 
 export default distributors;
