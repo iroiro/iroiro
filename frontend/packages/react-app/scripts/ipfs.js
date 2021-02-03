@@ -1,3 +1,20 @@
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
 const chalk = require("chalk");
 const ipfsApi = require("ipfs-http-client");
 const { clearLine } = require("readline");
@@ -17,7 +34,10 @@ const addOptions = {
 
 async function pushDirectoryToIpfs(path) {
   try {
-    const response = await ipfs.add(globSource(path, { recursive: true }), addOptions);
+    const response = await ipfs.add(
+      globSource(path, { recursive: true }),
+      addOptions
+    );
     return response;
   } catch (e) {
     return {};
@@ -39,12 +59,12 @@ function nodeMayAllowPublish(ipfsClient) {
   const nonPublishingNodes = ["ipfs.infura.io"];
   const { host } = ipfsClient.getEndpointConfig();
 
-  return !nonPublishingNodes.some(nodeUrl => {
+  return !nonPublishingNodes.some((nodeUrl) => {
     return host.includes(nodeUrl);
   });
 }
 
-(async function() {
+(async function () {
   console.log("🛰  Sending to IPFS...");
   console.log();
 
@@ -54,13 +74,17 @@ function nodeMayAllowPublish(ipfsClient) {
     return false;
   }
 
-  console.log(`📡 App deployed to IPFS with hash: ${chalk.cyan(cid.toString())}`);
+  console.log(
+    `📡 App deployed to IPFS with hash: ${chalk.cyan(cid.toString())}`
+  );
   console.log();
 
   let ipnsName = "";
   if (nodeMayAllowPublish(ipfs)) {
     console.log(`✍️  Publishing /ipfs/${cid.toString()} to IPNS...`);
-    process.stdout.write("   Publishing to IPNS can take up to roughly two minutes.\r");
+    process.stdout.write(
+      "   Publishing to IPNS can take up to roughly two minutes.\r"
+    );
     ipnsName = (await publishHashToIpns(cid.toString())).name;
     clearLine(process.stdout, 0);
 
@@ -75,7 +99,9 @@ function nodeMayAllowPublish(ipfsClient) {
   console.log("🚀 Deployment to IPFS complete!");
   console.log();
 
-  console.log(`🌐 Use the link${ipnsName ? "s" : ""} below to access your app:`);
+  console.log(
+    `🌐 Use the link${ipnsName ? "s" : ""} below to access your app:`
+  );
   const link = ipfsGateway + cid.toString();
   console.log(`   IPFS: ${chalk.cyan(link)}`);
 
@@ -84,10 +110,10 @@ function nodeMayAllowPublish(ipfsClient) {
     console.log(`   IPNS: ${chalk.cyan(ipnsUrl)}`);
     console.log();
     console.log(
-      "Each new deployment will have a unique IPFS hash while the IPNS name will always point at the most recent deployment.",
+      "Each new deployment will have a unique IPFS hash while the IPNS name will always point at the most recent deployment."
     );
     console.log(
-      "It is recommended that you share the IPNS link so that people always see the newest version of your app.",
+      "It is recommended that you share the IPNS link so that people always see the newest version of your app."
     );
   }
   console.log();
