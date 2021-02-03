@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import BasicTokenInformation, { BasicTokenInformationProps } from "./index";
+import BasicTokenInformation from "./index";
+import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import { TokenProvider } from "../../../context/token";
 import { tokenInformationState } from "../../../utils/mockData";
 
 export default {
@@ -9,23 +11,28 @@ export default {
   component: BasicTokenInformation,
 } as Meta;
 
-const Template: Story<BasicTokenInformationProps> = (args) => (
+const Template: Story = () => (
   <BrowserRouter>
-    <BasicTokenInformation {...args} />
+    <TokenProvider
+      initialValue={{
+        token: tokenInformationState.token,
+        userAddress: tokenInformationState.userAddress,
+        userBalance: tokenInformationState.userBalance,
+      }}
+      reducer={tokenReducer}
+    >
+      <BasicTokenInformation />
+    </TokenProvider>
+  </BrowserRouter>
+);
+
+const TemplateLoading: Story = () => (
+  <BrowserRouter>
+    <TokenProvider initialValue={initialValue} reducer={tokenReducer}>
+      <BasicTokenInformation />
+    </TokenProvider>
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-Default.args = {
-  state: tokenInformationState,
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-  state: {
-    ...tokenInformationState,
-    token: undefined,
-    campaigns: [],
-    userBalance: "",
-  },
-};
+export const Loading = TemplateLoading.bind({});

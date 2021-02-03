@@ -1,5 +1,4 @@
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { parseUnits } from "../utils/web3";
 
 export type DISTRIBUTOR_ACTIONS =
   | {

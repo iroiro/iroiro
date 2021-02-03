@@ -1,24 +1,20 @@
-import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 import styled from "styled-components";
 import LogoButton from "../../atoms/LogoButton";
 
-export const NotFoundPageTemplate = () => {
-  return (
-    <ContentWrapper>
-      <div style={{ textAlign: "center" }}>
-        <OopsMsg>\ Oops! /</OopsMsg>
-        <span style={{ fontSize: "5rem" }}>🤭</span>
-        <div style={{ marginBottom: 98 }}>
-          <Mark>404</Mark>
-          <div>Sorry, Page Not Found</div>
-        </div>
-        <LogoButton />
+export const NotFoundPageTemplate = () => (
+  <ContentWrapper>
+    <div style={{ textAlign: "center" }}>
+      <OopsMsg>\ Oops! /</OopsMsg>
+      <span style={{ fontSize: "5rem" }}>🤭</span>
+      <div style={{ marginBottom: 98 }}>
+        <Mark>404</Mark>
+        <div>Sorry, Page Not Found</div>
       </div>
-    </ContentWrapper>
-  );
-};
-
+      <LogoButton />
+    </div>
+  </ContentWrapper>
+);
 const ContentWrapper = styled.div`
   position: absolute;
   top: 50%;

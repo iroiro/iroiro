@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import TokenInformationBar from "./index";
+import { TokenCampaignsTemplate, TokenCampaignsTemplateProps } from "./index";
 import { tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
-import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import { tokenReducer } from "../../../reducers/tokenContext";
 
 export default {
-  title: "Organisms/TokenInformationBar",
-  component: TokenInformationBar,
+  title: "Templates/TokenCampaignsTemplate",
+  component: TokenCampaignsTemplate,
 } as Meta;
 
-const Template: Story = () => (
+const Template: Story<TokenCampaignsTemplateProps> = (args) => (
   <BrowserRouter>
     <TokenProvider
       initialValue={{
@@ -21,18 +21,12 @@ const Template: Story = () => (
       }}
       reducer={tokenReducer}
     >
-      <TokenInformationBar />
-    </TokenProvider>
-  </BrowserRouter>
-);
-
-const TemplateLoading: Story = () => (
-  <BrowserRouter>
-    <TokenProvider initialValue={initialValue} reducer={tokenReducer}>
-      <TokenInformationBar />
+      <TokenCampaignsTemplate {...args} />
     </TokenProvider>
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-export const Loading = TemplateLoading.bind({});
+Default.args = {
+  state: tokenInformationState,
+};

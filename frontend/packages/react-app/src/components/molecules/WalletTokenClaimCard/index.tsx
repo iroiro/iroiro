@@ -3,8 +3,8 @@ import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { Dispatch, useCallback } from "react";
 import TokenAmount from "../../atoms/TokenAmount";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
 import { walletClaim } from "../../../utils/web3";
+import { CampaignDetailAction } from "../../../reducers/campaignDetail";
 
 export interface WalletTokenClaimCardProps {
   campaignAddress: string;
@@ -13,7 +13,7 @@ export interface WalletTokenClaimCardProps {
   isClaimable: boolean;
   isClaimed: boolean;
   decimals: number;
-  readonly dispatch: Dispatch<TokenInformationAction>;
+  readonly dispatch: Dispatch<CampaignDetailAction>;
   merkleTreeCid: string;
 }
 
