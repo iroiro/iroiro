@@ -11,6 +11,12 @@ export type UUID_ACTIONS =
     }
   | {
       type: "moveToCampaignPage:on";
+    }
+  | {
+      type: "distributorAddress:set";
+      payload: {
+        distributorAddress: string;
+      };
     };
 
 export interface UUIDState {
@@ -20,6 +26,7 @@ export interface UUIDState {
   targets: string[];
   type: "keccak256";
   moveToCampaignPage: boolean;
+  distributorAddress: string;
 }
 
 export const uuidReducer = (
@@ -54,6 +61,12 @@ export const uuidReducer = (
         moveToCampaignPage: true,
       };
     }
+    case "distributorAddress:set": {
+      return {
+        ...state,
+        distributorAddress: action.payload.distributorAddress,
+      };
+    }
     default:
       throw new Error();
   }
@@ -66,4 +79,5 @@ export const uuidInitialState: UUIDState = {
   targets: [],
   type: "keccak256",
   moveToCampaignPage: false,
+  distributorAddress: "",
 };
