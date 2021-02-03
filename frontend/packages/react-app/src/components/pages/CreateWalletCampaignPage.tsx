@@ -196,14 +196,24 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
           return;
         }
         transaction.wait().then((result) => {
-          if (result.status === 1) {
-            if (result.events && result.events[4].args) {
-              const campaignAddress = result.events[4].args.campaign;
-              props.history.push(
-                window.location.pathname + `/campaigns/${campaignAddress}`
-              );
-            }
+          if (result.status !== 1) {
+            return;
           }
+          if (result.events == undefined) {
+            return;
+          }
+          const campaignCreatedEvent = result.events.find(
+            (event) =>
+              event.event === "CreateCampaign" &&
+              event.address.toLowerCase() === distributorAddress.toLowerCase()
+          );
+          if (campaignCreatedEvent === undefined) {
+            return;
+          }
+          const campaignAddress: string = campaignCreatedEvent.args?.campaign;
+          props.history.push(
+            window.location.pathname + `/campaigns/${campaignAddress}`
+          );
         });
       });
     },

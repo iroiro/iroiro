@@ -196,17 +196,26 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
           if (result.status !== 1) {
             return;
           }
-          if (result.events && result.events[4].args) {
-            const campaignAddress = result.events[4].args.campaign;
-            distributorFormDispatch({
-              type: "createdCampaignAddress:set",
-              payload: { address: campaignAddress },
-            });
-            distributorFormDispatch({
-              type: "step:set",
-              payload: { stepNo: 4 },
-            });
+          if (result.events == undefined) {
+            return;
           }
+          const campaignCreatedEvent = result.events.find(
+            (event) =>
+              event.event === "CreateCampaign" &&
+              event.address.toLowerCase() === distributorAddress.toLowerCase()
+          );
+          if (campaignCreatedEvent === undefined) {
+            return;
+          }
+          const campaignAddress: string = campaignCreatedEvent.args?.campaign;
+          distributorFormDispatch({
+            type: "createdCampaignAddress:set",
+            payload: { address: campaignAddress.toLowerCase() },
+          });
+          distributorFormDispatch({
+            type: "step:set",
+            payload: { stepNo: 4 },
+          });
         });
       });
     },
