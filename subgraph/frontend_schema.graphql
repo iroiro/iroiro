@@ -1,6 +1,3 @@
-scalar BigInt
-scalar Bytes
-
 type Creator @entity {
   id: ID!
   tokens: [Token!]! @derivedFrom(field: "creator")
@@ -99,6 +96,9 @@ type AccountToken @entity {
   balance: BigInt!
   token: Token! @derivedFrom(field: "accountTokens")
 }
+scalar BigInt
+scalar Bytes
+
 input CampaignsCondition {
   token: String!
 }

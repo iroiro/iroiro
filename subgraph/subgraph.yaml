@@ -76,7 +76,7 @@ dataSources:
       eventHandlers:
         - event: CreateCampaign(indexed address,indexed address,indexed address)
           handler: handleCreateCampaign
-      file: ./src/distributors/wallet-distributor.ts
+      file: ./src/distributors/uuid-distributor.ts
 
 # TODO Not deployed in this phase.
 #  - kind: ethereum/contract
@@ -173,4 +173,4 @@ templates:
           handler: handleClaim
         - event: UpdateStatus()
           handler: handleUpdateStatus
-      file: ./src/campaigns/wallet-campaign.ts
+      file: ./src/campaigns/uuid-campaign.ts
