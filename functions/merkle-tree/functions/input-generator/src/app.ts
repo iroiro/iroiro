@@ -25,6 +25,7 @@ import {
   BalanceMapOldFormat,
   StringBalanceMapOldFormat,
 } from "@iroiro/merkle-distributor";
+import fetch from "node-fetch";
 
 const ipfsClient = require("ipfs-http-client");
 
@@ -56,7 +57,9 @@ exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
   }
 
   // TODO error handling
-  const targets = (await getFile(cid)) as Targets;
+  const url = `https://gateway.pinata.cloud/ipfs/${cid}`;
+  const response = await fetch(url);
+  const targets = (await response.json()) as Targets;
   if (!isValidTargets(targets)) {
     throw Error("given file is invalid.");
   }
@@ -81,7 +84,11 @@ exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
 const isAllAddress = (targets: Targets): boolean => {
   return (
     targets.targets.find((address) => {
-      return !isAddress(address);
+      if (isAddress(address)) {
+        return false;
+      }
+      console.log("Non address value is found.", address);
+      return true;
     }) === undefined
   );
 };
@@ -90,9 +97,11 @@ const isAllHashed = (targets: Targets): boolean => {
   return (
     targets.targets.find((hashed) => {
       if (hashed.length != 66) {
+        console.info("Non 66 length string is found.", hashed);
         return true;
       }
       if (!ethers.utils.isHexString(hashed)) {
+        console.info("Non hex string is found.", hashed);
         return true;
       }
       return false;
@@ -124,6 +133,7 @@ export const getFile = async (cid: string): Promise<object> => {
     for await (const chunk of file.content) {
       content.push(chunk);
     }
+    console.log(content.toString());
     return JSON.parse(content.toString());
   }
 };
