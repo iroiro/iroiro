@@ -71,7 +71,13 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
     text = "You can claim token.";
   }
   if (isClaimed) {
-    text = "You claimed token.";
+    switch (distributorType) {
+      case "uuid":
+        text = "This URL campaign has already been claimed.";
+        break;
+      default:
+        text = "You claimed token.";
+    }
   }
   return (
     <Card>
