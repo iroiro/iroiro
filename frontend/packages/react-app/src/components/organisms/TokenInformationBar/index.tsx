@@ -16,7 +16,6 @@
  */
 
 import * as React from "react";
-import { TokenInformationState } from "../../../interfaces";
 import {
   Container,
   makeStyles,
@@ -26,10 +25,7 @@ import {
 } from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
 import { getBalanceDevidedByDecimals } from "../../../utils/web3";
-
-export interface TokenInformationBarProps {
-  readonly state: TokenInformationState;
-}
+import { useTokenContext } from "../../../context/token";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -37,26 +33,28 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const TokenInformationBar: React.FC<TokenInformationBarProps> = ({
-  state: { token, userAddress, userBalance },
-}: TokenInformationBarProps) => {
+const TokenInformationBar: React.FC = () => {
   const classes = useStyles();
+  const { state } = useTokenContext();
 
   return (
     <Container className={classes.container}>
       <Box display="flex" alignItems="flex-end" justifyContent="space-around">
-        <Typography variant="h3">{!token?.name ? "-" : token.name}</Typography>
+        <Typography variant="h3">{state.token?.name ?? "-"}</Typography>
         <Box display="flex" alignItems="flex-end">
           <Box mr={4}>
             <Typography variant="caption">Your Balance</Typography>
             <Typography variant="h4">
-              {!!userBalance && !!token
-                ? getBalanceDevidedByDecimals(userBalance, token.decimals)
+              {!!state.userBalance && !!state
+                ? getBalanceDevidedByDecimals(
+                    state.userBalance,
+                    state.token?.decimals ?? 0
+                  )
                 : "-"}
-              {!!token?.symbol && " $" + token.symbol}
+              {!!state.token?.symbol && " $" + state.token.symbol}
             </Typography>
           </Box>
-          <EtherscanLink type="user" address={userAddress} />
+          <EtherscanLink type="user" address={state.userAddress} />
         </Box>
       </Box>
     </Container>

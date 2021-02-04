@@ -27,6 +27,7 @@ import {
 } from "@material-ui/core";
 import EtherscanLink from "../../atoms/EtherscanLink";
 import { getBalanceDevidedByDecimals } from "../../../utils/web3";
+import { useTokenContext } from "../../../context/token";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -37,13 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface BasicTokenInformationProps {
-  readonly state: TokenInformationState;
-}
-
-const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
-  state: { token },
-}) => {
+const BasicTokenInformation: React.FC = () => {
+  const { state } = useTokenContext();
   const classes = useStyles();
 
   return (
@@ -51,7 +47,7 @@ const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
       <Card>
         <CardContent>
           <Container>
-            {!token ? (
+            {!state.token ? (
               <Box my={4}>
                 <Typography>Loading Token information...</Typography>
               </Box>
@@ -60,11 +56,11 @@ const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
                 <Box display="flex" justifyContent="start" mt={2}>
                   <Box>
                     <Typography variant="subtitle1">Name:</Typography>
-                    <Typography variant="h4">{token.name}</Typography>
+                    <Typography variant="h4">{state.token.name}</Typography>
                   </Box>
                   <Box ml={8}>
                     <Typography variant="subtitle1">Symbol:</Typography>
-                    <Typography variant="h4">{token.symbol}</Typography>
+                    <Typography variant="h4">{state.token.symbol}</Typography>
                   </Box>
                 </Box>
                 <Box display="flex" justifyContent="start" my={2}>
@@ -72,14 +68,14 @@ const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
                     <Typography variant="subtitle1">Total Supply:</Typography>
                     <Typography variant="h4">
                       {getBalanceDevidedByDecimals(
-                        token.totalSupply,
-                        token.decimals
+                        state.token.totalSupply,
+                        state.token.decimals
                       )}
                     </Typography>
                   </Box>
                   <Box ml={8}>
                     <Typography variant="subtitle1">Decimals:</Typography>
-                    <Typography variant="h4">{token.decimals}</Typography>
+                    <Typography variant="h4">{state.token.decimals}</Typography>
                   </Box>
                 </Box>
               </>
@@ -88,7 +84,9 @@ const BasicTokenInformation: React.FC<BasicTokenInformationProps> = ({
         </CardContent>
       </Card>
       <div className={classes.link}>
-        {!!token && <EtherscanLink type="token" address={token.tokenAddress} />}
+        {!!state.token && (
+          <EtherscanLink type="token" address={state.token.tokenAddress} />
+        )}
       </div>
     </div>
   );

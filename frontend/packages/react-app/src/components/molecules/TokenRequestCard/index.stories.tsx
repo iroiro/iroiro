@@ -19,7 +19,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import TokenRequestCard, { TokenRequestCardProps } from "./index";
-import { tokenInformationState } from "../../../utils/mockData";
+import { campaign } from "../../../utils/mockData";
 
 export default {
   title: "Molecules/TokenRequestCard",
@@ -35,15 +35,29 @@ const Template: Story<TokenRequestCardProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   state: {
-    ...tokenInformationState,
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(),
+    distributorType: "",
     isTokenRequested: false,
+    isTokenApproved: true,
   },
 };
 
 export const Requested = Template.bind({});
 Requested.args = {
   state: {
-    ...tokenInformationState,
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(),
+    distributorType: "",
     isTokenRequested: true,
+    isTokenApproved: true,
   },
 };

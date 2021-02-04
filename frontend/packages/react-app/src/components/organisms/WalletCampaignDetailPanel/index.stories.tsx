@@ -21,7 +21,9 @@ import { BrowserRouter } from "react-router-dom";
 import WalletCampaignDetailPanel, {
   WalletCampaignDetailPanelProps,
 } from "./index";
-import { tokenInformationState } from "../../../utils/mockData";
+import { campaign, tokenInformationState } from "../../../utils/mockData";
+import { TokenProvider } from "../../../context/token";
+import { tokenReducer } from "../../../reducers/tokenContext";
 
 export default {
   title: "Organisms/WalletCampaignDetailPanel",
@@ -30,77 +32,135 @@ export default {
 
 const Template: Story<WalletCampaignDetailPanelProps> = (args) => (
   <BrowserRouter>
-    <WalletCampaignDetailPanel {...args} />
+    <TokenProvider
+      initialValue={{
+        token: tokenInformationState.token,
+        userAddress: tokenInformationState.userAddress,
+        userBalance: tokenInformationState.userBalance,
+      }}
+      reducer={tokenReducer}
+    >
+      <WalletCampaignDetailPanel {...args} />
+    </TokenProvider>
   </BrowserRouter>
 );
 
 export const IsNotStarted = Template.bind({});
 IsNotStarted.args = {
   state: {
-    ...tokenInformationState,
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
     now: new Date(1577836800000),
+    distributorType: "",
+    isTokenRequested: false,
+    isTokenApproved: false,
   },
 };
 
 export const NotLoggedIn = Template.bind({});
 NotLoggedIn.args = {
-  state: tokenInformationState,
+  state: {
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
+    isTokenRequested: false,
+    isTokenApproved: false,
+  },
 };
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenInformationState,
+  state: {
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
+    isTokenRequested: false,
+    isTokenApproved: false,
+  },
 };
 
 export const Requested = Template.bind({});
 Requested.args = {
   state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
     isTokenRequested: true,
+    isTokenApproved: true,
   },
 };
 
 export const IsClaimable = Template.bind({});
 IsClaimable.args = {
   state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
     isTokenRequested: true,
     isTokenCheckFinished: true,
     isCampaignClaimable: true,
+    isTokenApproved: true,
   },
 };
 
 export const IsNotClaimable = Template.bind({});
 IsNotClaimable.args = {
   state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
     isTokenCheckFinished: true,
     isTokenRequested: true,
-    isCampaignClaimable: false,
+    isTokenApproved: true,
   },
 };
 
 export const IsClaimed = Template.bind({});
 IsClaimed.args = {
   state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
+    campaign: campaign,
+    campaignAddress: "",
+    now: new Date(1606780800000),
+    distributorType: "",
     isTokenRequested: true,
     isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
+    isTokenApproved: true,
   },
 };
 
-export const NotFound = Template.bind({});
-NotFound.args = {
+export const IsEnded = Template.bind({});
+IsEnded.args = {
   state: {
-    ...tokenInformationState,
-    token: undefined,
-    campaigns: [],
-    userBalance: "",
+    campaign: campaign,
+    campaignAddress: "",
+    now: new Date(1708780800000),
+    distributorType: "",
+    isTokenRequested: true,
+    isTokenCheckFinished: true,
+    isCampaignClaimable: true,
+    isCampaignClaimed: true,
+    isTokenApproved: true,
   },
 };

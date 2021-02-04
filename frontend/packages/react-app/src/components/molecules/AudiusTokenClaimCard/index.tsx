@@ -22,7 +22,7 @@ import { useAudiusClaim } from "../../../hooks/distributors/cct-wallet/useClaim"
 import { Dispatch, useCallback } from "react";
 import { AudiusState } from "../../../reducers/audius";
 import TokenAmount from "../../atoms/TokenAmount";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { CampaignDetailAction } from "../../../reducers/campaignDetail";
 
 export interface AudiusTokenClaimCardProps {
   campaignAddress: string;
@@ -32,7 +32,7 @@ export interface AudiusTokenClaimCardProps {
   isClaimed: boolean;
   userAddress: string;
   decimals: number;
-  readonly dispatch: Dispatch<TokenInformationAction>;
+  readonly dispatch: Dispatch<CampaignDetailAction>;
   readonly audiusState: AudiusState;
   distributorType: string;
 }

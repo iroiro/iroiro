@@ -21,7 +21,13 @@ import { BrowserRouter } from "react-router-dom";
 import AudiusCampaignDetailPanel, {
   AudiusCampaignDetailPanelProps,
 } from "./index";
-import { audiusState, tokenInformationState } from "../../../utils/mockData";
+import {
+  audiusState,
+  campaign,
+  tokenInformationState,
+} from "../../../utils/mockData";
+import { TokenProvider } from "../../../context/token";
+import { tokenReducer } from "../../../reducers/tokenContext";
 
 export default {
   title: "Organisms/AudiusCampaignDetailPanel",
@@ -30,22 +36,48 @@ export default {
 
 const Template: Story<AudiusCampaignDetailPanelProps> = (args) => (
   <BrowserRouter>
-    <AudiusCampaignDetailPanel {...args} />
+    <TokenProvider
+      initialValue={{
+        token: tokenInformationState.token,
+        userAddress: tokenInformationState.userAddress,
+        userBalance: tokenInformationState.userBalance,
+      }}
+      reducer={tokenReducer}
+    >
+      <AudiusCampaignDetailPanel {...args} />
+    </TokenProvider>
   </BrowserRouter>
 );
 
 export const IsNotStarted = Template.bind({});
 IsNotStarted.args = {
   state: {
-    ...tokenInformationState,
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
     now: new Date(1577836800000),
+    distributorType: "",
+    isTokenRequested: false,
+    isTokenApproved: false,
   },
   audiusState,
 };
 
 export const NotLoggedIn = Template.bind({});
 NotLoggedIn.args = {
-  state: tokenInformationState,
+  state: {
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
+    isTokenRequested: false,
+    isTokenApproved: false,
+  },
   audiusState: {
     ...audiusState,
     user: null,
@@ -54,16 +86,32 @@ NotLoggedIn.args = {
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenInformationState,
+  state: {
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
+    isTokenRequested: false,
+    isTokenApproved: false,
+  },
   audiusState,
 };
 
 export const Requested = Template.bind({});
 Requested.args = {
   state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
     isTokenRequested: true,
+    isTokenApproved: true,
   },
   audiusState,
 };
@@ -71,11 +119,15 @@ Requested.args = {
 export const IsClaimable = Template.bind({});
 IsClaimable.args = {
   state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
     isTokenRequested: true,
     isTokenCheckFinished: true,
     isCampaignClaimable: true,
+    isTokenApproved: true,
   },
   audiusState,
 };
@@ -83,11 +135,15 @@ IsClaimable.args = {
 export const IsNotClaimable = Template.bind({});
 IsNotClaimable.args = {
   state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
-    isTokenCheckFinished: true,
-    isTokenRequested: true,
+    campaign: campaign,
+    campaignAddress: "",
     isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1577836800000),
+    distributorType: "",
+    isTokenRequested: true,
+    isTokenCheckFinished: true,
+    isTokenApproved: true,
   },
   audiusState,
 };
@@ -95,23 +151,29 @@ IsNotClaimable.args = {
 export const IsClaimed = Template.bind({});
 IsClaimed.args = {
   state: {
-    ...tokenInformationState,
-    isTokenApproved: true,
+    campaign: campaign,
+    campaignAddress: "",
+    now: new Date(1606780800000),
+    distributorType: "",
     isTokenRequested: true,
     isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
+    isTokenApproved: true,
   },
   audiusState,
 };
-
-export const NotFound = Template.bind({});
-NotFound.args = {
+export const IsEnded = Template.bind({});
+IsEnded.args = {
   state: {
-    ...tokenInformationState,
-    token: undefined,
-    campaigns: [],
-    userBalance: "",
+    campaign: campaign,
+    campaignAddress: "",
+    now: new Date(1708780800000),
+    distributorType: "",
+    isTokenRequested: true,
+    isTokenCheckFinished: true,
+    isCampaignClaimable: true,
+    isCampaignClaimed: true,
+    isTokenApproved: true,
   },
-  audiusState,
 };

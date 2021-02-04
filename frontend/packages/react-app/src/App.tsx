@@ -25,11 +25,13 @@ import CampaignDetailPage from "./components/pages/CampaignDetailPage";
 import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
 import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
 import TokenHistoryPage from "./components/pages/TokenHistoryPage";
-import TokenInformationPage from "./components/pages/TokenInformationPage";
 import CreateAudiusCampaignPage from "./components/pages/CreateAudiusCampaignPage";
 import CreateWalletCampaignPage from "./components/pages/CreateWalletCampaignPage";
 import distributors from "./utils/distributors";
 import CreateUUIDCampaignPage from "./components/pages/CreateUUIDCampaignPage";
+import { TokenProvider } from "./context/token";
+import { initialValue, tokenReducer } from "./reducers/tokenContext";
+import TokenBasicInformationPage from "./components/pages/TokenBasicInformationPage";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
 
 const App: React.FC = () => {
@@ -37,6 +39,7 @@ const App: React.FC = () => {
     <div>
       <Router>
         <div>
+          <TokenProvider initialValue={initialValue} reducer={tokenReducer}>
           <Switch>
             <Route exact path="/" component={ExplorePage} />
             {/* For Creator */}
@@ -107,27 +110,29 @@ const App: React.FC = () => {
               component={CampaignDetailPage}
             />
 
-            {/* For Fan */}
-            <Route exact path="/explore" component={ExplorePage} />
-            <Route
-              exact
-              path="/explore/:tokenAddress"
-              component={TokenInformationPage}
-            />
-            <Route
-              path="/explore/:tokenAddress/campaigns"
-              component={TokenCampaignsPage}
-            />
-            <Route
-              path="/explore/:tokenAddress/campaigns/:campaignAddress"
-              component={TokenCampaignDetailPage}
-            />
-            <Route
-              path="/explore/:tokenAddress/history"
-              component={TokenHistoryPage}
-            />
-            <Route component={NotFoundPageTemplate} />
-          </Switch>
+              {/* For Fan */}
+              <Route exact path="/explore" component={ExplorePage} />
+              <Route
+                exact
+                path="/explore/:tokenAddress"
+                component={TokenBasicInformationPage}
+              />
+              <Route
+                exact
+                path="/explore/:tokenAddress/campaigns"
+                component={TokenCampaignsPage}
+              />
+              <Route
+                path="/explore/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
+                component={TokenCampaignDetailPage}
+              />
+              <Route
+                path="/explore/:tokenAddress/history"
+                component={TokenHistoryPage}
+              />
+              <Route component={NotFoundPageTemplate} />
+            </Switch>
+          </TokenProvider>
         </div>
       </Router>
     </div>
