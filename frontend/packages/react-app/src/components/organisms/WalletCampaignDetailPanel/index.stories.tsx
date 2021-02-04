@@ -40,6 +40,7 @@ IsNotStarted.args = {
     distributorType: "",
     isTokenRequested: false,
     isTokenApproved: false,
+    hashedUUID: "",
   },
 };
 
@@ -55,6 +56,7 @@ NotLoggedIn.args = {
     distributorType: "",
     isTokenRequested: false,
     isTokenApproved: false,
+    hashedUUID: "",
   },
 };
 
@@ -70,6 +72,7 @@ Default.args = {
     distributorType: "",
     isTokenRequested: false,
     isTokenApproved: false,
+    hashedUUID: "",
   },
 };
 
@@ -85,6 +88,7 @@ Requested.args = {
     distributorType: "",
     isTokenRequested: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
 };
 
@@ -100,6 +104,7 @@ IsClaimable.args = {
     isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
 };
 
@@ -115,6 +120,7 @@ IsNotClaimable.args = {
     isTokenCheckFinished: true,
     isTokenRequested: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
 };
 
@@ -130,6 +136,7 @@ IsClaimed.args = {
     isCampaignClaimable: true,
     isCampaignClaimed: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
 };
 
@@ -145,5 +152,6 @@ IsEnded.args = {
     isCampaignClaimable: true,
     isCampaignClaimed: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
 };

@@ -1,5 +1,10 @@
 import { BigNumber } from "ethers";
-import { CampaignInfo, CheckRequest, Claim } from "../interfaces";
+import {
+  CampaignInfo,
+  CheckRequest,
+  Claim,
+  DistributorTypes,
+} from "../interfaces";
 import { LINK_APPROVE_AMOUNT } from "../utils/const";
 
 export interface CampaignDetailState {
@@ -7,85 +12,93 @@ export interface CampaignDetailState {
   isTokenApproved: boolean;
   isTokenCheckFinished: boolean;
   campaign: CampaignInfo | null;
-  campaignAddress: string,
+  campaignAddress: string;
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
   now: Date;
-  distributorType: string
+  distributorType: DistributorTypes | string;
+  hashedUUID: string;
 }
 
-export type CampaignDetailAction = | {
-    type: "isTokenRequested:setTrue";
-  }
-| {
-  type: "isTokenApproved:setTrue";
-}
-| {
-    type: "isTokenCheckFinished:setTrue";
-  }
-| {
-  type: "isTokenApproved:set";
-  payload: {
-    allowance: BigNumber;
-  };
-}
-| {
-    type: "isTokenCheckFinished:set";
-    payload: {
-      checkRequests: CheckRequest[] | undefined;
-    };
-  }
-| {
-    type: "isTokenCheckFinished:remove";
-  }
-| {
-    type: "campaign:set";
-    payload: {
-      campaign: CampaignInfo;
-    };
-  }
-| {
-    type: "campaignAddress:set";
-    payload: {
-      campaignAddress: string;
-    };
-  }
-| {
-  type: "isCampaignClaimable:setTrue";
-}
-| {
-    type: "isCampaignClaimable:set";
-    payload: {
-      isClaimable: boolean;
-    };
-  }
-| {
-    type: "isCampaignClaimable:remove";
-  }
-| {
-    type: "isCampaignClaimed:setTrue";
-  }
-| {
-    type: "isCampaignClaimed:set";
-    payload: {
-      claim: Claim;
-    };
-  }
-| {
-    type: "isCampaignClaimed:remove";
-  }
+export type CampaignDetailAction =
   | {
-    type: "distributorType:set";
-    payload: {
-      distributorType: string;
+      type: "isTokenRequested:setTrue";
+    }
+  | {
+      type: "isTokenApproved:setTrue";
+    }
+  | {
+      type: "isTokenCheckFinished:setTrue";
+    }
+  | {
+      type: "isTokenApproved:set";
+      payload: {
+        allowance: BigNumber;
+      };
+    }
+  | {
+      type: "isTokenCheckFinished:set";
+      payload: {
+        checkRequests: CheckRequest[] | undefined;
+      };
+    }
+  | {
+      type: "isTokenCheckFinished:remove";
+    }
+  | {
+      type: "campaign:set";
+      payload: {
+        campaign: CampaignInfo;
+      };
+    }
+  | {
+      type: "campaignAddress:set";
+      payload: {
+        campaignAddress: string;
+      };
+    }
+  | {
+      type: "isCampaignClaimable:setTrue";
+    }
+  | {
+      type: "isCampaignClaimable:set";
+      payload: {
+        isClaimable: boolean;
+      };
+    }
+  | {
+      type: "isCampaignClaimable:remove";
+    }
+  | {
+      type: "isCampaignClaimed:setTrue";
+    }
+  | {
+      type: "isCampaignClaimed:set";
+      payload: {
+        claim: Claim;
+      };
+    }
+  | {
+      type: "isCampaignClaimed:remove";
+    }
+  | {
+      type: "distributorType:set";
+      payload: {
+        distributorType: DistributorTypes | string; // TODO remove string
+      };
+    }
+  | {
+      type: "hashedUUID:set";
+      payload: {
+        hashedUUID: string;
+      };
     };
-  }
 
 export const campaignDetailReducer = (
   state: CampaignDetailState,
   action: CampaignDetailAction
 ): CampaignDetailState => {
-  switch(action.type) {
+  switch (action.type) {
     case "isTokenApproved:set": {
       const isTokenApproved = action.payload.allowance.gte(
         BigNumber.from(LINK_APPROVE_AMOUNT)
@@ -134,14 +147,14 @@ export const campaignDetailReducer = (
     case "campaign:set": {
       return {
         ...state,
-        campaign: action.payload.campaign
-      }
+        campaign: action.payload.campaign,
+      };
     }
     case "campaignAddress:set":
-        return {
-          ...state,
-          campaignAddress: action.payload.campaignAddress,
-        };
+      return {
+        ...state,
+        campaignAddress: action.payload.campaignAddress,
+      };
     case "isCampaignClaimable:setTrue": {
       return {
         ...state,
@@ -184,22 +197,29 @@ export const campaignDetailReducer = (
     case "distributorType:set": {
       return {
         ...state,
-        distributorType: action.payload.distributorType
-      }
+        distributorType: action.payload.distributorType,
+      };
+    }
+    case "hashedUUID:set": {
+      return {
+        ...state,
+        hashedUUID: action.payload.hashedUUID,
+      };
     }
     default:
       return state;
   }
-}
+};
 
 export const initialState: CampaignDetailState = {
   isTokenRequested: false,
   isTokenApproved: false,
   isTokenCheckFinished: false,
   campaign: null,
-  campaignAddress: '',
+  campaignAddress: "",
   isCampaignClaimable: false,
   isCampaignClaimed: false,
   now: new Date(),
   distributorType: "",
-}
+  hashedUUID: "",
+};

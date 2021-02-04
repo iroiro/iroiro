@@ -1,5 +1,6 @@
 import { Distributor } from "../interfaces";
 
+// ID must be lowercase
 const distributors: Distributor[] = [
   {
     id: "0xb562cf605a0f8a123bf7abfdfe1317671a8b5ead",
@@ -14,7 +15,7 @@ const distributors: Distributor[] = [
     disabled: false,
   },
   {
-    id: "0x360557300E0B373bDb451f07fA292320CC4df136",
+    id: "0x360557300e0b373bdb451f07fa292320cc4df136",
     distributorCid: "QmRBHkjbuLExQPia1wiLgwjqXaBXowPDVVPPoTJv9wJnYP",
     distributorMetadata: {
       name: "URL Distributor",

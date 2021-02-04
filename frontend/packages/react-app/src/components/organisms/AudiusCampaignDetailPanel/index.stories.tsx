@@ -44,6 +44,7 @@ IsNotStarted.args = {
     distributorType: "",
     isTokenRequested: false,
     isTokenApproved: false,
+    hashedUUID: "",
   },
   audiusState,
 };
@@ -60,6 +61,7 @@ NotLoggedIn.args = {
     distributorType: "",
     isTokenRequested: false,
     isTokenApproved: false,
+    hashedUUID: "",
   },
   audiusState: {
     ...audiusState,
@@ -79,6 +81,7 @@ Default.args = {
     distributorType: "",
     isTokenRequested: false,
     isTokenApproved: false,
+    hashedUUID: "",
   },
   audiusState,
 };
@@ -95,6 +98,7 @@ Requested.args = {
     distributorType: "",
     isTokenRequested: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
   audiusState,
 };
@@ -111,6 +115,7 @@ IsClaimable.args = {
     isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
   audiusState,
 };
@@ -127,6 +132,7 @@ IsNotClaimable.args = {
     isTokenRequested: true,
     isTokenCheckFinished: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
   audiusState,
 };
@@ -143,9 +149,11 @@ IsClaimed.args = {
     isCampaignClaimable: true,
     isCampaignClaimed: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
   audiusState,
 };
+
 export const IsEnded = Template.bind({});
 IsEnded.args = {
   state: {
@@ -158,5 +166,6 @@ IsEnded.args = {
     isCampaignClaimable: true,
     isCampaignClaimed: true,
     isTokenApproved: true,
+    hashedUUID: "",
   },
 };
