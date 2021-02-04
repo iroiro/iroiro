@@ -23,12 +23,14 @@ import { useState } from "react";
 
 export interface UUIDURLListProps {
   readonly tokenAddress: string;
+  readonly campaignAddress: string;
   readonly uuidState: UUIDState;
   readonly uuidDispatch: React.Dispatch<UUID_ACTIONS>;
 }
 
 const UUIDURLList: React.FC<UUIDURLListProps> = ({
   tokenAddress,
+  campaignAddress,
   uuidState,
   uuidDispatch,
 }) => {
@@ -36,7 +38,7 @@ const UUIDURLList: React.FC<UUIDURLListProps> = ({
   const urlList = uuidState.rawTargets
     .map(
       (uuid) =>
-        `${window.location.origin}/explore/${tokenAddress}/campaigns/${uuid}`
+        `${window.location.origin}/explore/${tokenAddress}/distributors/${uuidState.distributorAddress}/campaigns/${campaignAddress}?uuid=${uuid}`
     )
     .join("\n");
 

@@ -18,7 +18,7 @@ import { useMemo } from "react";
 import { AppFooter } from "../../molecules/AppFooter";
 
 export interface TokenCampaignsDetailTemplateProps {
-  state: CampaignDetailState;
+  readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
   readonly audiusState: AudiusState;
   readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
@@ -56,18 +56,19 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
   );
 
   const CampaignDetailPanel = useMemo(() => {
-    if (state.distributorType === "audius") {
-      return (
-        <AudiusCampaignDetailPanel
-          state={state}
-          dispatch={dispatch}
-          audiusState={audiusState}
-          audiusDispatch={audiusDispatch}
-        />
-      );
-    }
-    if (state.distributorType === "wallet") {
-      return <WalletCampaignDetailPanel state={state} dispatch={dispatch} />;
+    switch (state.distributorType) {
+      case "audius":
+        return (
+          <AudiusCampaignDetailPanel
+            state={state}
+            dispatch={dispatch}
+            audiusState={audiusState}
+            audiusDispatch={audiusDispatch}
+          />
+        );
+      case "wallet":
+      case "uuid":
+        return <WalletCampaignDetailPanel state={state} dispatch={dispatch} />;
     }
 
     return (

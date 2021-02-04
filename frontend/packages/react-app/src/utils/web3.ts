@@ -23,6 +23,7 @@ import {
   WalletDistributor__factory as WalletDistributor,
   CampaignInterface__factory as Campaign,
   WalletCampaign__factory as WalletCampaign,
+  UUIDCampaign__factory as UUIDCampaign,
   UUIDDistributor__factory as UUIDDistributor,
 } from "../types";
 import { ContractTransaction } from "@ethersproject/contracts";
@@ -296,6 +297,28 @@ export const walletClaim = async (
   const data = await response.json();
   return campaignContract
     .claim(data.index, walletAddress, data.amount, data.proof)
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const uuidClaim = async (
+  library: Web3Provider | undefined,
+  campaignAddress: string,
+  merkleTreeCid: string,
+  hashedUUID: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const campaignContract = UUIDCampaign.connect(campaignAddress, signer);
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`
+  );
+  const data = await response.json();
+  return campaignContract
+    .claim(data.index, hashedUUID, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {
       return transaction;
     });

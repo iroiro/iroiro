@@ -20,8 +20,9 @@ import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { Dispatch, useCallback } from "react";
 import TokenAmount from "../../atoms/TokenAmount";
-import { walletClaim } from "../../../utils/web3";
+import { uuidClaim, walletClaim } from "../../../utils/web3";
 import { CampaignDetailAction } from "../../../reducers/campaignDetail";
+import { DistributorTypes } from "../../../interfaces";
 
 export interface WalletTokenClaimCardProps {
   campaignAddress: string;
@@ -32,6 +33,8 @@ export interface WalletTokenClaimCardProps {
   decimals: number;
   readonly dispatch: Dispatch<CampaignDetailAction>;
   merkleTreeCid: string;
+  distributorType: DistributorTypes | string;
+  hashedUUID: string;
 }
 
 const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
@@ -43,15 +46,33 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
   decimals,
   dispatch,
   merkleTreeCid,
+  distributorType,
+  hashedUUID,
 }) => {
   const { library } = useWeb3React();
 
   const onClickClaim = useCallback(async () => {
-    const transaction = await walletClaim(
-      library,
-      campaignAddress,
-      merkleTreeCid
-    );
+    let transaction;
+    switch (distributorType) {
+      case "wallet":
+        transaction = await walletClaim(
+          library,
+          campaignAddress,
+          merkleTreeCid
+        );
+        break;
+      case "uuid":
+        transaction = await uuidClaim(
+          library,
+          campaignAddress,
+          merkleTreeCid,
+          hashedUUID
+        );
+        break;
+      default:
+        console.error("Distributor type is not matched.");
+        return;
+    }
 
     if (transaction === undefined) {
       console.error("Transaction failed");
@@ -67,7 +88,13 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
     text = "You can claim token.";
   }
   if (isClaimed) {
-    text = "You claimed token.";
+    switch (distributorType) {
+      case "uuid":
+        text = "This URL campaign has already been claimed.";
+        break;
+      default:
+        text = "You claimed token.";
+    }
   }
   return (
     <Card>

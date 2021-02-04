@@ -18,9 +18,11 @@
 // TODO Update type
 import { Web3Provider } from "@ethersproject/providers";
 
+type RecipientsType = "address" | "keccak256";
+
 export interface Recipients {
   readonly targets: string[];
-  readonly type: string;
+  readonly type: RecipientsType | string; // TODO remove string
 }
 
 export interface Web3Props {
@@ -62,7 +64,7 @@ export interface Distributor {
   id: string;
   distributorCid: string;
   distributorMetadata: DistributorMetadata;
-  type: string;
+  type: DistributorTypes | string; // TODO remove string
   version: string;
   disabled: boolean;
 }
@@ -177,3 +179,5 @@ export interface WalletList {
   filelist: FileList | null;
   fileformat: boolean;
 }
+
+export type DistributorTypes = "audius" | "wallet" | "uuid";

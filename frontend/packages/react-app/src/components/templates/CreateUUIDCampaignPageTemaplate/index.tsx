@@ -85,6 +85,7 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
             {distributorFormState.step === 4 && (
               <UUIDURLList
                 tokenAddress={tokenAddress}
+                campaignAddress={distributorFormState.createdCampaignAddress}
                 uuidState={uuidState}
                 uuidDispatch={uuidDispatch}
               />

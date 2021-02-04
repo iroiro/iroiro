@@ -23,7 +23,6 @@ import {
   getWalletBalance,
   getAllowance,
   setApproveAmount,
-  createWalletCampaign,
   parseUnits,
   createUUIDCampaign,
 } from "../../utils/web3";
@@ -161,6 +160,15 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
     },
     [distributorAddress, tokenAddress]
   );
+
+  useEffect(() => {
+    uuidDispatch({
+      type: "distributorAddress:set",
+      payload: {
+        distributorAddress,
+      },
+    });
+  }, [distributorAddress, uuidDispatch]);
 
   const uploadJsonIpfs = useCallback(
     async (data, type) => {
