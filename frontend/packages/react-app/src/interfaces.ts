@@ -1,9 +1,11 @@
 // TODO Update type
 import { Web3Provider } from "@ethersproject/providers";
 
+type RecipientsType = "address" | "keccak256";
+
 export interface Recipients {
   readonly targets: string[];
-  readonly type: string;
+  readonly type: RecipientsType | string; // TODO remove string
 }
 
 export interface Web3Props {

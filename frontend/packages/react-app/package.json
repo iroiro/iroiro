@@ -102,6 +102,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
+    "@iroiro/merkle-distributor": "^1.1.2",
     "@storybook/addon-actions": "^6.0.28",
     "@storybook/addon-essentials": "^6.0.28",
     "@storybook/addon-links": "^6.0.28",

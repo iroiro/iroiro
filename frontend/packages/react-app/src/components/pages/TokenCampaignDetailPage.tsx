@@ -3,15 +3,11 @@ import { useWeb3React } from "@web3-react/core";
 import React, { useEffect, useReducer } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useTokenContext } from "../../context/token";
-import {
-  GET_CAMPAIGN,
-  GET_CHECK_REQUEST,
-  GET_CLAIM,
-} from "../../graphql/subgraph";
+import { GET_CAMPAIGN, GET_CHECK_REQUEST } from "../../graphql/subgraph";
 import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
 import { useIsClaimable } from "../../hooks/distributors/cct-wallet/useIsClaimable";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
-import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
+import { CampaignInfo, CampaignMetadata } from "../../interfaces";
 import { audiusInitialState, audiusReducer } from "../../reducers/audius";
 import {
   campaignDetailReducer,
@@ -66,9 +62,6 @@ const TokenCampaignDetailPage: React.FC<
     library,
     LINK_TOKEN_ADDRESS,
     state?.campaignAddress ?? ""
-  );
-  const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
-    GET_CLAIM
   );
 
   useEffect(() => {
@@ -203,6 +196,15 @@ const TokenCampaignDetailPage: React.FC<
         isClaimable,
       },
     });
+    if (isClaimable) {
+      dispatch({
+        type: "isCampaignClaimed:remove",
+      });
+    } else {
+      dispatch({
+        type: "isCampaignClaimed:setTrue",
+      });
+    }
   }, [isClaimable]);
 
   useEffect(() => {
@@ -214,32 +216,6 @@ const TokenCampaignDetailPage: React.FC<
       payload: { allowance: allowance },
     });
   }, [allowance]);
-
-  useEffect(() => {
-    if (
-      tokenState.userAddress === undefined ||
-      state.campaignAddress === undefined
-    ) {
-      return;
-    }
-    getClaim({
-      variables: {
-        id: `${tokenState.userAddress.toLowerCase()}-${state.campaignAddress.toLowerCase()}`,
-      },
-    });
-  }, [getClaim, tokenState.userAddress, state.campaignAddress]);
-
-  useEffect(() => {
-    if (getClaimData === undefined) {
-      return;
-    }
-    dispatch({
-      type: "isCampaignClaimed:set",
-      payload: {
-        claim: getClaimData.claim,
-      },
-    });
-  }, [getClaimData]);
 
   return (
     <TokenCampaignsDetailTemplate
