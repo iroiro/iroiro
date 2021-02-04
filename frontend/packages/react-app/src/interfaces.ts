@@ -1,9 +1,28 @@
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
 // TODO Update type
 import { Web3Provider } from "@ethersproject/providers";
 
+type RecipientsType = "address" | "keccak256";
+
 export interface Recipients {
   readonly targets: string[];
-  readonly type: string;
+  readonly type: RecipientsType | string; // TODO remove string
 }
 
 export interface Web3Props {
@@ -43,9 +62,11 @@ export interface TokenBasic {
 
 export interface Distributor {
   id: string;
-  depositAmount: string;
   distributorCid: string;
   distributorMetadata: DistributorMetadata;
+  type: DistributorTypes | string; // TODO remove string
+  version: string;
+  disabled: boolean;
 }
 
 export interface DistributorMetadata {
@@ -90,6 +111,8 @@ export interface CampaignInfo {
   readonly checkRequests: CheckRequest[];
   readonly campaignMetadata: CampaignMetadata;
   readonly claimed: number;
+  readonly merkleRoot: string;
+  readonly merkleTreeCid: string;
 }
 
 export interface CampaignMetadata {
@@ -124,6 +147,7 @@ export interface TokenInformationState {
   activities: Activity[];
   balances: Balance[];
   now: Date;
+  distributorType: string;
 }
 
 export interface Campaigns {
@@ -148,3 +172,12 @@ export interface TokenListState {
   type: string;
   color?: "inherit" | "primary" | "secondary" | "default" | undefined;
 }
+
+export interface WalletList {
+  targets: string[];
+  type: string;
+  filelist: FileList | null;
+  fileformat: boolean;
+}
+
+export type DistributorTypes = "audius" | "wallet" | "uuid";

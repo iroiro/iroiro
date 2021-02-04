@@ -1,3 +1,20 @@
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
 import * as React from "react";
 import {
   Card,
@@ -9,24 +26,22 @@ import {
 } from "@material-ui/core";
 import { CampaignInfo } from "../../../interfaces";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { useHistory } from "react-router-dom";
 
 export interface TokenCampaignCardProps {
   readonly campaign: CampaignInfo;
-  readonly dispatch: React.Dispatch<TokenInformationAction>;
+  readonly tokenAddress: string;
 }
 
 const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
   campaign,
-  dispatch,
+  tokenAddress,
 }) => {
+  const history = useHistory();
   const onClickDetail = () => {
-    dispatch({
-      type: "campaignAddress:set",
-      payload: {
-        campaignAddress: campaign.id,
-      },
-    });
+    history.push(
+      `/explore/${tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`
+    );
   };
 
   return (
@@ -34,7 +49,7 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
       <CardContent>
         <Container>
           <Box display="flex" justifyContent="space-between">
-            <Link component="button" onClick={() => onClickDetail()}>
+            <Link component="button" onClick={onClickDetail}>
               <Typography variant="h5">
                 {campaign.campaignMetadata.name}
               </Typography>

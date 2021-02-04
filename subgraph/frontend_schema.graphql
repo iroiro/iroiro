@@ -1,0 +1,126 @@
+type Creator @entity {
+  id: ID!
+  tokens: [Token!]! @derivedFrom(field: "creator")
+  campaigns: [Campaign!]! @derivedFrom(field: "creator")
+}
+
+type Account @entity {
+  id: ID!
+  tokens: [AccountToken!]! @derivedFrom(field: "account")
+  checkRequests: [CheckRequest!]! @derivedFrom(field: "account")
+  claims: [Claim!]! @derivedFrom(field: "account")
+  # TODO: Disabled for this phase
+  #  donates: [Donate!]! @derivedFrom(field: "account")
+}
+
+type Distributor @entity {
+  id: ID!
+  distributorCid: String
+  campaigns: [Campaign!]! @derivedFrom(field: "distributor")
+}
+
+type Campaign @entity {
+  id: ID!
+  distributor: Distributor!
+  token: String!
+  startDate: BigInt
+  endDate: BigInt
+  "Campaign creator not only token creator"
+  creator: Creator!
+  campaignInfoCid: String
+  recipientsCid: String
+  merkleTreeCid: String
+  merkleRoot: Bytes
+  claimAmount: BigInt
+  claimedNum: BigInt
+  status: Int
+  claims: [Claim!]! @derivedFrom(field: "campaign")
+  checkRequests: [CheckRequest!]! @derivedFrom(field: "campaign")
+}
+
+enum CheckRequestStatus {
+  IN_PROGRESS
+  FULFILLED
+  CANCELLED
+}
+
+type CheckRequest @entity {
+  " Equals to: <campaignAddress>-<requestId>"
+  id: ID!
+  account: Account!
+  campaign: Campaign!
+  status: CheckRequestStatus!
+  "Show result only for requested address, not only for other addresses"
+  result: Boolean
+}
+
+type Claim @entity {
+  " Equals to: <accountAddress>-<campaignAddress>"
+  id: ID!
+  account: Account!
+  campaign: Campaign!
+  token: String!
+  amount: BigInt
+}
+
+type Donate @entity {
+  " Equals to: <accountAddress>-<timestamp>"
+  id: ID!
+  from: Account!
+  to: Creator!
+  token: String!
+  amount: BigInt!
+}
+
+# Following types are deprected but remaining for compatibility.
+# Could be deleted in the future.
+
+type Token @entity {
+  id: ID!
+  creator: Creator! # address
+  name: String! # string
+  symbol: String!
+  totalSupply: BigInt!
+  decimals: Int
+  creatorTokenRatio: Int
+  isTotalSupplyFixed: Boolean
+  lockupPeriod: Int
+  enableStakeToToken: Boolean
+  accountTokens: [AccountToken!]!
+}
+
+type AccountToken @entity {
+  # Token id and account id contat by '-'
+  id: ID!
+  account: Account!
+  balance: BigInt!
+  token: Token! @derivedFrom(field: "accountTokens")
+}
+scalar BigInt
+scalar Bytes
+
+input CampaignsCondition {
+  token: String!
+}
+
+input CheckRequestsCondition {
+  account: String!
+  campaign: String!
+}
+
+type Query {
+  tokens: [Token!]!
+  account(id: ID!): Account
+  creator(id: ID!): Creator
+  accountToken(id: ID!): AccountToken
+  campaigns(where: CampaignsCondition!): [Campaign!]!
+  campaign(id: ID!): Campaign
+  distributors: [Distributor!]!
+  checkRequests(where: CheckRequestsCondition!): [CheckRequest!]!
+  claim(id: ID!): Claim
+}
+
+schema {
+  query: Query
+}
+

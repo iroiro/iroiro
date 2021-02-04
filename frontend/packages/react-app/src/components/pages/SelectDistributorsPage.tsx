@@ -1,42 +1,40 @@
-import React, { useEffect, useState, useCallback } from "react";
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
+import React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import SelectDistributorsPageTemplate from "../templates/SelectDistributorsPageTemplate";
-import { GET_DISTRIBUTORS } from "../../graphql/subgraph";
-import { useLazyQuery } from "@apollo/react-hooks";
-import { Distributor } from "../../interfaces";
+import distributors from "../../utils/distributors";
 
-const SelectDistributorsPage: React.FC<RouteComponentProps<{
-  tokenAddress: string;
-}>> = (props) => {
+const SelectDistributorsPage: React.FC<
+  RouteComponentProps<{
+    tokenAddress: string;
+  }>
+> = (props) => {
   const tokenAddress = props.match.params.tokenAddress;
-  const [getDistributors, { data }] = useLazyQuery(GET_DISTRIBUTORS);
-  const [distributors, setDistributors] = useState<Distributor[]>([]);
-
-  const getDistributorMetadata = useCallback(async (distributors) => {
-    for (let i = 0; i < distributors.length; i++) {
-      const cid = distributors[i].distributorCid;
-      const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
-      const response = await fetch(url);
-      distributors[i].distributorMetadata = await response.json();
-    }
-    setDistributors(distributors);
-  }, []);
-
-  useEffect(() => {
-    getDistributors();
-  }, [getDistributors]);
-
-  useEffect(() => {
-    if (data) {
-      getDistributorMetadata(data.distributors);
-    }
-  }, [data, getDistributorMetadata]);
-
+  const result = distributors.filter(
+    (distributor) =>
+      distributor.id !== "0x590b4465a94be635bf2f760025c61ec3680f687c"
+  );
   return (
     <>
       <SelectDistributorsPageTemplate
         tokenAddress={tokenAddress}
-        distributors={distributors}
+        distributors={result}
       />
     </>
   );

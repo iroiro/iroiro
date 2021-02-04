@@ -1,13 +1,36 @@
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
 import { Web3Provider } from "@ethersproject/providers";
 import { TokenBasic } from "../interfaces";
 import { FanToken__factory as FanTokenFactory } from "../types";
-import { CCTWalletDistributor__factory as CCTWalletDistributor } from "../types";
-import { CampaignInterface__factory as Campaign } from "../types";
-import BN from "bn.js";
+import {
+  CCTWalletDistributor__factory as CCTWalletDistributor,
+  WalletDistributor__factory as WalletDistributor,
+  CampaignInterface__factory as Campaign,
+  WalletCampaign__factory as WalletCampaign,
+  UUIDCampaign__factory as UUIDCampaign,
+  UUIDDistributor__factory as UUIDDistributor,
+} from "../types";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
 import { utils } from "ethers";
+import { MERKLE_PROOF_API } from "../utils/const";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -110,7 +133,7 @@ export const setApproveAmount = async (
     });
 };
 
-export const createCampaign = async (
+export const createAudiusCampaign = async (
   library: Web3Provider | undefined,
   tokenAddress: string,
   campaignInfoCid: string,
@@ -135,6 +158,83 @@ export const createCampaign = async (
       walletAddress,
       campaignInfoCid,
       recipientsCid,
+      recipientsNum,
+      startDate,
+      endDate
+    )
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const createWalletCampaign = async (
+  library: Web3Provider | undefined,
+  merkleRoot: string,
+  tokenAddress: string,
+  campaignInfoCid: string,
+  recipientsCid: string,
+  merkleTreeCid: string,
+  recipientsNum: number,
+  startDate: number,
+  endDate: number
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const walletAddress = await signer.getAddress();
+  const distributor = WalletDistributor.connect(
+    addresses.WalletDistributor,
+    signer
+  );
+
+  return distributor
+    .createCampaign(
+      merkleRoot,
+      tokenAddress,
+      walletAddress,
+      campaignInfoCid,
+      recipientsCid,
+      merkleTreeCid,
+      recipientsNum,
+      startDate,
+      endDate
+    )
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+// TODO move as custom hooks
+export const createUUIDCampaign = async (
+  library: Web3Provider | undefined,
+  merkleRoot: string,
+  tokenAddress: string,
+  campaignInfoCid: string,
+  recipientsCid: string,
+  merkleTreeCid: string,
+  recipientsNum: number,
+  startDate: number,
+  endDate: number
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const walletAddress = await signer.getAddress();
+  const distributor = UUIDDistributor.connect(
+    addresses.UUIDDistributor,
+    signer
+  );
+
+  return distributor
+    .createCampaign(
+      merkleRoot,
+      tokenAddress,
+      walletAddress,
+      campaignInfoCid,
+      recipientsCid,
+      merkleTreeCid,
       recipientsNum,
       startDate,
       endDate
@@ -174,6 +274,51 @@ export const refundCampaign = async (
 
   return campaignContract
     .refundRemainingTokens()
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const walletClaim = async (
+  library: Web3Provider | undefined,
+  campaignAddress: string,
+  merkleTreeCid: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const campaignContract = WalletCampaign.connect(campaignAddress, signer);
+  const walletAddress = await signer.getAddress();
+  const walletAddressLow = walletAddress.toLowerCase();
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddressLow}.json`
+  );
+  const data = await response.json();
+  return campaignContract
+    .claim(data.index, walletAddress, data.amount, data.proof)
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const uuidClaim = async (
+  library: Web3Provider | undefined,
+  campaignAddress: string,
+  merkleTreeCid: string,
+  hashedUUID: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const campaignContract = UUIDCampaign.connect(campaignAddress, signer);
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`
+  );
+  const data = await response.json();
+  return campaignContract
+    .claim(data.index, hashedUUID, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {
       return transaction;
     });

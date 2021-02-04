@@ -1,3 +1,20 @@
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
 import * as React from "react";
 import {
   Grid,
@@ -8,22 +25,25 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import TokenCampaignCard from "../../molecules/TokenCampaignCard";
-import { TokenInformationState } from "../../../interfaces";
-import { Dispatch, useState } from "react";
-import { TokenInformationAction } from "../../../reducers/tokenInformation";
+import { CampaignInfo } from "../../../interfaces";
+import { useEffect, useState } from "react";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 
 export interface TokenCampaignsProps {
-  state: TokenInformationState;
-  dispatch: Dispatch<TokenInformationAction>;
+  campaigns: CampaignInfo[];
+  tokenAddress: string;
 }
 
 const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
-  state: { campaigns },
-  dispatch,
+  campaigns,
+  tokenAddress,
 }) => {
   const [filteredCampaigns, setFilteredCampaigns] = useState(campaigns);
   const [searchText, setSearchText] = useState("");
+  useEffect(() => {
+    setFilteredCampaigns(campaigns);
+  }, [campaigns]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
     if (e.target.value === "") {
@@ -68,7 +88,7 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
               <TokenCampaignCard
                 key={campaign.id}
                 campaign={campaign}
-                dispatch={dispatch}
+                tokenAddress={tokenAddress}
               />
             ))}
           </Box>

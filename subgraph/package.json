@@ -9,7 +9,11 @@
   "scripts": {
     "auth": "node_modules/.bin/graph auth https://api.thegraph.com/deploy/ $GRAPH_ACCESS_TOKEN",
     "build": "node_modules/.bin/graph build",
-    "codegen": "node_modules/.bin/graph codegen --output-dir src/types/",
+    "codegen": "yarn codegen:subgraph && yarn codegen:frontend",
+    "codegen:subgraph": "node_modules/.bin/graph codegen --output-dir src/types/",
+    "codegen:frontend": "yarn schema:clean && yarn schema:merge && graphql-codegen",
+    "schema:clean": "rm frontend_schema.graphql",
+    "schema:merge": "cat schema.graphql query.graphql > frontend_schema.graphql",
     "deploy:mainnet": "node_modules/.bin/graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ TART-tokyo/iroiro",
     "deploy:rinkeby": "node_modules/.bin/graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ TART-tokyo/iroiro-rinkeby",
     "deploy:kovan": "node_modules/.bin/graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ TART-tokyo/iroiro-kovan-dev",
@@ -19,6 +23,10 @@
     "format": "yarn prettier --write ."
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.20.0",
+    "@graphql-codegen/typescript": "^1.20.0",
+    "@graphql-codegen/typescript-operations": "^1.17.13",
+    "@graphql-codegen/typescript-react-apollo": "^2.2.1",
     "prettier": "2.1.2"
   }
 }

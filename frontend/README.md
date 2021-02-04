@@ -1,5 +1,16 @@
 This project was bootstrapped with [Create Eth App](https://github.com/paulrberg/create-eth-app).
 
+## Development
+
+### GraphQL code generation for usage subgraph from frontend 
+
+React app uses TypeScript definition generated from subgraph schema and queries. 
+So when you add or update subgraph query, you have to generate TypeScript codes with updated subgraph schema. 
+
+1. Add or update GraphQL query definition in `subgraph/query.graphql` and `subgraph/src/queries/index.graphql` in subgraph subproject
+1. Run `yarn codegen` on subgraph subproject directory to validate a schema and generate a code for a frontend. 
+1. Now you can use generate code on frontend. 
+
 ## Project Structure
 
 The default template is a monorepo created with [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/).

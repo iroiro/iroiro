@@ -1,3 +1,20 @@
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
 import {
   CampaignInfo,
   CampaignMetadata,
@@ -6,6 +23,7 @@ import {
   Distributor,
   AccountToken,
   TokenListState,
+  WalletList,
 } from "../interfaces";
 import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
@@ -17,7 +35,7 @@ export const campaignMetadata: CampaignMetadata = {
 };
 
 export const distributor: Distributor = {
-  id: "0x48889feca4574810e5a5b30b6b93146a837500fb",
+  id: "0x590b4465a94be635bf2f760025c61ec3680f687c",
   distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
   distributorMetadata: {
     name: "Audius Followers Distributor",
@@ -25,7 +43,9 @@ export const distributor: Distributor = {
       "This distributer enables creators to distributes tokens for their followers on Auduis.",
     image: "https://example.com/distributerimage.jpg",
   },
-  depositAmount: "100000",
+  type: "audius",
+  version: "1",
+  disabled: false,
 };
 
 export const campaign: CampaignInfo = {
@@ -60,6 +80,8 @@ export const campaign: CampaignInfo = {
   claimedNum: "100",
   claims: [],
   checkRequests: [],
+  merkleRoot: "",
+  merkleTreeCid: "",
 };
 
 export const tokenInformationState: TokenInformationState = {
@@ -77,22 +99,22 @@ export const tokenInformationState: TokenInformationState = {
     {
       ...campaign,
       creator: {
-        id: "0x0000000000000000000000000000000000000001"
-      }
+        id: "0x0000000000000000000000000000000000000001",
+      },
     },
     {
       ...campaign,
       status: 1,
       creator: {
-        id: "0x0000000000000000000000000000000000000002"
-      }
+        id: "0x0000000000000000000000000000000000000002",
+      },
     },
     {
       ...campaign,
       status: 2,
       creator: {
-        id: "0x0000000000000000000000000000000000000003"
-      }
+        id: "0x0000000000000000000000000000000000000003",
+      },
     },
   ],
   isCampaignClaimable: false,
@@ -140,6 +162,7 @@ export const tokenInformationState: TokenInformationState = {
     },
   ],
   now: new Date(),
+  distributorType: "audius",
 };
 
 export const distributionTargets: Target[] = [
@@ -225,6 +248,7 @@ export const distributorFormState: createCampaignState = {
   endDate: new Date("2021-01-01T00:00:00").getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
+  createdCampaignAddress: "",
 };
 
 export const audiusTarget: Target = {
@@ -260,4 +284,17 @@ export const audiusState: AudiusState = {
   isRequestFollowers: false,
   isRequestSignout: false,
   progress: 0,
+};
+
+export const walletListState: WalletList = {
+  targets: [
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+  ],
+  type: "address",
+  filelist: null,
+  fileformat: true,
 };
