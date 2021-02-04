@@ -1,10 +1,27 @@
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
 import { ReactNode } from "react";
 import { TokenBasic } from "../interfaces";
 
 export interface ProviderValue {
-  reducer: (state: TokenState, action: TokenAction) => TokenState
-  initialValue: TokenState
-  children: ReactNode
+  reducer: (state: TokenState, action: TokenAction) => TokenState;
+  initialValue: TokenState;
+  children: ReactNode;
 }
 
 export interface TokenState {
@@ -14,27 +31,27 @@ export interface TokenState {
 }
 
 export type TokenAction =
-| {
-  type: "token:set";
-  payload: {
-    token: TokenBasic;
-  };
-}
-| {
-  type: "userAddress:set";
-  payload: {
-    address: string;
-  };
-}
-| {
-  type: "userBalance:set";
-  payload: {
-    balance: string;
-  };
-}
+  | {
+      type: "token:set";
+      payload: {
+        token: TokenBasic;
+      };
+    }
+  | {
+      type: "userAddress:set";
+      payload: {
+        address: string;
+      };
+    }
+  | {
+      type: "userBalance:set";
+      payload: {
+        balance: string;
+      };
+    };
 
 export const tokenReducer = (state: TokenState, action: TokenAction) => {
-  switch(action.type) {
+  switch (action.type) {
     case "token:set":
       return {
         ...state,
@@ -55,10 +72,10 @@ export const tokenReducer = (state: TokenState, action: TokenAction) => {
     default:
       return state;
   }
-}
+};
 
 export const initialValue = {
   token: undefined,
-  userAddress: '',
-  userBalance: ''
-}
+  userAddress: "",
+  userBalance: "",
+};
