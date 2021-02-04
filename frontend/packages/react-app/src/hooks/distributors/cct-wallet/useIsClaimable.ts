@@ -5,14 +5,8 @@ import {
   UUIDCampaign__factory,
 } from "../../../types";
 import { WalletCampaign__factory } from "../../../types";
-import { Recipients } from "../../../interfaces";
 import { MERKLE_PROOF_API } from "../../../utils/const";
-import {
-  Claim,
-  StringClaim,
-  StringMerkleDistributorInfo,
-} from "@iroiro/merkle-distributor";
-import { BigNumber } from "ethers";
+import { StringClaim } from "@iroiro/merkle-distributor";
 
 export const useIsClaimable = (
   library: Web3Provider | undefined,
