@@ -23,7 +23,7 @@ import {
 } from "../../../types";
 import { WalletCampaign__factory } from "../../../types";
 import { MERKLE_PROOF_API } from "../../../utils/const";
-import { StringClaim } from "@iroiro/merkle-distributor";
+import { Claim, StringClaim } from "@iroiro/merkle-distributor";
 
 export const useIsClaimable = (
   library: Web3Provider | undefined,
@@ -70,22 +70,19 @@ export const useIsClaimable = (
       setLoading(true);
       setError(undefined);
       const signer = library.getSigner();
-      const walletAddress = await signer.getAddress();
+      const walletAddress = (await signer.getAddress()).toLowerCase();
       const campaign = WalletCampaign__factory.connect(campaignAddress, signer);
-      const recipientsCid = await campaign.recipientsCid();
-      // TODO use merkle proof file
-      const url = `https://cloudflare-ipfs.com/ipfs/${recipientsCid}`;
+      const merkleTreeCid = await campaign.merkleTreeCid();
+      const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddress}.json`;
       const response = await fetch(url);
-      const data = await response.json();
-      const index = data.targets.findIndex(
-        (item: string) => item === walletAddress
-      );
+      const claim = (await response.json()) as StringClaim;
       setLoading(false);
-      if (index === -1) {
+      if (claim === undefined) {
         setResult(false);
         return;
       }
-      setResult(true);
+      const isClaimed = await campaign.isClaimed(claim.index);
+      setResult(!isClaimed);
     };
 
     const checkUUIDState = async () => {
@@ -98,24 +95,15 @@ export const useIsClaimable = (
       const signer = library.getSigner();
       const campaign = UUIDCampaign__factory.connect(campaignAddress, signer);
       const merkleTreeCid = await campaign.merkleTreeCid();
-
-      // todo test. remove
-      const recipCid = await campaign.recipientsCid();
-      const recipients = `https://cloudflare-ipfs.com/ipfs/${recipCid}`;
-      const merkleTree = `https://cloudflare-ipfs.com/ipfs/${merkleTreeCid}`;
-      console.debug(recipients, merkleTree);
-
       const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`;
       const response = await fetch(url);
       const claim = (await response.json()) as StringClaim;
       setLoading(false);
-      console.debug(claim);
       if (claim === undefined) {
         setResult(false);
         return;
       }
       const isClaimed = await campaign.isClaimed(claim.index);
-      console.debug(isClaimed);
       setResult(!isClaimed);
     };
 
