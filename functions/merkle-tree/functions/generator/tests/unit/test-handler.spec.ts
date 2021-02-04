@@ -60,6 +60,23 @@ describe("Tests Generator", function () {
     );
   });
 
+  it("1000 targets", async () => {
+    event = {
+      cid: "QmbE1NKLTsSvNAeECC5KnXxG8nFmaP5XAoY67GbDZHb56W",
+      type: "keccak256",
+    };
+    const result = await app.lambdaHandler(event, context);
+    console.debug("result", result);
+
+    expect(result).to.be.an("object");
+    expect(result.bucket).to.be.an("string");
+    expect(result.bucket).to.equal(process.env.MERKLE_TREE_BUCKET);
+    expect(result.key).to.be.an("string");
+    expect(result.key).to.equal(
+      "0xd37bdc738b33d45e4106dcc00167b4a3c4390ee39741d0bc46ac4e1f5602523d.json"
+    );
+  });
+
   it("throws an error if input does not have field", async () => {
     event = {
       cid: "QmbE1NKLTsSvNAeECC5KnXxG8nFmaP5XAoY67GbDZHb56W",

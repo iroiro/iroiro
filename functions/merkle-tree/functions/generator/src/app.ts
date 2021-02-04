@@ -23,6 +23,7 @@ import {
 } from "@iroiro/merkle-distributor";
 import { S3 } from "aws-sdk";
 import { parseStringBalanceMap } from "@iroiro/merkle-distributor/dist/parse-string-balance-map";
+import fetch from "node-fetch";
 const s3 = new S3();
 const ipfsClient = require("ipfs-http-client");
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
@@ -44,17 +45,17 @@ exports.lambdaHandler = async (event: Input) => {
   const type: TargetType = event["type"];
 
   let merkleTree: MerkleDistributorInfo;
+  const url = `https://gateway.pinata.cloud/ipfs/${inputCid}`;
+  const response = await fetch(url);
   switch (type) {
     case "address":
       // error handling
-      const balanceMap = (await getFile(inputCid)) as BalanceMapOldFormat;
+      const balanceMap = (await response.json()) as BalanceMapOldFormat;
       merkleTree = parseBalanceMap(balanceMap);
       break;
     case "keccak256":
       // error handling
-      const stringBalanceMap = (await getFile(
-        inputCid
-      )) as StringBalanceMapOldFormat;
+      const stringBalanceMap = (await response.json()) as StringBalanceMapOldFormat;
       merkleTree = parseStringBalanceMap(stringBalanceMap);
       break;
     default:

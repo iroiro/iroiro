@@ -29,6 +29,8 @@ const addressTargetsCid = "QmVrBcK6WZvcKvnJXLq1RM8fVkyAdiDXJFvfXxCtQF73MX";
 const invalidAddressTargetsCid =
   "QmZWoyBX9Xe9osN9nj1nWYXdm2akLuTcbpWJ1AZaKPNWbT";
 const keccak256TargetsCid = "QmVujr4pE8wfjjjHHFqmivg1otenc4AAgrLzsx4dkT5YvM";
+const thousandKeccak256TargetsCid =
+  "QmTvMZwdnxZdrKWrpuRmVAvrqCiSbgWsf3xZCyZv9RcfUx";
 const invalidKeccakTargetsCid =
   "QmTgnu6GSJUR3bSJjkibtDDbBZjRKxfSVxWj12MjEPSmrH";
 const invalidFormatCid = "QmVLdXh64DftwGmj5AZLZJUVCzAz4TJRPEcgTD8urxGQMo";
@@ -108,7 +110,24 @@ describe("Tests Input Generator", function () {
         "QmbE1NKLTsSvNAeECC5KnXxG8nFmaP5XAoY67GbDZHb56W"
       );
       expect(result.type).to.be.an("string");
-      expect(result.type).to.equal("address");
+      expect(result.type).to.equal("keccak256");
+    });
+
+    it("1000 targets", async () => {
+      event = {
+        cid: thousandKeccak256TargetsCid,
+        amount: 100,
+      };
+      const result = await app.lambdaHandler(event, context);
+      console.debug("result: ", result);
+
+      expect(result).to.be.an("object");
+      expect(result.cid).to.be.an("string");
+      expect(result.cid).to.equal(
+        "QmNrsPQwKqvTxCw6DQoXb9Sr1PMwvEiCaCKQ1G7sWFHpy2"
+      );
+      expect(result.type).to.be.an("string");
+      expect(result.type).to.equal("keccak256");
     });
 
     describe("failed cases", () => {
