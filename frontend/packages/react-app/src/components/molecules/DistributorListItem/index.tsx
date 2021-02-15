@@ -35,7 +35,7 @@ const DistributorListItem: React.FC<DistributorProps> = ({
         {"distributorMetadata" in distributor && (
           <Box p={2}>
             <Link
-              to={`/dashboard/${tokenAddress}/distributors/${distributor.id}`}
+              to={`/dashboard/${tokenAddress}/distributors/${distributor.id}/${distributor.type}`}
               style={{ textDecoration: "none" }}
             >
               <Typography color="secondary">
