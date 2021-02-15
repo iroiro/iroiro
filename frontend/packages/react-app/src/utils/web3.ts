@@ -15,9 +15,17 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import { Web3Provider } from "@ethersproject/providers";
+import {
+  Web3Provider,
+  getDefaultProvider,
+  Provider,
+} from "@ethersproject/providers";
+import { utils, Signer } from "ethers";
 import { TokenBasic } from "../interfaces";
-import { FanToken__factory as FanTokenFactory } from "../types";
+import {
+  FanToken__factory as FanTokenFactory,
+  ERC20__factory as ERC20Factory,
+} from "../types";
 import {
   CCTWalletDistributor__factory as CCTWalletDistributor,
   WalletDistributor__factory as WalletDistributor,
@@ -27,20 +35,28 @@ import {
   UUIDDistributor__factory as UUIDDistributor,
 } from "../types";
 import { ContractTransaction } from "@ethersproject/contracts";
+import {} from "@ethersproject/providers";
 // @ts-ignore
 import { addresses } from "@project/contracts";
-import { utils } from "ethers";
 import { MERKLE_PROOF_API } from "../utils/const";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
   tokenAddress: string
 ): Promise<TokenBasic | undefined> => {
-  if (!library || tokenAddress === "") {
+  if (tokenAddress === "") {
     return undefined;
   }
-  const signer = library.getSigner();
-  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+
+  let provider: Provider | Signer;
+
+  if (!library) {
+    provider = getDefaultProvider("rinkeby");
+  } else {
+    provider = library.getSigner();
+  }
+
+  const erc20 = ERC20Factory.connect(tokenAddress, provider);
   const name = await erc20.name();
   const symbol = await erc20.symbol();
   const decimals = await erc20.decimals();
