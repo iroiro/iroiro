@@ -180,4 +180,4 @@ export interface WalletList {
   fileformat: boolean;
 }
 
-export type DistributorTypes = "audius" | "wallet" | "uuid";
+export type DistributorTypes = "audius" | "wallet" | "uuid" | "email";
