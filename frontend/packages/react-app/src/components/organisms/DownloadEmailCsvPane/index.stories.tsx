@@ -38,6 +38,7 @@ Default.args = {
   tokenAddress: "0xd92e713d051c37ebb2561803a3b5fbabc4962431",
   emailState: {
     ...emailState,
-    rawTargets: [...Array(10)].map(() => uuidv4()),
+    rawTargets: [...Array(3)].map(() => uuidv4()),
+    emailList: ["test1@example.com", "test2@example.com", "test3@example.com"],
   },
 };

@@ -97,7 +97,8 @@ Step4.args = {
   tokenInfo: tokenInfo,
   emailState: {
     ...emailState,
-    rawTargets: [...Array(10)].map(() => uuidv4()),
+    rawTargets: [...Array(3)].map(() => uuidv4()),
+    emailList: ["test1@example.com", "test2@example.com", "test3@example.com"],
   },
   distributorFormState: {
     ...distributorFormState,

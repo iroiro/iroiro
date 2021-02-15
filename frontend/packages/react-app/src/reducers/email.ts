@@ -50,6 +50,7 @@ export interface EmailState {
   isValidQuantity: boolean;
   rawTargets: string[];
   targets: string[];
+  emailList: string[];
   type: "keccak256";
   moveToCampaignPage: boolean;
   distributorAddress: string;
@@ -105,6 +106,7 @@ export const emailInitialState: EmailState = {
   isValidQuantity: false,
   rawTargets: [],
   targets: [],
+  emailList: [],
   type: "keccak256",
   moveToCampaignPage: false,
   distributorAddress: "",

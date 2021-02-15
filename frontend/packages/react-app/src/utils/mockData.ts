@@ -314,6 +314,7 @@ export const emailState: EmailState = {
   quantity: "",
   isValidQuantity: false,
   rawTargets: [],
+  emailList: [],
   moveToCampaignPage: false,
   distributorAddress: "",
 };

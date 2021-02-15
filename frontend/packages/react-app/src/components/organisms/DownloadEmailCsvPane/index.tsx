@@ -19,6 +19,7 @@ import * as React from "react";
 import { Paper, Typography, Box, Button } from "@material-ui/core";
 import { useState } from "react";
 import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
+import { CSVLink } from "react-csv";
 
 export interface DownloadEmailCsvPaneProps {
   readonly tokenAddress: string;
@@ -34,12 +35,14 @@ const DownloadEmailCsvPane: React.FC<DownloadEmailCsvPaneProps> = ({
   emailDispatch,
 }) => {
   const [isCopied, setIsCopied] = useState(false);
-  const urlList = emailState.rawTargets
-    .map(
-      (uuid) =>
-        `${window.location.origin}/explore/${tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${campaignAddress}?uuid=${uuid}`
-    )
-    .join("\n");
+  const urlList = emailState.rawTargets.map(
+    (uuid) =>
+      `${window.location.origin}/explore/${tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${campaignAddress}?uuid=${uuid}`
+  );
+  const emailUrlPair = emailState.emailList.map((email, index) => {
+    return [email, urlList[index]];
+  });
+  const csvData = [["Email", "UUID"], ...emailUrlPair];
 
   return (
     <Box mt={2}>
@@ -98,9 +101,11 @@ const DownloadEmailCsvPane: React.FC<DownloadEmailCsvPaneProps> = ({
             style={{ textAlign: "center", justifyContent: "center" }}
           >
             <Box mr={4}>
-              <Button color="primary" variant="contained">
-                Download CSV file
-              </Button>
+              <CSVLink data={csvData} filename="email-distribution-targets.csv">
+                <Button color="primary" variant="contained">
+                  Download CSV file
+                </Button>
+              </CSVLink>
             </Box>
             <Box>
               <Button
