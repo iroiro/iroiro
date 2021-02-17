@@ -63,7 +63,7 @@ contract CampaignInterfaceV2 is Ownable {
         uint256 _startDate,
         uint256 _endDate
     ) public {
-        require(_startDate < _endDate, "Start data must be less than end date");
+        require(_startDate < _endDate, "Start date must be less than end date");
 
         campaignToken = _campaignToken;
         campaignInfoCid = _campaignInfoCid;
