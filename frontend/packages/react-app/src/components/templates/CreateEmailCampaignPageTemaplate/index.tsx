@@ -60,7 +60,7 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
         ) : (
           <Box>
             <Box my={1}>
-              <Typography variant={"h3"}>URL Campaign</Typography>
+              <Typography variant={"h3"}>Email Campaign</Typography>
             </Box>
             {distributorFormState.step === 1 && (
               <UploadEmailCsvPane
