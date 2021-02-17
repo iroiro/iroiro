@@ -116,7 +116,8 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
               {emailState.isCsvUploaded && !emailState.isValidEmails && (
                 <Box mt={1}>
                   <Typography color={"error"}>
-                    Column values are not valid email.
+                    Column values are not valid email. Maybe you should exclude
+                    header on below CSV configs or change column position?
                   </Typography>
                 </Box>
               )}
