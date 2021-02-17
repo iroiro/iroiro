@@ -101,7 +101,7 @@ describe("CampaignInterfaceV2", () => {
         );
         assert.fail();
       } catch (error) {
-        expect(error.reason).to.equal("Start data must be less than end date");
+        expect(error.reason).to.equal("Start date must be less than end date");
         assert(true);
       }
       try {
@@ -117,7 +117,7 @@ describe("CampaignInterfaceV2", () => {
         );
         assert.fail();
       } catch (error) {
-        expect(error.reason).to.equal("Start data must be less than end date");
+        expect(error.reason).to.equal("Start date must be less than end date");
         assert(true);
       }
     });
