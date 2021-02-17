@@ -54,8 +54,11 @@ Step1ButtonEnabled.args = {
   active: true,
   emailState: {
     ...emailState,
-    quantity: "0",
+    quantity: "1",
     isValidQuantity: false,
+    isCsvUploaded: true,
+    isValidEmails: true,
+    emailList: ["test@example.com"],
   },
   distributorFormState,
 };
