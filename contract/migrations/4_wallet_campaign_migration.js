@@ -17,7 +17,7 @@
 
 const WalletDistributor = artifacts.require("WalletDistributor");
 
-const distributorInfoCid = "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA";
+const distributorInfoCid = "QmdSXpkw3upd6bDTCx2KReMVBYFo8yJon8KW3WEsqcrDc8";
 
 module.exports = async (deployer) => {
   await deployer.deploy(WalletDistributor, distributorInfoCid);
