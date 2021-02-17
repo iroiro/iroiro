@@ -31,15 +31,41 @@ const Template: Story<TargetsProps> = (args) => (
   </BrowserRouter>
 );
 
-export const Default = Template.bind({});
-Default.args = {
-  emailState,
-};
-
-export const NoTarget = Template.bind({});
-NoTarget.args = {
+export const NotUploadedYet = Template.bind({});
+NotUploadedYet.args = {
   emailState: {
     ...emailState,
-    targets: [],
+    emailList: [],
+  },
+};
+
+export const UploadedEmptyCsv = Template.bind({});
+UploadedEmptyCsv.args = {
+  emailState: {
+    ...emailState,
+    isValidEmails: true,
+    emailList: [],
+    isCsvUploaded: true,
+  },
+};
+
+export const UploadedInvalidCsv = Template.bind({});
+UploadedInvalidCsv.args = {
+  emailState: {
+    ...emailState,
+    isValidEmails: false,
+    emailList: ["string"],
+    isCsvUploaded: true,
+  },
+};
+
+export const Uploaded = Template.bind({});
+Uploaded.args = {
+  emailState: {
+    ...emailState,
+    isValidEmails: true,
+    emailList: ["text@example.com"],
+    isCsvUploaded: true,
+    quantity: "1",
   },
 };

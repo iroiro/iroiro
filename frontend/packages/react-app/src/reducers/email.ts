@@ -17,11 +17,56 @@
 
 import { ethers } from "ethers";
 import { v4 as uuidv4 } from "uuid";
+import isEmail from "validator/es/lib/isEmail";
+
+const parseRawCsv = (
+  rawCsv: unknown[],
+  hasCsvHeader: boolean,
+  selectedColumn: number
+) => {
+  let csvColumnQuantity = 0;
+  if (rawCsv.length > 0) {
+    csvColumnQuantity = (rawCsv as any[])[0].length;
+  }
+  const emailList = rawCsv.map((row: unknown) => {
+    return (row as string[])[selectedColumn];
+  });
+  if (hasCsvHeader && rawCsv.length > 1) {
+    emailList.shift();
+  }
+  const isValidEmails =
+    emailList.find((email) => {
+      return !isEmail(email);
+    }) === undefined;
+  const quantity = emailList.length;
+  const isValidQuantity = quantity > 0;
+
+  return {
+    rawCsv,
+    csvColumnQuantity,
+    emailList,
+    isValidEmails,
+    quantity,
+    isValidQuantity,
+  };
+};
 
 export type EMAIL_ACTIONS =
   | {
       type: "emailListFile:upload";
       payload: { walletlistFile: FileList | null };
+    }
+  | {
+      type: "hasCsvHeader:set";
+      payload: { hasCsvHeader: boolean };
+    }
+  | {
+      type: "rawCsv:set";
+      payload: { rawCsv: unknown[] };
+    }
+  | {
+      type: "selectedColumn:set";
+      payload: { selectedColumn: number };
     }
   | {
       type: "emailList:set";
@@ -50,6 +95,12 @@ export interface EmailState {
   isValidQuantity: boolean;
   rawTargets: string[];
   targets: string[];
+  hasCsvHeader: boolean;
+  rawCsv: unknown[];
+  isCsvUploaded: boolean;
+  isValidEmails: boolean;
+  csvColumnQuantity: number;
+  selectedColumn: number;
   emailList: string[];
   type: "keccak256";
   moveToCampaignPage: boolean;
@@ -96,6 +147,75 @@ export const emailReducer = (
         distributorAddress: action.payload.distributorAddress,
       };
     }
+    case "hasCsvHeader:set": {
+      const {
+        csvColumnQuantity,
+        emailList,
+        isValidEmails,
+        quantity,
+        isValidQuantity,
+      } = parseRawCsv(
+        state.rawCsv,
+        action.payload.hasCsvHeader,
+        state.selectedColumn
+      );
+      return {
+        ...state,
+        hasCsvHeader: action.payload.hasCsvHeader,
+        isCsvUploaded: true,
+        csvColumnQuantity,
+        emailList,
+        isValidEmails,
+        quantity: quantity.toString(),
+        isValidQuantity,
+      };
+    }
+    case "selectedColumn:set": {
+      const {
+        csvColumnQuantity,
+        emailList,
+        isValidEmails,
+        quantity,
+        isValidQuantity,
+      } = parseRawCsv(
+        state.rawCsv,
+        state.hasCsvHeader,
+        action.payload.selectedColumn
+      );
+      return {
+        ...state,
+        selectedColumn: action.payload.selectedColumn,
+        emailList,
+        csvColumnQuantity,
+        isValidEmails,
+        quantity: quantity.toString(),
+        isValidQuantity,
+      };
+    }
+    case "rawCsv:set": {
+      const {
+        rawCsv,
+        csvColumnQuantity,
+        emailList,
+        isValidEmails,
+        quantity,
+        isValidQuantity,
+      } = parseRawCsv(
+        action.payload.rawCsv,
+        state.hasCsvHeader,
+        state.selectedColumn
+      );
+      return {
+        ...state,
+        rawCsv,
+        isCsvUploaded: true,
+        csvColumnQuantity,
+        emailList,
+        isValidEmails,
+        quantity: quantity.toString(),
+        isValidQuantity,
+      };
+    }
     default:
       throw new Error();
   }
@@ -106,6 +226,12 @@ export const emailInitialState: EmailState = {
   isValidQuantity: false,
   rawTargets: [],
   targets: [],
+  hasCsvHeader: false,
+  rawCsv: [],
+  isCsvUploaded: false,
+  isValidEmails: false,
+  csvColumnQuantity: 0,
+  selectedColumn: 0,
   emailList: [],
   type: "keccak256",
   moveToCampaignPage: false,
