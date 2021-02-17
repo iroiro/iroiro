@@ -20,6 +20,7 @@ import { Paper, Typography, Box, Button } from "@material-ui/core";
 import { useState } from "react";
 import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
 import { CSVLink } from "react-csv";
+import styled from "styled-components";
 
 export interface DownloadEmailCsvPaneProps {
   readonly tokenAddress: string;
@@ -28,13 +29,17 @@ export interface DownloadEmailCsvPaneProps {
   readonly emailDispatch: React.Dispatch<EMAIL_ACTIONS>;
 }
 
+const StyledCSVLink = styled(CSVLink)`
+  text-decoration: none;
+`;
+
 const DownloadEmailCsvPane: React.FC<DownloadEmailCsvPaneProps> = ({
   tokenAddress,
   campaignAddress,
   emailState,
   emailDispatch,
 }) => {
-  const [isCopied, setIsCopied] = useState(false);
+  const [isDownloaded, setIsDownloaded] = useState(false);
   const urlList = emailState.rawTargets.map(
     (uuid) =>
       `${window.location.origin}/explore/${tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${campaignAddress}?uuid=${uuid}`
@@ -101,17 +106,21 @@ const DownloadEmailCsvPane: React.FC<DownloadEmailCsvPaneProps> = ({
             style={{ textAlign: "center", justifyContent: "center" }}
           >
             <Box mr={4}>
-              <CSVLink data={csvData} filename="email-distribution-targets.csv">
+              <StyledCSVLink
+                data={csvData}
+                onClick={() => setIsDownloaded(true)}
+                filename="email-distribution-targets.csv"
+              >
                 <Button color="primary" variant="contained">
                   Download CSV file
                 </Button>
-              </CSVLink>
+              </StyledCSVLink>
             </Box>
             <Box>
               <Button
                 color="secondary"
                 variant="contained"
-                disabled={!isCopied}
+                disabled={!isDownloaded}
                 onClick={() => {
                   emailDispatch({ type: "moveToCampaignPage:on" });
                 }}
