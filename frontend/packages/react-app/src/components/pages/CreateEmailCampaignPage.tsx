@@ -306,13 +306,15 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
       return;
     }
     props.history.push(
-      window.location.pathname +
+      `/dashboard/${tokenAddress}/distributors/${distributorAddress}` +
         `/campaigns/${distributorFormState.createdCampaignAddress}`
     );
   }, [
     props.history,
     emailState.moveToCampaignPage,
     distributorFormState.createdCampaignAddress,
+    tokenAddress,
+    distributorAddress,
   ]);
 
   useEffect(() => {
