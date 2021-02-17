@@ -17,6 +17,8 @@
 
 const tIRO = artifacts.require("tIRO");
 
-module.exports = async deployer => {
-  deployer.deploy(tIRO);
+module.exports = async (deployer, network) => {
+  if (network.startsWith("rinkeby")) {
+    deployer.deploy(tIRO);
+  }
 };
