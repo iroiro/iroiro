@@ -17,7 +17,7 @@
 
 const UUIDDistributor = artifacts.require("UUIDDistributor");
 
-const distributorInfoCid = "QmRBHkjbuLExQPia1wiLgwjqXaBXowPDVVPPoTJv9wJnYP";
+const distributorInfoCid = "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY";
 
 module.exports = async (deployer) => {
   await deployer.deploy(UUIDDistributor, distributorInfoCid);

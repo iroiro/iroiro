@@ -27,6 +27,7 @@ import {
 } from "../interfaces";
 import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
+import { EmailState } from "../reducers/email";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -297,4 +298,30 @@ export const walletListState: WalletList = {
   type: "address",
   filelist: null,
   fileformat: true,
+};
+
+export const emailState: EmailState = {
+  targets: [
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+  ],
+  type: "keccak256",
+  filelist: null,
+  fileformat: true,
+  quantity: "",
+  isValidQuantity: false,
+  rawTargets: [],
+  hasCsvHeader: false,
+  rawCsv: [],
+  columns: [],
+  isCsvUploaded: false,
+  isValidEmails: false,
+  csvColumnQuantity: 0,
+  selectedColumn: 0,
+  emailList: [],
+  moveToCampaignPage: false,
+  distributorAddress: "",
 };

@@ -32,6 +32,7 @@ import { TokenProvider } from "./context/token";
 import { initialValue, tokenReducer } from "./reducers/tokenContext";
 import TokenBasicInformationPage from "./components/pages/TokenBasicInformationPage";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
+import CreateEmailCampaignPage from "./components/pages/CreateEmailCampaignPage";
 
 const App: React.FC = () => {
   return (
@@ -57,12 +58,13 @@ const App: React.FC = () => {
                 if (distributor.disabled) {
                   return;
                 }
+                const path = `/dashboard/:tokenAddress/distributors/${distributor.id}/${distributor.type}`;
                 if (distributor.type === "wallet") {
                   return (
                     <Route
                       key={distributor.id}
                       exact
-                      path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                      path={path}
                       render={(props) => (
                         <CreateWalletCampaignPage
                           distributorAddress={distributor.id}
@@ -77,9 +79,24 @@ const App: React.FC = () => {
                     <Route
                       key={distributor.id}
                       exact
-                      path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
+                      path={path}
                       render={(props) => (
                         <CreateUUIDCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
+                if (distributor.type === "email") {
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateEmailCampaignPage
                           distributorAddress={distributor.id}
                           props={props}
                         />
