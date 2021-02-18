@@ -99,9 +99,6 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
             <>
               <Box my={2}>
                 <Typography variant={"body1"}>File type: CSV</Typography>
-                <Typography variant={"body1"}>
-                  CSV must contain email column.
-                </Typography>
               </Box>
               <Button variant="contained" component="label">
                 Upload File
