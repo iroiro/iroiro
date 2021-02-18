@@ -316,6 +316,7 @@ export const emailState: EmailState = {
   rawTargets: [],
   hasCsvHeader: false,
   rawCsv: [],
+  columns: [],
   isCsvUploaded: false,
   isValidEmails: false,
   csvColumnQuantity: 0,

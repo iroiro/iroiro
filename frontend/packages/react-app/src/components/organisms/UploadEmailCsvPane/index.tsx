@@ -161,15 +161,13 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
                     });
                   }}
                 >
-                  {[...Array(emailState.csvColumnQuantity)].map(
-                    (value, index) => {
-                      return (
-                        <MenuItem key={index} value={index}>
-                          {index + 1}
-                        </MenuItem>
-                      );
-                    }
-                  )}
+                  {emailState.columns.map((value, index) => {
+                    return (
+                      <MenuItem key={index} value={index}>
+                        {value}
+                      </MenuItem>
+                    );
+                  })}
                 </StyledSelect>
                 <FormHelperText>
                   Select column position which contains email values
