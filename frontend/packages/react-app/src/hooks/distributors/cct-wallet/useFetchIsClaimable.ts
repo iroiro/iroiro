@@ -17,7 +17,7 @@
 
 import { useCallback } from "react";
 import { Web3Provider } from "@ethersproject/providers";
-import { CCTWalletCampaign__factory } from "../../../types";
+import { CCTWalletCampaign__factory } from "../../../types/factories/CCTWalletCampaign__factory";
 
 export const useGetIsClaimable = (
   library: Web3Provider | undefined,

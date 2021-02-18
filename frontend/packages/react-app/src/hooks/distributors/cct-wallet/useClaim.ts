@@ -16,7 +16,7 @@
  */
 
 import { Web3Provider } from "@ethersproject/providers";
-import { CCTWalletCampaign__factory } from "../../../types";
+import { CCTWalletCampaign__factory } from "../../../types/factories/CCTWalletCampaign__factory";
 import { ContractTransaction } from "@ethersproject/contracts";
 import { useCallback } from "react";
 import Web3 from "web3";

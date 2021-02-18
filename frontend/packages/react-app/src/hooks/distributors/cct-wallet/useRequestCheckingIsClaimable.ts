@@ -16,7 +16,7 @@
  */
 
 import { Web3Provider } from "@ethersproject/providers";
-import { CCTWalletCampaign__factory } from "../../../types";
+import { CCTWalletCampaign__factory } from "../../../types/factories/CCTWalletCampaign__factory";
 import { ethers } from "ethers";
 import { ContractTransaction } from "@ethersproject/contracts";
 import { useCallback } from "react";

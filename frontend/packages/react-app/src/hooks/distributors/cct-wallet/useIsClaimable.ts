@@ -17,11 +17,9 @@
 
 import { useEffect, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
-import {
-  CCTWalletCampaign__factory,
-  UUIDCampaign__factory,
-} from "../../../types";
-import { WalletCampaign__factory } from "../../../types";
+import { CCTWalletCampaign__factory } from "../../../types/factories/CCTWalletCampaign__factory";
+import { UUIDCampaign__factory } from "../../../types/factories/UUIDCampaign__factory";
+import { WalletCampaign__factory } from "../../../types/factories/WalletCampaign__factory";
 import { MERKLE_PROOF_API } from "../../../utils/const";
 import { Claim, StringClaim } from "@iroiro/merkle-distributor";
 
