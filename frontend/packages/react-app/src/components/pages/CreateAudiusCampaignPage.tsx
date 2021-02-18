@@ -213,14 +213,15 @@ const CreateAudiusCampaignPage: React.FC<CreateAudiusCampaignPageProps> = ({
             if (result.events && result.events[4].args) {
               const campaignAddress = result.events[4].args.campaign;
               props.history.push(
-                window.location.pathname + `/campaigns/${campaignAddress}`
+                `/dashboard/${tokenAddress}/distributors/${distributorAddress}` +
+                  `/campaigns/${campaignAddress}`
               );
             }
           }
         });
       });
     },
-    [props.history, tokenAddress]
+    [props.history, tokenAddress, distributorAddress]
   );
 
   useEffect(() => {

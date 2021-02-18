@@ -18,7 +18,6 @@
 import React, { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
-import CreateUUIDCampaignPageTemplate from "../templates/CreateUUIDCampaignPageTemaplate";
 import {
   getWalletBalance,
   getAllowance,
@@ -44,7 +43,8 @@ import {
   MERKLE_ROOT_API_DESCRIBE,
 } from "../../utils/const";
 import { BigNumber } from "ethers";
-import { uuidInitialState, uuidReducer } from "../../reducers/uuid";
+import { emailInitialState, emailReducer } from "../../reducers/email";
+import CreateEmailCampaignPageTemplate from "../templates/CreateEmailCampaignPageTemaplate";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
@@ -69,7 +69,10 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
     distributorFormReducer,
     distributorFormInitialState
   );
-  const [uuidState, uuidDispatch] = useReducer(uuidReducer, uuidInitialState);
+  const [emailState, emailDispatch] = useReducer(
+    emailReducer,
+    emailInitialState
+  );
   const [merkletreeState, merkletreeDispatch] = useReducer(
     merkletreeReducer,
     merkltreeInitialState
@@ -162,13 +165,13 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   );
 
   useEffect(() => {
-    uuidDispatch({
+    emailDispatch({
       type: "distributorAddress:set",
       payload: {
         distributorAddress,
       },
     });
-  }, [distributorAddress, uuidDispatch]);
+  }, [distributorAddress, emailDispatch]);
 
   const uploadJsonIpfs = useCallback(
     async (data, type) => {
@@ -299,7 +302,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!uuidState.moveToCampaignPage) {
+    if (!emailState.moveToCampaignPage) {
       return;
     }
     props.history.push(
@@ -308,7 +311,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
     );
   }, [
     props.history,
-    uuidState.moveToCampaignPage,
+    emailState.moveToCampaignPage,
     distributorFormState.createdCampaignAddress,
     tokenAddress,
     distributorAddress,
@@ -346,8 +349,8 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         };
 
         const targets = {
-          targets: uuidState.targets,
-          type: uuidState.type,
+          targets: emailState.targets,
+          type: emailState.type,
         };
 
         await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
@@ -373,7 +376,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
-      !uuidState.isValidQuantity ||
+      !emailState.isValidQuantity ||
       distributorFormState.startDate == null ||
       distributorFormState.endDate == null ||
       tokenState.allowance === ""
@@ -383,7 +386,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
 
     makeMerkleProof(
       tokenState.allowance,
-      uuidState.quantity,
+      emailState.quantity,
       recipientsCid,
       account
     );
@@ -414,7 +417,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
           campaignInfoCid,
           recipientsCid,
           merkletreeState.merkleTreeCid,
-          uuidState.quantity,
+          emailState.quantity,
           distributorFormState.startDate,
           distributorFormState.endDate
         );
@@ -425,14 +428,14 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   }, [merkletreeState]);
 
   return (
-    <CreateUUIDCampaignPageTemplate
+    <CreateEmailCampaignPageTemplate
       active={active}
       tokenAddress={tokenAddress}
       tokenInfo={tokenState}
       distributorFormDispatch={distributorFormDispatch}
       distributorFormState={distributorFormState}
-      uuidState={uuidState}
-      uuidDispatch={uuidDispatch}
+      emailState={emailState}
+      emailDispatch={emailDispatch}
     />
   );
 };

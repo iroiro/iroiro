@@ -229,12 +229,13 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
           }
           const campaignAddress: string = campaignCreatedEvent.args?.campaign;
           props.history.push(
-            window.location.pathname + `/campaigns/${campaignAddress}`
+            `/dashboard/${tokenAddress}/distributors/${distributorAddress}` +
+              `/campaigns/${campaignAddress}`
           );
         });
       });
     },
-    [props.history, tokenAddress]
+    [props.history, tokenAddress, tokenAddress, distributorAddress]
   );
 
   const makeMerkleProof = useCallback(

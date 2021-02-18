@@ -34,7 +34,7 @@ const DistributorList: React.FC<DistributorsProps> = ({
       {distributors.length > 0 ? (
         distributors.map((distributor) => (
           <DistributorListItem
-            key={distributor.id}
+            key={distributor.id + distributor.type}
             distributor={distributor}
             tokenAddress={tokenAddress}
           />
