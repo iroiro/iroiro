@@ -51,8 +51,6 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
   emailDispatch,
 }) => {
   const parserOptions = {
-    header: false,
-    dynamicTyping: true,
     skipEmptyLines: true,
   };
 
@@ -149,7 +147,11 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
                   Select email column or position
                 </InputLabel>
                 <StyledSelect
-                  value={emailState.selectedColumn}
+                  value={
+                    emailState.columns.length === 0
+                      ? ""
+                      : emailState.selectedColumn
+                  }
                   onChange={(e) => {
                     emailDispatch({
                       type: "selectedColumn:set",
