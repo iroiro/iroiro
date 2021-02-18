@@ -22,8 +22,9 @@ import isEmail from "validator/es/lib/isEmail";
 const parseRawCsv = (
   rawCsv: unknown[],
   hasCsvHeader: boolean,
-  selectedColumn: number
-) => {
+  selectedColumn: number,
+  state: EmailState
+): EmailState => {
   let csvColumnQuantity = 0;
   let columns = [];
   if (rawCsv.length > 0) {
@@ -47,13 +48,17 @@ const parseRawCsv = (
   const isValidQuantity = quantity > 0;
 
   return {
+    ...state,
     rawCsv,
     csvColumnQuantity,
     emailList,
     isValidEmails,
-    quantity,
+    hasCsvHeader,
+    quantity: quantity.toString(),
     isValidQuantity,
     columns,
+    isCsvUploaded: true,
+    selectedColumn,
   };
 };
 
@@ -155,78 +160,30 @@ export const emailReducer = (
       };
     }
     case "hasCsvHeader:set": {
-      const {
-        csvColumnQuantity,
-        emailList,
-        isValidEmails,
-        quantity,
-        isValidQuantity,
-        columns,
-      } = parseRawCsv(
+      return parseRawCsv(
         state.rawCsv,
         action.payload.hasCsvHeader,
-        state.selectedColumn
+        state.selectedColumn,
+        state
       );
-      return {
-        ...state,
-        hasCsvHeader: action.payload.hasCsvHeader,
-        isCsvUploaded: true,
-        csvColumnQuantity,
-        emailList,
-        isValidEmails,
-        quantity: quantity.toString(),
-        isValidQuantity,
-        columns,
-      };
     }
     case "selectedColumn:set": {
-      const {
-        csvColumnQuantity,
-        emailList,
-        isValidEmails,
-        quantity,
-        isValidQuantity,
-        columns,
-      } = parseRawCsv(
+      return parseRawCsv(
         state.rawCsv,
         state.hasCsvHeader,
-        action.payload.selectedColumn
+        action.payload.selectedColumn,
+        state
       );
-      return {
-        ...state,
-        selectedColumn: action.payload.selectedColumn,
-        emailList,
-        csvColumnQuantity,
-        isValidEmails,
-        quantity: quantity.toString(),
-        isValidQuantity,
-        columns,
-      };
     }
     case "rawCsv:set": {
-      const {
-        rawCsv,
-        csvColumnQuantity,
-        emailList,
-        isValidEmails,
-        quantity,
-        isValidQuantity,
-        columns,
-      } = parseRawCsv(
+      const newState = parseRawCsv(
         action.payload.rawCsv,
         state.hasCsvHeader,
-        state.selectedColumn
+        state.selectedColumn,
+        state
       );
       return {
-        ...state,
-        rawCsv,
-        isCsvUploaded: true,
-        csvColumnQuantity,
-        emailList,
-        isValidEmails,
-        quantity: quantity.toString(),
-        isValidQuantity,
-        columns,
+        ...newState,
       };
     }
     default:
