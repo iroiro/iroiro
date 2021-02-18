@@ -63,13 +63,10 @@ const DownloadEmailCsvPane: React.FC<DownloadEmailCsvPaneProps> = ({
                 {" "}
                 {emailState.rawTargets.length} Email addresses
               </Typography>
-              <Typography display="inline">
-                {" "}
-                which you have uploaded.
-              </Typography>
+              <Typography display="inline"> that you have uploaded.</Typography>
               <Typography>
                 Download CSV contains Email and campaign URL pair for each
-                addresses and send a emails for them!
+                address and send a email for them!
               </Typography>
               <Typography>
                 You can send a Email using batch email sending service such as{" "}

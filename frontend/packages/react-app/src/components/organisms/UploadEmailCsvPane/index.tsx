@@ -42,7 +42,7 @@ export interface TargetsProps {
 }
 
 const StyledSelect = styled(Select)`
-  width: 30%;
+  width: 50%;
 `;
 
 const UploadEmailCsvPane: React.FC<TargetsProps> = ({
@@ -146,7 +146,7 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
               />
               <FormControl>
                 <InputLabel id="demo-simple-select-helper-label">
-                  Column position
+                  Select email column or position
                 </InputLabel>
                 <StyledSelect
                   value={emailState.selectedColumn}
@@ -170,7 +170,8 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
                   })}
                 </StyledSelect>
                 <FormHelperText>
-                  Select column position which contains email values
+                  If non header value is shown after uploading, you have to
+                  uncheck header checkbox.
                 </FormHelperText>
               </FormControl>
             </FormGroup>
