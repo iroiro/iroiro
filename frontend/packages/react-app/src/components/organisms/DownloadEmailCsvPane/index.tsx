@@ -47,7 +47,7 @@ const DownloadEmailCsvPane: React.FC<DownloadEmailCsvPaneProps> = ({
   const emailUrlPair = emailState.emailList.map((email, index) => {
     return [email, urlList[index]];
   });
-  const csvData = [["Email", "UUID"], ...emailUrlPair];
+  const csvData = [["Email", "Campaign URL"], ...emailUrlPair];
 
   return (
     <Box mt={2}>
