@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
 import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
