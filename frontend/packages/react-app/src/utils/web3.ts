@@ -22,18 +22,14 @@ import {
 } from "@ethersproject/providers";
 import { utils, Signer } from "ethers";
 import { TokenBasic } from "../interfaces";
-import {
-  FanToken__factory as FanTokenFactory,
-  ERC20__factory as ERC20Factory,
-} from "../types";
-import {
-  CCTWalletDistributor__factory as CCTWalletDistributor,
-  WalletDistributor__factory as WalletDistributor,
-  CampaignInterface__factory as Campaign,
-  WalletCampaign__factory as WalletCampaign,
-  UUIDCampaign__factory as UUIDCampaign,
-  UUIDDistributor__factory as UUIDDistributor,
-} from "../types";
+import { CampaignInterface__factory as Campaign } from "../types/factories/CampaignInterface__factory";
+import { CCTWalletDistributor__factory as CCTWalletDistributor } from "../types/factories/CCTWalletDistributor__factory";
+import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
+import { FanToken__factory as FanTokenFactory } from "../types/factories/FanToken__factory";
+import { UUIDCampaign__factory as UUIDCampaign } from "../types/factories/UUIDCampaign__factory";
+import { UUIDDistributor__factory as UUIDDistributor } from "../types/factories/UUIDDistributor__factory";
+import { WalletDistributor__factory as WalletDistributor } from "../types/factories/WalletDistributor__factory";
+import { WalletCampaign__factory as WalletCampaign } from "../types/factories/WalletCampaign__factory";
 import { ContractTransaction } from "@ethersproject/contracts";
 import {} from "@ethersproject/providers";
 // @ts-ignore

@@ -17,7 +17,7 @@
 
 import { useEffect, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
-import { FanToken__factory as FanTokenFactory } from "../types";
+import { FanToken__factory as FanTokenFactory } from "../types/factories/FanToken__factory";
 import { Event } from "@ethersproject/contracts";
 
 export const useGetTransferEvents = (
