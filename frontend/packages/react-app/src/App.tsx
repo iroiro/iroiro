@@ -117,7 +117,7 @@ const App: React.FC = () => {
               <Route
                 exact
                 path="/explore/:tokenAddress"
-                component={TokenBasicInformationPage}
+                component={ExplorePage}
               />
               <Route
                 exact

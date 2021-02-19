@@ -30,7 +30,6 @@ const TopPageTemplate = () => {
   }, []);
   const handleExploreButtonClick = useCallback(() => {
     history.push("/explore");
-    console.log("hoge");
   }, []);
   return (
     <div>

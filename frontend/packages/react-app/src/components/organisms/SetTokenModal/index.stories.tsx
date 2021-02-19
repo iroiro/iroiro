@@ -18,8 +18,7 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import SetTokenModal from "./index";
-import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
+import SetTokenModal, { SetTokenModalProps } from "./index";
 import { tokenListState } from "../../../utils/mockData";
 
 export default {
@@ -27,7 +26,7 @@ export default {
   component: SetTokenModal,
 } as Meta;
 
-const Template: Story<ExplorePageTemplateProps> = (args) => (
+const Template: Story<SetTokenModalProps> = (args) => (
   <BrowserRouter>
     <SetTokenModal {...args} />
   </BrowserRouter>

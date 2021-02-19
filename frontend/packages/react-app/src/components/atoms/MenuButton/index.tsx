@@ -24,7 +24,7 @@ export interface MenuButtonProps {
   description: string;
   color: "creator" | "user";
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const MenuButton = ({ disabled = false, ...props }) => {

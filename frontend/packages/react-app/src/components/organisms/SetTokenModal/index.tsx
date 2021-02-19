@@ -17,13 +17,16 @@
 
 import * as React from "react";
 import { Box, Typography, Card, Button, Modal } from "@material-ui/core";
-import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
 import AddressFormInput from "../../molecules/AddressFormInput";
+import { TokenListState } from "../../../interfaces";
+import { ACTIONS } from "../../../reducers/tokens";
 
-const SetTokenModal: React.FC<ExplorePageTemplateProps> = ({
-  state,
-  dispatch,
-}) => (
+export interface SetTokenModalProps {
+  readonly state: TokenListState;
+  dispatch: React.Dispatch<ACTIONS>;
+}
+
+const SetTokenModal: React.FC<SetTokenModalProps> = ({ state, dispatch }) => (
   <Modal
     disablePortal
     disableEnforceFocus

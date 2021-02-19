@@ -18,8 +18,7 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import AddressFormInput from "./index";
-import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
+import AddressFormInput, { AddressFormInputProps } from "./index";
 import { tokenListState } from "../../../utils/mockData";
 
 export default {
@@ -27,7 +26,7 @@ export default {
   component: AddressFormInput,
 } as Meta;
 
-const Template: Story<ExplorePageTemplateProps> = (args) => (
+const Template: Story<AddressFormInputProps> = (args) => (
   <BrowserRouter>
     <AddressFormInput {...args} />
   </BrowserRouter>
