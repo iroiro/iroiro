@@ -38,7 +38,7 @@ const UUIDURLList: React.FC<UUIDURLListProps> = ({
   const urlList = uuidState.rawTargets
     .map(
       (uuid) =>
-        `${window.location.origin}/explore/${tokenAddress}/distributors/${uuidState.distributorAddress}/campaigns/${campaignAddress}?uuid=${uuid}`
+        `${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${uuidState.distributorAddress}/campaigns/${campaignAddress}?uuid=${uuid}`
     )
     .join("\n");
 

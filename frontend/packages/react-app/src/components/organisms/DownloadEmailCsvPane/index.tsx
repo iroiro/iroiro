@@ -42,7 +42,7 @@ const DownloadEmailCsvPane: React.FC<DownloadEmailCsvPaneProps> = ({
   const [isDownloaded, setIsDownloaded] = useState(false);
   const urlList = emailState.rawTargets.map(
     (uuid) =>
-      `${window.location.origin}/explore/${tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${campaignAddress}?uuid=${uuid}`
+      `${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${campaignAddress}?uuid=${uuid}`
   );
   const emailUrlPair = emailState.emailList.map((email, index) => {
     return [email, urlList[index]];
