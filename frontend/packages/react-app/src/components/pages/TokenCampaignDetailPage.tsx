@@ -25,8 +25,7 @@ import {
   GET_CHECK_REQUEST,
   GET_CLAIM,
 } from "../../graphql/subgraph";
-import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
-import { useIsClaimable } from "../../hooks/distributors/cct-wallet/useIsClaimable";
+import { useIsClaimable } from "../../hooks/distributors/useIsClaimable";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
 import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
 import { audiusInitialState, audiusReducer } from "../../reducers/audius";
@@ -66,17 +65,10 @@ const TokenCampaignDetailPage: React.FC<
   const [getCheckRequests, { data: checkRequestsData }] = useLazyQuery(
     GET_CHECK_REQUEST
   );
-  const user = useGetAudiusUserOrSignIn(
-    audiusState.libs,
-    audiusState.email,
-    audiusState.password,
-    audiusState.requestSignin
-  );
   const { isClaimable } = useIsClaimable(
     library,
     state?.campaignAddress ?? "",
     state?.distributorType,
-    user?.wallet ?? "",
     hashedUUID
   );
   const { allowance } = useGetAllowance(
@@ -159,7 +151,6 @@ const TokenCampaignDetailPage: React.FC<
   }, [campaignAddress, getCampaign]);
 
   useEffect(() => {
-    console.debug(campaignData);
     const f = async () => {
       if (!tokenAddress) {
         return;
