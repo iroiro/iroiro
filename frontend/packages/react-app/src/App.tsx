@@ -33,6 +33,7 @@ import { initialValue, tokenReducer } from "./reducers/tokenContext";
 import TokenBasicInformationPage from "./components/pages/TokenBasicInformationPage";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
 import CreateEmailCampaignPage from "./components/pages/CreateEmailCampaignPage";
+import TopPageTemplate from "./components/templates/TopPageTemplate";
 
 const App: React.FC = () => {
   return (
@@ -41,7 +42,7 @@ const App: React.FC = () => {
         <div>
           <TokenProvider initialValue={initialValue} reducer={tokenReducer}>
             <Switch>
-              <Route exact path="/" component={ExplorePage} />
+              <Route exact path="/" component={TopPageTemplate} />
               {/* For Creator */}
               <Route exact path="/dashboard" component={DashboardPage} />
               <Route
