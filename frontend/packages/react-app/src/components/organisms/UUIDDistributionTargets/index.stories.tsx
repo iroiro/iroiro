@@ -36,7 +36,7 @@ export const Default = Template.bind({});
 Default.args = {
   uuidState: {
     ...uuidInitialState,
-    quantity: "100",
+    quantity: 100,
     isValidQuantity: true,
   },
 };
