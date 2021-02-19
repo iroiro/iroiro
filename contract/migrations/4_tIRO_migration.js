@@ -15,10 +15,10 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const WalletDistributor = artifacts.require("WalletDistributor");
+const tIRO = artifacts.require("tIRO");
 
-const distributorInfoCid = "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA";
-
-module.exports = async (deployer) => {
-  await deployer.deploy(WalletDistributor, distributorInfoCid);
+module.exports = async (deployer, network) => {
+  if (network.startsWith("rinkeby")) {
+    deployer.deploy(tIRO);
+  }
 };

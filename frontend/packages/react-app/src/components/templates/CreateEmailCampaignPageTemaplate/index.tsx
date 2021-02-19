@@ -15,48 +15,43 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
+import * as React from "react";
 import { Box, Typography, Container } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
 import ApproveToken from "../../organisms/ApproveToken";
 import SetupCampaign from "../../organisms/SetupCampaign";
 import { AccountToken } from "../../../interfaces";
-import DistributionTargets from "../../organisms/AudiusDistributionTargets";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
-import { AppFooter } from "../../molecules/AppFooter";
+import UploadEmailCsvPane from "../../organisms/UploadEmailCsvPane";
+import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
+import DownloadEmailCsvPane from "../../organisms/DownloadEmailCsvPane";
 
 export interface CampaignInfo {
   readonly active: boolean;
+  readonly tokenAddress: string;
   readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
-  distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
-  readonly audiusState: AudiusState;
-  readonly audiusDispatch: React.Dispatch<AUDIUS_ACTIONS>;
+  readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly emailState: EmailState;
+  readonly emailDispatch: React.Dispatch<EMAIL_ACTIONS>;
 }
 
-const CreateAudiusCampaignPageTemaplate: React.FC<CampaignInfo> = ({
+const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
+  tokenAddress,
   tokenInfo,
   distributorFormState,
   distributorFormDispatch,
-  audiusState,
-  audiusDispatch,
+  emailState,
+  emailDispatch,
 }) => (
-  <div style={{ height: "100vh" }}>
+  <div>
     <AppHeader />
-    <Box
-      mt={5}
-      style={{
-        boxSizing: "border-box",
-        height: "calc(100% - 266px)",
-        minHeight: "300px",
-      }}
-    >
+    <Box mt={5}>
       <Container>
         {!active ? (
           <Box>
@@ -65,12 +60,12 @@ const CreateAudiusCampaignPageTemaplate: React.FC<CampaignInfo> = ({
         ) : (
           <Box>
             <Box my={1}>
-              <Typography variant={"h3"}>Audius Follower Campaign</Typography>
+              <Typography variant={"h3"}>Email Campaign</Typography>
             </Box>
             {distributorFormState.step === 1 && (
-              <DistributionTargets
-                audiusState={audiusState}
-                audiusDispatch={audiusDispatch}
+              <UploadEmailCsvPane
+                emailState={emailState}
+                emailDispatch={emailDispatch}
                 distributorFormDispatch={distributorFormDispatch}
               />
             )}
@@ -87,12 +82,19 @@ const CreateAudiusCampaignPageTemaplate: React.FC<CampaignInfo> = ({
                 distributorFormDispatch={distributorFormDispatch}
               />
             )}
+            {distributorFormState.step === 4 && (
+              <DownloadEmailCsvPane
+                tokenAddress={tokenAddress}
+                campaignAddress={distributorFormState.createdCampaignAddress}
+                emailState={emailState}
+                emailDispatch={emailDispatch}
+              />
+            )}
           </Box>
         )}
       </Container>
     </Box>
-    <AppFooter />
   </div>
 );
 
-export default CreateAudiusCampaignPageTemaplate;
+export default CreateEmailCampaignPageTemplate;

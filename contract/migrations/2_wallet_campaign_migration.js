@@ -15,10 +15,10 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const UUIDDistributor = artifacts.require("UUIDDistributor");
+const WalletDistributor = artifacts.require("WalletDistributor");
 
-const distributorInfoCid = "QmRBHkjbuLExQPia1wiLgwjqXaBXowPDVVPPoTJv9wJnYP";
+const distributorInfoCid = "QmVFbeS49jSRAPxzmTgK9vFYfp4iS5bd4jBmListUm3Ejk";
 
 module.exports = async (deployer) => {
-  await deployer.deploy(UUIDDistributor, distributorInfoCid);
+  await deployer.deploy(WalletDistributor, distributorInfoCid);
 };

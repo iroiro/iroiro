@@ -17,19 +17,15 @@
 
 import { useEffect, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
-import {
-  CCTWalletCampaign__factory,
-  UUIDCampaign__factory,
-} from "../../../types";
-import { WalletCampaign__factory } from "../../../types";
-import { MERKLE_PROOF_API } from "../../../utils/const";
-import { Claim, StringClaim } from "@iroiro/merkle-distributor";
+import { UUIDCampaign__factory } from "../../types/factories/UUIDCampaign__factory";
+import { WalletCampaign__factory } from "../../types/factories/WalletCampaign__factory";
+import { MERKLE_PROOF_API } from "../../utils/const";
+import { StringClaim } from "@iroiro/merkle-distributor";
 
 export const useIsClaimable = (
   library: Web3Provider | undefined,
   campaignAddress: string,
   distributorType: string,
-  fromAddress: string,
   hashedUUID: string
 ): {
   isClaimable: boolean;
@@ -41,27 +37,6 @@ export const useIsClaimable = (
   const [error, setError] = useState<any | undefined>();
 
   useEffect(() => {
-    const checkAudiusState = async () => {
-      if (!library || fromAddress === "" || campaignAddress === "") {
-        setError("Invalid arguments.");
-        return;
-      }
-      setLoading(true);
-      setError(undefined);
-      const signer = library.getSigner();
-      const walletAddress = await signer.getAddress();
-      const campaign = CCTWalletCampaign__factory.connect(
-        campaignAddress,
-        signer
-      );
-      const isClaimable = await campaign.isClaimable(
-        fromAddress,
-        walletAddress
-      );
-      setLoading(false);
-      setResult(isClaimable);
-    };
-
     const checkWalletState = async () => {
       if (!library || campaignAddress === "") {
         setError("Invalid arguments.");
@@ -108,9 +83,6 @@ export const useIsClaimable = (
     };
 
     switch (distributorType) {
-      case "audius":
-        checkAudiusState();
-        break;
       case "wallet":
         checkWalletState();
         break;
@@ -118,6 +90,6 @@ export const useIsClaimable = (
         checkUUIDState();
         break;
     }
-  }, [library, fromAddress, campaignAddress]);
+  }, [library, campaignAddress]);
   return { isClaimable: result, loading, error };
 };

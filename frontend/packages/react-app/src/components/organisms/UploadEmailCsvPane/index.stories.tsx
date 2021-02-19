@@ -18,29 +18,54 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import AudiusDistributionTargets, { TargetsProps } from "./index";
-import { audiusState } from "../../../utils/mockData";
+import UploadEmailCsvPane, { TargetsProps } from "./index";
+import { emailState } from "../../../utils/mockData";
 
 export default {
-  title: "Organisms/AudiusDistributionTargets",
-  component: AudiusDistributionTargets,
+  title: "Organisms/UploadEmailCsvPane",
+  component: UploadEmailCsvPane,
 } as Meta;
-
 const Template: Story<TargetsProps> = (args) => (
   <BrowserRouter>
-    <AudiusDistributionTargets {...args} />
+    <UploadEmailCsvPane {...args} />
   </BrowserRouter>
 );
 
-export const Default = Template.bind({});
-Default.args = {
-  audiusState,
+export const NotUploadedYet = Template.bind({});
+NotUploadedYet.args = {
+  emailState: {
+    ...emailState,
+    emailList: [],
+  },
 };
 
-export const NoTarget = Template.bind({});
-NoTarget.args = {
-  audiusState: {
-    ...audiusState,
-    followers: [],
+export const UploadedEmptyCsv = Template.bind({});
+UploadedEmptyCsv.args = {
+  emailState: {
+    ...emailState,
+    isValidEmails: true,
+    emailList: [],
+    isCsvUploaded: true,
+  },
+};
+
+export const UploadedInvalidCsv = Template.bind({});
+UploadedInvalidCsv.args = {
+  emailState: {
+    ...emailState,
+    isValidEmails: false,
+    emailList: ["string"],
+    isCsvUploaded: true,
+  },
+};
+
+export const Uploaded = Template.bind({});
+Uploaded.args = {
+  emailState: {
+    ...emailState,
+    isValidEmails: true,
+    emailList: ["text@example.com"],
+    isCsvUploaded: true,
+    quantity: "1",
   },
 };

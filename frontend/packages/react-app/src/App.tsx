@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
 import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
@@ -25,7 +25,6 @@ import CampaignDetailPage from "./components/pages/CampaignDetailPage";
 import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
 import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
 import TokenHistoryPage from "./components/pages/TokenHistoryPage";
-import CreateAudiusCampaignPage from "./components/pages/CreateAudiusCampaignPage";
 import CreateWalletCampaignPage from "./components/pages/CreateWalletCampaignPage";
 import distributors from "./utils/distributors";
 import CreateUUIDCampaignPage from "./components/pages/CreateUUIDCampaignPage";
@@ -33,6 +32,7 @@ import { TokenProvider } from "./context/token";
 import { initialValue, tokenReducer } from "./reducers/tokenContext";
 import TokenBasicInformationPage from "./components/pages/TokenBasicInformationPage";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
+import CreateEmailCampaignPage from "./components/pages/CreateEmailCampaignPage";
 
 const App: React.FC = () => {
   return (
@@ -40,75 +40,76 @@ const App: React.FC = () => {
       <Router>
         <div>
           <TokenProvider initialValue={initialValue} reducer={tokenReducer}>
-          <Switch>
-            <Route exact path="/" component={ExplorePage} />
-            {/* For Creator */}
-            <Route exact path="/dashboard" component={DashboardPage} />
-            <Route
-              exact
-              path="/dashboard/:tokenAddress"
-              component={ExternalTokenDetailPage}
-            />
-            <Route
-              exact
-              path="/dashboard/:tokenAddress/distributors"
-              component={SelectDistributorsPage}
-            />
-            {distributors.map((distributor) => {
-              if (distributor.disabled) {
-                return;
-              }
-              if (distributor.type === "audius") {
-                return (
-                  <Route
-                    key={distributor.id}
-                    exact
-                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
-                    render={(props) => (
-                      <CreateAudiusCampaignPage
-                        distributorAddress={distributor.id}
-                        props={props}
-                      />
-                    )}
-                  />
-                );
-              }
-              if (distributor.type === "wallet") {
-                return (
-                  <Route
-                    key={distributor.id}
-                    exact
-                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
-                    render={(props) => (
-                      <CreateWalletCampaignPage
-                        distributorAddress={distributor.id}
-                        props={props}
-                      />
-                    )}
-                  />
-                );
-              }
-              if (distributor.type === "uuid") {
-                return (
-                  <Route
-                    key={distributor.id}
-                    exact
-                    path={`/dashboard/:tokenAddress/distributors/${distributor.id}`}
-                    render={(props) => (
-                      <CreateUUIDCampaignPage
-                        distributorAddress={distributor.id}
-                        props={props}
-                      />
-                    )}
-                  />
-                );
-              }
-            })}
-            <Route
-              exact
-              path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
-              component={CampaignDetailPage}
-            />
+            <Switch>
+              <Route exact path="/" component={ExplorePage} />
+              {/* For Creator */}
+              <Route exact path="/dashboard" component={DashboardPage} />
+              <Route
+                exact
+                path="/dashboard/:tokenAddress"
+                component={ExternalTokenDetailPage}
+              />
+              <Route
+                exact
+                path="/dashboard/:tokenAddress/distributors"
+                component={SelectDistributorsPage}
+              />
+              {distributors.map((distributor) => {
+                if (distributor.disabled) {
+                  return;
+                }
+                const path = `/dashboard/:tokenAddress/distributors/${distributor.id}/${distributor.type}`;
+                if (distributor.type === "wallet") {
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateWalletCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
+                if (distributor.type === "uuid") {
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateUUIDCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
+                if (distributor.type === "email") {
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateEmailCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
+              })}
+              <Route
+                exact
+                path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
+                component={CampaignDetailPage}
+              />
 
               {/* For Fan */}
               <Route exact path="/explore" component={ExplorePage} />

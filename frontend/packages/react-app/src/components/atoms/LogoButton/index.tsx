@@ -42,15 +42,11 @@ const LogoButton: React.FC = () => {
   return (
     <Link to="/" style={{ textDecoration: "none" }}>
       {matches ? (
-        <img
-          alt="logo"
-          src={`${window.location.origin}/iroiro_logo.svg`}
-          className={classes.image}
-        />
+        <img alt="logo" src={`iroiro_logo.svg`} className={classes.image} />
       ) : (
         <img
           alt="logo"
-          src={`${window.location.origin}/iroiro_logo.svg`}
+          src={`iroiro_logo.svg`}
           className={classes.imageSmall}
         />
       )}

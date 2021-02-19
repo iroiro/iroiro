@@ -18,50 +18,94 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import CreateAudiusCampaignPageTemaplate, { CampaignInfo } from "./index";
+import CreateEmailCampaignPageTemplate, { CampaignInfo } from "./index";
 import {
-  audiusState,
   distributorFormState,
+  emailState,
   tokenInfo,
 } from "../../../utils/mockData";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
-  title: "Templates/CreateAudiusCampaignPageTemaplate",
-  component: CreateAudiusCampaignPageTemaplate,
+  title: "Templates/CreateEmailCampaignPageTemplate",
+  component: CreateEmailCampaignPageTemplate,
 } as Meta;
 
 const Template: Story<CampaignInfo> = (args) => (
   <BrowserRouter>
-    <CreateAudiusCampaignPageTemaplate {...args} />
+    <CreateEmailCampaignPageTemplate {...args} />
   </BrowserRouter>
 );
 
-export const Step1 = Template.bind({});
-Step1.args = {
+export const Step1ButtonDisabled = Template.bind({});
+Step1ButtonDisabled.args = {
   active: true,
-  tokenInfo: tokenInfo,
+  emailState: {
+    ...emailState,
+    targets: [],
+    quantity: "100",
+    isValidQuantity: true,
+  },
   distributorFormState,
-  audiusState,
+};
+
+export const Step1ButtonEnabled = Template.bind({});
+Step1ButtonEnabled.args = {
+  active: true,
+  emailState: {
+    ...emailState,
+    quantity: "1",
+    isValidQuantity: false,
+    isCsvUploaded: true,
+    isValidEmails: true,
+    emailList: ["test@example.com"],
+  },
+  distributorFormState,
 };
 
 export const Step2 = Template.bind({});
 Step2.args = {
   active: true,
   tokenInfo: tokenInfo,
+  emailState: {
+    ...emailState,
+    quantity: "100",
+    isValidQuantity: true,
+  },
   distributorFormState: {
     ...distributorFormState,
     step: 2,
   },
-  audiusState,
 };
 
 export const Step3 = Template.bind({});
 Step3.args = {
   active: true,
   tokenInfo: tokenInfo,
+  emailState: {
+    ...emailState,
+    quantity: "100",
+    isValidQuantity: true,
+  },
   distributorFormState: {
     ...distributorFormState,
+    campaignName: "URL Campaign",
     step: 3,
   },
-  audiusState,
+};
+
+export const Step4 = Template.bind({});
+Step4.args = {
+  active: true,
+  tokenInfo: tokenInfo,
+  emailState: {
+    ...emailState,
+    rawTargets: [...Array(3)].map(() => uuidv4()),
+    emailList: ["test1@example.com", "test2@example.com", "test3@example.com"],
+  },
+  distributorFormState: {
+    ...distributorFormState,
+    campaignName: "URL Campaign",
+    step: 4,
+  },
 };

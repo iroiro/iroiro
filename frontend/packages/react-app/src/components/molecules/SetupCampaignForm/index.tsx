@@ -17,6 +17,7 @@
 
 import React from "react";
 import { Button, Box, FormControl, Input } from "@material-ui/core";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -91,14 +92,26 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
+              error={
+                distributorFormState.startDate >= distributorFormState.endDate
+              }
             />
+            {distributorFormState.startDate >= distributorFormState.endDate && (
+              <FormHelperText style={{ color: "#f00", marginTop: -4 }}>
+                End date must be after Start date.
+              </FormHelperText>
+            )}
           </div>
         </MuiPickersUtilsProvider>
       </FormControl>
-      <Box mt={3}>
+      <Box mt={3} textAlign={"center"}>
         <Button
           variant="contained"
           color="secondary"
+          disabled={
+            distributorFormState.startDate >= distributorFormState.endDate ||
+            distributorFormState.campaignName === ""
+          }
           onClick={() => {
             distributorFormDispatch({
               type: "campaign:deploy",

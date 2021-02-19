@@ -18,48 +18,27 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import TokenRequestCard, { TokenRequestCardProps } from "./index";
-import { campaign } from "../../../utils/mockData";
+import DownloadEmailCsvPane, { DownloadEmailCsvPaneProps } from "./index";
+import { v4 as uuidv4 } from "uuid";
+import { emailState } from "../../../utils/mockData";
 
 export default {
-  title: "Molecules/TokenRequestCard",
-  component: TokenRequestCard,
+  title: "Organisms/DownloadEmailCsvPane",
+  component: DownloadEmailCsvPane,
 } as Meta;
 
-const Template: Story<TokenRequestCardProps> = (args) => (
+const Template: Story<DownloadEmailCsvPaneProps> = (args) => (
   <BrowserRouter>
-    <TokenRequestCard {...args} />
+    <DownloadEmailCsvPane {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  state: {
-    isTokenCheckFinished: false,
-    campaign: campaign,
-    campaignAddress: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(),
-    distributorType: "",
-    isTokenRequested: false,
-    isTokenApproved: true,
-    hashedUUID: "",
-  },
-};
-
-export const Requested = Template.bind({});
-Requested.args = {
-  state: {
-    isTokenCheckFinished: false,
-    campaign: campaign,
-    campaignAddress: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(),
-    distributorType: "",
-    isTokenRequested: true,
-    isTokenApproved: true,
-    hashedUUID: "",
+  tokenAddress: "0xd92e713d051c37ebb2561803a3b5fbabc4962431",
+  emailState: {
+    ...emailState,
+    rawTargets: [...Array(3)].map(() => uuidv4()),
+    emailList: ["test1@example.com", "test2@example.com", "test3@example.com"],
   },
 };
