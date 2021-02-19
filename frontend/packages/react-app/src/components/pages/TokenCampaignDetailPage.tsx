@@ -25,6 +25,8 @@ import {
   GET_CHECK_REQUEST,
   GET_CLAIM,
 } from "../../graphql/subgraph";
+import { useGetAudiusUserOrSignIn } from "../../hooks/audius/useGetAudiusUser";
+import { useIsClaimable } from "../../hooks/distributors/cct-wallet/useIsClaimable";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
 import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
 import { audiusInitialState, audiusReducer } from "../../reducers/audius";
@@ -63,6 +65,19 @@ const TokenCampaignDetailPage: React.FC<
 
   const [getCheckRequests, { data: checkRequestsData }] = useLazyQuery(
     GET_CHECK_REQUEST
+  );
+  const user = useGetAudiusUserOrSignIn(
+    audiusState.libs,
+    audiusState.email,
+    audiusState.password,
+    audiusState.requestSignin
+  );
+  const { isClaimable } = useIsClaimable(
+    library,
+    state?.campaignAddress ?? "",
+    state?.distributorType,
+    user?.wallet ?? "",
+    hashedUUID
   );
   const { allowance } = useGetAllowance(
     library,
@@ -197,6 +212,27 @@ const TokenCampaignDetailPage: React.FC<
       },
     });
   }, [checkRequestsData]);
+
+  useEffect(() => {
+    dispatch({
+      type: "isCampaignClaimable:set",
+      payload: {
+        isClaimable,
+      },
+    });
+    if (state.distributorType !== "uuid") {
+      return;
+    }
+    if (isClaimable) {
+      dispatch({
+        type: "isCampaignClaimed:remove",
+      });
+    } else {
+      dispatch({
+        type: "isCampaignClaimed:setTrue",
+      });
+    }
+  }, [isClaimable, state.distributorType]);
 
   useEffect(() => {
     if (allowance === undefined) {

@@ -29,6 +29,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { Paper } from "@material-ui/core";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
+import AudiusCampaignDetailPanel from "../../organisms/AudiusCampaignDetailPanel";
 import WalletCampaignDetailPanel from "../../organisms/WalletCampaignDetailPanel";
 import { useMemo } from "react";
 import { AppFooter } from "../../molecules/AppFooter";
@@ -73,6 +74,15 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
 
   const CampaignDetailPanel = useMemo(() => {
     switch (state.distributorType) {
+      case "audius":
+        return (
+          <AudiusCampaignDetailPanel
+            state={state}
+            dispatch={dispatch}
+            audiusState={audiusState}
+            audiusDispatch={audiusDispatch}
+          />
+        );
       case "wallet":
       case "uuid":
         return <WalletCampaignDetailPanel state={state} dispatch={dispatch} />;
