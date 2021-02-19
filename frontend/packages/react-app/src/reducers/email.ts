@@ -37,7 +37,8 @@ const parseRawCsv = (
   const emailList = rawCsv.map((row: unknown) => {
     return (row as string[])[selectedColumn];
   });
-  if (hasCsvHeader && rawCsv.length > 1) {
+  console.debug(rawCsv, emailList);
+  if (hasCsvHeader && rawCsv.length > 0) {
     emailList.shift();
   }
   const isValidEmails =
