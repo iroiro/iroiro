@@ -19,7 +19,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import UploadEmailCsvPane, { TargetsProps } from "./index";
-import { emailState } from "../../../utils/mockData";
+import { emailState, walletListState } from "../../../utils/mockData";
 
 export default {
   title: "Organisms/UploadEmailCsvPane",
@@ -67,5 +67,16 @@ Uploaded.args = {
     emailList: ["text@example.com"],
     isCsvUploaded: true,
     quantity: "1",
+  },
+};
+
+export const ExceedUpperLimit = Template.bind({});
+ExceedUpperLimit.args = {
+  emailState: {
+    ...emailState,
+    isValidEmails: true,
+    isCsvUploaded: true,
+    quantity: "1001",
+    emailList: [...Array(1001).map(() => "text@example.com")],
   },
 };

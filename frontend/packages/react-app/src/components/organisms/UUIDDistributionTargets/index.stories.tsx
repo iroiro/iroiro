@@ -32,6 +32,15 @@ const Template: Story<TargetsProps> = (args) => (
   </BrowserRouter>
 );
 
+export const ExceedUpperLimit = Template.bind({});
+ExceedUpperLimit.args = {
+  uuidState: {
+    ...uuidInitialState,
+    quantity: 1001,
+    isValidQuantity: true,
+  },
+};
+
 export const Default = Template.bind({});
 Default.args = {
   uuidState: {
