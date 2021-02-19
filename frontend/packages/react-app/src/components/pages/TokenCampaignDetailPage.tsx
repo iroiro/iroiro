@@ -25,6 +25,7 @@ import {
   GET_CHECK_REQUEST,
   GET_CLAIM,
 } from "../../graphql/subgraph";
+import { useIsClaimable } from "../../hooks/distributors/useIsClaimable";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
 import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
 import { audiusInitialState, audiusReducer } from "../../reducers/audius";
@@ -63,6 +64,12 @@ const TokenCampaignDetailPage: React.FC<
 
   const [getCheckRequests, { data: checkRequestsData }] = useLazyQuery(
     GET_CHECK_REQUEST
+  );
+  const { isClaimable } = useIsClaimable(
+    library,
+    state?.campaignAddress ?? "",
+    state?.distributorType,
+    hashedUUID
   );
   const { allowance } = useGetAllowance(
     library,
@@ -144,7 +151,6 @@ const TokenCampaignDetailPage: React.FC<
   }, [campaignAddress, getCampaign]);
 
   useEffect(() => {
-    console.debug(campaignData);
     const f = async () => {
       if (!tokenAddress) {
         return;
@@ -197,6 +203,27 @@ const TokenCampaignDetailPage: React.FC<
       },
     });
   }, [checkRequestsData]);
+
+  useEffect(() => {
+    dispatch({
+      type: "isCampaignClaimable:set",
+      payload: {
+        isClaimable,
+      },
+    });
+    if (state.distributorType !== "uuid") {
+      return;
+    }
+    if (isClaimable) {
+      dispatch({
+        type: "isCampaignClaimed:remove",
+      });
+    } else {
+      dispatch({
+        type: "isCampaignClaimed:setTrue",
+      });
+    }
+  }, [isClaimable, state.distributorType]);
 
   useEffect(() => {
     if (allowance === undefined) {
