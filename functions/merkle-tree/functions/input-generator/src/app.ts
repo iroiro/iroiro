@@ -65,6 +65,13 @@ exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
   }
 
   const input: BalanceMapOldFormat | StringBalanceMapOldFormat = {};
+  if (
+    targets.targets.length > Number.parseInt(process.env.TARGETS_UPPER_LIMIT)
+  ) {
+    throw Error(
+      `Targets quantity exceed upper limit. Limit: ${process.env.TARGETS_UPPER_LIMIT}, Actual: ${targets.targets.length}`
+    );
+  }
   targets.targets
     .map((target) => target.toLowerCase())
     .forEach((target) => {

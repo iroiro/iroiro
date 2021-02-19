@@ -31,6 +31,8 @@ const invalidAddressTargetsCid =
 const keccak256TargetsCid = "QmVujr4pE8wfjjjHHFqmivg1otenc4AAgrLzsx4dkT5YvM";
 const thousandKeccak256TargetsCid =
   "QmTvMZwdnxZdrKWrpuRmVAvrqCiSbgWsf3xZCyZv9RcfUx";
+const thousandOneKeccak256TargetsCid =
+  "QmRwRWApB2BymUKCLtZcxtcUNV2CLvWZ8VitJoqX7gPrSC";
 const invalidKeccakTargetsCid =
   "QmTgnu6GSJUR3bSJjkibtDDbBZjRKxfSVxWj12MjEPSmrH";
 const invalidFormatCid = "QmVLdXh64DftwGmj5AZLZJUVCzAz4TJRPEcgTD8urxGQMo";
@@ -181,6 +183,21 @@ describe("Tests Input Generator", function () {
       assert.fail();
     } catch (err) {
       expect(err.message).to.be.equals("given file is invalid.");
+    }
+  });
+
+  it("throws error if target quantity exceeds 1001", async () => {
+    event = {
+      cid: thousandOneKeccak256TargetsCid,
+      amount: 10000,
+    };
+    try {
+      await app.lambdaHandler(event, context);
+      assert.fail();
+    } catch (err) {
+      expect(err.message).to.be.equals(
+        "Targets quantity exceed upper limit. Limit: 1000, Actual: 1001"
+      );
     }
   });
 });
