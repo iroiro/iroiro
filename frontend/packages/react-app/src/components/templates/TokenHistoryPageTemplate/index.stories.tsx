@@ -20,8 +20,6 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import { tokenInformationState } from "../../../utils/mockData";
 import { TokenHistoryTemplate, TokenHistoryTemplateProps } from "./index";
-import { TokenProvider } from "../../../context/token";
-import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
 
 export default {
   title: "Templates/TokenHistoryTemplate",
@@ -30,17 +28,7 @@ export default {
 
 const Template: Story<TokenHistoryTemplateProps> = (args) => (
   <BrowserRouter>
-    <TokenProvider
-      initialValue={{
-        ...initialValue,
-        token: tokenInformationState.token,
-        userAddress: tokenInformationState.userAddress,
-        userBalance: tokenInformationState.userBalance,
-      }}
-      reducer={tokenReducer}
-    >
-      <TokenHistoryTemplate {...args} />
-    </TokenProvider>
+    <TokenHistoryTemplate {...args} />
   </BrowserRouter>
 );
 
