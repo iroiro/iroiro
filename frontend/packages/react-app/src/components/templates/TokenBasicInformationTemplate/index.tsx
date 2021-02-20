@@ -21,7 +21,6 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { AppFooter } from "../../molecules/AppFooter";
 import AppHeader from "../../molecules/AppHeader";
-import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
 import BasicTokenInformation from "../../organisms/BasicTokenInformation";
 import TokenInformationBar from "../../organisms/TokenInformationBar";
 
@@ -63,7 +62,6 @@ export const TokenBasicInformationTemplate: React.FC<TokenBasicInformationProps>
         }}
       >
         <TokenInformationBar />
-        <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
         <Container maxWidth="md">
           <Box style={{ padding: 24, maxWidth: 860, margin: "0 auto" }}>
             <BasicTokenInformation />

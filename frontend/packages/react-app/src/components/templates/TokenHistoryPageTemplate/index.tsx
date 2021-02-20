@@ -22,6 +22,7 @@ import { TokenHistoryState } from "../../../reducers/tokenHistory";
 import { AppFooter } from "../../molecules/AppFooter";
 import AppHeader from "../../molecules/AppHeader";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
+import TokenInfoBar from "../../molecules/TokenInfoBar";
 
 import TokenInformationBar from "../../organisms/TokenInformationBar";
 import UserHistory from "../../organisms/UserHistory";
@@ -65,17 +66,21 @@ export const TokenHistoryTemplate: React.FC<TokenHistoryTemplateProps> = ({
           minHeight: "600px",
         }}
       >
-        <TokenInformationBar />
-        <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
         <Container maxWidth="md">
           <Box
             style={{
+              boxSizing: "border-box",
               padding: 24,
               maxWidth: 860,
               margin: "0 auto",
               minWidth: 320,
             }}
           >
+            <TokenInfoBar />
+            <TabMenuForFanPage
+              tokenAddress={tokenAddress}
+              current={"userHistory"}
+            />
             <UserHistory state={state} />
           </Box>
         </Container>

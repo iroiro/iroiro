@@ -106,7 +106,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
         }}
       >
         <TokenInformationBar />
-        <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
+        <TabMenuForFanPage current={"campaigns"} tokenAddress={tokenAddress} />
         <Container maxWidth="md">
           <Box
             style={{

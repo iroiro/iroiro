@@ -18,6 +18,7 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { TabMenuForFanPage, TabMenuForFanPageProps } from "./index";
+import { BrowserRouter } from "react-router-dom";
 
 export default {
   title: "Molecules/Tab Menu",
@@ -25,10 +26,12 @@ export default {
 } as Meta;
 
 const Template: Story<TabMenuForFanPageProps> = (args) => (
-  <TabMenuForFanPage {...args} />
+  <BrowserRouter>
+    <TabMenuForFanPage {...args} />
+  </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  value: 0,
+  current: "tokenTop",
 };

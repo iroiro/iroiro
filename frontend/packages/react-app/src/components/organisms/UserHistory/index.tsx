@@ -27,8 +27,8 @@ export interface UserHistoryProps {
 
 const UserHistory: React.FC<UserHistoryProps> = ({ state }) => {
   return (
-    <div style={{ marginTop: "24px" }}>
-      <Grid container spacing={4} direction="column">
+    <div style={{ padding: "32px 32px", backgroundColor: "#fff" }}>
+      <Grid container direction="column">
         <Grid item xs={12}>
           <UserActivities state={state} />
         </Grid>
