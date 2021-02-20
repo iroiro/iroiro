@@ -17,34 +17,35 @@
 
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { BrowserRouter } from "react-router-dom";
-import { TokenCampaignsTemplate, TokenCampaignsTemplateProps } from "./index";
-import { tokenInformationState } from "../../../utils/mockData";
-import { TokenProvider } from "../../../context/token";
-import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import SelectTokenInput, { SelectTokenInputprops, TokenOption } from ".";
 
 export default {
-  title: "Templates/TokenCampaignsTemplate",
-  component: TokenCampaignsTemplate,
+  title: "Atoms/SelectTokenInput",
+  component: SelectTokenInput,
 } as Meta;
 
-const Template: Story<TokenCampaignsTemplateProps> = (args) => (
-  <BrowserRouter>
-    <TokenProvider
-      initialValue={{
-        ...initialValue,
-        token: tokenInformationState.token,
-        userAddress: tokenInformationState.userAddress,
-        userBalance: tokenInformationState.userBalance,
-      }}
-      reducer={tokenReducer}
-    >
-      <TokenCampaignsTemplate {...args} />
-    </TokenProvider>
-  </BrowserRouter>
-);
+const Template: Story<SelectTokenInputprops> = (args) => {
+  const [value, setValue] = React.useState<TokenOption>({
+    tokenName: "",
+    tokenAddress: "",
+  });
+  console.log("value:", value);
+
+  const handleChange = (value: TokenOption) => {
+    console.log(value);
+    setValue(value);
+  };
+
+  return <SelectTokenInput {...args} value={value} onChange={handleChange} />;
+};
+
+const tokens = [
+  { tokenName: "token", tokenAddress: "0x000000" },
+  { tokenName: "iroiro", tokenAddress: "0x000000" },
+];
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenInformationState,
+  label: "Choose Token",
+  options: tokens,
 };

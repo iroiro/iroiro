@@ -21,7 +21,7 @@ import { BrowserRouter } from "react-router-dom";
 import { tokenInformationState } from "../../../utils/mockData";
 import { TokenHistoryTemplate, TokenHistoryTemplateProps } from "./index";
 import { TokenProvider } from "../../../context/token";
-import { tokenReducer } from "../../../reducers/tokenContext";
+import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
 
 export default {
   title: "Templates/TokenHistoryTemplate",
@@ -32,6 +32,7 @@ const Template: Story<TokenHistoryTemplateProps> = (args) => (
   <BrowserRouter>
     <TokenProvider
       initialValue={{
+        ...initialValue,
         token: tokenInformationState.token,
         userAddress: tokenInformationState.userAddress,
         userBalance: tokenInformationState.userBalance,

@@ -24,7 +24,7 @@ import {
 } from "./index";
 import { audiusState, tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
-import { tokenReducer } from "../../../reducers/tokenContext";
+import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
 
 export default {
   title: "Templates/TokenCampaignDetailTemplate",
@@ -35,6 +35,7 @@ const Template: Story<TokenCampaignsDetailTemplateProps> = (args) => (
   <BrowserRouter>
     <TokenProvider
       initialValue={{
+        ...initialValue,
         token: tokenInformationState.token,
         userAddress: tokenInformationState.userAddress,
         userBalance: tokenInformationState.userBalance,

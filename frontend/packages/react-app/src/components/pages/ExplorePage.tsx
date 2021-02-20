@@ -95,7 +95,7 @@ const ExplorePage: React.FC<
       };
       f();
     }
-  }, [library, tokenState.token, tokenStateDispatch]);
+  }, [library, tokenState.token, tokenStateDispatch, tokenAddress]);
 
   return <ExplorePageTemplate tokenAddress={tokenAddress} />;
 };

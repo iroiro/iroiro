@@ -16,22 +16,36 @@
  */
 
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useTokenContext } from "../../../context/token";
 import theme from "../../../theme/mui-theme";
 import { getBalanceDevidedByDecimals } from "../../../utils/web3";
 import EtherscanLink from "../../atoms/EtherscanLink";
+import Skeleton from "@material-ui/lab/Skeleton";
+import SelectTokenModal from "../../organisms/SelectTokenModal";
 
 const TokenInfoBar = () => {
   const { state } = useTokenContext();
   const loading = !state.token;
+  const [open, setOpen] = useState(false);
   return (
     <InfoBar>
       <div>
         <div>
-          <Typography variant="h3" gutterBottom>
-            {state.token?.name ?? "..."}
+          <Typography
+            variant="h3"
+            gutterBottom
+            onClick={() => setOpen(true)}
+            style={{ cursor: "pointer" }}
+          >
+            {state.token?.name ?? (
+              <Skeleton
+                variant="text"
+                width={210}
+                style={{ display: "inline-block" }}
+              />
+            )}
             <span
               style={{
                 display: "inline-block",
@@ -56,18 +70,44 @@ const TokenInfoBar = () => {
         </div>
         <div>
           <Typography variant="caption">Symbol:</Typography>
-          <Item>{loading ? "..." : state.token?.symbol}</Item>
+          <Item>
+            {loading ? (
+              <Skeleton
+                variant="text"
+                width={60}
+                style={{ display: "inline-block" }}
+              />
+            ) : (
+              state.token?.symbol
+            )}
+          </Item>
           <Typography variant="caption">Total Supply:</Typography>
           <Item>
-            {loading
-              ? "..."
-              : getBalanceDevidedByDecimals(
-                  state.token?.totalSupply ?? "0",
-                  state.token?.decimals ?? 0
-                )}
+            {loading ? (
+              <Skeleton
+                variant="text"
+                width={60}
+                style={{ display: "inline-block" }}
+              />
+            ) : (
+              getBalanceDevidedByDecimals(
+                state.token?.totalSupply ?? "0",
+                state.token?.decimals ?? 0
+              )
+            )}
           </Item>
           <Typography variant="caption">Decimals:</Typography>
-          <Item>{loading ? "..." : state.token?.decimals}</Item>
+          <Item>
+            {loading ? (
+              <Skeleton
+                variant="text"
+                width={60}
+                style={{ display: "inline-block" }}
+              />
+            ) : (
+              state.token?.decimals
+            )}
+          </Item>
           <ScanLinkWrapper>
             {!!state.token && (
               <EtherscanLink
@@ -98,6 +138,7 @@ const TokenInfoBar = () => {
           </UserScanLinkWrapper>
         </BalanceWrapper>
       )}
+      <SelectTokenModal open={open} onCloseModal={() => setOpen(false)} />
     </InfoBar>
   );
 };

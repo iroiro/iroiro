@@ -32,6 +32,7 @@ const Template: Story<ExplorePageTemplateProps> = (args) => (
   <BrowserRouter>
     <TokenProvider
       initialValue={{
+        ...initialValue,
         token: tokenInformationState.token,
         userAddress: tokenInformationState.userAddress,
         userBalance: tokenInformationState.userBalance,

@@ -22,14 +22,17 @@ import { AppFooter } from "../../molecules/AppFooter";
 import AppHeader from "../../molecules/AppHeader";
 import { useHistory } from "react-router-dom";
 import { useCallback } from "react";
+import SelectTokenModal from "../../organisms/SelectTokenModal";
+import { useState } from "react";
 
 const TopPageTemplate = () => {
   const history = useHistory();
+  const [open, setOpen] = useState(false);
   const handleDistributionButtonClick = useCallback(() => {
     history.push("/dashboard");
   }, []);
   const handleExploreButtonClick = useCallback(() => {
-    history.push("/explore");
+    setOpen(true);
   }, []);
   return (
     <div>
@@ -53,6 +56,12 @@ const TopPageTemplate = () => {
         </div>
       </ButtonWrapper>
       <AppFooter />
+      <SelectTokenModal
+        open={open}
+        onCloseModal={() => {
+          setOpen(false);
+        }}
+      />
     </div>
   );
 };

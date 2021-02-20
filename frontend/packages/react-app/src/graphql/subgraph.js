@@ -174,3 +174,11 @@ export const GET_CLAIM = gql`
     }
   }
 `;
+
+export const GET_TOKEN_LIST = gql`
+  {
+    campaigns {
+      token
+    }
+  }
+`;
