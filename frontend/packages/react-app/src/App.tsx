@@ -30,7 +30,6 @@ import distributors from "./utils/distributors";
 import CreateUUIDCampaignPage from "./components/pages/CreateUUIDCampaignPage";
 import { TokenProvider } from "./context/token";
 import { initialValue, tokenReducer } from "./reducers/tokenContext";
-import TokenBasicInformationPage from "./components/pages/TokenBasicInformationPage";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
 import CreateEmailCampaignPage from "./components/pages/CreateEmailCampaignPage";
 import TopPageTemplate from "./components/templates/TopPageTemplate";

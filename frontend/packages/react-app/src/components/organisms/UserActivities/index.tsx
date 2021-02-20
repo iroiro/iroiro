@@ -16,8 +16,7 @@
  */
 
 import * as React from "react";
-import { Grid, Typography, Paper, Box } from "@material-ui/core";
-import { TokenInformationState } from "../../../interfaces";
+import { Grid, Typography, Box } from "@material-ui/core";
 import UserActivityCard from "../../molecules/UserActivityCard";
 import { TokenHistoryState } from "../../../reducers/tokenHistory";
 import { useTokenContext } from "../../../context/token";

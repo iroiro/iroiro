@@ -17,7 +17,6 @@
 
 import * as React from "react";
 import { Box, Card, Button, Modal } from "@material-ui/core";
-import { TokenListState } from "../../../interfaces";
 import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
 import { useTokenContext } from "../../../context/token";
 import { useState } from "react";

@@ -15,23 +15,12 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect } from "react";
 import ExplorePageTemplate from "../templates/ExplorePageTemplate";
-import { tokensReducer } from "../../reducers/tokens";
 import { useWeb3React } from "@web3-react/core";
 import { getTokenInfo, getWalletBalance } from "../../utils/web3";
-import { TokenListState } from "../../interfaces";
 import { RouteComponentProps } from "react-router-dom";
 import { useTokenContext } from "../../context/token";
-
-const initialState: TokenListState = {
-  isOpen: false,
-  tokens: [],
-  tokenAddress: "",
-  inputTokenAddress: "",
-  type: "explore",
-  color: "primary",
-};
 
 const ExplorePage: React.FC<
   RouteComponentProps<{

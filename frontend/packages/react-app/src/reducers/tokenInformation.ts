@@ -28,7 +28,6 @@ import { BigNumber } from "ethers";
 import { LINK_APPROVE_AMOUNT } from "../utils/const";
 import { Event } from "@ethersproject/contracts";
 import { Block } from "@ethersproject/providers";
-import { act } from "@testing-library/react";
 
 export type TokenInformationAction =
   | {

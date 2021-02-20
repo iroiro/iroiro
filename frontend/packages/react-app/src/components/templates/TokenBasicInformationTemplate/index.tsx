@@ -33,22 +33,6 @@ export const TokenBasicInformationTemplate: React.FC<TokenBasicInformationProps>
 }) => {
   const history = useHistory();
   const [tabNumber, setTabNumber] = useState(0);
-  const handleChangeTabs = useCallback(
-    (n: number) => {
-      setTabNumber(n);
-      switch (n) {
-        case 1:
-          history.push(`/explore/${tokenAddress}/campaigns/`);
-          break;
-        case 4:
-          history.push(`/explore/${tokenAddress}/history`);
-          break;
-        default:
-          break;
-      }
-    },
-    [tabNumber, tokenAddress]
-  );
   return (
     <div style={{ minHeight: "100vh" }}>
       <AppHeader />

@@ -6,9 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 export default {
   title: "Templates/TopPageTemplate",
   component: TopPageTemplate,
-};
+} as Meta;
 
-const Template: Story = (args) => (
+const Template: Story = () => (
   <BrowserRouter>
     <TopPageTemplate />
   </BrowserRouter>
