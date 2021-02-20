@@ -46,16 +46,16 @@ const WalletCampaignDetailPanel: React.FC<WalletCampaignDetailPanelProps> = ({
   const now = state.now.getTime() / 1000;
   if (now < startDate || endDate <= now) {
     return (
-      <div style={{ marginTop: "24px" }}>
+      <div>
         <TokenCampaignDetail campaign={state.campaign} />
       </div>
     );
   }
 
   return (
-    <div style={{ marginTop: "24px" }}>
+    <div>
       <TokenCampaignDetail campaign={state.campaign} />
-      <Box mt={2}>
+      <Box mt={2} style={{ borderTop: "2px solid #f8f8f8" }}>
         <WalletTokenClaimCard
           campaignAddress={state?.campaignAddress ?? ""}
           symbol={tokenState.token?.symbol ?? ""}

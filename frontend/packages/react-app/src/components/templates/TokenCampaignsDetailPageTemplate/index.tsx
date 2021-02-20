@@ -32,6 +32,7 @@ import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
 import WalletCampaignDetailPanel from "../../organisms/WalletCampaignDetailPanel";
 import { useMemo } from "react";
 import { AppFooter } from "../../molecules/AppFooter";
+import TokenInfoBar from "../../molecules/TokenInfoBar";
 
 export interface TokenCampaignsDetailTemplateProps {
   readonly state: CampaignDetailState;
@@ -49,27 +50,6 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
   tokenAddress,
 }) => {
   const history = useHistory();
-  const [tabNumber, setTabNumber] = useState(1);
-
-  const handleChangeTabs = useCallback(
-    (n: number) => {
-      setTabNumber(n);
-      switch (n) {
-        case 0:
-          history.push(`/explore/${tokenAddress}`);
-          break;
-        case 1:
-          history.push(`/explore/${tokenAddress}/campaigns/`);
-          break;
-        case 4:
-          history.push(`/explore/${tokenAddress}/history/`);
-          break;
-        default:
-          break;
-      }
-    },
-    [tabNumber, tokenAddress]
-  );
 
   const CampaignDetailPanel = useMemo(() => {
     switch (state.distributorType) {
@@ -79,17 +59,16 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
     }
 
     return (
-      <Paper
+      <div
         style={{
           padding: 24,
-          margin: "40px 0",
           textAlign: "center",
           lineHeight: "240px",
           height: 240,
         }}
       >
         <Typography>Campaign not found.</Typography>
-      </Paper>
+      </div>
     );
   }, [state]);
 
@@ -105,8 +84,6 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
           minHeight: "600px",
         }}
       >
-        <TokenInformationBar />
-        <TabMenuForFanPage current={"campaigns"} tokenAddress={tokenAddress} />
         <Container maxWidth="md">
           <Box
             style={{
@@ -116,22 +93,28 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
               minWidth: 320,
             }}
           >
-            {state.campaign !== null &&
-              state.campaign.campaignMetadata &&
-              CampaignDetailPanel}
-            {state.campaign === null && (
-              <Paper
-                style={{
-                  padding: 24,
-                  margin: "40px 0",
-                  textAlign: "center",
-                  lineHeight: "240px",
-                  height: 240,
-                }}
-              >
-                <Typography>Campaign not found.</Typography>
-              </Paper>
-            )}
+            <TokenInfoBar />
+            <TabMenuForFanPage
+              current={"campaigns"}
+              tokenAddress={tokenAddress}
+            />
+            <div style={{ backgroundColor: "#fff" }}>
+              {state.campaign !== null &&
+                state.campaign.campaignMetadata &&
+                CampaignDetailPanel}
+              {state.campaign === null && (
+                <div
+                  style={{
+                    padding: 24,
+                    textAlign: "center",
+                    lineHeight: "240px",
+                    height: 240,
+                  }}
+                >
+                  <Typography>Campaign not found.</Typography>
+                </div>
+              )}
+            </div>
           </Box>
         </Container>
       </Box>

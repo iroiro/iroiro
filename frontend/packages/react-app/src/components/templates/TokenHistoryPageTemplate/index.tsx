@@ -16,15 +16,15 @@
  */
 
 import { Box, Container } from "@material-ui/core";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useTokenContext } from "../../../context/token";
 import { TokenHistoryState } from "../../../reducers/tokenHistory";
 import { AppFooter } from "../../molecules/AppFooter";
 import AppHeader from "../../molecules/AppHeader";
 import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
 import TokenInfoBar from "../../molecules/TokenInfoBar";
-
-import TokenInformationBar from "../../organisms/TokenInformationBar";
+import ConnectModal from "../../organisms/ConnectModal";
 import UserHistory from "../../organisms/UserHistory";
 
 export interface TokenHistoryTemplateProps {
@@ -36,24 +36,19 @@ export const TokenHistoryTemplate: React.FC<TokenHistoryTemplateProps> = ({
   state,
   tokenAddress,
 }) => {
-  const history = useHistory();
-  const [tabNumber, setTabNumber] = useState(4);
-  const handleChangeTabs = useCallback(
-    (n: number) => {
-      setTabNumber(n);
-      switch (n) {
-        case 0:
-          history.push(`/explore/${tokenAddress}`);
-          break;
-        case 1:
-          history.push(`/explore/${tokenAddress}/campaigns/`);
-          break;
-        default:
-          break;
-      }
-    },
-    [tabNumber, tokenAddress]
-  );
+  const { state: tokenState } = useTokenContext();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (tokenState.token === undefined) {
+      return;
+    }
+
+    if (tokenState.userAddress === "") {
+      setOpen(true);
+    }
+  }, [tokenState]);
+
   return (
     <div style={{ height: "100%", minHeight: "100vh" }}>
       <AppHeader />
@@ -86,6 +81,7 @@ export const TokenHistoryTemplate: React.FC<TokenHistoryTemplateProps> = ({
         </Container>
       </Box>
       <AppFooter />
+      <ConnectModal open={open} onClose={() => setOpen(false)} />
     </div>
   );
 };
