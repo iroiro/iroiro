@@ -26,7 +26,7 @@ import {
   CampaignDetailState,
 } from "../../../reducers/campaignDetail";
 import { useHistory } from "react-router-dom";
-import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
+import { TabMenuForFunPage } from "../../molecules/TabMenuForFunPage";
 import WalletCampaignDetailPanel from "../../organisms/WalletCampaignDetailPanel";
 import { useMemo } from "react";
 import { AppFooter } from "../../molecules/AppFooter";
@@ -90,7 +90,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
             }}
           >
             <TokenInfoBar />
-            <TabMenuForFanPage
+            <TabMenuForFunPage
               current={"campaigns"}
               tokenAddress={tokenAddress}
             />

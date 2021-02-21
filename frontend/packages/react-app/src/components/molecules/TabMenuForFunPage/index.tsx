@@ -18,12 +18,12 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-export interface TabMenuForFanPageProps {
+export interface TabMenuForFunPageProps {
   tokenAddress: string;
   current: "tokenTop" | "campaigns" | "userHistory";
 }
 
-export const TabMenuForFanPage: React.FC<TabMenuForFanPageProps> = ({
+export const TabMenuForFunPage: React.FC<TabMenuForFunPageProps> = ({
   tokenAddress,
   current,
 }) => {

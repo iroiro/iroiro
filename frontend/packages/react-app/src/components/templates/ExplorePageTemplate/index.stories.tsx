@@ -44,6 +44,38 @@ const Template: Story<ExplorePageTemplateProps> = (args) => (
   </BrowserRouter>
 );
 
+const NotConnectTemplate: Story<ExplorePageTemplateProps> = (args) => (
+  <BrowserRouter>
+    <TokenProvider
+      initialValue={{
+        ...initialValue,
+        token: tokenInformationState.token,
+        userAddress: "",
+        userBalance: "",
+      }}
+      reducer={tokenReducer}
+    >
+      <ExplorePageTemplate {...args} />
+    </TokenProvider>
+  </BrowserRouter>
+);
+
+const LoadingTemplate: Story<ExplorePageTemplateProps> = (args) => (
+  <BrowserRouter>
+    <TokenProvider
+      initialValue={{
+        ...initialValue,
+        token: undefined,
+        userAddress: "",
+        userBalance: "",
+      }}
+      reducer={tokenReducer}
+    >
+      <ExplorePageTemplate {...args} />
+    </TokenProvider>
+  </BrowserRouter>
+);
+
 export const Default = Template.bind({});
-export const NoTokens = Template.bind({});
-export const Loading = Template.bind({});
+export const NotConnect = NotConnectTemplate.bind({});
+export const Loading = LoadingTemplate.bind({});

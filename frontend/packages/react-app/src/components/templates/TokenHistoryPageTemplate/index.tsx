@@ -21,7 +21,7 @@ import { useTokenContext } from "../../../context/token";
 import { TokenHistoryState } from "../../../reducers/tokenHistory";
 import { AppFooter } from "../../molecules/AppFooter";
 import AppHeader from "../../molecules/AppHeader";
-import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
+import { TabMenuForFunPage } from "../../molecules/TabMenuForFunPage";
 import TokenInfoBar from "../../molecules/TokenInfoBar";
 import ConnectModal from "../../organisms/ConnectModal";
 import UserHistory from "../../organisms/UserHistory";
@@ -71,7 +71,7 @@ export const TokenHistoryTemplate: React.FC<TokenHistoryTemplateProps> = ({
             }}
           >
             <TokenInfoBar />
-            <TabMenuForFanPage
+            <TabMenuForFunPage
               tokenAddress={tokenAddress}
               current={"userHistory"}
             />

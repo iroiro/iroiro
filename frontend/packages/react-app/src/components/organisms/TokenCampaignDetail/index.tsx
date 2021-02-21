@@ -99,9 +99,8 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
           </Typography>
         </Box>
         <Box>
-          {/* //TODO: ADD LINK */}
           <Link
-            href="#"
+            href="https://medium.com/iroiro-social-token/introducing-how-to-distribute-token-by-wallet-address-or-url-4e4646581047"
             rel="noreferrer"
             target="_blank"
             color="primary"

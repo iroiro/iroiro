@@ -20,7 +20,7 @@ import AppHeader from "../../molecules/AppHeader";
 import TokenCampaigns from "../../organisms/TokenCampaigns";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
+import { TabMenuForFunPage } from "../../molecules/TabMenuForFunPage";
 import { TokenCampaignsState } from "../../../reducers/tokenCampaigns";
 import { AppFooter } from "../../molecules/AppFooter";
 import TokenInfoBar from "../../molecules/TokenInfoBar";
@@ -57,7 +57,7 @@ export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
             }}
           >
             <TokenInfoBar />
-            <TabMenuForFanPage
+            <TabMenuForFunPage
               tokenAddress={tokenAddress}
               current={"campaigns"}
             />
