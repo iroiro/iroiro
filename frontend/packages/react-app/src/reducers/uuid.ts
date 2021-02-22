@@ -61,6 +61,7 @@ export const uuidReducer = (
       return {
         ...state,
         quantity,
+        isValidQuantity: quantity !== "" && quantity > 0,
       };
     }
     case "targets:generate": {
