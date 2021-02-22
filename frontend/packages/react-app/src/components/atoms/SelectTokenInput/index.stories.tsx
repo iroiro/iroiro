@@ -17,35 +17,35 @@
 
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { BrowserRouter } from "react-router-dom";
-import SetTokenModal, { SetTokenModalProps } from "./index";
-import { tokenListState } from "../../../utils/mockData";
+import SelectTokenInput, { SelectTokenInputprops, TokenOption } from ".";
 
 export default {
-  title: "Organisms/SetTokenModal",
-  component: SetTokenModal,
+  title: "Atoms/SelectTokenInput",
+  component: SelectTokenInput,
 } as Meta;
 
-const Template: Story<SetTokenModalProps> = (args) => (
-  <BrowserRouter>
-    <SetTokenModal {...args} />
-  </BrowserRouter>
-);
+const Template: Story<SelectTokenInputprops> = (args) => {
+  const [value, setValue] = React.useState<TokenOption>({
+    tokenName: "",
+    tokenAddress: "",
+  });
+  console.log("value:", value);
+
+  const handleChange = (value: TokenOption) => {
+    console.log(value);
+    setValue(value);
+  };
+
+  return <SelectTokenInput {...args} value={value} onChange={handleChange} />;
+};
+
+const tokens = [
+  { tokenName: "token", tokenAddress: "0x000000" },
+  { tokenName: "iroiro", tokenAddress: "0x000000" },
+];
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenListState,
-};
-
-export const NoInput = Template.bind({});
-NoInput.args = {
-  state: {
-    ...tokenListState,
-    tokens: [],
-    isOpen: true,
-    inputTokenAddress: "",
-    tokenAddress: "",
-    type: "dashboard",
-    color: "secondary",
-  },
+  label: "Choose Token",
+  options: tokens,
 };

@@ -34,19 +34,22 @@ const UserActivityCard: React.FC<UserActivityCardProps> = ({
     : activity.amount;
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="caption">
+    <div>
+      <Box display="flex" justifyContent="space-between">
+        <Typography variant="caption" style={{ flex: "0 3 52px" }}>
           {new Date(activity.timestamp).toLocaleDateString()}
         </Typography>
-        <Box display="flex" justifyContent="space-between">
-          <Typography>{activity.name}</Typography>
-          <Typography variant="h4">
-            {amount} ${token?.symbol}
-          </Typography>
-        </Box>
-      </CardContent>
-    </Card>
+        <Typography style={{ flex: "1 0 100px", paddingLeft: 8 }}>
+          {activity.name}
+        </Typography>
+        <Typography
+          variant="h4"
+          style={{ flex: "2 0 auto", textAlign: "right" }}
+        >
+          {amount} ${token?.symbol}
+        </Typography>
+      </Box>
+    </div>
   );
 };
 

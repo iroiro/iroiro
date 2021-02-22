@@ -19,7 +19,9 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import ExplorePageTemplate, { ExplorePageTemplateProps } from "./index";
-import { tokenListState } from "../../../utils/mockData";
+import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import { TokenProvider } from "../../../context/token";
+import { tokenInformationState } from "../../../utils/mockData";
 
 export default {
   title: "Templates/ExplorePageTemplate",
@@ -28,37 +30,52 @@ export default {
 
 const Template: Story<ExplorePageTemplateProps> = (args) => (
   <BrowserRouter>
-    <ExplorePageTemplate {...args} />
+    <TokenProvider
+      initialValue={{
+        ...initialValue,
+        token: tokenInformationState.token,
+        userAddress: tokenInformationState.userAddress,
+        userBalance: tokenInformationState.userBalance,
+      }}
+      reducer={tokenReducer}
+    >
+      <ExplorePageTemplate {...args} />
+    </TokenProvider>
+  </BrowserRouter>
+);
+
+const NotConnectTemplate: Story<ExplorePageTemplateProps> = (args) => (
+  <BrowserRouter>
+    <TokenProvider
+      initialValue={{
+        ...initialValue,
+        token: tokenInformationState.token,
+        userAddress: "",
+        userBalance: "",
+      }}
+      reducer={tokenReducer}
+    >
+      <ExplorePageTemplate {...args} />
+    </TokenProvider>
+  </BrowserRouter>
+);
+
+const LoadingTemplate: Story<ExplorePageTemplateProps> = (args) => (
+  <BrowserRouter>
+    <TokenProvider
+      initialValue={{
+        ...initialValue,
+        token: undefined,
+        userAddress: "",
+        userBalance: "",
+      }}
+      reducer={tokenReducer}
+    >
+      <ExplorePageTemplate {...args} />
+    </TokenProvider>
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
-Default.args = {
-  state: tokenListState,
-};
-
-export const NoTokens = Template.bind({});
-NoTokens.args = {
-  state: {
-    ...tokenListState,
-    tokens: [],
-    isOpen: false,
-    inputTokenAddress: "",
-    tokenAddress: "",
-    type: "explore",
-    color: "primary",
-  },
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-  state: {
-    ...tokenListState,
-    tokens: [],
-    isOpen: false,
-    inputTokenAddress: "",
-    tokenAddress: "",
-    type: "explore",
-    color: "primary",
-  },
-};
+export const NotConnect = NotConnectTemplate.bind({});
+export const Loading = LoadingTemplate.bind({});

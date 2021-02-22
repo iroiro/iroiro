@@ -16,51 +16,95 @@
  */
 
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
-import TokenList from "../../organisms/TokenList";
-import { ACTIONS } from "../../../reducers/tokens";
-import { TokenListState } from "../../../interfaces";
-import SetTokenModal from "../../organisms/SetTokenModal";
-import AddNewToken from "../../atoms/AddNewToken";
 import { AppFooter } from "../../molecules/AppFooter";
+import TokenInfoBar from "../../molecules/TokenInfoBar";
+import MenuButton from "../../atoms/MenuButton";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
+import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 
 export interface ExplorePageTemplateProps {
-  readonly state: TokenListState;
-  dispatch: React.Dispatch<ACTIONS>;
+  tokenAddress: string;
 }
 
 const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
-  state,
-  dispatch,
-}) => (
-  <div style={{ height: "100vh" }}>
-    <AppHeader />
-    <Box
-      m={"auto"}
-      my={5}
-      width={[4 / 5, 1 / 2]}
-      p={2}
-      minWidth={320}
-      style={{
-        boxSizing: "border-box",
-        height: "calc(100% - 266px)",
-        minHeight: "300px",
-      }}
-    >
-      <Typography variant={"h3"}>Token Explorer</Typography>
-      <Box mt={2}>
-        <Typography>
-          Check the status of the tokens you have been distributed and
-          information on the campaign.
-        </Typography>
+  tokenAddress,
+}: ExplorePageTemplateProps) => {
+  const history = useHistory();
+  const handleCampaignsClick = useCallback(() => {
+    history.push(`/explore/${tokenAddress}/campaigns`);
+  }, [history, tokenAddress]);
+  const handleUserHistoryClick = useCallback(() => {
+    history.push(`/explore/${tokenAddress}/history`);
+  }, [history, tokenAddress]);
+  return (
+    <div style={{ height: "100vh" }}>
+      <AppHeader />
+      <Box
+        m={"auto"}
+        my={5}
+        width={[1, 2 / 3]}
+        p={2}
+        minWidth={320}
+        style={{
+          boxSizing: "border-box",
+        }}
+      >
+        <TokenInfoBar />
+        <div>
+          <ButtonWrapper>
+            <MenuButton
+              title={"Campaigns"}
+              description={"You can see a list of campaigns that are going on."}
+              color="user"
+              onClick={handleCampaignsClick}
+            />
+            <MenuButton
+              title={"User History"}
+              description={"You can check the balance history and activities."}
+              color="user"
+              onClick={handleUserHistoryClick}
+            />
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <MenuButton
+              title={"🚧 Creator Log"}
+              description={"Coming Soon"}
+              color="user"
+              disabled={true}
+            />
+            <MenuButton
+              title={"🚧 Donation"}
+              description={"Coming Soon"}
+              color="user"
+              disabled={true}
+            />
+          </ButtonWrapper>
+        </div>
       </Box>
-      <TokenList state={state} />
-      <AddNewToken color={state.color} dispatch={dispatch} />
-      <SetTokenModal state={state} dispatch={dispatch} />
-    </Box>
-    <AppFooter />
-  </div>
-);
+      <AppFooter />
+    </div>
+  );
+};
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  & > div {
+    width: 49.5%;
+    ${theme.breakpoints.down(600)} {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  }
+  ${theme.breakpoints.down(600)} {
+    display: block;
+  }
+`;
 
 export default ExplorePageTemplate;

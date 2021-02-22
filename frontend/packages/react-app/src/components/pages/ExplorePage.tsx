@@ -15,42 +15,78 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect } from "react";
 import ExplorePageTemplate from "../templates/ExplorePageTemplate";
-import { tokensReducer } from "../../reducers/tokens";
 import { useWeb3React } from "@web3-react/core";
-import { getTokenInfo } from "../../utils/web3";
-import { TokenListState } from "../../interfaces";
+import { getTokenInfo, getWalletBalance } from "../../utils/web3";
+import { RouteComponentProps } from "react-router-dom";
+import { useTokenContext } from "../../context/token";
 
-const initialState: TokenListState = {
-  isOpen: false,
-  tokens: [],
-  tokenAddress: "",
-  inputTokenAddress: "",
-  type: "explore",
-  color: "primary",
-};
-
-const ExplorePage: React.FC = () => {
+const ExplorePage: React.FC<
+  RouteComponentProps<{
+    tokenAddress: string;
+  }>
+> = (props) => {
   const { library } = useWeb3React();
-  const [state, dispatch] = useReducer(tokensReducer, initialState);
+  const tokenAddress = props.match.params.tokenAddress;
+  const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
 
   useEffect(() => {
-    dispatch({ type: "tokens:getlocal" });
-  }, []);
+    if (
+      tokenState.token === undefined ||
+      tokenState.token.tokenAddress !== tokenAddress
+    ) {
+      const f = async () => {
+        const token = await getTokenInfo(library, tokenAddress);
+        if (token === undefined) {
+          return;
+        }
+        tokenStateDispatch({ type: "token:set", payload: { token } });
+      };
+      f();
+    }
+  }, [library, tokenAddress]);
 
   useEffect(() => {
-    const f = async () => {
-      const token = await getTokenInfo(library, state.tokenAddress);
-      if (token === undefined) {
+    if (
+      tokenState.userAddress === "" ||
+      tokenState.token?.tokenAddress !== tokenAddress
+    ) {
+      const f = async () => {
+        if (library === undefined) {
+          return;
+        }
+        const address = await library.getSigner().getAddress();
+        tokenStateDispatch({
+          type: "userAddress:set",
+          payload: {
+            address,
+          },
+        });
+      };
+      f();
+    }
+  }, [library, tokenStateDispatch]);
+  useEffect(() => {
+    if (
+      tokenState.userBalance === "" ||
+      tokenState.token?.tokenAddress !== tokenAddress
+    ) {
+      if (!library) {
         return;
       }
-      dispatch({ type: "token:set", payload: { token } });
-    };
-    f();
-  }, [library, state.tokenAddress]);
+      const f = async () => {
+        const balance = await getWalletBalance(library, tokenAddress);
+        if (balance === undefined) {
+          return;
+        }
+        tokenStateDispatch({ type: "userBalance:set", payload: { balance } });
+      };
+      f();
+    }
+  }, [library, tokenState.token, tokenStateDispatch, tokenAddress]);
 
-  return <ExplorePageTemplate state={state} dispatch={dispatch} />;
+  return <ExplorePageTemplate tokenAddress={tokenAddress} />;
 };
 
 export default ExplorePage;

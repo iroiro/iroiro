@@ -23,10 +23,12 @@ import {
   Link,
   Box,
   Container,
+  CardActionArea,
 } from "@material-ui/core";
 import { CampaignInfo } from "../../../interfaces";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 import { useHistory } from "react-router-dom";
+import theme from "../../../theme/mui-theme";
 
 export interface TokenCampaignCardProps {
   readonly campaign: CampaignInfo;
@@ -45,27 +47,35 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
   };
 
   return (
-    <Card key={campaign.id} style={{ marginTop: "12px" }}>
-      <CardContent>
-        <Container>
-          <Box display="flex" justifyContent="space-between">
-            <Link component="button" onClick={onClickDetail}>
-              <Typography variant="h5">
+    <Card
+      key={campaign.id}
+      style={{ marginTop: "12px", borderColor: theme.palette.primary.main }}
+      variant="outlined"
+      onClick={onClickDetail}
+    >
+      <CardActionArea>
+        <CardContent>
+          <div>
+            <Box display="flex" justifyContent="space-between">
+              <Typography
+                variant="h4"
+                style={{ color: theme.palette.primary.main }}
+              >
                 {campaign.campaignMetadata.name}
               </Typography>
-            </Link>
-            <CampaignStatusChip status={campaign.status} />
-          </Box>
-          <Box mt={2}>
-            {campaign.campaignMetadata &&
-            campaign.campaignMetadata.description !== "" ? (
-              <Typography>{campaign.campaignMetadata.description}</Typography>
-            ) : (
-              <Typography>-</Typography>
-            )}
-          </Box>
-        </Container>
-      </CardContent>
+              <CampaignStatusChip status={campaign.status} />
+            </Box>
+            <Box>
+              {campaign.campaignMetadata &&
+              campaign.campaignMetadata.description !== "" ? (
+                <Typography>{campaign.campaignMetadata.description}</Typography>
+              ) : (
+                <Typography>-</Typography>
+              )}
+            </Box>
+          </div>
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 };
