@@ -31,8 +31,8 @@ const invalidAddressTargetsCid =
 const keccak256TargetsCid = "QmVujr4pE8wfjjjHHFqmivg1otenc4AAgrLzsx4dkT5YvM";
 const thousandKeccak256TargetsCid =
   "QmTvMZwdnxZdrKWrpuRmVAvrqCiSbgWsf3xZCyZv9RcfUx";
-const thousandOneKeccak256TargetsCid =
-  "QmRwRWApB2BymUKCLtZcxtcUNV2CLvWZ8VitJoqX7gPrSC";
+const twoThousandsOneKeccak256TargetsCid =
+  "QmWMU3ZVpcEPyohFmtZHmhzD5keoFnKi6qKYCTVxBLDqqZ";
 const invalidKeccakTargetsCid =
   "QmTgnu6GSJUR3bSJjkibtDDbBZjRKxfSVxWj12MjEPSmrH";
 const invalidFormatCid = "QmVLdXh64DftwGmj5AZLZJUVCzAz4TJRPEcgTD8urxGQMo";
@@ -186,9 +186,9 @@ describe("Tests Input Generator", function () {
     }
   });
 
-  it("throws error if target quantity exceeds 1001", async () => {
+  it("throws error if target quantity exceeds 2001", async () => {
     event = {
-      cid: thousandOneKeccak256TargetsCid,
+      cid: twoThousandsOneKeccak256TargetsCid,
       amount: 10000,
     };
     try {
@@ -196,7 +196,7 @@ describe("Tests Input Generator", function () {
       assert.fail();
     } catch (err) {
       expect(err.message).to.be.equals(
-        "Targets quantity exceed upper limit. Limit: 1000, Actual: 1001"
+        "Targets quantity exceed upper limit. Limit: 2000, Actual: 2001"
       );
     }
   });
