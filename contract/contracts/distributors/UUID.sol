@@ -16,7 +16,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-pragma solidity ^0.6.0;
+pragma solidity =0.6.11;
 
 import "@iroiro/merkle-distributor/contracts/StringMerkleDistributor.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
