@@ -36,7 +36,7 @@ export const ExceedUpperLimit = Template.bind({});
 ExceedUpperLimit.args = {
   uuidState: {
     ...uuidInitialState,
-    quantity: 1001,
+    quantity: 2001,
     isValidQuantity: true,
   },
 };

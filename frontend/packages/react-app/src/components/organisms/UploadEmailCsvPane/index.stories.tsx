@@ -76,7 +76,7 @@ ExceedUpperLimit.args = {
     ...emailState,
     isValidEmails: true,
     isCsvUploaded: true,
-    quantity: "1001",
-    emailList: [...Array(1001).map(() => "text@example.com")],
+    quantity: "2001",
+    emailList: [...Array(2001).map(() => "text@example.com")],
   },
 };

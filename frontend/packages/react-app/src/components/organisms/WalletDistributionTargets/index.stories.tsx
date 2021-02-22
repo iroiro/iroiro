@@ -42,7 +42,7 @@ ExceedUpperLimit.args = {
   walletListState: {
     ...walletListState,
     targets: [
-      ...Array(1001).map(() => "0x0000000000000000000000000000000000000000"),
+      ...Array(2001).map(() => "0x0000000000000000000000000000000000000000"),
     ],
   },
 };
