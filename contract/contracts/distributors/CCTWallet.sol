@@ -36,7 +36,7 @@ contract CCTWalletDistributor is DistributorInterface {
         uint32 recipientsNum,
         uint256 startDate,
         uint256 endDate
-    ) public override {
+    ) external override {
         // TODO Update checking tokenSender logic with token issuance phase
         require(msg.sender == tokenSender, "Token holder must match to msg.sender");
         uint256 allowance = getAllowanceOf(token, tokenSender);
@@ -170,7 +170,7 @@ contract CCTWalletCampaign is CampaignInterface {
         emit Claim(from, to);
     }
 
-    function fulfill(bytes32 _requestId, bytes32 data) public recordChainlinkFulfillment(_requestId) {
+    function fulfill(bytes32 _requestId, bytes32 data) external recordChainlinkFulfillment(_requestId) {
         claimKeyHashList[data] = true;
     }
 
@@ -204,7 +204,7 @@ contract CCTWalletCampaign is CampaignInterface {
     /**
      * @notice Allows the owner to withdraw any LINK balance on the contract
      */
-    function withdrawLink() public onlyOwner {
+    function withdrawLink() external onlyOwner {
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(link.transfer(msg.sender, link.balanceOf(address(this))), "Unable to transfer");
     }
@@ -223,7 +223,7 @@ contract CCTWalletCampaign is CampaignInterface {
         bytes4 _callbackFunctionId,
         uint256 _expiration
     // TODO Consider about onlyOwner for operation cost
-    ) public onlyOwner {
+    ) external onlyOwner {
         cancelChainlinkRequest(_requestId, _payment, _callbackFunctionId, _expiration);
     }
 }
