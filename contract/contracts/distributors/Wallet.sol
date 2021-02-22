@@ -57,10 +57,10 @@ contract WalletDistributor is DistributorInterfaceV2 {
             startDate,
             endDate
         );
-        transferToken(token, tokenSender, address(campaign), allowance);
         campaignList[nextCampaignId] = address(campaign);
         nextCampaignId = nextCampaignId.add(1);
         campaign.transferOwnership(msg.sender);
+        transferToken(token, tokenSender, address(campaign), allowance);
 
         emit CreateCampaign(
             address(campaign),
@@ -106,8 +106,8 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
         uint256 amount,
         bytes32[] calldata merkleProof
     ) public override mustBeActive inTime {
-        super.claim(index, account, amount, merkleProof);
         claimedNum = claimedNum.add(1);
+        super.claim(index, account, amount, merkleProof);
 
         emit Claim(account, account);
     }

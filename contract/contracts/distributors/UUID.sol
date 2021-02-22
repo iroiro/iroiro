@@ -57,10 +57,10 @@ contract UUIDDistributor is DistributorInterfaceV2 {
             startDate,
             endDate
         );
-        transferToken(token, tokenSender, address(campaign), allowance);
         campaignList[nextCampaignId] = address(campaign);
         nextCampaignId = nextCampaignId.add(1);
         campaign.transferOwnership(msg.sender);
+        transferToken(token, tokenSender, address(campaign), allowance);
 
         emit CreateCampaign(
             address(campaign),
@@ -106,8 +106,8 @@ contract UUIDCampaign is CampaignInterfaceV2, StringMerkleDistributor {
         uint256 amount,
         bytes32[] calldata merkleProof
     ) public override mustBeActive inTime {
-        super.claim(index, hashed, amount, merkleProof);
         claimedNum = claimedNum.add(1);
+        super.claim(index, hashed, amount, merkleProof);
 
         emit Claim(msg.sender, msg.sender);
     }

@@ -55,10 +55,10 @@ contract CCTWalletDistributor is DistributorInterface {
             endDate,
             link
         );
-        transferToken(token, tokenSender, address(campaign), allowance);
         campaignList[nextCampaignId] = address(campaign);
         nextCampaignId = nextCampaignId.add(1);
         campaign.transferOwnership(msg.sender);
+        transferToken(token, tokenSender, address(campaign), allowance);
 
         emit CreateCampaign(
             address(campaign),
