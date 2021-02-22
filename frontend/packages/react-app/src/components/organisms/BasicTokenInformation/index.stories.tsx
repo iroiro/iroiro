@@ -32,6 +32,7 @@ const Template: Story = () => (
   <BrowserRouter>
     <TokenProvider
       initialValue={{
+        ...initialValue,
         token: tokenInformationState.token,
         userAddress: tokenInformationState.userAddress,
         userBalance: tokenInformationState.userBalance,

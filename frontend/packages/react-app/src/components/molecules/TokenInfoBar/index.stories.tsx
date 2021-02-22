@@ -18,32 +18,51 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import {
-  TokenBasicInformationTemplate,
-  TokenBasicInformationProps,
-} from "./index";
-import { tokenInformationState } from "../../../utils/mockData";
+import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
 import { TokenProvider } from "../../../context/token";
-import { tokenReducer } from "../../../reducers/tokenContext";
+import { tokenInformationState } from "../../../utils/mockData";
+import TokenInfoBar from ".";
 
 export default {
-  title: "Templates/TokenBasicInformationTemplate",
-  component: TokenBasicInformationTemplate,
+  title: "Molecules/TokenInfoBar",
+  component: TokenInfoBar,
 } as Meta;
 
-const Template: Story<TokenBasicInformationProps> = (args) => (
+const Template: Story = () => (
   <BrowserRouter>
     <TokenProvider
       initialValue={{
+        ...initialValue,
         token: tokenInformationState.token,
         userAddress: tokenInformationState.userAddress,
         userBalance: tokenInformationState.userBalance,
       }}
       reducer={tokenReducer}
     >
-      <TokenBasicInformationTemplate {...args} />
+      <TokenInfoBar />
+    </TokenProvider>
+  </BrowserRouter>
+);
+
+const TemplateLoading: Story = () => (
+  <BrowserRouter>
+    <TokenProvider initialValue={initialValue} reducer={tokenReducer}>
+      <TokenInfoBar />
+    </TokenProvider>
+  </BrowserRouter>
+);
+
+const TemplateNotConnect: Story = () => (
+  <BrowserRouter>
+    <TokenProvider
+      initialValue={{ ...initialValue, token: tokenInformationState.token }}
+      reducer={tokenReducer}
+    >
+      <TokenInfoBar />
     </TokenProvider>
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
+export const NotConnectWallet = TemplateNotConnect.bind({});
+export const Loading = TemplateLoading.bind({});

@@ -57,7 +57,7 @@ const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>Amount</TableCell>
-                <TableCell>Startdate</TableCell>
+                <TableCell>Start Date</TableCell>
                 <TableCell>Distributor</TableCell>
               </TableRow>
             </TableHead>
@@ -82,7 +82,7 @@ const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
                     <TableCell>{campaign.claimAmount}</TableCell>
                     <TableCell>
                       {new Date(
-                        parseInt(campaign.startDate)
+                        parseInt(campaign.startDate) * 1000
                       ).toLocaleDateString()}
                     </TableCell>
                     <TableCell>

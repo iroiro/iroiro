@@ -18,34 +18,20 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import SetTokenModal, { SetTokenModalProps } from "./index";
-import { tokenListState } from "../../../utils/mockData";
+import ConnectModal, { ConnectModalProps } from "./index";
 
 export default {
-  title: "Organisms/SetTokenModal",
-  component: SetTokenModal,
+  title: "Organisms/ConnectModal",
+  component: ConnectModal,
 } as Meta;
 
-const Template: Story<SetTokenModalProps> = (args) => (
+const Template: Story<ConnectModalProps> = (args) => (
   <BrowserRouter>
-    <SetTokenModal {...args} />
+    <ConnectModal {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenListState,
-};
-
-export const NoInput = Template.bind({});
-NoInput.args = {
-  state: {
-    ...tokenListState,
-    tokens: [],
-    isOpen: true,
-    inputTokenAddress: "",
-    tokenAddress: "",
-    type: "dashboard",
-    color: "secondary",
-  },
+  open: true,
 };

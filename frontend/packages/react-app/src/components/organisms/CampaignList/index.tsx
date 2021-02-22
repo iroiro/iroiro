@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Box, Typography, Card } from "@material-ui/core";
+import { Typography, Card } from "@material-ui/core";
 import { TokenAndCampaignProps } from "../../../interfaces";
 import LinkButton from "../../atoms/LinkButton";
 import CampaignListTable from "../../molecules/CampaignListTable";

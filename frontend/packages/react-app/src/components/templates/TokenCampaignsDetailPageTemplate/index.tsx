@@ -15,23 +15,22 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { Dispatch, useCallback, useState } from "react";
+import React, { Dispatch } from "react";
 import AppHeader from "../../molecules/AppHeader";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import TokenInformationBar from "../../organisms/TokenInformationBar";
 import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import {
   CampaignDetailAction,
   CampaignDetailState,
 } from "../../../reducers/campaignDetail";
 import { useHistory } from "react-router-dom";
-import { Paper } from "@material-ui/core";
-import { TabMenuForFanPage } from "../../molecules/TabMenuForFunPage";
+import { TabMenuForFunPage } from "../../molecules/TabMenuForFunPage";
 import WalletCampaignDetailPanel from "../../organisms/WalletCampaignDetailPanel";
 import { useMemo } from "react";
 import { AppFooter } from "../../molecules/AppFooter";
+import TokenInfoBar from "../../molecules/TokenInfoBar";
 
 export interface TokenCampaignsDetailTemplateProps {
   readonly state: CampaignDetailState;
@@ -48,29 +47,6 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
   audiusDispatch,
   tokenAddress,
 }) => {
-  const history = useHistory();
-  const [tabNumber, setTabNumber] = useState(1);
-
-  const handleChangeTabs = useCallback(
-    (n: number) => {
-      setTabNumber(n);
-      switch (n) {
-        case 0:
-          history.push(`/explore/${tokenAddress}`);
-          break;
-        case 1:
-          history.push(`/explore/${tokenAddress}/campaigns/`);
-          break;
-        case 4:
-          history.push(`/explore/${tokenAddress}/history/`);
-          break;
-        default:
-          break;
-      }
-    },
-    [tabNumber, tokenAddress]
-  );
-
   const CampaignDetailPanel = useMemo(() => {
     switch (state.distributorType) {
       case "wallet":
@@ -79,17 +55,16 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
     }
 
     return (
-      <Paper
+      <div
         style={{
           padding: 24,
-          margin: "40px 0",
           textAlign: "center",
           lineHeight: "240px",
           height: 240,
         }}
       >
         <Typography>Campaign not found.</Typography>
-      </Paper>
+      </div>
     );
   }, [state]);
 
@@ -105,8 +80,6 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
           minHeight: "600px",
         }}
       >
-        <TokenInformationBar />
-        <TabMenuForFanPage value={tabNumber} onChange={handleChangeTabs} />
         <Container maxWidth="md">
           <Box
             style={{
@@ -116,22 +89,28 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
               minWidth: 320,
             }}
           >
-            {state.campaign !== null &&
-              state.campaign.campaignMetadata &&
-              CampaignDetailPanel}
-            {state.campaign === null && (
-              <Paper
-                style={{
-                  padding: 24,
-                  margin: "40px 0",
-                  textAlign: "center",
-                  lineHeight: "240px",
-                  height: 240,
-                }}
-              >
-                <Typography>Campaign not found.</Typography>
-              </Paper>
-            )}
+            <TokenInfoBar />
+            <TabMenuForFunPage
+              current={"campaigns"}
+              tokenAddress={tokenAddress}
+            />
+            <div style={{ backgroundColor: "#fff" }}>
+              {state.campaign !== null &&
+                state.campaign.campaignMetadata &&
+                CampaignDetailPanel}
+              {state.campaign === null && (
+                <div
+                  style={{
+                    padding: 24,
+                    textAlign: "center",
+                    lineHeight: "240px",
+                    height: 240,
+                  }}
+                >
+                  <Typography>Campaign not found.</Typography>
+                </div>
+              )}
+            </div>
           </Box>
         </Container>
       </Box>

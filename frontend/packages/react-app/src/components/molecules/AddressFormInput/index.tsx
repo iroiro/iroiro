@@ -17,9 +17,15 @@
 
 import * as React from "react";
 import { FormControl, InputLabel, Input, Box } from "@material-ui/core";
-import { ExplorePageTemplateProps } from "../../templates/ExplorePageTemplate";
+import { TokenListState } from "../../../interfaces";
+import { ACTIONS } from "../../../reducers/tokens";
 
-const AddressFormInput: React.FC<ExplorePageTemplateProps> = ({
+export interface AddressFormInputProps {
+  readonly state: TokenListState;
+  dispatch: React.Dispatch<ACTIONS>;
+}
+
+const AddressFormInput: React.FC<AddressFormInputProps> = ({
   state,
   dispatch,
 }) => (

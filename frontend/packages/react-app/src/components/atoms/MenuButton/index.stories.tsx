@@ -17,35 +17,22 @@
 
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { BrowserRouter } from "react-router-dom";
-import SetTokenModal, { SetTokenModalProps } from "./index";
-import { tokenListState } from "../../../utils/mockData";
+import MenuButton, { MenuButtonProps } from ".";
 
 export default {
-  title: "Organisms/SetTokenModal",
-  component: SetTokenModal,
+  title: "Atoms/MenuButton",
+  component: MenuButton,
 } as Meta;
 
-const Template: Story<SetTokenModalProps> = (args) => (
-  <BrowserRouter>
-    <SetTokenModal {...args} />
-  </BrowserRouter>
+const Template: Story<MenuButtonProps> = (args) => (
+  <MenuButton {...args} onClick={() => console.log("click")} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenListState,
-};
-
-export const NoInput = Template.bind({});
-NoInput.args = {
-  state: {
-    ...tokenListState,
-    tokens: [],
-    isOpen: true,
-    inputTokenAddress: "",
-    tokenAddress: "",
-    type: "dashboard",
-    color: "secondary",
-  },
+  title: "DISTRIBUTION",
+  description:
+    "You can create a token distribution campaign. Let's set the tokens to be distributed and create a campaign.",
+  color: "creator",
+  disabled: false,
 };
