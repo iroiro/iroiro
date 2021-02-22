@@ -378,6 +378,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
       distributorFormState.endDate == null ||
       tokenState.allowance === ""
     ) {
+      console.info("cancel merkle proof creation");
       return;
     }
 

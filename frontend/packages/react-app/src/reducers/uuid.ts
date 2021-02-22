@@ -18,6 +18,10 @@
 import { ethers } from "ethers";
 import { v4 as uuidv4 } from "uuid";
 
+const upperLimit = Number.parseInt(
+  process.env?.REACT_APP_TARGETS_UPPER_LIMIT ?? "0"
+);
+
 export type UUID_ACTIONS =
   | {
       type: "quantity:set";
@@ -37,7 +41,7 @@ export type UUID_ACTIONS =
     };
 
 export interface UUIDState {
-  quantity: string;
+  quantity: number | "";
   isValidQuantity: boolean;
   rawTargets: string[];
   targets: string[];
@@ -53,16 +57,17 @@ export const uuidReducer = (
   switch (action.type) {
     case "quantity:set": {
       const parsed = Number.parseInt(action.payload.quantity);
-      const quantity = isNaN(parsed) ? 0 : parsed;
+      const quantity = isNaN(parsed) ? "" : parsed;
       return {
         ...state,
-        quantity: action.payload.quantity,
-        isValidQuantity: quantity > 0,
+        quantity,
+        isValidQuantity: quantity !== "" && quantity > 0,
       };
     }
     case "targets:generate": {
-      const quantity = Number.parseInt(state.quantity);
-      const rawTargets: string[] = [...Array(quantity)].map(() => uuidv4());
+      const rawTargets: string[] = [...Array(state.quantity)].map(() =>
+        uuidv4()
+      );
       const targets: string[] = rawTargets.map((uuid) =>
         ethers.utils.solidityKeccak256(["string"], [uuid])
       );

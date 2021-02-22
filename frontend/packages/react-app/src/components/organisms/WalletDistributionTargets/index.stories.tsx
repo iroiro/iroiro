@@ -37,6 +37,16 @@ Default.args = {
   walletListState,
 };
 
+export const ExceedUpperLimit = Template.bind({});
+ExceedUpperLimit.args = {
+  walletListState: {
+    ...walletListState,
+    targets: [
+      ...Array(2001).map(() => "0x0000000000000000000000000000000000000000"),
+    ],
+  },
+};
+
 export const NoTarget = Template.bind({});
 NoTarget.args = {
   walletListState: {

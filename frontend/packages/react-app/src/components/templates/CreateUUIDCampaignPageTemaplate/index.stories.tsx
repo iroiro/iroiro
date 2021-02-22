@@ -39,7 +39,7 @@ Step1ButtonDisabled.args = {
   active: true,
   uuidState: {
     ...uuidInitialState,
-    quantity: "100",
+    quantity: 100,
     isValidQuantity: true,
   },
   distributorFormState,
@@ -50,7 +50,7 @@ Step1ButtonEnabled.args = {
   active: true,
   uuidState: {
     ...uuidInitialState,
-    quantity: "0",
+    quantity: 0,
     isValidQuantity: false,
   },
   distributorFormState,
@@ -62,7 +62,7 @@ Step2.args = {
   tokenInfo: tokenInfo,
   uuidState: {
     ...uuidInitialState,
-    quantity: "100",
+    quantity: 100,
     isValidQuantity: true,
   },
   distributorFormState: {
@@ -77,7 +77,7 @@ Step3.args = {
   tokenInfo: tokenInfo,
   uuidState: {
     ...uuidInitialState,
-    quantity: "100",
+    quantity: 100,
     isValidQuantity: true,
   },
   distributorFormState: {

@@ -29,6 +29,10 @@ export interface TargetsProps {
   readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
 }
 
+const upperLimit = Number.parseInt(
+  process.env?.REACT_APP_TARGETS_UPPER_LIMIT ?? "0"
+);
+
 const WalletDistributionTargets: React.FC<TargetsProps> = ({
   walletListState,
   distributorFormDispatch,
@@ -60,15 +64,28 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
                     payload: { stepNo: 2 },
                   });
                 }}
+                disabled={
+                  walletListState.targets.length === 0 ||
+                  upperLimit < walletListState.targets.length
+                }
               >
                 Next
               </Button>
+              {upperLimit < walletListState.targets.length && (
+                <Box mt={1}>
+                  <Typography color={"error"}>
+                    Wallet address number exceeds upper limit.
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </>
         ) : (
           <>
             <Box my={2}>
-              <Typography variant={"body1"}>File type: JSON</Typography>
+              <Typography variant={"body1"}>
+                File type: JSON(Target number limit: {upperLimit})
+              </Typography>
               <Box display="flex">
                 <Typography variant={"body1"}>Format: </Typography>
                 <Box ml={2}>

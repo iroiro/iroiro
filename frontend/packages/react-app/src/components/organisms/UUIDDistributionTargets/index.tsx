@@ -26,6 +26,10 @@ export interface TargetsProps {
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
+const upperLimit = Number.parseInt(
+  process.env?.REACT_APP_TARGETS_UPPER_LIMIT ?? "0"
+);
+
 // TODO add input form
 const UUIDDistributionTargets: React.FC<TargetsProps> = ({
   uuidState,
@@ -40,7 +44,7 @@ const UUIDDistributionTargets: React.FC<TargetsProps> = ({
         </Box>
         <>
           <Box my={4} style={{ textAlign: "center" }}>
-            <Typography>Number of unique URLs</Typography>
+            <Typography>Number of unique URLs(up to {upperLimit})</Typography>
           </Box>
           <Box my={2} style={{ textAlign: "center" }}>
             <TextField
@@ -52,15 +56,27 @@ const UUIDDistributionTargets: React.FC<TargetsProps> = ({
               }
               placeholder="100"
               type="number"
-              inputProps={{ min: 1 }}
+              inputProps={{
+                min: 1,
+                max: upperLimit,
+              }}
               value={uuidState.quantity}
             />
+            {upperLimit < uuidState.quantity && (
+              <Box mt={1}>
+                <Typography color={"error"}>
+                  Input number exceeds upper limit.
+                </Typography>
+              </Box>
+            )}
           </Box>
           <Box my={5} style={{ textAlign: "center" }}>
             <Button
               variant="contained"
               color="secondary"
-              disabled={!uuidState.isValidQuantity}
+              disabled={
+                uuidState.quantity <= 0 || upperLimit < uuidState.quantity
+              }
               onClick={() => {
                 uuidDispatch({ type: "targets:generate" });
                 distributorFormDispatch({

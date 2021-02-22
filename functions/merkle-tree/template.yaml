@@ -37,6 +37,7 @@ Resources:
         Variables:
           PINATA_API_KEY: ""
           PINATA_SECRET_API_KEY: ""
+          TARGETS_UPPER_LIMIT: "2000"
 
   GeneratorFunction:
     Type: AWS::Serverless::Function

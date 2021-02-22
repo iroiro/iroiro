@@ -41,6 +41,10 @@ export interface TargetsProps {
   readonly emailDispatch: React.Dispatch<EMAIL_ACTIONS>;
 }
 
+const upperLimit = Number.parseInt(
+  process.env?.REACT_APP_TARGETS_UPPER_LIMIT ?? "0"
+);
+
 const StyledSelect = styled(Select)`
   width: 50%;
 `;
@@ -86,17 +90,27 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
                   }}
                   disabled={
                     !emailState.isValidEmails ||
-                    emailState.emailList.length === 0
+                    emailState.emailList.length === 0 ||
+                    upperLimit < emailState.emailList.length
                   }
                 >
                   Next
                 </Button>
+                {upperLimit < emailState.emailList.length && (
+                  <Box mt={1}>
+                    <Typography color={"error"}>
+                      Address number exceeds upper limit.
+                    </Typography>
+                  </Box>
+                )}
               </Box>
             </>
           ) : (
             <>
               <Box my={2}>
-                <Typography variant={"body1"}>File type: CSV</Typography>
+                <Typography variant={"body1"}>
+                  File type: CSV(Email number limit: {upperLimit})
+                </Typography>
               </Box>
               <Button variant="contained" component="label">
                 Upload File
