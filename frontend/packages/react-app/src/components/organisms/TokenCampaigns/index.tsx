@@ -20,7 +20,6 @@ import {
   Grid,
   Typography,
   Box,
-  Paper,
   TextField,
   InputAdornment,
 } from "@material-ui/core";

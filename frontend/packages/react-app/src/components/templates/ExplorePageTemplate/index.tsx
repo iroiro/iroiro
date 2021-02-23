@@ -41,7 +41,7 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
     history.push(`/explore/${tokenAddress}/history`);
   }, [history, tokenAddress]);
   return (
-    <div style={{ height: "100vh" }}>
+    <div>
       <AppHeader />
       <Box
         m={"auto"}

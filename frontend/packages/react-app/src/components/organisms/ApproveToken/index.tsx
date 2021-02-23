@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Paper, Typography, Box, Button } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
 import ApproveTokenForm from "../../molecules/ApproveTokenForm";
 import TokenBalance from "../../molecules/TokenBalance";
@@ -37,92 +37,50 @@ const ApproveToken: React.FC<TokenInfo> = ({
   distributorFormState,
   distributorFormDispatch,
 }) => (
-  <Box mt={2}>
-    <Paper>
-      <Box p={4}>
-        <Box m={"auto"} width={[3 / 4]} mt={2}>
-          <Typography variant={"h4"}>2. Approve your tokens</Typography>
-          <Box mt={2}>
-            {tokenInfo.balance && tokenInfo.token ? (
-              <TokenBalance
-                balance={tokenInfo.balance}
-                symbol={tokenInfo.token.symbol}
-                decimals={tokenInfo.token.decimals}
-                itemName={"Wallet Balance:"}
-              />
-            ) : (
-              <TokenBalance
-                balance={"-"}
-                symbol={""}
-                decimals={0}
-                itemName={"Wallet Balance:"}
-              />
-            )}
-            {tokenInfo.allowance && tokenInfo.token ? (
-              <TokenBalance
-                balance={tokenInfo.allowance}
-                symbol={tokenInfo.token.symbol}
-                decimals={tokenInfo.token.decimals}
-                itemName={"Approved Amount:"}
-              />
-            ) : (
-              <TokenBalance
-                balance={"-"}
-                symbol={""}
-                decimals={0}
-                itemName={"Approved Amount:"}
-              />
-            )}
-          </Box>
-          <ApproveTokenForm
-            m={4}
-            distributorFormState={distributorFormState}
-            distributorFormDispatch={distributorFormDispatch}
-          />
+  <>
+    <Box>
+      <Box mt={2}>
+        <Box mb={1}>
+          {tokenInfo.balance && tokenInfo.token ? (
+            <TokenBalance
+              balance={tokenInfo.balance}
+              symbol={tokenInfo.token.symbol}
+              decimals={tokenInfo.token.decimals}
+              itemName={"Wallet Balance:"}
+            />
+          ) : (
+            <TokenBalance
+              balance={"-"}
+              symbol={""}
+              decimals={0}
+              itemName={"Wallet Balance:"}
+            />
+          )}
         </Box>
-        <Box
-          display="flex"
-          my={4}
-          style={{ textAlign: "center", justifyContent: "center" }}
-        >
-          <Box mr={4}>
-            <Button
-              variant="outlined"
-              color="default"
-              onClick={() => {
-                distributorFormDispatch({
-                  type: "step:set",
-                  payload: { stepNo: 1 },
-                });
-              }}
-            >
-              Back
-            </Button>
-          </Box>
-          <Box>
-            {tokenInfo.allowance === "0" ? (
-              <Button variant="contained" color="secondary" disabled>
-                Next
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => {
-                  distributorFormDispatch({
-                    type: "step:set",
-                    payload: { stepNo: 3 },
-                  });
-                }}
-              >
-                Next
-              </Button>
-            )}
-          </Box>
+        <Box>
+          {tokenInfo.allowance && tokenInfo.token ? (
+            <TokenBalance
+              balance={tokenInfo.allowance}
+              symbol={tokenInfo.token.symbol}
+              decimals={tokenInfo.token.decimals}
+              itemName={"Approved Amount:"}
+            />
+          ) : (
+            <TokenBalance
+              balance={"-"}
+              symbol={""}
+              decimals={0}
+              itemName={"Approved Amount:"}
+            />
+          )}
         </Box>
       </Box>
-    </Paper>
-  </Box>
+      <ApproveTokenForm
+        distributorFormState={distributorFormState}
+        distributorFormDispatch={distributorFormDispatch}
+      />
+    </Box>
+  </>
 );
 
 export default ApproveToken;

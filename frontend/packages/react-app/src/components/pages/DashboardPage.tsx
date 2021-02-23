@@ -21,6 +21,7 @@ import { tokensReducer } from "../../reducers/tokens";
 import { useWeb3React } from "@web3-react/core";
 import { getTokenInfo } from "../../utils/web3";
 import { TokenListState } from "../../interfaces";
+import { campaignsState, creatorTokenList } from "../../utils/mockData";
 
 const initialState: TokenListState = {
   isOpen: false,
@@ -50,7 +51,14 @@ const DashboardPage: React.FC = () => {
     f();
   }, [library, state.tokenAddress]);
 
-  return <Dashboard state={state} dispatch={dispatch} />;
+  // TODO: Remove mockData
+  return (
+    <Dashboard
+      campaignsState={campaignsState}
+      creatorTokenList={creatorTokenList}
+      active={true}
+    />
+  );
 };
 
 export default DashboardPage;

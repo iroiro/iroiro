@@ -36,6 +36,23 @@ const theme = createMuiTheme({
       sm: 600,
     },
   },
+  overrides: {
+    MuiStepConnector: {
+      lineVertical: {
+        minHeight: 10,
+      },
+    },
+    MuiStepIcon: {
+      root: {
+        "&.MuiStepIcon-active": {
+          color: "#48C5D5",
+        },
+        "&.MuiStepIcon-completed": {
+          color: "#48C5D5",
+        },
+      },
+    },
+  },
 });
 
 theme.typography.h3 = {

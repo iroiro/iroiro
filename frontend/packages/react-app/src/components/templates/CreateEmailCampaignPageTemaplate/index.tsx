@@ -16,7 +16,7 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Container } from "@material-ui/core";
+import { Box, Typography, Container, Paper } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
 import ApproveToken from "../../organisms/ApproveToken";
 import SetupCampaign from "../../organisms/SetupCampaign";
@@ -28,7 +28,7 @@ import {
 } from "../../../reducers/distributorForm";
 import UploadEmailCsvPane from "../../organisms/UploadEmailCsvPane";
 import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
-import DownloadEmailCsvPane from "../../organisms/DownloadEmailCsvPane";
+import CreateEmailCampaignStepper from "../../organisms/CreateEmailCampaignStepper";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -51,46 +51,25 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
 }) => (
   <div>
     <AppHeader />
-    <Box mt={5}>
+    <Box maxWidth={680} style={{ margin: "40px auto" }}>
       <Container>
         {!active ? (
           <Box>
             <WalletConnect />
           </Box>
         ) : (
-          <Box>
+          <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
             <Box my={1}>
               <Typography variant={"h3"}>Email Campaign</Typography>
             </Box>
-            {distributorFormState.step === 1 && (
-              <UploadEmailCsvPane
-                emailState={emailState}
-                emailDispatch={emailDispatch}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 2 && (
-              <ApproveToken
-                tokenInfo={tokenInfo}
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 3 && (
-              <SetupCampaign
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 4 && (
-              <DownloadEmailCsvPane
-                tokenAddress={tokenAddress}
-                campaignAddress={distributorFormState.createdCampaignAddress}
-                emailState={emailState}
-                emailDispatch={emailDispatch}
-              />
-            )}
-          </Box>
+            <CreateEmailCampaignStepper
+              tokenInfo={tokenInfo}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+              emailState={emailState}
+              emailDispatch={emailDispatch}
+            />
+          </Paper>
         )}
       </Container>
     </Box>

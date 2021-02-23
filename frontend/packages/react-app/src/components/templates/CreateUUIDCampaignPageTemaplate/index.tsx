@@ -16,19 +16,16 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Container } from "@material-ui/core";
+import { Box, Typography, Container, Paper } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
-import ApproveToken from "../../organisms/ApproveToken";
-import SetupCampaign from "../../organisms/SetupCampaign";
 import { AccountToken } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import UUIDDistributionTargets from "../../organisms/UUIDDistributionTargets";
 import { UUID_ACTIONS, UUIDState } from "../../../reducers/uuid";
-import UUIDURLList from "../../organisms/UUIDURLList";
+import CreateUUIDCampaignStepper from "../../organisms/CreateUUIDCampaignStepper";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -42,7 +39,6 @@ export interface CampaignInfo {
 
 const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
-  tokenAddress,
   tokenInfo,
   distributorFormState,
   distributorFormDispatch,
@@ -51,46 +47,25 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
 }) => (
   <div>
     <AppHeader />
-    <Box mt={5}>
+    <Box maxWidth={680} style={{ margin: "40px auto" }}>
       <Container>
         {!active ? (
           <Box>
             <WalletConnect />
           </Box>
         ) : (
-          <Box>
+          <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
             <Box my={1}>
               <Typography variant={"h3"}>URL Campaign</Typography>
             </Box>
-            {distributorFormState.step === 1 && (
-              <UUIDDistributionTargets
-                uuidState={uuidState}
-                uuidDispatch={uuidDispatch}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 2 && (
-              <ApproveToken
-                tokenInfo={tokenInfo}
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 3 && (
-              <SetupCampaign
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 4 && (
-              <UUIDURLList
-                tokenAddress={tokenAddress}
-                campaignAddress={distributorFormState.createdCampaignAddress}
-                uuidState={uuidState}
-                uuidDispatch={uuidDispatch}
-              />
-            )}
-          </Box>
+            <CreateUUIDCampaignStepper
+              tokenInfo={tokenInfo}
+              distributorFormState={distributorFormState}
+              uuidState={uuidState}
+              distributorFormDispatch={distributorFormDispatch}
+              uuidDispatch={uuidDispatch}
+            />
+          </Paper>
         )}
       </Container>
     </Box>

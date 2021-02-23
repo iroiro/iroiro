@@ -22,7 +22,6 @@ import { campaignsReducer } from "../../reducers/campaigns";
 import { GET_CAMPAIGNS_BY_CREATOR_AND_TOKEN } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { CampaignInfo } from "../../interfaces";
-import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
 import { useWeb3React } from "@web3-react/core";
 
 const campaignsInitialState = {
@@ -102,11 +101,11 @@ const ExternalTokenDetailPage: React.FC<
 
   return (
     <>
-      <ExternalTokenDetailPageTemplate
+      {/* <ExternalTokenDetailPageTemplate
         active={active}
         tokenState={tokenState}
         campaignsState={campaignsState}
-      />
+      /> */}
     </>
   );
 };

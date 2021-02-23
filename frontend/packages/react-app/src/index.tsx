@@ -23,7 +23,10 @@ import "./index.css";
 import App from "./App";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+import {
+  StylesProvider,
+  ThemeProvider as MuiThemeProvider,
+} from "@material-ui/core/styles";
 import muiTheme from "../src/theme/mui-theme";
 
 const getLibrary = (provider: any): Web3Provider => {
@@ -41,11 +44,13 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <MuiThemeProvider theme={muiTheme}>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <App />
-      </Web3ReactProvider>
-    </MuiThemeProvider>
+    <StylesProvider injectFirst>
+      <MuiThemeProvider theme={muiTheme}>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <App />
+        </Web3ReactProvider>
+      </MuiThemeProvider>
+    </StylesProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );

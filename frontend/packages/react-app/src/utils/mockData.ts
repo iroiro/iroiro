@@ -24,10 +24,12 @@ import {
   AccountToken,
   TokenListState,
   WalletList,
+  Campaigns,
 } from "../interfaces";
 import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
 import { EmailState } from "../reducers/email";
+import { TokenOption } from "../components/atoms/SelectTokenInput";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -66,7 +68,7 @@ export const campaign: CampaignInfo = {
   token: {
     token: {
       tokenAddress: "",
-      name: "",
+      name: "tokenName",
       symbol: "",
       decimals: 18,
       totalSupply: "",
@@ -325,3 +327,47 @@ export const emailState: EmailState = {
   moveToCampaignPage: false,
   distributorAddress: "",
 };
+
+export const campaignsState: Campaigns = {
+  campaigns: [
+    {
+      ...campaign,
+      token: {
+        ...campaign.token,
+        token: {
+          ...campaign.token.token!,
+          name: "token1",
+          tokenAddress: "token1Address",
+        },
+      },
+    },
+    {
+      ...campaign,
+      token: {
+        ...campaign.token,
+        token: {
+          ...campaign.token.token!,
+          name: "test",
+          tokenAddress: "testTokenAddress",
+        },
+      },
+    },
+    {
+      ...campaign,
+      token: {
+        ...campaign.token,
+        token: {
+          ...campaign.token.token!,
+          name: "hoge",
+          tokenAddress: "hogeTokenAddress",
+        },
+      },
+    },
+  ],
+};
+
+export const creatorTokenList: TokenOption[] = [
+  { tokenName: "test", tokenAddress: "testTokenAddress" },
+  { tokenName: "hoge", tokenAddress: "hogeTokenAddress" },
+  { tokenName: "token1", tokenAddress: "token1Address" },
+];

@@ -28,8 +28,14 @@ import {
   Box,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { TokenAndCampaignProps, CampaignInfo } from "../../../interfaces";
+import { CampaignInfo, Campaigns } from "../../../interfaces";
 import distributors from "../../../utils/distributors";
+import WalletButton from "../../atoms/WalletButton";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
+import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
+import { useState } from "react";
+import { useEffect } from "react";
 
 interface DistributorProps {
   campaign: CampaignInfo;
@@ -44,31 +50,109 @@ function DistributorName(props: DistributorProps) {
   return <Typography>{result[0].distributorMetadata.name}</Typography>;
 }
 
-const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
-  tokenState,
+export interface CampaignListTableProps {
+  campaignsState: Campaigns;
+  walletConnect: boolean;
+  creatorTokenList: TokenOption[];
+}
+
+const CampaignListTable: React.FC<CampaignListTableProps> = ({
   campaignsState,
+  walletConnect,
+  creatorTokenList,
 }) => {
+  const [value, setValue] = useState<TokenOption>({
+    tokenName: "",
+    tokenAddress: "",
+  });
+
+  const [displayedList, setdisplayedList] = useState(campaignsState.campaigns);
+
+  useEffect(() => {
+    if (campaignsState.campaigns.length == 0) {
+      return;
+    }
+    if (value === null) {
+      setdisplayedList(campaignsState.campaigns);
+      return;
+    }
+
+    if (value.tokenName === "") {
+      setdisplayedList(campaignsState.campaigns);
+      return;
+    }
+
+    const filteredList = campaignsState.campaigns.filter((campaign) => {
+      return (
+        campaign.token.token?.name === value.tokenName &&
+        campaign.token.token.tokenAddress === value.tokenAddress
+      );
+    });
+    setdisplayedList(filteredList);
+  }, [value]);
+
   return (
     <>
-      {campaignsState.campaigns.length > 0 ? (
-        <TableContainer component={Paper}>
+      <TitleWrapper
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <Typography variant={"h4"}>Your Campaigns</Typography>
+        {walletConnect && displayedList.length > 0 && (
+          <div>
+            <SelectTokenInput
+              label={
+                creatorTokenList.length === 0
+                  ? "Please Wait...⏳"
+                  : "Filtered by Token"
+              }
+              options={creatorTokenList}
+              value={value}
+              onChange={(value: TokenOption) => setValue(value)}
+              disabled={creatorTokenList.length === 0}
+              small
+              color="creator"
+            />
+          </div>
+        )}
+      </TitleWrapper>
+      <Paper variant="outlined">
+        <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>Amount</TableCell>
                 <TableCell>Start Date</TableCell>
+                <TableCell>Token</TableCell>
                 <TableCell>Distributor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {campaignsState.campaigns.length > 0 &&
-                campaignsState.campaigns.map((campaign) => (
-                  <TableRow key={campaign.id}>
+              {!walletConnect && (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    style={{ padding: 32, textAlign: "center" }}
+                  >
+                    If you want to see your campaigns, please connect to the
+                    wallet
+                    <ButtonWrapper mt={2} textAlign="center">
+                      <WalletButton />
+                    </ButtonWrapper>
+                  </TableCell>
+                </TableRow>
+              )}
+              {walletConnect &&
+                displayedList.length > 0 &&
+                displayedList.map((campaign, index) => (
+                  <TableRow key={campaign.id + index}>
                     {"campaignMetadata" in campaign ? (
                       <TableCell>
                         <Link
-                          to={`/dashboard/${tokenState.token?.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
+                          to={`/dashboard/${campaign.token.token?.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
                           style={{ textDecoration: "none", color: "#48C5D5" }}
                         >
                           <Typography variant={"body2"}>
@@ -85,21 +169,41 @@ const CampaignListTable: React.FC<TokenAndCampaignProps> = ({
                         parseInt(campaign.startDate) * 1000
                       ).toLocaleDateString()}
                     </TableCell>
+                    <TableCell>{campaign.token.token?.name ?? "..."}</TableCell>
                     <TableCell>
                       <DistributorName campaign={campaign} />
                     </TableCell>
                   </TableRow>
                 ))}
+              {walletConnect && displayedList.length === 0 && (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    style={{ padding: 32, textAlign: "center" }}
+                  >
+                    No Campaign
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
-      ) : (
-        <Box style={{ textAlign: "center" }} py={5}>
-          <Typography>No Campaign</Typography>
-        </Box>
-      )}
+      </Paper>
     </>
   );
 };
+
+const ButtonWrapper = styled(Box)`
+  & > div {
+    display: block;
+    text-align: center;
+  }
+`;
+
+const TitleWrapper = styled(Box)`
+  ${theme.breakpoints.down(600)} {
+    display: block;
+  }
+`;
 
 export default CampaignListTable;
