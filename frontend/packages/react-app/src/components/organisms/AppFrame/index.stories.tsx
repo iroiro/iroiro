@@ -15,23 +15,20 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
-import { Typography, Box } from "@material-ui/core";
+import * as React from "react";
+import { Story, Meta } from "@storybook/react/types-6-0";
+import { BrowserRouter } from "react-router-dom";
+import AppFrame, { AppFrameProps } from ".";
 
-export interface ItemProps {
-  readonly title: string;
-  readonly text: string;
-}
+export default {
+  title: "Organisms/AppFrame",
+  component: AppFrame,
+} as Meta;
 
-const Item: React.FC<ItemProps> = ({ title, text }) => {
-  return (
-    <Box mr={4}>
-      <Typography variant="subtitle2" style={{ fontWeight: "normal" }}>
-        {title}
-      </Typography>
-      <Typography variant="h4">{text}</Typography>
-    </Box>
-  );
-};
+const Template: Story<AppFrameProps> = (args) => (
+  <BrowserRouter>
+    <AppFrame {...args} />
+  </BrowserRouter>
+);
 
-export default Item;
+export const Default = Template.bind({});

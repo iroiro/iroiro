@@ -26,6 +26,7 @@ import {
 } from "../../../reducers/distributorForm";
 import { UUID_ACTIONS, UUIDState } from "../../../reducers/uuid";
 import CreateUUIDCampaignStepper from "../../organisms/CreateUUIDCampaignStepper";
+import AppFrame from "../../organisms/AppFrame";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -45,15 +46,14 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
   uuidState,
   uuidDispatch,
 }) => (
-  <div>
-    <AppHeader />
-    <Box maxWidth={680} style={{ margin: "40px auto" }}>
-      <Container>
-        {!active ? (
-          <Box>
-            <WalletConnect />
-          </Box>
-        ) : (
+  <>
+    <AppFrame>
+      {!active ? (
+        <Box>
+          <WalletConnect />
+        </Box>
+      ) : (
+        <Box maxWidth={640} style={{ margin: "auto" }}>
           <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
             <Box my={1}>
               <Typography variant={"h3"}>URL Campaign</Typography>
@@ -66,10 +66,10 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
               uuidDispatch={uuidDispatch}
             />
           </Paper>
-        )}
-      </Container>
-    </Box>
-  </div>
+        </Box>
+      )}
+    </AppFrame>
+  </>
 );
 
 export default CreateUUIDCampaignPageTemplate;

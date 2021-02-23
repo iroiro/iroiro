@@ -15,23 +15,38 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
 import React from "react";
-import { Typography, Box } from "@material-ui/core";
+import { AppFooter } from "../../molecules/AppFooter";
+import AppHeader from "../../molecules/AppHeader";
 
-export interface ItemProps {
-  readonly title: string;
-  readonly text: string;
+export interface AppFrameProps {
+  children?: React.ReactNode;
 }
 
-const Item: React.FC<ItemProps> = ({ title, text }) => {
+const AppFrame = ({ ...props }) => {
   return (
-    <Box mr={4}>
-      <Typography variant="subtitle2" style={{ fontWeight: "normal" }}>
-        {title}
-      </Typography>
-      <Typography variant="h4">{text}</Typography>
-    </Box>
+    <div>
+      <AppHeader />
+      <Box m={"40px auto"} minWidth={320}>
+        <Container maxWidth="md">
+          <Box
+            style={{
+              boxSizing: "border-box",
+              padding: 24,
+              maxWidth: 860,
+              margin: "0 auto",
+              minWidth: 320,
+            }}
+          >
+            {props.children}
+          </Box>
+        </Container>
+      </Box>
+      <AppFooter />
+    </div>
   );
 };
 
-export default Item;
+export default AppFrame;

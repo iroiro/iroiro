@@ -31,6 +31,7 @@ import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import { WalletList } from "../../../interfaces";
 import { AppFooter } from "../../molecules/AppFooter";
 import CreateWalletAddressCampaignStepper from "../../organisms/CreateWalletAddressCampaignStepper";
+import AppFrame from "../../organisms/AppFrame";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -49,15 +50,14 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
   walletListState,
   walletDispatch,
 }) => (
-  <div style={{ height: "100vh" }}>
-    <AppHeader />
-    <Box maxWidth={680} style={{ margin: "40px auto" }}>
-      <Container>
-        {!active ? (
-          <Box>
-            <WalletConnect />
-          </Box>
-        ) : (
+  <>
+    <AppFrame>
+      {!active ? (
+        <Box>
+          <WalletConnect />
+        </Box>
+      ) : (
+        <Box maxWidth={640} style={{ margin: "auto" }}>
           <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
             <Box my={1}>
               <Typography variant={"h3"}>Wallet Address Campaign</Typography>
@@ -70,11 +70,10 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
               walletDispatch={walletDispatch}
             />
           </Paper>
-        )}
-      </Container>
-    </Box>
-    <AppFooter />
-  </div>
+        </Box>
+      )}
+    </AppFrame>
+  </>
 );
 
 export default CreateWalletCampaignPageTemplate;

@@ -17,14 +17,13 @@
 
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
 import { Campaigns } from "../../../interfaces";
-import { AppFooter } from "../../molecules/AppFooter";
 import MenuButton from "../../atoms/MenuButton";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import CampaignListTable from "../../molecules/CampaignListTable";
 import { TokenOption } from "../../atoms/SelectTokenInput";
+import AppFrame from "../../organisms/AppFrame";
 
 export interface DashboardPageTemplateProps {
   readonly campaignsState: Campaigns;
@@ -38,20 +37,8 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
   creatorTokenList,
 }) => {
   return (
-    <div>
-      <AppHeader />
-      <Box
-        m={"auto"}
-        my={5}
-        p={2}
-        width={[4 / 5, 1 / 2]}
-        minWidth={320}
-        style={{
-          boxSizing: "border-box",
-          height: "calc(100% - 266px)",
-          minHeight: "300px",
-        }}
-      >
+    <>
+      <AppFrame>
         <Typography
           variant={"h3"}
           style={{ fontWeight: 300, textAlign: "center", marginBottom: 32 }}
@@ -59,15 +46,36 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
           CREATE NEW CAMPAIGN WITH...
         </Typography>
         <MenuButtonWrapper>
+          {/* TODO: Remove console.log */}
           <MenuButton
             title="Wallet address Distributor"
             description="To distribute tokens to a list of addresses that you have."
             color="creator"
+            onClick={() =>
+              console.log("Link to Wallet Address Distributor page")
+            }
           />
           <MenuButton
             title="URL Distributor"
             description="To distribute tokens with a unique URL per user."
             color="creator"
+            onClick={() => console.log("Link to URL Distributor page")}
+          />
+        </MenuButtonWrapper>
+        <MenuButtonWrapper>
+          <MenuButton
+            title="Email Distributor"
+            description="To distribute tokens to a list of Email addresses that you have."
+            color="creator"
+            onClick={() =>
+              console.log("Link to Email Address Distributor page")
+            }
+          />
+          <MenuButton
+            title="⏳"
+            description="Coming soon"
+            color="creator"
+            disabled={true}
           />
         </MenuButtonWrapper>
         <Box mt={6}>
@@ -77,15 +85,15 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
             creatorTokenList={creatorTokenList}
           />
         </Box>
-      </Box>
-      <AppFooter />
-    </div>
+      </AppFrame>
+    </>
   );
 };
 
 const MenuButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 8px;
   & > div {
     width: 49.5%;
     ${theme.breakpoints.down(600)} {

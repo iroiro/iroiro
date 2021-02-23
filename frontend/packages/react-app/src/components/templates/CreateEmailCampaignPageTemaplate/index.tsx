@@ -18,17 +18,15 @@
 import * as React from "react";
 import { Box, Typography, Container, Paper } from "@material-ui/core";
 import AppHeader from "../../molecules/AppHeader";
-import ApproveToken from "../../organisms/ApproveToken";
-import SetupCampaign from "../../organisms/SetupCampaign";
 import { AccountToken } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import UploadEmailCsvPane from "../../organisms/UploadEmailCsvPane";
 import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
 import CreateEmailCampaignStepper from "../../organisms/CreateEmailCampaignStepper";
+import AppFrame from "../../organisms/AppFrame";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -49,15 +47,14 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
   emailState,
   emailDispatch,
 }) => (
-  <div>
-    <AppHeader />
-    <Box maxWidth={680} style={{ margin: "40px auto" }}>
-      <Container>
-        {!active ? (
-          <Box>
-            <WalletConnect />
-          </Box>
-        ) : (
+  <>
+    <AppFrame>
+      {!active ? (
+        <Box>
+          <WalletConnect />
+        </Box>
+      ) : (
+        <Box maxWidth={640} style={{ margin: "auto" }}>
           <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
             <Box my={1}>
               <Typography variant={"h3"}>Email Campaign</Typography>
@@ -70,10 +67,10 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
               emailDispatch={emailDispatch}
             />
           </Paper>
-        )}
-      </Container>
-    </Box>
-  </div>
+        </Box>
+      )}
+    </AppFrame>
+  </>
 );
 
 export default CreateEmailCampaignPageTemplate;

@@ -16,14 +16,11 @@
  */
 
 import React from "react";
-import AppHeader from "../../molecules/AppHeader";
 import TokenCampaigns from "../../organisms/TokenCampaigns";
-import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
 import { TabMenuForFunPage } from "../../molecules/TabMenuForFunPage";
 import { TokenCampaignsState } from "../../../reducers/tokenCampaigns";
-import { AppFooter } from "../../molecules/AppFooter";
 import TokenInfoBar from "../../molecules/TokenInfoBar";
+import AppFrame from "../../organisms/AppFrame";
 
 export interface TokenCampaignsTemplateProps {
   state: TokenCampaignsState;
@@ -35,40 +32,15 @@ export const TokenCampaignsTemplate: React.FC<TokenCampaignsTemplateProps> = ({
   tokenAddress,
 }) => {
   return (
-    <div style={{ height: "100%", minHeight: "100vh" }}>
-      <AppHeader />
-      <Box
-        m={"auto"}
-        minWidth={320}
-        style={{
-          boxSizing: "border-box",
-          height: "calc(100% - 190px)",
-          minHeight: "600px",
-        }}
-      >
-        <Container maxWidth="md">
-          <Box
-            style={{
-              boxSizing: "border-box",
-              padding: 24,
-              maxWidth: 860,
-              margin: "0 auto",
-              minWidth: 320,
-            }}
-          >
-            <TokenInfoBar />
-            <TabMenuForFunPage
-              tokenAddress={tokenAddress}
-              current={"campaigns"}
-            />
-            <TokenCampaigns
-              campaigns={state.campaigns}
-              tokenAddress={tokenAddress}
-            />
-          </Box>
-        </Container>
-      </Box>
-      <AppFooter />
-    </div>
+    <>
+      <AppFrame>
+        <TokenInfoBar />
+        <TabMenuForFunPage tokenAddress={tokenAddress} current={"campaigns"} />
+        <TokenCampaigns
+          campaigns={state.campaigns}
+          tokenAddress={tokenAddress}
+        />
+      </AppFrame>
+    </>
   );
 };
