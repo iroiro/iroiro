@@ -61,10 +61,10 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
           />
         </Box>
         <Box mb={2}>
+          {/* TODO: Change Dispatch and set value */}
           <TextField
             fullWidth
             type="text"
-            required
             label="Description"
             color="secondary"
             variant="outlined"
