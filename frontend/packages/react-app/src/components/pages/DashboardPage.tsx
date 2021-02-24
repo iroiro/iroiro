@@ -18,33 +18,19 @@
 import React, { useCallback, useEffect, useReducer } from "react";
 import Dashboard from "../templates/DashboardPageTemplate";
 import { useWeb3React } from "@web3-react/core";
-import { creatorTokenList } from "../../utils/mockData";
-import { tokenInitialState, tokenReducer } from "../../reducers/token";
 import {
   campaignsInitialState,
   campaignsReducer,
 } from "../../reducers/campaigns";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { GET_CAMPAIGNS_BY_CREATOR } from "../../graphql/subgraph";
+import { getTokenInfo } from "../../utils/web3";
+import { TokenOption } from "../atoms/SelectTokenInput";
+import { useTokenContext } from "../../context/token";
 
 const DashboardPage: React.FC = () => {
   const { active, library, account } = useWeb3React();
-
-  // useEffect(() => {
-  //   const f = async () => {
-  //     const token = await getTokenInfo(library, state.tokenAddress);
-  //     if (token === undefined) {
-  //       return;
-  //     }
-  //     dispatch({ type: "token:set", payload: { token } });
-  //   };
-  //   f();
-  // }, [library, state.tokenAddress]);
-
-  const [tokenState, tokenDispatch] = useReducer(
-    tokenReducer,
-    tokenInitialState
-  );
+  const { state: tokenState, dispatch: tokenDispatch } = useTokenContext();
   const [campaignsState, campaignDispatch] = useReducer(
     campaignsReducer,
     campaignsInitialState
@@ -85,6 +71,31 @@ const DashboardPage: React.FC = () => {
     }
   }, [data]);
 
+  React.useEffect(() => {
+    const f = async () => {
+      const tokenNames = campaignsState.campaigns
+        .map((campaign) => campaign.token)
+        .filter((elem, index, self) => self.indexOf(elem) === index) // distinct
+        .map(async (token) => {
+          const tokenInfo = await getTokenInfo(library, token as string);
+          return {
+            tokenName: tokenInfo?.name,
+            tokenAddress: token,
+          } as TokenOption;
+        });
+      return Promise.all(tokenNames);
+    };
+
+    f().then((r) => {
+      tokenDispatch({
+        type: "tokens:set",
+        payload: {
+          tokens: r,
+        },
+      });
+    });
+  }, [campaignsState.campaigns]);
+
   useEffect(() => {
     if (campaignsState.campaigns.length > 0) {
       if (campaignsState.campaigns[0].campaignMetadata) {
@@ -98,7 +109,7 @@ const DashboardPage: React.FC = () => {
   return (
     <Dashboard
       campaignsState={campaignsState}
-      creatorTokenList={creatorTokenList}
+      creatorTokenList={tokenState.tokens}
       active={active}
     />
   );

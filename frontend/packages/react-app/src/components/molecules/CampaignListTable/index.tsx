@@ -66,29 +66,30 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
     tokenAddress: "",
   });
 
-  const [displayedList, setdisplayedList] = useState(campaignsState.campaigns);
+  const [displayedList, setDisplayedList] = useState(campaignsState.campaigns);
 
   useEffect(() => {
     if (campaignsState.campaigns.length == 0) {
       return;
     }
     if (value === null) {
-      setdisplayedList(campaignsState.campaigns);
+      setDisplayedList(campaignsState.campaigns);
       return;
     }
 
     if (value.tokenName === "") {
-      setdisplayedList(campaignsState.campaigns);
+      setDisplayedList(campaignsState.campaigns);
       return;
     }
 
     const filteredList = campaignsState.campaigns.filter((campaign) => {
       return (
-        campaign.token.token?.name === value.tokenName &&
-        campaign.token.token.tokenAddress === value.tokenAddress
+        // TODO remove type assertion
+        (campaign.token as string).toLowerCase() ===
+        value.tokenAddress.toLowerCase()
       );
     });
-    setdisplayedList(filteredList);
+    setDisplayedList(filteredList);
   }, [value, campaignsState.campaigns]);
 
   return (
@@ -152,7 +153,7 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                     {"campaignMetadata" in campaign ? (
                       <TableCell>
                         <Link
-                          to={`/dashboard/${campaign.token.token?.tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
+                          to={`/dashboard/${campaign.token}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
                           style={{ textDecoration: "none", color: "#48C5D5" }}
                         >
                           <Typography variant={"body2"}>
@@ -169,7 +170,13 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                         parseInt(campaign.startDate) * 1000
                       ).toLocaleDateString()}
                     </TableCell>
-                    <TableCell>{campaign.token.token?.name ?? "..."}</TableCell>
+                    <TableCell>
+                      {creatorTokenList.find(
+                        (creatorOption) =>
+                          creatorOption.tokenAddress.toLowerCase() ===
+                          campaign.token
+                      )?.tokenName ?? "..."}
+                    </TableCell>
                     <TableCell>
                       <DistributorName campaign={campaign} />
                     </TableCell>
