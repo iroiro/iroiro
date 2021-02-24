@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -34,9 +34,14 @@ import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import styled from "styled-components";
 import ApproveToken from "../ApproveToken";
 import SetupCampaign from "../SetupCampaign";
+import { useGetTokenInfo } from "../../../hooks/useGetTokenInfo";
+import { useWeb3React } from "@web3-react/core";
+import { ACTIONS } from "../../../reducers/token";
+import { isAddress } from "ethers/lib/utils";
 
 export interface CreateWalletAddressCampaignStepperProps {
   readonly tokenInfo: AccountToken;
+  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly walletListState: WalletList;
@@ -44,19 +49,44 @@ export interface CreateWalletAddressCampaignStepperProps {
 }
 
 const CreateWalletAddressCampaignStepper = ({
-  ...props
+  tokenInfo,
+  tokenDispatch,
+  distributorFormState,
+  distributorFormDispatch,
+  walletListState,
+  walletDispatch,
 }: CreateWalletAddressCampaignStepperProps) => {
   const handleStepChange = (stepNumber: number) => {
-    props.distributorFormDispatch({
+    distributorFormDispatch({
       type: "step:set",
       payload: { stepNo: stepNumber },
     });
   };
+  const { library } = useWeb3React();
+  const { getTokenInfo, token } = useGetTokenInfo(
+    library,
+    distributorFormState.tokenAddress
+  );
+
+  useEffect(() => {
+    if (token === undefined) {
+      return;
+    }
+    tokenDispatch({
+      type: "token:set",
+      payload: {
+        token,
+      },
+    });
+  }, [token, tokenDispatch]);
+  const isTokenAddressError =
+    distributorFormState.tokenAddress !== "" &&
+    !isAddress(distributorFormState.tokenAddress);
 
   return (
     <div>
       <Stepper
-        activeStep={props.distributorFormState.step}
+        activeStep={distributorFormState.step}
         orientation="vertical"
         style={{ maxWidth: 680 }}
       >
@@ -74,18 +104,33 @@ const CreateWalletAddressCampaignStepper = ({
               }}
             >
               <TextField
+                error={isTokenAddressError}
+                helperText={isTokenAddressError ? "Invalid address" : undefined}
                 color="secondary"
                 label="Token Address"
                 style={{ width: 200, marginRight: 8 }}
-                value={props.tokenInfo.token?.tokenAddress}
+                value={distributorFormState.tokenAddress}
+                onChange={(e) =>
+                  distributorFormDispatch({
+                    type: "tokenAddress:set",
+                    payload: {
+                      tokenAddress: e.target.value,
+                    },
+                  })
+                }
               />
-              <Button color="secondary" variant="outlined">
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={() => getTokenInfo()}
+                disabled={isTokenAddressError}
+              >
                 Confirm
               </Button>
             </div>
-            {props.tokenInfo.token?.name !== "" && (
+            {tokenInfo.token?.name !== "" && (
               <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
-                {props.tokenInfo.token?.name}
+                {tokenInfo.token?.name}
               </div>
             )}
             <div style={{ marginTop: 40 }}>
@@ -94,7 +139,7 @@ const CreateWalletAddressCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 onClick={() => handleStepChange(1)}
-                disabled={props.tokenInfo.token?.name === ""}
+                disabled={token === undefined}
               >
                 Next
               </StyledButton>
@@ -106,8 +151,8 @@ const CreateWalletAddressCampaignStepper = ({
           <StepContent>
             <div style={{ marginBottom: 16 }}>
               <WalletDistributionTargets
-                walletListState={props.walletListState}
-                walletDispatch={props.walletDispatch}
+                walletListState={walletListState}
+                walletDispatch={walletDispatch}
               />
             </div>
             <div>
@@ -119,8 +164,8 @@ const CreateWalletAddressCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 disabled={
-                  props.walletListState.targets.length === 0 ||
-                  upperLimit < props.walletListState.targets.length
+                  walletListState.targets.length === 0 ||
+                  upperLimit < walletListState.targets.length
                 }
                 onClick={() => handleStepChange(2)}
               >
@@ -134,9 +179,9 @@ const CreateWalletAddressCampaignStepper = ({
           <StepContent>
             <div>
               <ApproveToken
-                tokenInfo={props.tokenInfo}
-                distributorFormState={props.distributorFormState}
-                distributorFormDispatch={props.distributorFormDispatch}
+                tokenInfo={tokenInfo}
+                distributorFormState={distributorFormState}
+                distributorFormDispatch={distributorFormDispatch}
               />
             </div>
             <div>
@@ -147,7 +192,7 @@ const CreateWalletAddressCampaignStepper = ({
                 variant="contained"
                 color="secondary"
                 disableElevation
-                disabled={props.tokenInfo.allowance === "0"}
+                disabled={tokenInfo.allowance === "0"}
                 onClick={() => handleStepChange(3)}
               >
                 Next
@@ -160,8 +205,8 @@ const CreateWalletAddressCampaignStepper = ({
           <StepContent>
             <div>
               <SetupCampaign
-                distributorFormState={props.distributorFormState}
-                distributorFormDispatch={props.distributorFormDispatch}
+                distributorFormState={distributorFormState}
+                distributorFormDispatch={distributorFormDispatch}
               />
             </div>
             <div style={{ marginTop: 40 }}>
@@ -173,15 +218,15 @@ const CreateWalletAddressCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 onClick={() => {
-                  props.distributorFormDispatch({
+                  distributorFormDispatch({
                     type: "campaign:deploy",
                     payload: { requestDeployCampaign: true },
                   });
                 }}
                 disabled={
-                  props.distributorFormState.startDate >=
-                    props.distributorFormState.endDate ||
-                  props.distributorFormState.campaignName === ""
+                  distributorFormState.startDate >=
+                    distributorFormState.endDate ||
+                  distributorFormState.campaignName === ""
                 }
               >
                 Start Campaign

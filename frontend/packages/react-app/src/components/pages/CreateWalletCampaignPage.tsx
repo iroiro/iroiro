@@ -46,12 +46,14 @@ import {
   MERKLE_ROOT_API_DESCRIBE,
 } from "../../utils/const";
 import { BigNumber } from "ethers";
+import { isAddress } from "ethers/lib/utils";
+import { tokenAddress } from "../../utils/mockData";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
 interface CreateWalletCampaignPageProps {
-  readonly props: RouteComponentProps<{ tokenAddress: string }>;
+  readonly props: RouteComponentProps;
   readonly distributorAddress: string;
 }
 
@@ -60,8 +62,6 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
   distributorAddress,
 }) => {
   const { library, active, account } = useWeb3React();
-  const tokenAddress = props.match.params.tokenAddress;
-
   const [tokenState, tokenDispatch] = useReducer(
     tokenReducer,
     tokenInitialState
@@ -105,7 +105,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
   );
 
   const getBalance = useCallback(
-    async (library) => {
+    async (library, tokenAddress) => {
       const balance = await getWalletBalance(library, tokenAddress);
       if (balance === undefined) {
         return;
@@ -115,11 +115,11 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         payload: { tokenBalance: balance },
       });
     },
-    [tokenAddress]
+    [tokenDispatch]
   );
 
   const getAllowanceAmount = useCallback(
-    async (library) => {
+    async (library, tokenAddress) => {
       const allowance = await getAllowance(
         library,
         tokenAddress,
@@ -133,14 +133,14 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         payload: { allowance: allowance },
       });
     },
-    [tokenAddress, distributorAddress]
+    [distributorAddress, tokenDispatch]
   );
 
   const approve = useCallback(
     async (library, approveAmount, decimals) => {
       setApproveAmount(
         library,
-        tokenAddress,
+        distributorFormState.tokenAddress,
         distributorAddress,
         approveAmount,
         decimals
@@ -162,7 +162,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         payload: { approveAmount: "0" },
       });
     },
-    [distributorAddress, tokenAddress]
+    [distributorAddress, distributorFormState.tokenAddress]
   );
 
   const uploadJsonIpfs = useCallback(
@@ -201,7 +201,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       createWalletCampaign(
         library,
         merkleRoot,
-        tokenAddress,
+        distributorFormState.tokenAddress,
         campaignInfoCid,
         recipientsCid,
         merkleTreeCid,
@@ -229,13 +229,13 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
           }
           const campaignAddress: string = campaignCreatedEvent.args?.campaign;
           props.history.push(
-            `/dashboard/${tokenAddress}/distributors/${distributorAddress}` +
+            `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
               `/campaigns/${campaignAddress}`
           );
         });
       });
     },
-    [props.history, tokenAddress, tokenAddress, distributorAddress]
+    [props.history, distributorFormState.tokenAddress, distributorAddress]
   );
 
   const makeMerkleProof = useCallback(
@@ -290,18 +290,29 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
   }, []);
 
   useEffect(() => {
-    if (library) {
-      getBalance(library);
-      getAllowanceAmount(library);
+    if (
+      distributorFormState.tokenAddress === "" ||
+      !isAddress(distributorFormState.tokenAddress)
+    ) {
+      return;
     }
-  }, [library, tokenAddress, getBalance, getAllowanceAmount]);
+    if (library) {
+      getBalance(library, distributorFormState.tokenAddress);
+      getAllowanceAmount(library, distributorFormState.tokenAddress);
+    }
+  }, [
+    library,
+    getBalance,
+    getAllowanceAmount,
+    distributorFormState.tokenAddress,
+  ]);
 
   useEffect(() => {
     tokenDispatch({
       type: "token:getLocal",
-      payload: { tokenAddress: tokenAddress },
+      payload: { tokenAddress: distributorFormState.tokenAddress },
     });
-  }, [tokenAddress]);
+  }, [distributorFormState.tokenAddress]);
 
   useEffect(() => {
     const f = async () => {
@@ -439,6 +450,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       <CreateWalletCampaignPageTemplate
         active={active}
         tokenInfo={tokenState}
+        tokenDispatch={tokenDispatch}
         distributorFormDispatch={distributorFormDispatch}
         distributorFormState={distributorFormState}
         walletDispatch={walletListDispatch}

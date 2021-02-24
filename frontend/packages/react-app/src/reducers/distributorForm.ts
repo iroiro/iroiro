@@ -34,7 +34,8 @@ export type DISTRIBUTOR_ACTIONS =
       type: "campaign:deploy";
       payload: { requestDeployCampaign: boolean };
     }
-  | { type: "createdCampaignAddress:set"; payload: { address: string } };
+  | { type: "createdCampaignAddress:set"; payload: { address: string } }
+  | { type: "tokenAddress:set"; payload: { tokenAddress: string } };
 
 export interface createCampaignState {
   step: number;
@@ -45,6 +46,7 @@ export interface createCampaignState {
   approveRequest: boolean;
   requestDeployCampaign: boolean;
   createdCampaignAddress: string;
+  tokenAddress: string;
 }
 
 export const distributorFormReducer = (
@@ -85,13 +87,16 @@ export const distributorFormReducer = (
     case "createdCampaignAddress:set": {
       return { ...state, createdCampaignAddress: action.payload.address };
     }
+    case "tokenAddress:set": {
+      return { ...state, tokenAddress: action.payload.tokenAddress };
+    }
     default:
       throw new Error();
   }
 };
 
 export const distributorFormInitialState: createCampaignState = {
-  step: 1,
+  step: 0,
   approveAmount: "",
   campaignName: "",
   startDate: new Date("2021-01-01T00:00:00").getTime(),
@@ -99,4 +104,5 @@ export const distributorFormInitialState: createCampaignState = {
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignAddress: "",
+  tokenAddress: "",
 };

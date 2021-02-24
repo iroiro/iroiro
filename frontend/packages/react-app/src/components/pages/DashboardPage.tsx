@@ -33,7 +33,7 @@ const initialState: TokenListState = {
 };
 
 const DashboardPage: React.FC = () => {
-  const { library } = useWeb3React();
+  const { active, library } = useWeb3React();
   const [state, dispatch] = useReducer(tokensReducer, initialState);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const DashboardPage: React.FC = () => {
     <Dashboard
       campaignsState={campaignsState}
       creatorTokenList={creatorTokenList}
-      active={true}
+      active={active}
     />
   );
 };

@@ -16,12 +16,8 @@
  */
 
 import React from "react";
-import { Box, Typography, Container, Paper } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
-import ApproveToken from "../../organisms/ApproveToken";
-import SetupCampaign from "../../organisms/SetupCampaign";
+import { Box, Typography, Paper } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
-import WalletDistributionTargets from "../../organisms/WalletDistributionTargets";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
@@ -29,13 +25,14 @@ import {
 } from "../../../reducers/distributorForm";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import { WalletList } from "../../../interfaces";
-import { AppFooter } from "../../molecules/AppFooter";
 import CreateWalletAddressCampaignStepper from "../../organisms/CreateWalletAddressCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
+import { ACTIONS } from "../../../reducers/token";
 
 export interface CampaignInfo {
   readonly active: boolean;
   readonly tokenInfo: AccountToken;
+  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly walletListState: WalletList;
@@ -45,6 +42,7 @@ export interface CampaignInfo {
 const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
   tokenInfo,
+  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   walletListState,
@@ -64,6 +62,7 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
             </Box>
             <CreateWalletAddressCampaignStepper
               tokenInfo={tokenInfo}
+              tokenDispatch={tokenDispatch}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
               walletListState={walletListState}

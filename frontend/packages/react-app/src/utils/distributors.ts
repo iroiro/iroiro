@@ -16,8 +16,6 @@
  */
 
 import { Distributor } from "../interfaces";
-import MenuButton from "../components/atoms/MenuButton";
-import React from "react";
 
 // ID must be lowercase
 const distributors: Distributor[] = [
