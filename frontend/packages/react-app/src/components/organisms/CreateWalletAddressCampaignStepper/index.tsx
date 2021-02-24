@@ -79,6 +79,7 @@ const CreateWalletAddressCampaignStepper = ({
       },
     });
   }, [token, tokenDispatch]);
+
   const isTokenAddressError =
     distributorFormState.tokenAddress !== "" &&
     !isAddress(distributorFormState.tokenAddress);
@@ -110,14 +111,20 @@ const CreateWalletAddressCampaignStepper = ({
                 label="Token Address"
                 style={{ width: 200, marginRight: 8 }}
                 value={distributorFormState.tokenAddress}
-                onChange={(e) =>
+                onChange={(e) => {
                   distributorFormDispatch({
                     type: "tokenAddress:set",
                     payload: {
                       tokenAddress: e.target.value,
                     },
-                  })
-                }
+                  });
+                  tokenDispatch({
+                    type: "token:set",
+                    payload: {
+                      token: undefined,
+                    },
+                  });
+                }}
               />
               <Button
                 color="secondary"
@@ -139,7 +146,7 @@ const CreateWalletAddressCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 onClick={() => handleStepChange(1)}
-                disabled={token === undefined}
+                disabled={tokenInfo.token === undefined}
               >
                 Next
               </StyledButton>

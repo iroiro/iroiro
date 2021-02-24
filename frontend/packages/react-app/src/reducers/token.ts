@@ -21,7 +21,7 @@ export type ACTIONS =
   | {
       type: "token:set";
       payload: {
-        token: TokenBasic;
+        token: TokenBasic | undefined;
       };
     }
   | {

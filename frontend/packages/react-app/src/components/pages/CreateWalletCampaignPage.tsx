@@ -47,7 +47,6 @@ import {
 } from "../../utils/const";
 import { BigNumber } from "ethers";
 import { isAddress } from "ethers/lib/utils";
-import { tokenAddress } from "../../utils/mockData";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);

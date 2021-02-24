@@ -16,8 +16,7 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Container, Paper } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
+import { Box, Typography, Paper } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
@@ -27,11 +26,12 @@ import {
 import { UUID_ACTIONS, UUIDState } from "../../../reducers/uuid";
 import CreateUUIDCampaignStepper from "../../organisms/CreateUUIDCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
+import { ACTIONS } from "../../../reducers/token";
 
 export interface CampaignInfo {
   readonly active: boolean;
-  readonly tokenAddress: string;
   readonly tokenInfo: AccountToken;
+  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly uuidState: UUIDState;
@@ -41,6 +41,7 @@ export interface CampaignInfo {
 const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
   tokenInfo,
+  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   uuidState,
@@ -60,6 +61,7 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
             </Box>
             <CreateUUIDCampaignStepper
               tokenInfo={tokenInfo}
+              tokenDispatch={tokenDispatch}
               distributorFormState={distributorFormState}
               uuidState={uuidState}
               distributorFormDispatch={distributorFormDispatch}

@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -36,9 +36,14 @@ import UUIDDistributionTargets from "../UUIDDistributionTargets";
 import { Box, Typography } from "@material-ui/core";
 import CopyToClipboard from "react-copy-to-clipboard";
 import theme from "../../../theme/mui-theme";
+import { ACTIONS } from "../../../reducers/token";
+import { useWeb3React } from "@web3-react/core";
+import { useGetTokenInfo } from "../../../hooks/useGetTokenInfo";
+import { isAddress } from "ethers/lib/utils";
 
 export interface CreateUUIDCampaignStepperProps {
   readonly tokenInfo: AccountToken;
+  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly uuidState: UUIDState;
@@ -46,34 +51,60 @@ export interface CreateUUIDCampaignStepperProps {
 }
 
 const CreateUUIDCampaignStepper = ({
-  ...props
+  tokenInfo,
+  tokenDispatch,
+  distributorFormState,
+  distributorFormDispatch,
+  uuidState,
+  uuidDispatch,
 }: CreateUUIDCampaignStepperProps) => {
   const [isCopied, setIsCopied] = useState(false);
   const urlList = useMemo(() => {
-    const list = props.uuidState.rawTargets
+    const list = uuidState.rawTargets
       .map(
         (uuid) =>
           `${window.location.origin}${window.location.pathname}#/explore/${
-            props.tokenInfo.token?.tokenAddress ?? ""
-          }/distributors/${props.uuidState.distributorAddress}/campaigns/${
-            props.distributorFormState.createdCampaignAddress
+            tokenInfo.token?.tokenAddress ?? ""
+          }/distributors/${uuidState.distributorAddress}/campaigns/${
+            distributorFormState.createdCampaignAddress
           }?uuid=${uuid}`
       )
       .join("\n");
     return list;
-  }, [props.uuidState, props.distributorFormState, props.tokenInfo]);
+  }, [uuidState, distributorFormState, tokenInfo]);
+  const { library } = useWeb3React();
+  const { getTokenInfo, token } = useGetTokenInfo(
+    library,
+    distributorFormState.tokenAddress
+  );
 
   const handleStepChange = (stepNumber: number) => {
-    props.distributorFormDispatch({
+    distributorFormDispatch({
       type: "step:set",
       payload: { stepNo: stepNumber },
     });
   };
 
+  useEffect(() => {
+    if (token === undefined) {
+      return;
+    }
+    tokenDispatch({
+      type: "token:set",
+      payload: {
+        token,
+      },
+    });
+  }, [token, tokenDispatch]);
+
+  const isTokenAddressError =
+    distributorFormState.tokenAddress !== "" &&
+    !isAddress(distributorFormState.tokenAddress);
+
   return (
     <div>
       <Stepper
-        activeStep={props.distributorFormState.step}
+        activeStep={distributorFormState.step}
         orientation="vertical"
         style={{ maxWidth: 680 }}
       >
@@ -91,19 +122,40 @@ const CreateUUIDCampaignStepper = ({
               }}
             >
               <TextField
+                error={isTokenAddressError}
+                helperText={isTokenAddressError ? "Invalid address" : undefined}
                 color="secondary"
                 label="Token Address"
                 style={{ width: 200, marginRight: 8 }}
-                value={props.tokenInfo.token?.tokenAddress}
+                value={distributorFormState.tokenAddress}
+                onChange={(e) => {
+                  distributorFormDispatch({
+                    type: "tokenAddress:set",
+                    payload: {
+                      tokenAddress: e.target.value,
+                    },
+                  });
+                  tokenDispatch({
+                    type: "token:set",
+                    payload: {
+                      token: undefined,
+                    },
+                  });
+                }}
               />
-              <Button color="secondary" variant="outlined">
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={() => getTokenInfo()}
+                disabled={isTokenAddressError}
+              >
                 Confirm
               </Button>
             </div>
-            {props.tokenInfo.token?.name !== undefined &&
-              props.tokenInfo.token?.name !== "" && (
+            {tokenInfo.token?.name !== undefined &&
+              tokenInfo.token?.name !== "" && (
                 <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
-                  {props.tokenInfo.token?.name}
+                  {tokenInfo.token?.name}
                 </div>
               )}
             <div style={{ marginTop: 40 }}>
@@ -112,10 +164,7 @@ const CreateUUIDCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 onClick={() => handleStepChange(1)}
-                disabled={
-                  props.tokenInfo.token?.name === undefined ||
-                  props.tokenInfo.token?.name === ""
-                }
+                disabled={tokenInfo.token === undefined}
               >
                 Next
               </StyledButton>
@@ -127,8 +176,8 @@ const CreateUUIDCampaignStepper = ({
           <StepContent>
             <div style={{ marginBottom: 16 }}>
               <UUIDDistributionTargets
-                uuidState={props.uuidState}
-                uuidDispatch={props.uuidDispatch}
+                uuidState={uuidState}
+                uuidDispatch={uuidDispatch}
               />
             </div>
             <Box mt={5}>
@@ -140,11 +189,10 @@ const CreateUUIDCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 disabled={
-                  props.uuidState.quantity <= 0 ||
-                  upperLimit < props.uuidState.quantity
+                  uuidState.quantity <= 0 || upperLimit < uuidState.quantity
                 }
                 onClick={() => {
-                  props.uuidDispatch({ type: "targets:generate" });
+                  uuidDispatch({ type: "targets:generate" });
                   handleStepChange(2);
                 }}
               >
@@ -158,9 +206,9 @@ const CreateUUIDCampaignStepper = ({
           <StepContent>
             <div>
               <ApproveToken
-                tokenInfo={props.tokenInfo}
-                distributorFormState={props.distributorFormState}
-                distributorFormDispatch={props.distributorFormDispatch}
+                tokenInfo={tokenInfo}
+                distributorFormState={distributorFormState}
+                distributorFormDispatch={distributorFormDispatch}
               />
             </div>
             <div>
@@ -171,7 +219,7 @@ const CreateUUIDCampaignStepper = ({
                 variant="contained"
                 color="secondary"
                 disableElevation
-                disabled={props.tokenInfo.allowance === "0"}
+                disabled={tokenInfo.allowance === "0"}
                 onClick={() => handleStepChange(3)}
               >
                 Next
@@ -184,8 +232,8 @@ const CreateUUIDCampaignStepper = ({
           <StepContent>
             <div>
               <SetupCampaign
-                distributorFormState={props.distributorFormState}
-                distributorFormDispatch={props.distributorFormDispatch}
+                distributorFormState={distributorFormState}
+                distributorFormDispatch={distributorFormDispatch}
               />
             </div>
             <div style={{ marginTop: 40 }}>
@@ -197,16 +245,15 @@ const CreateUUIDCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 onClick={() => {
-                  props.distributorFormDispatch({
+                  distributorFormDispatch({
                     type: "campaign:deploy",
                     payload: { requestDeployCampaign: true },
                   });
-                  handleStepChange(4);
                 }}
                 disabled={
-                  props.distributorFormState.startDate >=
-                    props.distributorFormState.endDate ||
-                  props.distributorFormState.campaignName === ""
+                  distributorFormState.startDate >=
+                    distributorFormState.endDate ||
+                  distributorFormState.campaignName === ""
                 }
               >
                 Start Campaign
@@ -229,7 +276,7 @@ const CreateUUIDCampaignStepper = ({
                       padding: "0 4px",
                     }}
                   >
-                    {props.uuidState.rawTargets.length}
+                    {uuidState.rawTargets.length}
                   </span>
                   campaign URLs are generated for your fans.
                 </Typography>
@@ -256,7 +303,7 @@ const CreateUUIDCampaignStepper = ({
                 disableElevation
                 disabled={!isCopied}
                 onClick={() => {
-                  props.uuidDispatch({ type: "moveToCampaignPage:on" });
+                  uuidDispatch({ type: "moveToCampaignPage:on" });
                 }}
               >
                 Go to Campaign Detail
