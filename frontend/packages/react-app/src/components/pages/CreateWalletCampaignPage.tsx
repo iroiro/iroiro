@@ -307,13 +307,6 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
   ]);
 
   useEffect(() => {
-    tokenDispatch({
-      type: "token:getLocal",
-      payload: { tokenAddress: distributorFormState.tokenAddress },
-    });
-  }, [distributorFormState.tokenAddress]);
-
-  useEffect(() => {
     const f = async () => {
       if (distributorFormState.approveRequest && library) {
         approve(
@@ -325,7 +318,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
 
       if (distributorFormState.requestDeployCampaign) {
         const campaignInfo = {
-          description: "",
+          description: distributorFormState.campaignDescription,
           image: "",
           name: distributorFormState.campaignName,
         };

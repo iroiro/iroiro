@@ -336,13 +336,6 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   ]);
 
   useEffect(() => {
-    tokenDispatch({
-      type: "token:getLocal",
-      payload: { tokenAddress: distributorFormState.tokenAddress },
-    });
-  }, [distributorFormState.tokenAddress]);
-
-  useEffect(() => {
     const f = async () => {
       if (distributorFormState.approveRequest && library) {
         approve(
@@ -354,7 +347,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
 
       if (distributorFormState.requestDeployCampaign) {
         const campaignInfo = {
-          description: "",
+          description: distributorFormState.campaignDescription,
           image: "",
           name: distributorFormState.campaignName,
         };

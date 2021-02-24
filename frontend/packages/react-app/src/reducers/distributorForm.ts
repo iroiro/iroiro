@@ -27,6 +27,10 @@ export type DISTRIBUTOR_ACTIONS =
       payload: { approveAmount: string };
     }
   | { type: "campaignName:set"; payload: { campaignName: string } }
+  | {
+      type: "campaignDescription:set";
+      payload: { campaignDescription: string };
+    }
   | { type: "startDate:set"; payload: { startDate: MaterialUiPickersDate } }
   | { type: "endDate:set"; payload: { endDate: MaterialUiPickersDate } }
   | { type: "token:approve"; payload: { approveRequest: boolean } }
@@ -41,6 +45,7 @@ export interface createCampaignState {
   step: number;
   approveAmount: string;
   campaignName: string;
+  campaignDescription: string;
   startDate: number;
   endDate: number;
   approveRequest: boolean;
@@ -66,6 +71,12 @@ export const distributorFormReducer = (
     }
     case "campaignName:set": {
       return { ...state, campaignName: action.payload.campaignName };
+    }
+    case "campaignDescription:set": {
+      return {
+        ...state,
+        campaignDescription: action.payload.campaignDescription,
+      };
     }
     case "startDate:set": {
       const startDate = Number(action.payload.startDate);
@@ -99,6 +110,7 @@ export const distributorFormInitialState: createCampaignState = {
   step: 0,
   approveAmount: "",
   campaignName: "",
+  campaignDescription: "",
   startDate: new Date("2021-01-01T00:00:00").getTime(),
   endDate: new Date("2021-01-01T00:00:00").getTime(),
   approveRequest: false,

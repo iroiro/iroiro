@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Button, Box, FormControl, Input, TextField } from "@material-ui/core";
+import { Box, FormControl, TextField } from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
@@ -72,11 +72,11 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
             rows={4}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               distributorFormDispatch({
-                type: "campaignName:set",
-                payload: { campaignName: event.target.value },
+                type: "campaignDescription:set",
+                payload: { campaignDescription: event.target.value },
               })
             }
-            value={""}
+            value={distributorFormState.campaignDescription}
           />
         </Box>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
