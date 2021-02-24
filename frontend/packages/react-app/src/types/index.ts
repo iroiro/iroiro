@@ -2,14 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { CampaignInterface } from "./CampaignInterface";
-export type { CampaignInterfaceV2 } from "./CampaignInterfaceV2";
-export type { CCTWalletCampaign } from "./CCTWalletCampaign";
-export type { CCTWalletDistributor } from "./CCTWalletDistributor";
+export type { CampaignInterfaceV1 } from "./CampaignInterfaceV1";
 export type { ChainlinkClient } from "./ChainlinkClient";
 export type { ChainlinkRequestInterface } from "./ChainlinkRequestInterface";
 export type { DistributorInterface } from "./DistributorInterface";
-export type { DistributorInterfaceV2 } from "./DistributorInterfaceV2";
-export type { Donator } from "./Donator";
+export type { DistributorInterfaceV1 } from "./DistributorInterfaceV1";
 export type { DonatorInterface } from "./DonatorInterface";
 export type { ENSInterface } from "./ENSInterface";
 export type { ENSResolver } from "./ENSResolver";
@@ -32,14 +29,11 @@ export type { WalletCampaign } from "./WalletCampaign";
 export type { WalletDistributor } from "./WalletDistributor";
 
 export { CampaignInterface__factory } from "./factories/CampaignInterface__factory";
-export { CampaignInterfaceV2__factory } from "./factories/CampaignInterfaceV2__factory";
-export { CCTWalletCampaign__factory } from "./factories/CCTWalletCampaign__factory";
-export { CCTWalletDistributor__factory } from "./factories/CCTWalletDistributor__factory";
+export { CampaignInterfaceV1__factory } from "./factories/CampaignInterfaceV1__factory";
 export { ChainlinkClient__factory } from "./factories/ChainlinkClient__factory";
 export { ChainlinkRequestInterface__factory } from "./factories/ChainlinkRequestInterface__factory";
 export { DistributorInterface__factory } from "./factories/DistributorInterface__factory";
-export { DistributorInterfaceV2__factory } from "./factories/DistributorInterfaceV2__factory";
-export { Donator__factory } from "./factories/Donator__factory";
+export { DistributorInterfaceV1__factory } from "./factories/DistributorInterfaceV1__factory";
 export { DonatorInterface__factory } from "./factories/DonatorInterface__factory";
 export { ENSInterface__factory } from "./factories/ENSInterface__factory";
 export { ENSResolver__factory } from "./factories/ENSResolver__factory";

@@ -21,18 +21,6 @@ interface EventOptions {
   topics?: string[];
 }
 
-export type ChainlinkCancelled = ContractEventLog<{
-  id: string;
-  0: string;
-}>;
-export type ChainlinkFulfilled = ContractEventLog<{
-  id: string;
-  0: string;
-}>;
-export type ChainlinkRequested = ContractEventLog<{
-  id: string;
-  0: string;
-}>;
 export type Claim = ContractEventLog<{
   from: string;
   to: string;
@@ -55,9 +43,9 @@ export interface CampaignInterface extends BaseContract {
   ): CampaignInterface;
   clone(): CampaignInterface;
   methods: {
-    campaignId(): NonPayableTransactionObject<string>;
-
     campaignInfoCid(): NonPayableTransactionObject<string>;
+
+    campaignToken(): NonPayableTransactionObject<string>;
 
     claimAmount(): NonPayableTransactionObject<string>;
 
@@ -83,8 +71,6 @@ export interface CampaignInterface extends BaseContract {
 
     status(): NonPayableTransactionObject<string>;
 
-    token(): NonPayableTransactionObject<string>;
-
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
      */
@@ -95,24 +81,6 @@ export interface CampaignInterface extends BaseContract {
     refundRemainingTokens(): NonPayableTransactionObject<void>;
   };
   events: {
-    ChainlinkCancelled(cb?: Callback<ChainlinkCancelled>): EventEmitter;
-    ChainlinkCancelled(
-      options?: EventOptions,
-      cb?: Callback<ChainlinkCancelled>
-    ): EventEmitter;
-
-    ChainlinkFulfilled(cb?: Callback<ChainlinkFulfilled>): EventEmitter;
-    ChainlinkFulfilled(
-      options?: EventOptions,
-      cb?: Callback<ChainlinkFulfilled>
-    ): EventEmitter;
-
-    ChainlinkRequested(cb?: Callback<ChainlinkRequested>): EventEmitter;
-    ChainlinkRequested(
-      options?: EventOptions,
-      cb?: Callback<ChainlinkRequested>
-    ): EventEmitter;
-
     Claim(cb?: Callback<Claim>): EventEmitter;
     Claim(options?: EventOptions, cb?: Callback<Claim>): EventEmitter;
 
@@ -130,27 +98,6 @@ export interface CampaignInterface extends BaseContract {
 
     allEvents(options?: EventOptions, cb?: Callback<EventLog>): EventEmitter;
   };
-
-  once(event: "ChainlinkCancelled", cb: Callback<ChainlinkCancelled>): void;
-  once(
-    event: "ChainlinkCancelled",
-    options: EventOptions,
-    cb: Callback<ChainlinkCancelled>
-  ): void;
-
-  once(event: "ChainlinkFulfilled", cb: Callback<ChainlinkFulfilled>): void;
-  once(
-    event: "ChainlinkFulfilled",
-    options: EventOptions,
-    cb: Callback<ChainlinkFulfilled>
-  ): void;
-
-  once(event: "ChainlinkRequested", cb: Callback<ChainlinkRequested>): void;
-  once(
-    event: "ChainlinkRequested",
-    options: EventOptions,
-    cb: Callback<ChainlinkRequested>
-  ): void;
 
   once(event: "Claim", cb: Callback<Claim>): void;
   once(event: "Claim", options: EventOptions, cb: Callback<Claim>): void;

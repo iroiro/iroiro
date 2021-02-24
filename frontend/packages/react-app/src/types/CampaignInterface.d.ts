@@ -22,8 +22,8 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface CampaignInterfaceInterface extends ethers.utils.Interface {
   functions: {
-    "campaignId()": FunctionFragment;
     "campaignInfoCid()": FunctionFragment;
+    "campaignToken()": FunctionFragment;
     "claimAmount()": FunctionFragment;
     "claimedNum()": FunctionFragment;
     "endDate()": FunctionFragment;
@@ -33,18 +33,17 @@ interface CampaignInterfaceInterface extends ethers.utils.Interface {
     "renounceOwnership()": FunctionFragment;
     "startDate()": FunctionFragment;
     "status()": FunctionFragment;
-    "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "cancelCampaign()": FunctionFragment;
     "refundRemainingTokens()": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "campaignId",
+    functionFragment: "campaignInfoCid",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "campaignInfoCid",
+    functionFragment: "campaignToken",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -71,7 +70,6 @@ interface CampaignInterfaceInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "startDate", values?: undefined): string;
   encodeFunctionData(functionFragment: "status", values?: undefined): string;
-  encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
@@ -85,9 +83,12 @@ interface CampaignInterfaceInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
 
-  decodeFunctionResult(functionFragment: "campaignId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "campaignInfoCid",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "campaignToken",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -111,7 +112,6 @@ interface CampaignInterfaceInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "startDate", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "status", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
@@ -126,17 +126,11 @@ interface CampaignInterfaceInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
-    "ChainlinkCancelled(bytes32)": EventFragment;
-    "ChainlinkFulfilled(bytes32)": EventFragment;
-    "ChainlinkRequested(bytes32)": EventFragment;
     "Claim(address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "UpdateStatus()": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "ChainlinkCancelled"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ChainlinkFulfilled"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ChainlinkRequested"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Claim"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateStatus"): EventFragment;
@@ -156,13 +150,13 @@ export class CampaignInterface extends Contract {
   interface: CampaignInterfaceInterface;
 
   functions: {
-    campaignId(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    "campaignId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     campaignInfoCid(overrides?: CallOverrides): Promise<[string]>;
 
     "campaignInfoCid()"(overrides?: CallOverrides): Promise<[string]>;
+
+    campaignToken(overrides?: CallOverrides): Promise<[string]>;
+
+    "campaignToken()"(overrides?: CallOverrides): Promise<[string]>;
 
     claimAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -212,10 +206,6 @@ export class CampaignInterface extends Contract {
 
     "status()"(overrides?: CallOverrides): Promise<[number]>;
 
-    token(overrides?: CallOverrides): Promise<[string]>;
-
-    "token()"(overrides?: CallOverrides): Promise<[string]>;
-
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
      */
@@ -243,13 +233,13 @@ export class CampaignInterface extends Contract {
     ): Promise<ContractTransaction>;
   };
 
-  campaignId(overrides?: CallOverrides): Promise<BigNumber>;
-
-  "campaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
-
   campaignInfoCid(overrides?: CallOverrides): Promise<string>;
 
   "campaignInfoCid()"(overrides?: CallOverrides): Promise<string>;
+
+  campaignToken(overrides?: CallOverrides): Promise<string>;
+
+  "campaignToken()"(overrides?: CallOverrides): Promise<string>;
 
   claimAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -299,10 +289,6 @@ export class CampaignInterface extends Contract {
 
   "status()"(overrides?: CallOverrides): Promise<number>;
 
-  token(overrides?: CallOverrides): Promise<string>;
-
-  "token()"(overrides?: CallOverrides): Promise<string>;
-
   /**
    * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
    */
@@ -330,13 +316,13 @@ export class CampaignInterface extends Contract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    campaignId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "campaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     campaignInfoCid(overrides?: CallOverrides): Promise<string>;
 
     "campaignInfoCid()"(overrides?: CallOverrides): Promise<string>;
+
+    campaignToken(overrides?: CallOverrides): Promise<string>;
+
+    "campaignToken()"(overrides?: CallOverrides): Promise<string>;
 
     claimAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -386,10 +372,6 @@ export class CampaignInterface extends Contract {
 
     "status()"(overrides?: CallOverrides): Promise<number>;
 
-    token(overrides?: CallOverrides): Promise<string>;
-
-    "token()"(overrides?: CallOverrides): Promise<string>;
-
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
      */
@@ -416,12 +398,6 @@ export class CampaignInterface extends Contract {
   };
 
   filters: {
-    ChainlinkCancelled(id: BytesLike | null): EventFilter;
-
-    ChainlinkFulfilled(id: BytesLike | null): EventFilter;
-
-    ChainlinkRequested(id: BytesLike | null): EventFilter;
-
     Claim(from: string | null, to: string | null): EventFilter;
 
     OwnershipTransferred(
@@ -433,13 +409,13 @@ export class CampaignInterface extends Contract {
   };
 
   estimateGas: {
-    campaignId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "campaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     campaignInfoCid(overrides?: CallOverrides): Promise<BigNumber>;
 
     "campaignInfoCid()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    campaignToken(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "campaignToken()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     claimAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -489,10 +465,6 @@ export class CampaignInterface extends Contract {
 
     "status()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    token(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "token()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
      */
@@ -519,15 +491,15 @@ export class CampaignInterface extends Contract {
   };
 
   populateTransaction: {
-    campaignId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "campaignId()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     campaignInfoCid(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "campaignInfoCid()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    campaignToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "campaignToken()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     claimAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -578,10 +550,6 @@ export class CampaignInterface extends Contract {
     status(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "status()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "token()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
