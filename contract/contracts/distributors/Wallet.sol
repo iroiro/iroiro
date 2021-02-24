@@ -16,7 +16,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-pragma solidity ^0.6.0;
+pragma solidity =0.6.11;
 
 import "@iroiro/merkle-distributor/contracts/MerkleDistributor.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -38,7 +38,7 @@ contract WalletDistributor is DistributorInterfaceV2 {
         uint32 recipientsNum,
         uint256 startDate,
         uint256 endDate
-    ) public override {
+    ) external override {
         // TODO Update checking tokenSender logic with token issuance phase
         require(msg.sender == tokenSender, "Token holder must match to msg.sender");
         uint256 allowance = getAllowanceOf(token, tokenSender);
@@ -57,10 +57,10 @@ contract WalletDistributor is DistributorInterfaceV2 {
             startDate,
             endDate
         );
-        transferToken(token, tokenSender, address(campaign), allowance);
         campaignList[nextCampaignId] = address(campaign);
         nextCampaignId = nextCampaignId.add(1);
         campaign.transferOwnership(msg.sender);
+        transferToken(token, tokenSender, address(campaign), allowance);
 
         emit CreateCampaign(
             address(campaign),
@@ -106,8 +106,8 @@ contract WalletCampaign is CampaignInterfaceV2, MerkleDistributor {
         uint256 amount,
         bytes32[] calldata merkleProof
     ) public override mustBeActive inTime {
-        super.claim(index, account, amount, merkleProof);
         claimedNum = claimedNum.add(1);
+        super.claim(index, account, amount, merkleProof);
 
         emit Claim(account, account);
     }
