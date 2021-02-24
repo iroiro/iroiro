@@ -20,7 +20,7 @@ import { Distributor } from "../interfaces";
 // ID must be lowercase
 const distributors: Distributor[] = [
   {
-    id: "0xb562cf605a0f8a123bf7abfdfe1317671a8b5ead",
+    id: "0xa79c1B3e529c34bA3B7373d95119B16b0714E155",
     distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
     distributorMetadata: {
       name: "Wallet Address Distributor",
@@ -32,8 +32,8 @@ const distributors: Distributor[] = [
     disabled: false,
   },
   {
-    id: "0x360557300e0b373bdb451f07fa292320cc4df136",
-    distributorCid: "QmRBHkjbuLExQPia1wiLgwjqXaBXowPDVVPPoTJv9wJnYP",
+    id: "0x8b5abD70339787DF920C982a46fF6066EB13Ab68",
+    distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
       name: "URL Distributor",
       description: "",
@@ -44,8 +44,8 @@ const distributors: Distributor[] = [
     disabled: false,
   },
   {
-    id: "0x360557300e0b373bdb451f07fa292320cc4df136",
-    distributorCid: "QmRBHkjbuLExQPia1wiLgwjqXaBXowPDVVPPoTJv9wJnYP",
+    id: "0x8b5abD70339787DF920C982a46fF6066EB13Ab68",
+    distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
       name: "Email Distributor",
       description: "",

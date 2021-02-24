@@ -7,9 +7,9 @@ dataSources:
     name: WalletDistributor
     network: rinkeby
     source:
-      address: "0xb562Cf605A0f8a123Bf7AbFDfe1317671A8B5EAd"
+      address: "0xa79c1B3e529c34bA3B7373d95119B16b0714E155"
       abi: WalletDistributor
-      startBlock: 7931096
+      startBlock: 8127640
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -31,7 +31,7 @@ dataSources:
     name: UUIDDistributor
     network: rinkeby
     source:
-      address: "0x360557300E0B373bDb451f07fA292320CC4df136"
+      address: "0x8b5abD70339787DF920C982a46fF6066EB13Ab68"
       abi: UUIDDistributor
       startBlock: 7979499
     mapping:
