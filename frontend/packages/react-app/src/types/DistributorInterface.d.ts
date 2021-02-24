@@ -24,9 +24,8 @@ interface DistributorInterfaceInterface extends ethers.utils.Interface {
   functions: {
     "campaignList(uint256)": FunctionFragment;
     "distributorInfoCid()": FunctionFragment;
-    "link()": FunctionFragment;
     "nextCampaignId()": FunctionFragment;
-    "createCampaign(address,address,string,string,uint32,uint256,uint256)": FunctionFragment;
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -37,7 +36,6 @@ interface DistributorInterfaceInterface extends ethers.utils.Interface {
     functionFragment: "distributorInfoCid",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "link", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "nextCampaignId",
     values?: undefined
@@ -45,6 +43,8 @@ interface DistributorInterfaceInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "createCampaign",
     values: [
+      BytesLike,
+      string,
       string,
       string,
       string,
@@ -63,7 +63,6 @@ interface DistributorInterfaceInterface extends ethers.utils.Interface {
     functionFragment: "distributorInfoCid",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "link", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "nextCampaignId",
     data: BytesLike
@@ -108,30 +107,30 @@ export class DistributorInterface extends Contract {
 
     "distributorInfoCid()"(overrides?: CallOverrides): Promise<[string]>;
 
-    link(overrides?: CallOverrides): Promise<[string]>;
-
-    "link()"(overrides?: CallOverrides): Promise<[string]>;
-
     nextCampaignId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     "nextCampaignId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     createCampaign(
+      merkleRoot: BytesLike,
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createCampaign(address,address,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+      merkleRoot: BytesLike,
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
@@ -150,30 +149,30 @@ export class DistributorInterface extends Contract {
 
   "distributorInfoCid()"(overrides?: CallOverrides): Promise<string>;
 
-  link(overrides?: CallOverrides): Promise<string>;
-
-  "link()"(overrides?: CallOverrides): Promise<string>;
-
   nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
 
   "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   createCampaign(
+    merkleRoot: BytesLike,
     token: string,
     tokenHolder: string,
     campaignInfoCid: string,
     recipientsCid: string,
+    merkleTreeCid: string,
     recipientsNum: BigNumberish,
     startDate: BigNumberish,
     endDate: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createCampaign(address,address,string,string,uint32,uint256,uint256)"(
+  "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+    merkleRoot: BytesLike,
     token: string,
     tokenHolder: string,
     campaignInfoCid: string,
     recipientsCid: string,
+    merkleTreeCid: string,
     recipientsNum: BigNumberish,
     startDate: BigNumberish,
     endDate: BigNumberish,
@@ -195,30 +194,30 @@ export class DistributorInterface extends Contract {
 
     "distributorInfoCid()"(overrides?: CallOverrides): Promise<string>;
 
-    link(overrides?: CallOverrides): Promise<string>;
-
-    "link()"(overrides?: CallOverrides): Promise<string>;
-
     nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
 
     "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     createCampaign(
+      merkleRoot: BytesLike,
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createCampaign(address,address,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+      merkleRoot: BytesLike,
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
@@ -249,30 +248,30 @@ export class DistributorInterface extends Contract {
 
     "distributorInfoCid()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    link(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "link()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
 
     "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     createCampaign(
+      merkleRoot: BytesLike,
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createCampaign(address,address,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+      merkleRoot: BytesLike,
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
@@ -299,10 +298,6 @@ export class DistributorInterface extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    link(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "link()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     nextCampaignId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "nextCampaignId()"(
@@ -310,21 +305,25 @@ export class DistributorInterface extends Contract {
     ): Promise<PopulatedTransaction>;
 
     createCampaign(
+      merkleRoot: BytesLike,
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createCampaign(address,address,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+      merkleRoot: BytesLike,
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: BigNumberish,
       startDate: BigNumberish,
       endDate: BigNumberish,

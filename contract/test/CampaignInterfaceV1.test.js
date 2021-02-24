@@ -24,60 +24,43 @@ const {
 } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
-const Campaign = contract.fromArtifact("CampaignInterface");
-const FanToken = contract.fromArtifact("FanToken");
+const Campaign = contract.fromArtifact("CampaignInterfaceV1");
+const ERC20Mock = contract.fromArtifact("ERC20Mock");
 
-describe("CampaignInterface", () => {
+describe("CampaignInterfaceV1", () => {
   const [owner, alice, link] = accounts;
   let now, future;
 
   beforeEach(async () => {
-    this.abctoken = await FanToken.new(
-      "ABCToken",
-      "ABC",
-      1000000000,
-      owner,
-      5,
-      owner,
-      50,
-      5,
-      { from: owner }
-    );
-    this.xyztoken = await FanToken.new(
-      "XYZToken",
-      "XYZ",
-      1000000000,
-      owner,
-      5,
-      owner,
-      50,
-      5,
-      { from: owner }
-    );
+    this.abctoken = await ERC20Mock.new("ABCToken", "ABC", owner, 1000000000, {
+      from: owner,
+    });
+    this.xyztoken = await ERC20Mock.new("XYZToken", "XYZ", owner, 1000000000, {
+      from: owner,
+    });
     now = await time.latest();
     future = now.add(time.duration.weeks(1));
     this.campaign = await Campaign.new(
       this.abctoken.address,
       "campaign info cid",
       "recipients cid",
-      1,
       100000,
       alice,
       now,
       future,
-      link,
       { from: owner }
     );
   });
 
   describe("constructor", async () => {
     it("has a state variables", async () => {
-      expect(await this.campaign.token()).to.be.equal(this.abctoken.address);
+      expect(await this.campaign.campaignToken()).to.be.equal(
+        this.abctoken.address
+      );
       expect(await this.campaign.campaignInfoCid()).to.be.equal(
         "campaign info cid"
       );
       expect(await this.campaign.recipientsCid()).to.be.equal("recipients cid");
-      expect((await this.campaign.campaignId()).toString()).to.be.equal("1");
       expect((await this.campaign.claimAmount()).toString()).to.be.equal(
         "100000"
       );
@@ -94,12 +77,10 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
-          1,
           100000,
           alice,
           future,
           now,
-          link,
           { from: owner }
         );
         assert.fail();
@@ -112,12 +93,10 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
-          1,
           100000,
           alice,
           now,
           now,
-          link,
           { from: owner }
         );
         assert.fail();
@@ -138,12 +117,10 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
-          1,
           100000,
           owner,
           oneweeklater,
           twoweeklater,
-          link,
           { from: owner }
         );
         this.abctoken.transfer(campaign.address, 1000000, { from: owner });
@@ -182,12 +159,10 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
-          1,
           100000,
           owner,
           now,
           oneweeklater,
-          link,
           { from: owner }
         );
         this.abctoken.transfer(campaign.address, 1000000, { from: owner });
@@ -228,12 +203,10 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
-          1,
           100000,
           owner,
           now,
           oneweeklater,
-          link,
           { from: owner }
         );
         this.abctoken.transfer(campaign.address, 1000000, { from: owner });
@@ -264,12 +237,10 @@ describe("CampaignInterface", () => {
           this.abctoken.address,
           "campaign info cid",
           "recipients cid",
-          1,
           100000,
           owner,
           now,
           oneweeklater,
-          link,
           { from: owner }
         );
         this.abctoken.transfer(campaign.address, 1000000, { from: owner });

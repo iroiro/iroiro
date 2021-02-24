@@ -17,7 +17,7 @@
 
 import { useEffect, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
-import { FanToken__factory as FanTokenFactory } from "../types/factories/FanToken__factory";
+import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
 import { BigNumber } from "ethers";
 
 export const useGetWalletBalance = (
@@ -45,7 +45,7 @@ export const useGetWalletBalance = (
       setError(undefined);
       const signer = library.getSigner();
       const walletAddress = await signer.getAddress();
-      const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+      const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
       const balance = await erc20.balanceOf(walletAddress);
       setLoading(false);
       setResult(balance);

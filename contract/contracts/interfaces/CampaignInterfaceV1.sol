@@ -18,25 +18,23 @@
 
 pragma solidity =0.6.11;
 
-import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract CampaignInterface is ChainlinkClient, Ownable {
+contract CampaignInterfaceV1 is Ownable {
     event Claim(
         address indexed from,
         address indexed to
     );
-    // TODO Remove arg
+
     event UpdateStatus();
 
     enum Status {Active, Cancelled, Ended}
 
-    address payable public token;
+    address payable public campaignToken;
     string public campaignInfoCid; // Contains campaign name and description as JSON
-    string public recipientsCid; // Contains recipients value as JSON
-    uint256 public campaignId;
+    string public recipientsCid;
     // TODO Consider a gap between actual JSON elements and claim amounts.
     uint256 public claimAmount;
     uint32 public claimedNum = 0;
@@ -57,37 +55,29 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     }
 
     constructor(
-        address payable _token,
+        address payable _campaignToken,
         string memory _campaignInfoCid,
         string memory _recipientsCid,
-        uint256 _campaignId,
         uint256 _claimAmount,
         address _refundDestination,
         uint256 _startDate,
-        uint256 _endDate,
-        address _link
+        uint256 _endDate
     ) public {
         require(_startDate < _endDate, "Start date must be less than end date");
 
-        token = _token;
+        campaignToken = _campaignToken;
         campaignInfoCid = _campaignInfoCid;
         recipientsCid = _recipientsCid;
-        campaignId = _campaignId;
         claimAmount = _claimAmount;
         refundDestination = _refundDestination;
         startDate = _startDate;
         endDate = _endDate;
-        if (_link == address(0)) {
-            setPublicChainlinkToken();
-        } else {
-            setChainlinkToken(_link);
-        }
     }
 
     function cancelCampaign() external onlyOwner {
         require(block.timestamp < startDate, "Campaign is already started");
         status = Status.Cancelled;
-        ERC20 erc20 = ERC20(token);
+        ERC20 erc20 = ERC20(campaignToken);
         erc20.transfer(refundDestination, erc20.balanceOf(address(this)));
 
         emit UpdateStatus();
@@ -96,24 +86,9 @@ contract CampaignInterface is ChainlinkClient, Ownable {
     function refundRemainingTokens() external onlyOwner {
         require(endDate < block.timestamp, "Campaign is not ended yet");
         status = Status.Ended;
-        ERC20 erc20 = ERC20(token);
+        ERC20 erc20 = ERC20(campaignToken);
         erc20.transfer(refundDestination, erc20.balanceOf(address(this)));
 
         emit UpdateStatus();
     }
-
-    // These functions should be overloaded because arguments could be added for each campaigns
-    // Check msg.sender is claimable
-    // function isClaimable(address user) virtual external view returns (bool) {}
-    //
-    // Claim tokens
-    // function claim() virtual external {}
-    //
-    // Request to Chainlink for checking claimability
-    // function requestCheckingIsClaimable(
-    //     address _oracle, // which Oracle contract to requests
-    //     bytes32 _jobId, // which checking address external adapter contained
-    //     uint256 fee // $LINK fee with 18 decimals
-    //     Other arguments...
-    // ) external returns (bytes32 requestId);
 }

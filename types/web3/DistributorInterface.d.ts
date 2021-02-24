@@ -42,15 +42,15 @@ export interface DistributorInterface extends BaseContract {
 
     distributorInfoCid(): NonPayableTransactionObject<string>;
 
-    link(): NonPayableTransactionObject<string>;
-
     nextCampaignId(): NonPayableTransactionObject<string>;
 
     createCampaign(
+      merkleRoot: string | number[],
       token: string,
       tokenHolder: string,
       campaignInfoCid: string,
       recipientsCid: string,
+      merkleTreeCid: string,
       recipientsNum: number | string,
       startDate: number | string,
       endDate: number | string

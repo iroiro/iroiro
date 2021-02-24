@@ -30,13 +30,13 @@ export type CreateCampaign = ContractEventLog<{
   2: string;
 }>;
 
-export interface DistributorInterfaceV2 extends BaseContract {
+export interface DistributorInterfaceV1 extends BaseContract {
   constructor(
     jsonInterface: any[],
     address?: string,
     options?: ContractOptions
-  ): DistributorInterfaceV2;
-  clone(): DistributorInterfaceV2;
+  ): DistributorInterfaceV1;
+  clone(): DistributorInterfaceV1;
   methods: {
     campaignList(arg0: number | string): NonPayableTransactionObject<string>;
 
