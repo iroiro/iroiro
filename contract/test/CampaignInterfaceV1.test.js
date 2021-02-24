@@ -24,36 +24,20 @@ const {
 } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
-const Campaign = contract.fromArtifact("CampaignInterfaceV2");
-const FanToken = contract.fromArtifact("FanToken");
+const Campaign = contract.fromArtifact("CampaignInterfaceV1");
+const ERC20Mock = contract.fromArtifact("ERC20Mock");
 
-describe("CampaignInterfaceV2", () => {
+describe("CampaignInterfaceV1", () => {
   const [owner, alice, link] = accounts;
   let now, future;
 
   beforeEach(async () => {
-    this.abctoken = await FanToken.new(
-      "ABCToken",
-      "ABC",
-      1000000000,
-      owner,
-      5,
-      owner,
-      50,
-      5,
-      { from: owner }
-    );
-    this.xyztoken = await FanToken.new(
-      "XYZToken",
-      "XYZ",
-      1000000000,
-      owner,
-      5,
-      owner,
-      50,
-      5,
-      { from: owner }
-    );
+    this.abctoken = await ERC20Mock.new("ABCToken", "ABC", owner, 1000000000, {
+      from: owner,
+    });
+    this.xyztoken = await ERC20Mock.new("XYZToken", "XYZ", owner, 1000000000, {
+      from: owner,
+    });
     now = await time.latest();
     future = now.add(time.duration.weeks(1));
     this.campaign = await Campaign.new(
