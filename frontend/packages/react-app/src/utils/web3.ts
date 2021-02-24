@@ -23,15 +23,13 @@ import {
 import { utils, Signer } from "ethers";
 import { TokenBasic } from "../interfaces";
 import { CampaignInterface__factory as Campaign } from "../types/factories/CampaignInterface__factory";
-import { CCTWalletDistributor__factory as CCTWalletDistributor } from "../types/factories/CCTWalletDistributor__factory";
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
-import { FanToken__factory as FanTokenFactory } from "../types/factories/FanToken__factory";
+import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
 import { UUIDCampaign__factory as UUIDCampaign } from "../types/factories/UUIDCampaign__factory";
 import { UUIDDistributor__factory as UUIDDistributor } from "../types/factories/UUIDDistributor__factory";
 import { WalletDistributor__factory as WalletDistributor } from "../types/factories/WalletDistributor__factory";
 import { WalletCampaign__factory as WalletCampaign } from "../types/factories/WalletCampaign__factory";
 import { ContractTransaction } from "@ethersproject/contracts";
-import {} from "@ethersproject/providers";
 // @ts-ignore
 import { addresses } from "@project/contracts";
 import { MERKLE_PROOF_API } from "../utils/const";
@@ -75,7 +73,7 @@ export const getWalletBalance = async (
   }
   const signer = library.getSigner();
   const walletAddress = await signer.getAddress();
-  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+  const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
   const balance = await erc20.balanceOf(walletAddress);
   return balance.toString();
 };
@@ -89,7 +87,7 @@ export const getContractTokenBalance = async (
     return undefined;
   }
   const signer = library.getSigner();
-  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+  const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
   const balance = await erc20.balanceOf(contractAddress);
   const decimals = await erc20.decimals();
   const formatBalance = utils.formatUnits(balance, decimals.toString());
@@ -119,7 +117,7 @@ export const getAllowance = async (
   }
   const signer = library.getSigner();
   const walletAddress = await signer.getAddress();
-  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+  const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
   const allowance = await erc20.allowance(walletAddress, distributorAddress);
   return allowance.toString();
 };
@@ -135,46 +133,12 @@ export const setApproveAmount = async (
     return undefined;
   }
   const signer = library.getSigner();
-  const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+  const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
   const parsedApproveAmount = parseUnits(approveAmount, decimals);
 
   return erc20
     .approve(distributorAddress, parsedApproveAmount)
     .then((transaction) => {
-      return transaction;
-    });
-};
-
-export const createAudiusCampaign = async (
-  library: Web3Provider | undefined,
-  tokenAddress: string,
-  campaignInfoCid: string,
-  recipientsCid: string,
-  recipientsNum: number,
-  startDate: number,
-  endDate: number
-): Promise<ContractTransaction | undefined> => {
-  if (!library) {
-    return undefined;
-  }
-  const signer = library.getSigner();
-  const walletAddress = await signer.getAddress();
-  const distributor = CCTWalletDistributor.connect(
-    addresses.CCTWalletDistributor,
-    signer
-  );
-
-  return distributor
-    .createCampaign(
-      tokenAddress,
-      walletAddress,
-      campaignInfoCid,
-      recipientsCid,
-      recipientsNum,
-      startDate,
-      endDate
-    )
-    .then((transaction: ContractTransaction) => {
       return transaction;
     });
 };

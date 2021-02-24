@@ -15,14 +15,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
-pragma solidity ^0.6.0;
+pragma solidity =0.6.11;
 
-import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract DistributorInterface {
+contract DistributorInterfaceV1 {
     using SafeMath for uint256;
 
     event CreateCampaign(
@@ -31,14 +30,12 @@ contract DistributorInterface {
         address indexed creator
     );
 
-    constructor(string memory _distributorInfoCid, address _link) public {
+    constructor(string memory _distributorInfoCid) public {
         distributorInfoCid = _distributorInfoCid;
-        link = _link;
     }
 
     string public distributorInfoCid;
     // TODO: Add features updatable or whitelist
-    address public link;
     uint256 public nextCampaignId = 1;
     mapping(uint256 => address) public campaignList;
 
@@ -55,10 +52,12 @@ contract DistributorInterface {
     }
 
     function createCampaign(
+        bytes32 merkleRoot,
         address payable token,
         address tokenHolder, // Not only TokenHolder contract address but include creator address
         string memory campaignInfoCid,
         string memory recipientsCid,
+        string memory merkleTreeCid,
         uint32 recipientsNum,
         uint256 startDate,
         uint256 endDate

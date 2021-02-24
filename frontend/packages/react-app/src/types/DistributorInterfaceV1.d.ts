@@ -20,7 +20,7 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface DistributorInterfaceV2Interface extends ethers.utils.Interface {
+interface DistributorInterfaceV1Interface extends ethers.utils.Interface {
   functions: {
     "campaignList(uint256)": FunctionFragment;
     "distributorInfoCid()": FunctionFragment;
@@ -79,7 +79,7 @@ interface DistributorInterfaceV2Interface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "CreateCampaign"): EventFragment;
 }
 
-export class DistributorInterfaceV2 extends Contract {
+export class DistributorInterfaceV1 extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -90,7 +90,7 @@ export class DistributorInterfaceV2 extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: DistributorInterfaceV2Interface;
+  interface: DistributorInterfaceV1Interface;
 
   functions: {
     campaignList(

@@ -20,7 +20,7 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface CampaignInterfaceV2Interface extends ethers.utils.Interface {
+interface CampaignInterfaceV1Interface extends ethers.utils.Interface {
   functions: {
     "campaignInfoCid()": FunctionFragment;
     "campaignToken()": FunctionFragment;
@@ -136,7 +136,7 @@ interface CampaignInterfaceV2Interface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "UpdateStatus"): EventFragment;
 }
 
-export class CampaignInterfaceV2 extends Contract {
+export class CampaignInterfaceV1 extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -147,7 +147,7 @@ export class CampaignInterfaceV2 extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: CampaignInterfaceV2Interface;
+  interface: CampaignInterfaceV1Interface;
 
   functions: {
     campaignInfoCid(overrides?: CallOverrides): Promise<[string]>;
