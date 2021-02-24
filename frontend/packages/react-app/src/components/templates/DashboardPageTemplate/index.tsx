@@ -24,6 +24,8 @@ import theme from "../../../theme/mui-theme";
 import CampaignListTable from "../../molecules/CampaignListTable";
 import { TokenOption } from "../../atoms/SelectTokenInput";
 import AppFrame from "../../organisms/AppFrame";
+import distributors from "../../../utils/distributors";
+import { useHistory } from "react-router-dom";
 
 export interface DashboardPageTemplateProps {
   readonly campaignsState: Campaigns;
@@ -36,6 +38,17 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
   active,
   creatorTokenList,
 }) => {
+  const history = useHistory();
+  const walletDistributor = distributors.find(
+    (distributor) => distributor.type === "wallet"
+  );
+  const urlDistributor = distributors.find(
+    (distributor) => distributor.type === "uuid"
+  );
+  const emailDistributor = distributors.find(
+    (distributor) => distributor.type === "email"
+  );
+
   return (
     <>
       <AppFrame>
@@ -46,31 +59,47 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
           CREATE NEW CAMPAIGN WITH...
         </Typography>
         <MenuButtonWrapper>
-          {/* TODO: Remove console.log */}
-          <MenuButton
-            title="Wallet address Distributor"
-            description="To distribute tokens to a list of addresses that you have."
-            color="creator"
-            onClick={() =>
-              console.log("Link to Wallet Address Distributor page")
-            }
-          />
-          <MenuButton
-            title="URL Distributor"
-            description="To distribute tokens with a unique URL per user."
-            color="creator"
-            onClick={() => console.log("Link to URL Distributor page")}
-          />
+          {walletDistributor !== undefined && (
+            <MenuButton
+              key={`${walletDistributor.id}-${walletDistributor.type}`}
+              title={walletDistributor.distributorMetadata.name}
+              description={walletDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${walletDistributor.id}/${walletDistributor.type}`
+                )
+              }
+            />
+          )}
+          {urlDistributor !== undefined && (
+            <MenuButton
+              key={`${urlDistributor.id}-${urlDistributor.type}`}
+              title={urlDistributor.distributorMetadata.name}
+              description={urlDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${urlDistributor.id}/${urlDistributor.type}`
+                )
+              }
+            />
+          )}
         </MenuButtonWrapper>
         <MenuButtonWrapper>
-          <MenuButton
-            title="Email Distributor"
-            description="To distribute tokens to a list of Email addresses that you have."
-            color="creator"
-            onClick={() =>
-              console.log("Link to Email Address Distributor page")
-            }
-          />
+          {emailDistributor !== undefined && (
+            <MenuButton
+              key={`${emailDistributor.id}-${emailDistributor.type}`}
+              title={emailDistributor.distributorMetadata.name}
+              description={emailDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${emailDistributor.id}/${emailDistributor.type}`
+                )
+              }
+            />
+          )}
           <MenuButton
             title="⏳"
             description="Coming soon"

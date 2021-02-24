@@ -58,7 +58,7 @@ const App: React.FC = () => {
                 if (distributor.disabled) {
                   return;
                 }
-                const path = `/dashboard/:tokenAddress/distributors/${distributor.id}/${distributor.type}`;
+                const path = `/dashboard/distributors/${distributor.id}/${distributor.type}`;
                 if (distributor.type === "wallet") {
                   return (
                     <Route
