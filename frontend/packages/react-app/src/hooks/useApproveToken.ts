@@ -16,7 +16,7 @@
  */
 
 import { Web3Provider } from "@ethersproject/providers";
-import { FanToken__factory as FanTokenFactory } from "../types/factories/FanToken__factory";
+import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
 import { BigNumber } from "ethers";
 import { ContractTransaction } from "@ethersproject/contracts";
 import { useCallback } from "react";
@@ -32,7 +32,7 @@ export const useApproveToken = (
       return undefined;
     }
     const signer = library.getSigner();
-    const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+    const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
     return erc20
       .approve(campaignAddress, BigNumber.from(amount))
       .then((transaction) => {

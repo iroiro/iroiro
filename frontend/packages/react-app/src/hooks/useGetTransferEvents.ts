@@ -17,7 +17,7 @@
 
 import { useEffect, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
-import { FanToken__factory as FanTokenFactory } from "../types/factories/FanToken__factory";
+import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
 import { Event } from "@ethersproject/contracts";
 
 export const useGetTransferEvents = (
@@ -45,7 +45,7 @@ export const useGetTransferEvents = (
       setError(undefined);
       const signer = library.getSigner();
       const walletAddress = await signer.getAddress();
-      const erc20 = FanTokenFactory.connect(tokenAddress, signer);
+      const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
       const filterFrom = erc20.filters.Transfer(walletAddress, null, null);
       const fromEvents: Event[] = await erc20.queryFilter(filterFrom);
       const filterTo = erc20.filters.Transfer(null, walletAddress, null);
