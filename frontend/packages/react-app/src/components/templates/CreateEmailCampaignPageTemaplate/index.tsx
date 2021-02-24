@@ -16,8 +16,7 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Container, Paper } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
+import { Box, Typography, Paper } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
@@ -27,11 +26,13 @@ import {
 import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
 import CreateEmailCampaignStepper from "../../organisms/CreateEmailCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
+import { ACTIONS } from "../../../reducers/token";
 
 export interface CampaignInfo {
   readonly active: boolean;
   readonly tokenAddress: string;
   readonly tokenInfo: AccountToken;
+  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly emailState: EmailState;
@@ -40,8 +41,8 @@ export interface CampaignInfo {
 
 const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
-  tokenAddress,
   tokenInfo,
+  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   emailState,
@@ -61,6 +62,7 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
             </Box>
             <CreateEmailCampaignStepper
               tokenInfo={tokenInfo}
+              tokenDispatch={tokenDispatch}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
               emailState={emailState}

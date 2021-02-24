@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -36,9 +36,14 @@ import theme from "../../../theme/mui-theme";
 import { EmailState, EMAIL_ACTIONS } from "../../../reducers/email";
 import UploadEmailCsvPane from "../UploadEmailCsvPane";
 import { CSVLink } from "react-csv";
+import { ACTIONS } from "../../../reducers/token";
+import { useWeb3React } from "@web3-react/core";
+import { useGetTokenInfo } from "../../../hooks/useGetTokenInfo";
+import { isAddress } from "ethers/lib/utils";
 
 export interface CreateEmailCampaignStepperProps {
   readonly tokenInfo: AccountToken;
+  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly emailState: EmailState;
@@ -46,40 +51,66 @@ export interface CreateEmailCampaignStepperProps {
 }
 
 const CreateEmailCampaignStepper = ({
-  ...props
+  tokenInfo,
+  tokenDispatch,
+  distributorFormState,
+  distributorFormDispatch,
+  emailState,
+  emailDispatch,
 }: CreateEmailCampaignStepperProps) => {
   const [isDownloaded, setIsDownloaded] = useState(false);
   const urlList = useMemo(() => {
-    const list = props.emailState.rawTargets.map(
+    const list = emailState.rawTargets.map(
       (uuid) =>
-        `${window.location.origin}${window.location.pathname}#/explore/${props.tokenInfo.token?.tokenAddress}/distributors/${props.emailState.distributorAddress}/campaigns/${props.distributorFormState.createdCampaignAddress}?uuid=${uuid}`
+        `${window.location.origin}${window.location.pathname}#/explore/${tokenInfo.token?.tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${distributorFormState.createdCampaignAddress}?uuid=${uuid}`
     );
     return list;
   }, [
-    props.emailState,
-    props.distributorFormState.createdCampaignAddress,
-    props.tokenInfo.token?.tokenAddress,
+    emailState,
+    distributorFormState.createdCampaignAddress,
+    tokenInfo.token?.tokenAddress,
   ]);
 
   const emailUrlPair = useMemo(() => {
-    return props.emailState.emailList.map((email, index) => {
+    return emailState.emailList.map((email, index) => {
       return [email, urlList[index]];
     });
-  }, [props.emailState.emailList, urlList]);
+  }, [emailState.emailList, urlList]);
+  const { library } = useWeb3React();
+  const { getTokenInfo, token } = useGetTokenInfo(
+    library,
+    distributorFormState.tokenAddress
+  );
 
   const csvData = [["Email", "Campaign URL"], ...emailUrlPair];
 
   const handleStepChange = (stepNumber: number) => {
-    props.distributorFormDispatch({
+    distributorFormDispatch({
       type: "step:set",
       payload: { stepNo: stepNumber },
     });
   };
 
+  useEffect(() => {
+    if (token === undefined) {
+      return;
+    }
+    tokenDispatch({
+      type: "token:set",
+      payload: {
+        token,
+      },
+    });
+  }, [token, tokenDispatch]);
+
+  const isTokenAddressError =
+    distributorFormState.tokenAddress !== "" &&
+    !isAddress(distributorFormState.tokenAddress);
+
   return (
     <div>
       <Stepper
-        activeStep={props.distributorFormState.step}
+        activeStep={distributorFormState.step}
         orientation="vertical"
         style={{ maxWidth: 680 }}
       >
@@ -97,18 +128,39 @@ const CreateEmailCampaignStepper = ({
               }}
             >
               <TextField
+                error={isTokenAddressError}
+                helperText={isTokenAddressError ? "Invalid address" : undefined}
                 color="secondary"
                 label="Token Address"
                 style={{ width: 200, marginRight: 8 }}
-                value={props.tokenInfo.token?.tokenAddress}
+                value={distributorFormState.tokenAddress}
+                onChange={(e) => {
+                  distributorFormDispatch({
+                    type: "tokenAddress:set",
+                    payload: {
+                      tokenAddress: e.target.value,
+                    },
+                  });
+                  tokenDispatch({
+                    type: "token:set",
+                    payload: {
+                      token: undefined,
+                    },
+                  });
+                }}
               />
-              <Button color="secondary" variant="outlined">
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={() => getTokenInfo()}
+                disabled={isTokenAddressError}
+              >
                 Confirm
               </Button>
             </div>
-            {props.tokenInfo.token?.name !== "" && (
+            {tokenInfo.token?.name !== "" && (
               <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
-                {props.tokenInfo.token?.name}
+                {tokenInfo.token?.name}
               </div>
             )}
             <div style={{ marginTop: 40 }}>
@@ -117,7 +169,7 @@ const CreateEmailCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 onClick={() => handleStepChange(1)}
-                disabled={props.tokenInfo.token?.name === ""}
+                disabled={tokenInfo.token === undefined}
               >
                 Next
               </StyledButton>
@@ -129,8 +181,8 @@ const CreateEmailCampaignStepper = ({
           <StepContent>
             <div style={{ marginBottom: 16 }}>
               <UploadEmailCsvPane
-                emailState={props.emailState}
-                emailDispatch={props.emailDispatch}
+                emailState={emailState}
+                emailDispatch={emailDispatch}
               />
             </div>
             <Box mt={5}>
@@ -142,12 +194,12 @@ const CreateEmailCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 disabled={
-                  !props.emailState.isValidEmails ||
-                  props.emailState.emailList.length === 0 ||
-                  upperLimit < props.emailState.emailList.length
+                  !emailState.isValidEmails ||
+                  emailState.emailList.length === 0 ||
+                  upperLimit < emailState.emailList.length
                 }
                 onClick={() => {
-                  props.emailDispatch({ type: "targets:generate" });
+                  emailDispatch({ type: "targets:generate" });
                   handleStepChange(2);
                 }}
               >
@@ -161,9 +213,9 @@ const CreateEmailCampaignStepper = ({
           <StepContent>
             <div>
               <ApproveToken
-                tokenInfo={props.tokenInfo}
-                distributorFormState={props.distributorFormState}
-                distributorFormDispatch={props.distributorFormDispatch}
+                tokenInfo={tokenInfo}
+                distributorFormState={distributorFormState}
+                distributorFormDispatch={distributorFormDispatch}
               />
             </div>
             <div>
@@ -174,7 +226,7 @@ const CreateEmailCampaignStepper = ({
                 variant="contained"
                 color="secondary"
                 disableElevation
-                disabled={props.tokenInfo.allowance === "0"}
+                disabled={tokenInfo.allowance === "0"}
                 onClick={() => handleStepChange(3)}
               >
                 Next
@@ -187,8 +239,8 @@ const CreateEmailCampaignStepper = ({
           <StepContent>
             <div>
               <SetupCampaign
-                distributorFormState={props.distributorFormState}
-                distributorFormDispatch={props.distributorFormDispatch}
+                distributorFormState={distributorFormState}
+                distributorFormDispatch={distributorFormDispatch}
               />
             </div>
             <div style={{ marginTop: 40 }}>
@@ -200,16 +252,15 @@ const CreateEmailCampaignStepper = ({
                 color="secondary"
                 disableElevation
                 onClick={() => {
-                  props.distributorFormDispatch({
+                  distributorFormDispatch({
                     type: "campaign:deploy",
                     payload: { requestDeployCampaign: true },
                   });
-                  handleStepChange(4);
                 }}
                 disabled={
-                  props.distributorFormState.startDate >=
-                    props.distributorFormState.endDate ||
-                  props.distributorFormState.campaignName === ""
+                  distributorFormState.startDate >=
+                    distributorFormState.endDate ||
+                  distributorFormState.campaignName === ""
                 }
               >
                 Start Campaign
@@ -232,7 +283,7 @@ const CreateEmailCampaignStepper = ({
                       padding: "0 4px",
                     }}
                   >
-                    {props.emailState.rawTargets.length}
+                    {emailState.rawTargets.length}
                   </span>
                   Email addresses that you have uploaded.
                 </Typography>
@@ -290,7 +341,7 @@ const CreateEmailCampaignStepper = ({
                 disableElevation
                 disabled={!isDownloaded}
                 onClick={() => {
-                  props.emailDispatch({ type: "moveToCampaignPage:on" });
+                  emailDispatch({ type: "moveToCampaignPage:on" });
                 }}
               >
                 Go to Campaign Detail
