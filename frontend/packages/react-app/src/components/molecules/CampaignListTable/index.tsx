@@ -89,7 +89,7 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
       );
     });
     setdisplayedList(filteredList);
-  }, [value]);
+  }, [value, campaignsState.campaigns]);
 
   return (
     <>
