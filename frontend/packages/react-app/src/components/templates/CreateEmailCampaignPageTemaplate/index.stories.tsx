@@ -37,34 +37,8 @@ const Template: Story<CampaignInfo> = (args) => (
   </BrowserRouter>
 );
 
-export const Step1ButtonDisabled = Template.bind({});
-Step1ButtonDisabled.args = {
-  active: true,
-  emailState: {
-    ...emailState,
-    targets: [],
-    quantity: "100",
-    isValidQuantity: true,
-  },
-  distributorFormState,
-};
-
-export const Step1ButtonEnabled = Template.bind({});
-Step1ButtonEnabled.args = {
-  active: true,
-  emailState: {
-    ...emailState,
-    quantity: "1",
-    isValidQuantity: false,
-    isCsvUploaded: true,
-    isValidEmails: true,
-    emailList: ["test@example.com"],
-  },
-  distributorFormState,
-};
-
-export const Step2 = Template.bind({});
-Step2.args = {
+export const Step1 = Template.bind({});
+Step1.args = {
   active: true,
   tokenInfo: tokenInfo,
   emailState: {
@@ -74,8 +48,21 @@ Step2.args = {
   },
   distributorFormState: {
     ...distributorFormState,
-    step: 2,
+    step: 0,
   },
+};
+
+export const Step2 = Template.bind({});
+Step2.args = {
+  active: true,
+  tokenInfo: tokenInfo,
+  emailState: {
+    ...emailState,
+    targets: [],
+    quantity: "100",
+    isValidQuantity: true,
+  },
+  distributorFormState,
 };
 
 export const Step3 = Template.bind({});
@@ -89,13 +76,28 @@ Step3.args = {
   },
   distributorFormState: {
     ...distributorFormState,
-    campaignName: "URL Campaign",
-    step: 3,
+    step: 2,
   },
 };
 
 export const Step4 = Template.bind({});
 Step4.args = {
+  active: true,
+  tokenInfo: tokenInfo,
+  emailState: {
+    ...emailState,
+    quantity: "100",
+    isValidQuantity: true,
+  },
+  distributorFormState: {
+    ...distributorFormState,
+    campaignName: "Email Campaign",
+    step: 3,
+  },
+};
+
+export const Step5 = Template.bind({});
+Step5.args = {
   active: true,
   tokenInfo: tokenInfo,
   emailState: {

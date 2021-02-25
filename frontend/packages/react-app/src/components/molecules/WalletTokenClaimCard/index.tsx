@@ -97,36 +97,34 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
     }
   }
   return (
-    <Card>
-      <CardContent>
-        <Box my={4}>
-          <Typography align="center">{text}</Typography>
-          {isClaimable && (
-            <>
-              <Box my={2}>
-                <TokenAmount
-                  amount={claimAmount}
-                  decimals={decimals}
-                  align="center"
-                  variant="h2"
-                  symbol={symbol}
-                />
-              </Box>
-              <Box mt={4} textAlign="center">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={isClaimed}
-                  onClick={onClickClaim}
-                >
-                  {isClaimed ? "Claimed" : "Claim"}
-                </Button>
-              </Box>
-            </>
-          )}
-        </Box>
-      </CardContent>
-    </Card>
+    <Box p={4}>
+      <Box my={4}>
+        <Typography align="center">{text}</Typography>
+        {isClaimable && (
+          <>
+            <Box my={2}>
+              <TokenAmount
+                amount={claimAmount}
+                decimals={decimals}
+                align="center"
+                variant="h2"
+                symbol={symbol}
+              />
+            </Box>
+            <Box mt={4} textAlign="center">
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={isClaimed}
+                onClick={onClickClaim}
+              >
+                {isClaimed ? "Claimed" : "Claim"}
+              </Button>
+            </Box>
+          </>
+        )}
+      </Box>
+    </Box>
   );
 };
 

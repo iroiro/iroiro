@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Box, Typography, Link, IconButton } from "@material-ui/core";
+import { Box, Typography, Link, IconButton, Button } from "@material-ui/core";
 import LogoButton from "../../atoms/LogoButton";
 import LinkButton from "../../atoms/LinkButton";
 import WalletButton from "../../atoms/WalletButton";
@@ -32,9 +32,11 @@ import {
 import { useState } from "react";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
+import SelectTokenModal from "../../organisms/SelectTokenModal";
 
 const AppHeader: React.FC = () => {
   const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const Menu = (
     <>
@@ -44,7 +46,15 @@ const AppHeader: React.FC = () => {
         text="Distribution"
         color={"secondary"}
       />
-      <LinkButton m={1} path="/explore" text="Explore" color={"primary"} />
+      <Box mr={1}>
+        <Button
+          style={{ textDecoration: "none" }}
+          color="primary"
+          onClick={() => setOpen(true)}
+        >
+          Explore
+        </Button>
+      </Box>
       <WalletButtonBox mr={1}>
         <WalletButton />
       </WalletButtonBox>
@@ -87,6 +97,7 @@ const AppHeader: React.FC = () => {
         <PcMenuBox display={"flex"}>{Menu}</PcMenuBox>
       </Header>
       <hr color={"lightgray"} style={{ margin: "0px" }} />
+      <SelectTokenModal open={open} onCloseModal={() => setOpen(false)} />
     </div>
   );
 };

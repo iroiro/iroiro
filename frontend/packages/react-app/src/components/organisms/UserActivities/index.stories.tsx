@@ -21,7 +21,7 @@ import { BrowserRouter } from "react-router-dom";
 import { tokenInformationState } from "../../../utils/mockData";
 import UserActivities, { UserActivitiesProps } from "./index";
 import { TokenProvider } from "../../../context/token";
-import { tokenReducer } from "../../../reducers/tokenContext";
+import { tokenReducer, initialValue } from "../../../reducers/tokenContext";
 
 export default {
   title: "Organisms/UserActivities",
@@ -32,6 +32,7 @@ const Template: Story<UserActivitiesProps> = (args) => (
   <BrowserRouter>
     <TokenProvider
       initialValue={{
+        ...initialValue,
         token: tokenInformationState.token,
         userAddress: tokenInformationState.userAddress,
         userBalance: tokenInformationState.userBalance,

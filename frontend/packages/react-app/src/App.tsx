@@ -30,9 +30,9 @@ import distributors from "./utils/distributors";
 import CreateUUIDCampaignPage from "./components/pages/CreateUUIDCampaignPage";
 import { TokenProvider } from "./context/token";
 import { initialValue, tokenReducer } from "./reducers/tokenContext";
-import TokenBasicInformationPage from "./components/pages/TokenBasicInformationPage";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
 import CreateEmailCampaignPage from "./components/pages/CreateEmailCampaignPage";
+import TopPageTemplate from "./components/templates/TopPageTemplate";
 
 const App: React.FC = () => {
   return (
@@ -41,7 +41,7 @@ const App: React.FC = () => {
         <div>
           <TokenProvider initialValue={initialValue} reducer={tokenReducer}>
             <Switch>
-              <Route exact path="/" component={ExplorePage} />
+              <Route exact path="/" component={TopPageTemplate} />
               {/* For Creator */}
               <Route exact path="/dashboard" component={DashboardPage} />
               <Route
@@ -58,7 +58,7 @@ const App: React.FC = () => {
                 if (distributor.disabled) {
                   return;
                 }
-                const path = `/dashboard/:tokenAddress/distributors/${distributor.id}/${distributor.type}`;
+                const path = `/dashboard/distributors/${distributor.id}/${distributor.type}`;
                 if (distributor.type === "wallet") {
                   return (
                     <Route
@@ -116,7 +116,7 @@ const App: React.FC = () => {
               <Route
                 exact
                 path="/explore/:tokenAddress"
-                component={TokenBasicInformationPage}
+                component={ExplorePage}
               />
               <Route
                 exact

@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Button, Box, FormControl, Input } from "@material-ui/core";
+import { Box, FormControl, TextField } from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
@@ -29,6 +29,8 @@ import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface SetupCampaignFormProps {
   readonly distributorFormState: createCampaignState;
@@ -40,14 +42,15 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
   distributorFormState,
 }) => (
   <Box>
-    <Box mt={3}>
+    <Box mt={3} maxWidth={460}>
       <FormControl fullWidth>
-        <Box mb={2}>
-          <Input
+        <Box mb={4}>
+          <TextField
             fullWidth
             type="text"
             required
-            placeholder="Campaign Name"
+            label="Campaign Name"
+            color="secondary"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               distributorFormDispatch({
                 type: "campaignName:set",
@@ -57,73 +60,88 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
             value={distributorFormState.campaignName}
           />
         </Box>
+        <Box mb={2}>
+          {/* TODO: Change Dispatch and set value */}
+          <TextField
+            fullWidth
+            type="text"
+            label="Description"
+            color="secondary"
+            variant="outlined"
+            multiline
+            rows={4}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              distributorFormDispatch({
+                type: "campaignDescription:set",
+                payload: { campaignDescription: event.target.value },
+              })
+            }
+            value={distributorFormState.campaignDescription}
+          />
+        </Box>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div style={{ marginTop: 18 }}>
-            <KeyboardDatePicker
-              margin="normal"
-              id="date-picker-dialog"
-              label="Start Date"
-              format="MM/dd/yyyy"
-              value={distributorFormState.startDate}
-              onChange={(date: MaterialUiPickersDate) =>
-                distributorFormDispatch({
-                  type: "startDate:set",
-                  payload: { startDate: date },
-                })
-              }
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-          </div>
-          <div style={{ marginTop: 10 }}>
-            <KeyboardDatePicker
-              margin="normal"
-              id="date-picker-dialog"
-              label="End Date"
-              format="MM/dd/yyyy"
-              value={distributorFormState.endDate}
-              onChange={(date: MaterialUiPickersDate) =>
-                distributorFormDispatch({
-                  type: "endDate:set",
-                  payload: { endDate: date },
-                })
-              }
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-              error={
-                distributorFormState.startDate >= distributorFormState.endDate
-              }
-            />
-            {distributorFormState.startDate >= distributorFormState.endDate && (
-              <FormHelperText style={{ color: "#f00", marginTop: -4 }}>
-                End date must be after Start date.
-              </FormHelperText>
-            )}
-          </div>
+          <DateInputWrapper>
+            <div style={{ marginRight: 16 }}>
+              <KeyboardDatePicker
+                margin="normal"
+                color="secondary"
+                id="date-picker-dialog"
+                label="Start Date"
+                format="MM/dd/yyyy"
+                value={distributorFormState.startDate}
+                onChange={(date: MaterialUiPickersDate) =>
+                  distributorFormDispatch({
+                    type: "startDate:set",
+                    payload: { startDate: date },
+                  })
+                }
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </div>
+            <div>
+              <KeyboardDatePicker
+                margin="normal"
+                color="secondary"
+                id="date-picker-dialog"
+                label="End Date"
+                format="MM/dd/yyyy"
+                value={distributorFormState.endDate}
+                onChange={(date: MaterialUiPickersDate) =>
+                  distributorFormDispatch({
+                    type: "endDate:set",
+                    payload: { endDate: date },
+                  })
+                }
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+                error={
+                  distributorFormState.startDate >= distributorFormState.endDate
+                }
+              />
+              {distributorFormState.startDate >=
+                distributorFormState.endDate && (
+                <FormHelperText style={{ color: "#f00", marginTop: -4 }}>
+                  End date must be after Start date.
+                </FormHelperText>
+              )}
+            </div>
+          </DateInputWrapper>
         </MuiPickersUtilsProvider>
       </FormControl>
-      <Box mt={3} textAlign={"center"}>
-        <Button
-          variant="contained"
-          color="secondary"
-          disabled={
-            distributorFormState.startDate >= distributorFormState.endDate ||
-            distributorFormState.campaignName === ""
-          }
-          onClick={() => {
-            distributorFormDispatch({
-              type: "campaign:deploy",
-              payload: { requestDeployCampaign: true },
-            });
-          }}
-        >
-          Start Campaign
-        </Button>
-      </Box>
     </Box>
   </Box>
 );
+
+const DateInputWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  ${theme.breakpoints.down(600)} {
+    display: block;
+  }
+`;
 
 export default SetupCampaignForm;

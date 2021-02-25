@@ -12,3 +12,5 @@ env.json
 
 # Local Netlify folder
 .netlify
+
+contract/coverage.json

@@ -26,7 +26,7 @@ const { assert, expect } = require("chai");
 
 const Distributor = contract.fromArtifact("WalletDistributor");
 const Campaign = contract.fromArtifact("WalletCampaign");
-const FanToken = contract.fromArtifact("FanToken");
+const ERC20Mock = contract.fromArtifact("ERC20Mock");
 
 describe("WalletCampaign", () => {
   const [defaultAccount, alice, bob, consumer, follower, metamask] = accounts;
@@ -53,15 +53,11 @@ describe("WalletCampaign", () => {
     distributor = await Distributor.new("Wallet Test Distributor", {
       from: defaultAccount,
     });
-    abctoken = await FanToken.new(
+    abctoken = await ERC20Mock.new(
       "ABCToken",
       "ABC",
+      defaultAccount,
       1000000000,
-      defaultAccount,
-      5,
-      defaultAccount,
-      50,
-      5,
       { from: defaultAccount }
     );
     await abctoken.transfer(consumer, 1000, { from: defaultAccount });

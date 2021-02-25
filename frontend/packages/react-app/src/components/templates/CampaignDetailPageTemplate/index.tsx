@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Box, Typography, Button, Container } from "@material-ui/core";
+import { Box, Typography, Button, Container, Paper } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { red } from "@material-ui/core/colors";
 import AppHeader from "../../molecules/AppHeader";
@@ -25,6 +25,9 @@ import { AccountToken } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
 import { ACTIONS } from "../../../reducers/campaign";
 import { AppFooter } from "../../molecules/AppFooter";
+import AppFrame from "../../organisms/AppFrame";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface CampaignInfoProps {
   readonly tokenInfo: AccountToken;
@@ -37,6 +40,7 @@ export interface CampaignInfoProps {
 const ColorButton = withStyles(() => ({
   root: {
     color: red[500],
+    borderColor: red[500],
   },
 }))(Button);
 
@@ -52,23 +56,23 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
   campaignDispatch,
   distributorType,
 }) => (
-  <div style={{ height: "100vh" }}>
-    <AppHeader />
-    <Box
-      mt={5}
-      style={{
-        boxSizing: "border-box",
-        height: "calc(100% - 266px)",
-        minHeight: "300px",
-      }}
-    >
-      <Container>
-        <Box display="flex" mb={1} style={{ justifyContent: "space-between" }}>
+  <>
+    <AppFrame>
+      <Paper variant="outlined" style={{ border: "none" }}>
+        <div style={{ padding: "40px 40px 0" }}>
           <Typography variant={"h3"}>
             {campaignNames[distributorType]}
           </Typography>
-          <Box style={{ textAlign: "center" }}>
-            {campaignData.campaign.status === 0 && !campaignData.canRefund && (
+        </div>
+        <Wrapper>
+          <CampaignDetail
+            campaignData={campaignData}
+            targetNumber={targetNumber}
+          />
+        </Wrapper>
+        <Box style={{ textAlign: "center", borderTop: "2px solid #F8F8F8" }}>
+          {campaignData.campaign.status === 0 && !campaignData.canRefund && (
+            <ButtonWrapper>
               <ColorButton
                 variant="outlined"
                 size="small"
@@ -81,8 +85,10 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
               >
                 Cancel campaign
               </ColorButton>
-            )}
-            {campaignData.canRefund && (
+            </ButtonWrapper>
+          )}
+          {campaignData.canRefund && (
+            <ButtonWrapper>
               <Button
                 size="small"
                 color="secondary"
@@ -95,17 +101,26 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
               >
                 End campaign and refund tokens
               </Button>
-            )}
-          </Box>
+            </ButtonWrapper>
+          )}
         </Box>
-        <CampaignDetail
-          campaignData={campaignData}
-          targetNumber={targetNumber}
-        />
-      </Container>
-    </Box>
-    <AppFooter />
-  </div>
+      </Paper>
+    </AppFrame>
+  </>
 );
+
+const Wrapper = styled.div`
+  padding: 20px 40px 40px;
+  ${theme.breakpoints.down(600)} {
+    padding: 16px;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  padding: 40px;
+  ${theme.breakpoints.down(600)} {
+    padding: 16px;
+  }
+`;
 
 export default CampaignDetailPageTemplate;

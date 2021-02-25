@@ -45,12 +45,11 @@ const TokenInformationBar: React.FC = () => {
           <Box mr={4}>
             <Typography variant="caption">Your Balance</Typography>
             <Typography variant="h4">
-              {!!state.userBalance && !!state
-                ? getBalanceDevidedByDecimals(
-                    state.userBalance,
-                    state.token?.decimals ?? 0
-                  )
-                : "-"}
+              {!!state.userBalance &&
+                getBalanceDevidedByDecimals(
+                  state.userBalance,
+                  state.token?.decimals ?? 0
+                )}
               {!!state.token?.symbol && " $" + state.token.symbol}
             </Typography>
           </Box>

@@ -17,18 +17,21 @@
 
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { TabMenuForFanPage, TabMenuForFanPageProps } from "./index";
+import { TabMenuForFunPage, TabMenuForFunPageProps } from "./index";
+import { BrowserRouter } from "react-router-dom";
 
 export default {
   title: "Molecules/Tab Menu",
-  component: TabMenuForFanPage,
+  component: TabMenuForFunPage,
 } as Meta;
 
-const Template: Story<TabMenuForFanPageProps> = (args) => (
-  <TabMenuForFanPage {...args} />
+const Template: Story<TabMenuForFunPageProps> = (args) => (
+  <BrowserRouter>
+    <TabMenuForFunPage {...args} />
+  </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  value: 0,
+  current: "tokenTop",
 };

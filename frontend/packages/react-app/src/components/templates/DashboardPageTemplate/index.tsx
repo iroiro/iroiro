@@ -17,50 +17,122 @@
 
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
-import { ACTIONS } from "../../../reducers/tokens";
-import { TokenListState } from "../../../interfaces";
-import TokenList from "../../organisms/TokenList";
-import SetTokenModal from "../../organisms/SetTokenModal";
-import AddNewToken from "../../atoms/AddNewToken";
-import { AppFooter } from "../../molecules/AppFooter";
+import { Campaigns } from "../../../interfaces";
+import MenuButton from "../../atoms/MenuButton";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
+import CampaignListTable from "../../molecules/CampaignListTable";
+import AppFrame from "../../organisms/AppFrame";
+import distributors from "../../../utils/distributors";
+import { useHistory } from "react-router-dom";
+import { TokenState } from "../../../reducers/tokenContext";
 
 export interface DashboardPageTemplateProps {
-  readonly state: TokenListState;
-  dispatch: React.Dispatch<ACTIONS>;
+  readonly campaignsState: Campaigns;
+  readonly tokenState: TokenState;
+  active: boolean;
 }
 
 const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
-  state,
-  dispatch,
-}) => (
-  <div style={{ height: "100vh" }}>
-    <AppHeader />
-    <Box
-      m={"auto"}
-      my={5}
-      p={2}
-      width={[4 / 5, 1 / 2]}
-      minWidth={320}
-      style={{
-        boxSizing: "border-box",
-        height: "calc(100% - 266px)",
-        minHeight: "300px",
-      }}
-    >
-      <Typography variant={"h3"}>Token Distribution Dashboard</Typography>
-      <Box mt={2}>
-        <Typography>
-          You can create a token distribution campaign. Let&apos;s set the
-          tokens to be distributed and create a campaign.
+  campaignsState,
+  active,
+  tokenState,
+}) => {
+  const history = useHistory();
+  const walletDistributor = distributors.find(
+    (distributor) => distributor.type === "wallet"
+  );
+  const urlDistributor = distributors.find(
+    (distributor) => distributor.type === "uuid"
+  );
+  const emailDistributor = distributors.find(
+    (distributor) => distributor.type === "email"
+  );
+
+  return (
+    <>
+      <AppFrame>
+        <Typography
+          variant={"h3"}
+          style={{ fontWeight: 300, textAlign: "center", marginBottom: 32 }}
+        >
+          CREATE NEW CAMPAIGN WITH...
         </Typography>
-      </Box>
-      <TokenList state={state} />
-      <AddNewToken color={state.color} dispatch={dispatch} />
-      <SetTokenModal state={state} dispatch={dispatch} />
-    </Box>
-    <AppFooter />
-  </div>
-);
+        <MenuButtonWrapper>
+          {walletDistributor !== undefined && (
+            <MenuButton
+              key={`${walletDistributor.id}-${walletDistributor.type}`}
+              title={walletDistributor.distributorMetadata.name}
+              description={walletDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${walletDistributor.id}/${walletDistributor.type}`
+                )
+              }
+            />
+          )}
+          {urlDistributor !== undefined && (
+            <MenuButton
+              key={`${urlDistributor.id}-${urlDistributor.type}`}
+              title={urlDistributor.distributorMetadata.name}
+              description={urlDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${urlDistributor.id}/${urlDistributor.type}`
+                )
+              }
+            />
+          )}
+        </MenuButtonWrapper>
+        <MenuButtonWrapper>
+          {emailDistributor !== undefined && (
+            <MenuButton
+              key={`${emailDistributor.id}-${emailDistributor.type}`}
+              title={emailDistributor.distributorMetadata.name}
+              description={emailDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${emailDistributor.id}/${emailDistributor.type}`
+                )
+              }
+            />
+          )}
+          <MenuButton
+            title="⏳"
+            description="Coming soon"
+            color="creator"
+            disabled={true}
+          />
+        </MenuButtonWrapper>
+        <Box mt={6}>
+          <CampaignListTable
+            campaignsState={campaignsState}
+            walletConnect={active}
+            tokenState={tokenState}
+          />
+        </Box>
+      </AppFrame>
+    </>
+  );
+};
+
+const MenuButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  & > div {
+    width: 49.5%;
+    ${theme.breakpoints.down(600)} {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+  }
+  ${theme.breakpoints.down(600)} {
+    display: block;
+  }
+`;
 
 export default DashboardPageTemplate;

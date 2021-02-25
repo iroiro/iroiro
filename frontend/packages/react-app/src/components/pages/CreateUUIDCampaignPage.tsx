@@ -45,12 +45,14 @@ import {
 } from "../../utils/const";
 import { BigNumber } from "ethers";
 import { uuidInitialState, uuidReducer } from "../../reducers/uuid";
+import { isAddress } from "ethers/lib/utils";
+import CreateWalletCampaignPageTemplate from "../templates/CreateWalletCampaignPageTemaplate";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
 interface CreateUUIDCampaignPageProps {
-  readonly props: RouteComponentProps<{ tokenAddress: string }>;
+  readonly props: RouteComponentProps;
   readonly distributorAddress: string;
 }
 
@@ -59,8 +61,6 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   distributorAddress,
 }) => {
   const { library, active, account } = useWeb3React();
-  const tokenAddress = props.match.params.tokenAddress;
-
   const [tokenState, tokenDispatch] = useReducer(
     tokenReducer,
     tokenInitialState
@@ -101,7 +101,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   );
 
   const getBalance = useCallback(
-    async (library) => {
+    async (library, tokenAddress) => {
       const balance = await getWalletBalance(library, tokenAddress);
       if (balance === undefined) {
         return;
@@ -111,11 +111,11 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         payload: { tokenBalance: balance },
       });
     },
-    [tokenAddress]
+    [tokenDispatch]
   );
 
   const getAllowanceAmount = useCallback(
-    async (library) => {
+    async (library, tokenAddress) => {
       const allowance = await getAllowance(
         library,
         tokenAddress,
@@ -129,14 +129,14 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         payload: { allowance: allowance },
       });
     },
-    [tokenAddress, distributorAddress]
+    [distributorAddress, tokenDispatch]
   );
 
   const approve = useCallback(
     async (library, approveAmount, decimals) => {
       setApproveAmount(
         library,
-        tokenAddress,
+        distributorFormState.tokenAddress,
         distributorAddress,
         approveAmount,
         decimals
@@ -158,7 +158,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         payload: { approveAmount: "0" },
       });
     },
-    [distributorAddress, tokenAddress]
+    [distributorAddress, distributorFormState.tokenAddress]
   );
 
   useEffect(() => {
@@ -206,7 +206,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
       createUUIDCampaign(
         library,
         merkleRoot,
-        tokenAddress,
+        distributorFormState.tokenAddress,
         campaignInfoCid,
         recipientsCid,
         merkleTreeCid,
@@ -244,7 +244,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         });
       });
     },
-    [props.history, tokenAddress]
+    [props.history, distributorFormState.tokenAddress]
   );
 
   const makeMerkleProof = useCallback(
@@ -303,30 +303,34 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
       return;
     }
     props.history.push(
-      `/dashboard/${tokenAddress}/distributors/${distributorAddress}` +
+      `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
         `/campaigns/${distributorFormState.createdCampaignAddress}`
     );
   }, [
     props.history,
     uuidState.moveToCampaignPage,
     distributorFormState.createdCampaignAddress,
-    tokenAddress,
+    distributorFormState.tokenAddress,
     distributorAddress,
   ]);
 
   useEffect(() => {
-    if (library) {
-      getBalance(library);
-      getAllowanceAmount(library);
+    if (
+      distributorFormState.tokenAddress === "" ||
+      !isAddress(distributorFormState.tokenAddress)
+    ) {
+      return;
     }
-  }, [library, tokenAddress, getBalance, getAllowanceAmount]);
-
-  useEffect(() => {
-    tokenDispatch({
-      type: "token:getLocal",
-      payload: { tokenAddress: tokenAddress },
-    });
-  }, [tokenAddress]);
+    if (library) {
+      getBalance(library, distributorFormState.tokenAddress);
+      getAllowanceAmount(library, distributorFormState.tokenAddress);
+    }
+  }, [
+    library,
+    getBalance,
+    getAllowanceAmount,
+    distributorFormState.tokenAddress,
+  ]);
 
   useEffect(() => {
     const f = async () => {
@@ -340,7 +344,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
 
       if (distributorFormState.requestDeployCampaign) {
         const campaignInfo = {
-          description: "",
+          description: distributorFormState.campaignDescription,
           image: "",
           name: distributorFormState.campaignName,
         };
@@ -378,6 +382,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
       distributorFormState.endDate == null ||
       tokenState.allowance === ""
     ) {
+      console.info("cancel merkle proof creation");
       return;
     }
 
@@ -427,8 +432,8 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   return (
     <CreateUUIDCampaignPageTemplate
       active={active}
-      tokenAddress={tokenAddress}
       tokenInfo={tokenState}
+      tokenDispatch={tokenDispatch}
       distributorFormDispatch={distributorFormDispatch}
       distributorFormState={distributorFormState}
       uuidState={uuidState}

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
-pragma solidity ^0.6.0;
+pragma solidity =0.6.11;
 
 library SafeMath8 {
   function mul(uint8 a, uint8 b) internal pure returns (uint8) {

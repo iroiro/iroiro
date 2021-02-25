@@ -16,12 +16,8 @@
  */
 
 import React from "react";
-import { Box, Typography, Container } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
-import ApproveToken from "../../organisms/ApproveToken";
-import SetupCampaign from "../../organisms/SetupCampaign";
+import { Box, Typography, Paper } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
-import WalletDistributionTargets from "../../organisms/WalletDistributionTargets";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
@@ -29,11 +25,14 @@ import {
 } from "../../../reducers/distributorForm";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import { WalletList } from "../../../interfaces";
-import { AppFooter } from "../../molecules/AppFooter";
+import CreateWalletAddressCampaignStepper from "../../organisms/CreateWalletAddressCampaignStepper";
+import AppFrame from "../../organisms/AppFrame";
+import { ACTIONS } from "../../../reducers/token";
 
 export interface CampaignInfo {
   readonly active: boolean;
   readonly tokenInfo: AccountToken;
+  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly walletListState: WalletList;
@@ -43,57 +42,37 @@ export interface CampaignInfo {
 const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
   tokenInfo,
+  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   walletListState,
   walletDispatch,
 }) => (
-  <div style={{ height: "100vh" }}>
-    <AppHeader />
-    <Box
-      mt={5}
-      style={{
-        boxSizing: "border-box",
-        height: "calc(100% - 266px)",
-        minHeight: "300px",
-      }}
-    >
-      <Container>
-        {!active ? (
-          <Box>
-            <WalletConnect />
-          </Box>
-        ) : (
-          <Box>
+  <>
+    <AppFrame>
+      {!active ? (
+        <Box>
+          <WalletConnect />
+        </Box>
+      ) : (
+        <Box maxWidth={640} style={{ margin: "auto" }}>
+          <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
             <Box my={1}>
               <Typography variant={"h3"}>Wallet Address Campaign</Typography>
             </Box>
-            {distributorFormState.step === 1 && (
-              <WalletDistributionTargets
-                walletListState={walletListState}
-                distributorFormDispatch={distributorFormDispatch}
-                walletDispatch={walletDispatch}
-              />
-            )}
-            {distributorFormState.step === 2 && (
-              <ApproveToken
-                tokenInfo={tokenInfo}
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 3 && (
-              <SetupCampaign
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-          </Box>
-        )}
-      </Container>
-    </Box>
-    <AppFooter />
-  </div>
+            <CreateWalletAddressCampaignStepper
+              tokenInfo={tokenInfo}
+              tokenDispatch={tokenDispatch}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+              walletListState={walletListState}
+              walletDispatch={walletDispatch}
+            />
+          </Paper>
+        </Box>
+      )}
+    </AppFrame>
+  </>
 );
 
 export default CreateWalletCampaignPageTemplate;

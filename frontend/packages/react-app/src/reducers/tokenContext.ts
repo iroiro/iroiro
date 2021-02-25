@@ -16,6 +16,7 @@
  */
 
 import { ReactNode } from "react";
+import { TokenOption } from "../components/atoms/SelectTokenInput";
 import { TokenBasic } from "../interfaces";
 
 export interface ProviderValue {
@@ -28,6 +29,8 @@ export interface TokenState {
   token?: TokenBasic;
   userAddress?: string;
   userBalance?: string;
+  tokenBasicInfoList: TokenBasic[];
+  tokens: TokenOption[];
 }
 
 export type TokenAction =
@@ -47,6 +50,18 @@ export type TokenAction =
       type: "userBalance:set";
       payload: {
         balance: string;
+      };
+    }
+  | {
+      type: "tokenBasicInfoList:set";
+      payload: {
+        tokenBasicInfoList: TokenBasic[];
+      };
+    }
+  | {
+      type: "tokens:set";
+      payload: {
+        tokens: Array<TokenOption>;
       };
     };
 
@@ -69,13 +84,35 @@ export const tokenReducer = (state: TokenState, action: TokenAction) => {
         ...state,
         userBalance: action.payload.balance,
       };
+    case "tokenBasicInfoList:set": {
+      const tokenOptions = action.payload.tokenBasicInfoList.map(
+        (tokenInfo) => {
+          return {
+            tokenName: tokenInfo?.name,
+            tokenAddress: tokenInfo?.tokenAddress,
+          } as TokenOption;
+        }
+      );
+      return {
+        ...state,
+        tokenBasicInfoList: action.payload.tokenBasicInfoList,
+        tokens: tokenOptions,
+      };
+    }
+    case "tokens:set":
+      return {
+        ...state,
+        tokens: action.payload.tokens,
+      };
     default:
       return state;
   }
 };
 
-export const initialValue = {
+export const initialValue: TokenState = {
   token: undefined,
   userAddress: "",
   userBalance: "",
+  tokenBasicInfoList: [],
+  tokens: [],
 };

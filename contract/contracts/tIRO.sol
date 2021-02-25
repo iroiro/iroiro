@@ -16,7 +16,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-pragma solidity ^0.6.0;
+pragma solidity =0.6.11;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 

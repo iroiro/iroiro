@@ -16,16 +16,31 @@
  */
 
 import React from "react";
-import { ThemeProvider } from "styled-components";
+import { StylesProvider } from "@material-ui/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import "../src/index.css";
 import muiTheme from "../src/theme/mui-theme";
+import { TokenProvider } from "../src/context/token";
+import { initialValue, tokenReducer } from "../src/reducers/tokenContext";
+import { tokenInformationState } from "../src/utils/mockData";
 
 export const decorators = [
   (Story) => (
-    <MuiThemeProvider theme={muiTheme}>
-      <Story />
-    </MuiThemeProvider>
+    <StylesProvider injectFirst>
+      <MuiThemeProvider theme={muiTheme}>
+        <TokenProvider
+          initialValue={{
+            ...initialValue,
+            token: tokenInformationState.token,
+            userAddress: tokenInformationState.userAddress,
+            userBalance: tokenInformationState.userBalance,
+          }}
+          reducer={tokenReducer}
+        >
+          <Story />
+        </TokenProvider>
+      </MuiThemeProvider>
+    </StylesProvider>
   ),
 ];
 

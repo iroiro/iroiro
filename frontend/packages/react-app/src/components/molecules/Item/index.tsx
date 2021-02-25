@@ -26,7 +26,9 @@ export interface ItemProps {
 const Item: React.FC<ItemProps> = ({ title, text }) => {
   return (
     <Box mr={4}>
-      <Typography variant="subtitle1">{title}</Typography>
+      <Typography variant="subtitle2" style={{ fontWeight: "normal" }}>
+        {title}
+      </Typography>
       <Typography variant="h4">{text}</Typography>
     </Box>
   );

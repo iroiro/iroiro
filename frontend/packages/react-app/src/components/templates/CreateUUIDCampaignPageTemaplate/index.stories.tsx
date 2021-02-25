@@ -34,26 +34,19 @@ const Template: Story<CampaignInfo> = (args) => (
   </BrowserRouter>
 );
 
-export const Step1ButtonDisabled = Template.bind({});
-Step1ButtonDisabled.args = {
+export const Step1 = Template.bind({});
+Step1.args = {
   active: true,
+  tokenInfo: tokenInfo,
   uuidState: {
     ...uuidInitialState,
-    quantity: "100",
+    quantity: 100,
     isValidQuantity: true,
   },
-  distributorFormState,
-};
-
-export const Step1ButtonEnabled = Template.bind({});
-Step1ButtonEnabled.args = {
-  active: true,
-  uuidState: {
-    ...uuidInitialState,
-    quantity: "0",
-    isValidQuantity: false,
+  distributorFormState: {
+    ...distributorFormState,
+    step: 0,
   },
-  distributorFormState,
 };
 
 export const Step2 = Template.bind({});
@@ -62,12 +55,12 @@ Step2.args = {
   tokenInfo: tokenInfo,
   uuidState: {
     ...uuidInitialState,
-    quantity: "100",
-    isValidQuantity: true,
+    quantity: 0,
+    isValidQuantity: false,
   },
   distributorFormState: {
     ...distributorFormState,
-    step: 2,
+    step: 1,
   },
 };
 
@@ -77,7 +70,22 @@ Step3.args = {
   tokenInfo: tokenInfo,
   uuidState: {
     ...uuidInitialState,
-    quantity: "100",
+    quantity: 100,
+    isValidQuantity: true,
+  },
+  distributorFormState: {
+    ...distributorFormState,
+    step: 2,
+  },
+};
+
+export const Step4 = Template.bind({});
+Step4.args = {
+  active: true,
+  tokenInfo: tokenInfo,
+  uuidState: {
+    ...uuidInitialState,
+    quantity: 100,
     isValidQuantity: true,
   },
   distributorFormState: {
@@ -87,8 +95,8 @@ Step3.args = {
   },
 };
 
-export const Step4 = Template.bind({});
-Step4.args = {
+export const Step5 = Template.bind({});
+Step5.args = {
   active: true,
   tokenInfo: tokenInfo,
   uuidState: {

@@ -20,7 +20,6 @@ import {
   Grid,
   Typography,
   Box,
-  Paper,
   TextField,
   InputAdornment,
 } from "@material-ui/core";
@@ -57,8 +56,8 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
   };
 
   return (
-    <>
-      <div style={{ padding: "24px 0 8px" }}>
+    <div style={{ backgroundColor: "#fff" }}>
+      <div style={{ padding: "32px 32px 0" }}>
         <TextField
           label="Search by Creator Address"
           value={searchText}
@@ -73,17 +72,15 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
           }}
         />
       </div>
-      <Grid container spacing={4} direction="column">
+      <Grid container direction="column">
         {filteredCampaigns.length === 0 ? (
           <Box mt={4}>
-            <Paper>
-              <Box p={8} textAlign="center">
-                <Typography>No campaigns.</Typography>
-              </Box>
-            </Paper>
+            <Box p={8} textAlign="center">
+              <Typography>No campaigns.</Typography>
+            </Box>
           </Box>
         ) : (
-          <Box mt={4}>
+          <Box mt={2} p={4} pt={0}>
             {filteredCampaigns.map((campaign) => (
               <TokenCampaignCard
                 key={campaign.id}
@@ -94,7 +91,7 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
           </Box>
         )}
       </Grid>
-    </>
+    </div>
   );
 };
 

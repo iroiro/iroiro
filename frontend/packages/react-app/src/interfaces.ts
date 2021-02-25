@@ -98,7 +98,7 @@ export interface CheckRequest {
 export interface CampaignInfo {
   readonly id: string;
   readonly distributor: Distributor;
-  readonly token: AccountToken;
+  readonly token: AccountToken; // TODO string value is mixed for subgraph result. Fix it
   readonly startDate: string;
   readonly endDate: string;
   readonly creator: Creator;

@@ -18,16 +18,14 @@
 import React, { useEffect, useCallback, useReducer } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
-import { campaignsReducer } from "../../reducers/campaigns";
+import {
+  campaignsInitialState,
+  campaignsReducer,
+} from "../../reducers/campaigns";
 import { GET_CAMPAIGNS_BY_CREATOR_AND_TOKEN } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { CampaignInfo } from "../../interfaces";
-import ExternalTokenDetailPageTemplate from "../templates/ExternalTokenDetailPageTemplate";
 import { useWeb3React } from "@web3-react/core";
 
-const campaignsInitialState = {
-  campaigns: new Array<CampaignInfo>(),
-};
 const ExternalTokenDetailPage: React.FC<
   RouteComponentProps<{
     tokenAddress: string;
@@ -102,11 +100,11 @@ const ExternalTokenDetailPage: React.FC<
 
   return (
     <>
-      <ExternalTokenDetailPageTemplate
+      {/* <ExternalTokenDetailPageTemplate
         active={active}
         tokenState={tokenState}
         campaignsState={campaignsState}
-      />
+      /> */}
     </>
   );
 };

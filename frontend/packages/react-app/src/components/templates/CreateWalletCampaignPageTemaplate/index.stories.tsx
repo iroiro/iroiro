@@ -36,34 +36,17 @@ const Template: Story<CampaignInfo> = (args) => (
   </BrowserRouter>
 );
 
-export const Step1NoFile = Template.bind({});
-Step1NoFile.args = {
+export const Step1 = Template.bind({});
+Step1.args = {
   active: true,
   tokenInfo: tokenInfo,
-  distributorFormState,
-  walletListState: {
-    ...walletListState,
-    targets: [],
+  distributorFormState: {
+    ...distributorFormState,
+    step: 0,
   },
-};
-
-export const Step1HaveFile = Template.bind({});
-Step1HaveFile.args = {
-  active: true,
-  tokenInfo: tokenInfo,
-  distributorFormState,
-  walletListState,
-};
-
-export const Step1Invalid = Template.bind({});
-Step1Invalid.args = {
-  active: true,
-  tokenInfo: tokenInfo,
-  distributorFormState,
   walletListState: {
     ...walletListState,
     targets: [],
-    fileformat: false,
   },
 };
 
@@ -71,9 +54,10 @@ export const Step2 = Template.bind({});
 Step2.args = {
   active: true,
   tokenInfo: tokenInfo,
-  distributorFormState: {
-    ...distributorFormState,
-    step: 2,
+  distributorFormState,
+  walletListState: {
+    ...walletListState,
+    targets: [],
   },
 };
 
@@ -81,6 +65,18 @@ export const Step3 = Template.bind({});
 Step3.args = {
   active: true,
   tokenInfo: tokenInfo,
+  walletListState,
+  distributorFormState: {
+    ...distributorFormState,
+    step: 2,
+  },
+};
+
+export const Step4 = Template.bind({});
+Step4.args = {
+  active: true,
+  tokenInfo: tokenInfo,
+  walletListState,
   distributorFormState: {
     ...distributorFormState,
     step: 3,

@@ -24,6 +24,7 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Tooltip from "@material-ui/core/Tooltip";
+import theme from "../../../theme/mui-theme";
 
 export const AppFooter = () => {
   return (
@@ -59,6 +60,33 @@ export const AppFooter = () => {
           >
             <Tooltip title="Doc" arrow>
               <DescriptionIcon />
+            </Tooltip>
+          </Link>
+        </p>
+        <p style={{ padding: 10 }}>
+          <Link
+            href="https://medium.com/iroiro-social-token"
+            target="_blank"
+            rel="noopener"
+          >
+            <Tooltip title="Medium" arrow>
+              <div
+                style={{
+                  backgroundColor: theme.palette.primary.main,
+                  width: 30,
+                  height: 30,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "50%",
+                }}
+              >
+                <img
+                  src="/Medium-Symbol-White-RGB@2x.png"
+                  alt="Medium icon"
+                  style={{ width: 30 }}
+                />
+              </div>
             </Tooltip>
           </Link>
         </p>
