@@ -36,6 +36,8 @@ import theme from "../../../theme/mui-theme";
 import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
 import { useState } from "react";
 import { useEffect } from "react";
+import TokenAmount from "../../atoms/TokenAmount";
+import { TokenState } from "../../../reducers/tokenContext";
 
 interface DistributorProps {
   campaign: CampaignInfo;
@@ -53,13 +55,13 @@ function DistributorName(props: DistributorProps) {
 export interface CampaignListTableProps {
   campaignsState: Campaigns;
   walletConnect: boolean;
-  creatorTokenList: TokenOption[];
+  tokenState: TokenState;
 }
 
 const CampaignListTable: React.FC<CampaignListTableProps> = ({
   campaignsState,
   walletConnect,
-  creatorTokenList,
+  tokenState,
 }) => {
   const [value, setValue] = useState<TokenOption>({
     tokenName: "",
@@ -105,14 +107,14 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
           <div>
             <SelectTokenInput
               label={
-                creatorTokenList.length === 0
+                tokenState.tokens.length === 0
                   ? "Please Wait...⏳"
                   : "Filtered by Token"
               }
-              options={creatorTokenList}
+              options={tokenState.tokens}
               value={value}
               onChange={(value: TokenOption) => setValue(value)}
-              disabled={creatorTokenList.length === 0}
+              disabled={tokenState.tokens.length === 0}
               small
               color="creator"
             />
@@ -148,40 +150,53 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
               )}
               {walletConnect &&
                 displayedList.length > 0 &&
-                displayedList.map((campaign, index) => (
-                  <TableRow key={campaign.id + index}>
-                    {"campaignMetadata" in campaign ? (
+                displayedList.map((campaign, index) => {
+                  const token = tokenState.tokenBasicInfoList.find(
+                    (tokenBasic) => tokenBasic.tokenAddress === campaign.token
+                  );
+                  return (
+                    <TableRow key={campaign.id + index}>
+                      {"campaignMetadata" in campaign ? (
+                        <TableCell>
+                          <Link
+                            to={`/dashboard/${campaign.token}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
+                            style={{ textDecoration: "none", color: "#48C5D5" }}
+                          >
+                            <Typography variant={"body2"}>
+                              {campaign.campaignMetadata.name}
+                            </Typography>
+                          </Link>
+                        </TableCell>
+                      ) : (
+                        <TableCell>loading...</TableCell>
+                      )}
                       <TableCell>
-                        <Link
-                          to={`/dashboard/${campaign.token}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
-                          style={{ textDecoration: "none", color: "#48C5D5" }}
-                        >
-                          <Typography variant={"body2"}>
-                            {campaign.campaignMetadata.name}
-                          </Typography>
-                        </Link>
+                        <TokenAmount
+                          amount={campaign.claimAmount}
+                          decimals={token?.decimals ?? 0}
+                          symbol={token?.symbol ?? ""}
+                          align="inherit"
+                          variant="body2"
+                        />
                       </TableCell>
-                    ) : (
-                      <TableCell>loading...</TableCell>
-                    )}
-                    <TableCell>{campaign.claimAmount}</TableCell>
-                    <TableCell>
-                      {new Date(
-                        parseInt(campaign.startDate) * 1000
-                      ).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell>
-                      {creatorTokenList.find(
-                        (creatorOption) =>
-                          creatorOption.tokenAddress.toLowerCase() ===
-                          campaign.token
-                      )?.tokenName ?? "..."}
-                    </TableCell>
-                    <TableCell>
-                      <DistributorName campaign={campaign} />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      <TableCell>
+                        {new Date(
+                          parseInt(campaign.startDate) * 1000
+                        ).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>
+                        {tokenState.tokens.find(
+                          (creatorOption) =>
+                            creatorOption.tokenAddress.toLowerCase() ===
+                            campaign.token
+                        )?.tokenName ?? "..."}
+                      </TableCell>
+                      <TableCell>
+                        <DistributorName campaign={campaign} />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               {walletConnect && displayedList.length === 0 && (
                 <TableRow>
                   <TableCell

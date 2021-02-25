@@ -19,7 +19,11 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import CampaignListTable, { CampaignListTableProps } from "./index";
-import { campaignsState, creatorTokenList } from "../../../utils/mockData";
+import {
+  campaignsState,
+  creatorTokenList,
+  mockTokenState,
+} from "../../../utils/mockData";
 
 export default {
   title: "Molecules/CampaignListTable",
@@ -36,19 +40,19 @@ export const Default = Template.bind({});
 Default.args = {
   campaignsState: campaignsState,
   walletConnect: true,
-  creatorTokenList: creatorTokenList,
+  tokenState: mockTokenState,
 };
 
 export const NoCampaign = Template.bind({});
 NoCampaign.args = {
   campaignsState: { campaigns: [] },
   walletConnect: true,
-  creatorTokenList: creatorTokenList,
+  tokenState: mockTokenState,
 };
 
 export const NoConnect = Template.bind({});
 NoConnect.args = {
   campaignsState: { campaigns: [] },
   walletConnect: false,
-  creatorTokenList: creatorTokenList,
+  tokenState: mockTokenState,
 };

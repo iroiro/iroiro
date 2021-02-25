@@ -22,21 +22,21 @@ import MenuButton from "../../atoms/MenuButton";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import CampaignListTable from "../../molecules/CampaignListTable";
-import { TokenOption } from "../../atoms/SelectTokenInput";
 import AppFrame from "../../organisms/AppFrame";
 import distributors from "../../../utils/distributors";
 import { useHistory } from "react-router-dom";
+import { TokenState } from "../../../reducers/tokenContext";
 
 export interface DashboardPageTemplateProps {
   readonly campaignsState: Campaigns;
-  readonly creatorTokenList: TokenOption[];
+  readonly tokenState: TokenState;
   active: boolean;
 }
 
 const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
   campaignsState,
   active,
-  creatorTokenList,
+  tokenState,
 }) => {
   const history = useHistory();
   const walletDistributor = distributors.find(
@@ -111,7 +111,7 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
           <CampaignListTable
             campaignsState={campaignsState}
             walletConnect={active}
-            creatorTokenList={creatorTokenList}
+            tokenState={tokenState}
           />
         </Box>
       </AppFrame>

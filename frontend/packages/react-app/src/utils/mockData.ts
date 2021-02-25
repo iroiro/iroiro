@@ -30,6 +30,7 @@ import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
 import { EmailState } from "../reducers/email";
 import { TokenOption } from "../components/atoms/SelectTokenInput";
+import { TokenState } from "../reducers/tokenContext";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -60,7 +61,7 @@ export const campaign: CampaignInfo = {
       "Audiusアカウントのフォロワーの方へトークンを配布します。手順はXXX...",
     image: "https://example.com/campaignimage.jpg",
   },
-  claimAmount: "10",
+  claimAmount: "1000000000000000000000",
   distributor: distributor,
   startDate: "1606780800",
   status: 0,
@@ -69,9 +70,9 @@ export const campaign: CampaignInfo = {
     token: {
       tokenAddress: "",
       name: "tokenName",
-      symbol: "",
+      symbol: "TKN",
       decimals: 18,
-      totalSupply: "",
+      totalSupply: "50000000000000000000000000",
     },
     balance: "",
   },
@@ -373,3 +374,11 @@ export const creatorTokenList: TokenOption[] = [
   { tokenName: "hoge", tokenAddress: "hogeTokenAddress" },
   { tokenName: "token1", tokenAddress: "token1Address" },
 ];
+
+export const mockTokenState: TokenState = {
+  token: undefined,
+  userAddress: "",
+  userBalance: "",
+  tokenBasicInfoList: [],
+  tokens: creatorTokenList,
+};

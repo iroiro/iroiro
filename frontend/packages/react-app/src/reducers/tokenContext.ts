@@ -29,7 +29,8 @@ export interface TokenState {
   token?: TokenBasic;
   userAddress?: string;
   userBalance?: string;
-  tokens: TokenOption[]
+  tokenBasicInfoList: TokenBasic[];
+  tokens: TokenOption[];
 }
 
 export type TokenAction =
@@ -52,9 +53,15 @@ export type TokenAction =
       };
     }
   | {
+      type: "tokenBasicInfoList:set";
+      payload: {
+        tokenBasicInfoList: TokenBasic[];
+      };
+    }
+  | {
       type: "tokens:set";
       payload: {
-        tokens: Array<TokenOption>
+        tokens: Array<TokenOption>;
       };
     };
 
@@ -77,11 +84,26 @@ export const tokenReducer = (state: TokenState, action: TokenAction) => {
         ...state,
         userBalance: action.payload.balance,
       };
-      case "tokens:set":
-        return {
-          ...state,
-          tokens: action.payload.tokens
+    case "tokenBasicInfoList:set": {
+      const tokenOptions = action.payload.tokenBasicInfoList.map(
+        (tokenInfo) => {
+          return {
+            tokenName: tokenInfo?.name,
+            tokenAddress: tokenInfo?.tokenAddress,
+          } as TokenOption;
         }
+      );
+      return {
+        ...state,
+        tokenBasicInfoList: action.payload.tokenBasicInfoList,
+        tokens: tokenOptions,
+      };
+    }
+    case "tokens:set":
+      return {
+        ...state,
+        tokens: action.payload.tokens,
+      };
     default:
       return state;
   }
@@ -91,5 +113,6 @@ export const initialValue: TokenState = {
   token: undefined,
   userAddress: "",
   userBalance: "",
-  tokens: []
+  tokenBasicInfoList: [],
+  tokens: [],
 };

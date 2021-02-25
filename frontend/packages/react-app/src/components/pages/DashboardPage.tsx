@@ -27,6 +27,7 @@ import { GET_CAMPAIGNS_BY_CREATOR } from "../../graphql/subgraph";
 import { getTokenInfo } from "../../utils/web3";
 import { TokenOption } from "../atoms/SelectTokenInput";
 import { useTokenContext } from "../../context/token";
+import { TokenBasic } from "../../interfaces";
 
 const DashboardPage: React.FC = () => {
   const { active, library, account } = useWeb3React();
@@ -73,24 +74,20 @@ const DashboardPage: React.FC = () => {
 
   React.useEffect(() => {
     const f = async () => {
-      const tokenNames = campaignsState.campaigns
+      const tokenBasicInfoList = campaignsState.campaigns
         .map((campaign) => campaign.token)
         .filter((elem, index, self) => self.indexOf(elem) === index) // distinct
-        .map(async (token) => {
-          const tokenInfo = await getTokenInfo(library, token as string);
-          return {
-            tokenName: tokenInfo?.name,
-            tokenAddress: token,
-          } as TokenOption;
-        });
-      return Promise.all(tokenNames);
+        .map(async (token) => await getTokenInfo(library, token as string));
+      return Promise.all(tokenBasicInfoList);
     };
 
-    f().then((r) => {
+    f().then((tokenBasicInfoList) => {
       tokenDispatch({
-        type: "tokens:set",
+        type: "tokenBasicInfoList:set",
         payload: {
-          tokens: r,
+          tokenBasicInfoList: tokenBasicInfoList.filter(
+            (token) => token !== undefined
+          ) as TokenBasic[],
         },
       });
     });
@@ -109,7 +106,7 @@ const DashboardPage: React.FC = () => {
   return (
     <Dashboard
       campaignsState={campaignsState}
-      creatorTokenList={tokenState.tokens}
+      tokenState={tokenState}
       active={active}
     />
   );
