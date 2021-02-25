@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import { Distributor } from "../interfaces";
+import { Distributor, DistributorTypes } from "../interfaces";
 
 // ID must be lowercase
 const distributors: Distributor[] = [
@@ -75,5 +75,17 @@ const distributors: Distributor[] = [
     id: dist.id.toLowerCase(),
   };
 });
+
+export const getDistributorType = (type: string): string => {
+  switch (type) {
+    case "wallet":
+      return "Wallet Address Distributor";
+    case "uuid":
+    case "email":
+      return "URL/Email Distributor";
+    default:
+      return "";
+  }
+};
 
 export default distributors;
