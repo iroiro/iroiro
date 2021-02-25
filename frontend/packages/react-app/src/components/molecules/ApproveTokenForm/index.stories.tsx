@@ -34,6 +34,5 @@ const Template: Story<ApproveTokenFormProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  m: 4,
   distributorFormState,
 };

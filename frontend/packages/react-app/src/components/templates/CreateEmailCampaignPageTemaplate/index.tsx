@@ -16,24 +16,23 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Container } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
-import ApproveToken from "../../organisms/ApproveToken";
-import SetupCampaign from "../../organisms/SetupCampaign";
+import { Box, Typography, Paper } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import UploadEmailCsvPane from "../../organisms/UploadEmailCsvPane";
 import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
-import DownloadEmailCsvPane from "../../organisms/DownloadEmailCsvPane";
+import CreateEmailCampaignStepper from "../../organisms/CreateEmailCampaignStepper";
+import AppFrame from "../../organisms/AppFrame";
+import { ACTIONS } from "../../../reducers/token";
 
 export interface CampaignInfo {
   readonly active: boolean;
   readonly tokenAddress: string;
   readonly tokenInfo: AccountToken;
+  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly emailState: EmailState;
@@ -42,59 +41,38 @@ export interface CampaignInfo {
 
 const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
   active,
-  tokenAddress,
   tokenInfo,
+  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   emailState,
   emailDispatch,
 }) => (
-  <div>
-    <AppHeader />
-    <Box mt={5}>
-      <Container>
-        {!active ? (
-          <Box>
-            <WalletConnect />
-          </Box>
-        ) : (
-          <Box>
+  <>
+    <AppFrame>
+      {!active ? (
+        <Box>
+          <WalletConnect />
+        </Box>
+      ) : (
+        <Box maxWidth={640} style={{ margin: "auto" }}>
+          <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
             <Box my={1}>
               <Typography variant={"h3"}>Email Campaign</Typography>
             </Box>
-            {distributorFormState.step === 1 && (
-              <UploadEmailCsvPane
-                emailState={emailState}
-                emailDispatch={emailDispatch}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 2 && (
-              <ApproveToken
-                tokenInfo={tokenInfo}
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 3 && (
-              <SetupCampaign
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            )}
-            {distributorFormState.step === 4 && (
-              <DownloadEmailCsvPane
-                tokenAddress={tokenAddress}
-                campaignAddress={distributorFormState.createdCampaignAddress}
-                emailState={emailState}
-                emailDispatch={emailDispatch}
-              />
-            )}
-          </Box>
-        )}
-      </Container>
-    </Box>
-  </div>
+            <CreateEmailCampaignStepper
+              tokenInfo={tokenInfo}
+              tokenDispatch={tokenDispatch}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+              emailState={emailState}
+              emailDispatch={emailDispatch}
+            />
+          </Paper>
+        </Box>
+      )}
+    </AppFrame>
+  </>
 );
 
 export default CreateEmailCampaignPageTemplate;

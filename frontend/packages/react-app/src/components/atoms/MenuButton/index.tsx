@@ -52,15 +52,18 @@ const MenuButton = ({ disabled = false, ...props }) => {
   const Frame = styled.div`
     cursor: ${disabled ? "inherit" : "pointer"};
     background-color: #fff;
-    border: 1px solid ${disabled ? "#E0E0E0" : color};
     border-radius: 6px;
     padding: 14px;
     text-align: center;
   `;
 
   return (
-    <Card onClick={props.onClick} variant="outlined" style={{ border: "none" }}>
-      <CardActionArea disabled={disabled}>
+    <Card
+      onClick={props.onClick}
+      variant="outlined"
+      style={{ border: `1px solid ${disabled ? "#E0E0E0" : color}` }}
+    >
+      <CardActionArea disabled={disabled} style={{ height: "100%" }}>
         <Frame>
           <Title>{props.title}</Title>
           <p style={{ color: disabled ? "#A7A7A7" : "#000" }}>

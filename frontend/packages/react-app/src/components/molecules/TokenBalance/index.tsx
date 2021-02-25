@@ -35,7 +35,7 @@ const TokenBalance: React.FC<TokenInfo> = ({
   <>
     <Box display="flex" style={{ alignItems: "baseline" }}>
       <Box mr={4}>
-        <Typography>{itemName}</Typography>
+        <Typography variant="caption">{itemName}</Typography>
       </Box>
       <Box mr={1}>
         <TokenAmount

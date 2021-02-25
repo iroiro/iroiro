@@ -19,7 +19,11 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import DashboardPageTemplate, { DashboardPageTemplateProps } from "./index";
-import { tokenListState } from "../../../utils/mockData";
+import {
+  campaignsState,
+  creatorTokenList,
+  mockTokenState,
+} from "../../../utils/mockData";
 
 export default {
   title: "Templates/DashboardPageTemplate",
@@ -34,31 +38,24 @@ const Template: Story<DashboardPageTemplateProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  state: tokenListState,
-};
-
-export const NoTokens = Template.bind({});
-NoTokens.args = {
-  state: {
-    ...tokenListState,
-    tokens: [],
-    isOpen: false,
-    inputTokenAddress: "",
-    tokenAddress: "",
-    type: "dashboard",
-    color: "secondary",
+  campaignsState: campaignsState,
+  active: true,
+  tokenState: {
+    ...mockTokenState,
+    tokens: creatorTokenList,
   },
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  state: {
-    ...tokenListState,
-    tokens: [],
-    isOpen: false,
-    inputTokenAddress: "",
-    tokenAddress: "",
-    type: "dashboard",
-    color: "secondary",
-  },
+export const NoCampaign = Template.bind({});
+NoCampaign.args = {
+  campaignsState: { campaigns: [] },
+  active: true,
+  tokenState: mockTokenState,
+};
+
+export const NoConnect = Template.bind({});
+NoConnect.args = {
+  campaignsState: { campaigns: [] },
+  active: false,
+  tokenState: mockTokenState,
 };

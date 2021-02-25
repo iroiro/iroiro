@@ -38,17 +38,7 @@ const client = new ApolloClient({
 const Template: Story<SelectTokenModalProps> = (args) => (
   <ApolloProvider client={client}>
     <BrowserRouter>
-      <TokenProvider
-        initialValue={{
-          token: tokenInformationState.token,
-          userAddress: tokenInformationState.userAddress,
-          userBalance: tokenInformationState.userBalance,
-          tokens: [],
-        }}
-        reducer={tokenReducer}
-      >
-        <SelectTokenModal {...args} />
-      </TokenProvider>
+      <SelectTokenModal {...args} />
     </BrowserRouter>
   </ApolloProvider>
 );

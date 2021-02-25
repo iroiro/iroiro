@@ -24,7 +24,7 @@ const distributors: Distributor[] = [
     distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
     distributorMetadata: {
       name: "Wallet Address Distributor",
-      description: "",
+      description: "To distribute tokens to a list of addresses that you have.",
       image: "https://example.com/distributorimage.jpg",
     },
     type: "wallet",
@@ -36,7 +36,7 @@ const distributors: Distributor[] = [
     distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
       name: "URL Distributor",
-      description: "",
+      description: "To distribute tokens with a unique URL per user.",
       image: "https://example.com/distributorimage.jpg",
     },
     type: "uuid",
@@ -48,7 +48,8 @@ const distributors: Distributor[] = [
     distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
       name: "Email Distributor",
-      description: "",
+      description:
+        "To distribute tokens to a list of Email addresses that you have.",
       image: "https://example.com/distributorimage.jpg",
     },
     type: "email",

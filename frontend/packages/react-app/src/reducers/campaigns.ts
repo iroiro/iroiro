@@ -43,3 +43,7 @@ export const campaignsReducer = (
       return state;
   }
 };
+
+export const campaignsInitialState = {
+  campaigns: new Array<CampaignInfo>(),
+};

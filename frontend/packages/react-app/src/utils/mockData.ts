@@ -24,10 +24,13 @@ import {
   AccountToken,
   TokenListState,
   WalletList,
+  Campaigns,
 } from "../interfaces";
 import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
 import { EmailState } from "../reducers/email";
+import { TokenOption } from "../components/atoms/SelectTokenInput";
+import { TokenState } from "../reducers/tokenContext";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -58,7 +61,7 @@ export const campaign: CampaignInfo = {
       "Audiusアカウントのフォロワーの方へトークンを配布します。手順はXXX...",
     image: "https://example.com/campaignimage.jpg",
   },
-  claimAmount: "10",
+  claimAmount: "1000000000000000000000",
   distributor: distributor,
   startDate: "1606780800",
   status: 0,
@@ -66,10 +69,10 @@ export const campaign: CampaignInfo = {
   token: {
     token: {
       tokenAddress: "",
-      name: "",
-      symbol: "",
+      name: "tokenName",
+      symbol: "TKN",
       decimals: 18,
-      totalSupply: "",
+      totalSupply: "50000000000000000000000000",
     },
     balance: "",
   },
@@ -244,12 +247,14 @@ export const tokenListState: TokenListState = {
 export const distributorFormState: createCampaignState = {
   step: 1,
   approveAmount: "10000",
-  campaignName: "Audius Followers Campaign",
+  campaignName: "URL Campaign",
+  campaignDescription: "This is a campaign.",
   startDate: new Date("2021-01-01T00:00:00").getTime(),
   endDate: new Date("2021-01-01T00:00:00").getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignAddress: "",
+  tokenAddress: "0x9AF70Ab10f94fEAF59B00B2cC20C7AE57e21954e",
 };
 
 export const audiusTarget: Target = {
@@ -324,4 +329,56 @@ export const emailState: EmailState = {
   emailList: [],
   moveToCampaignPage: false,
   distributorAddress: "",
+};
+
+export const campaignsState: Campaigns = {
+  campaigns: [
+    {
+      ...campaign,
+      token: {
+        ...campaign.token,
+        token: {
+          ...campaign.token.token!,
+          name: "token1",
+          tokenAddress: "token1Address",
+        },
+      },
+    },
+    {
+      ...campaign,
+      token: {
+        ...campaign.token,
+        token: {
+          ...campaign.token.token!,
+          name: "test",
+          tokenAddress: "testTokenAddress",
+        },
+      },
+    },
+    {
+      ...campaign,
+      token: {
+        ...campaign.token,
+        token: {
+          ...campaign.token.token!,
+          name: "hoge",
+          tokenAddress: "hogeTokenAddress",
+        },
+      },
+    },
+  ],
+};
+
+export const creatorTokenList: TokenOption[] = [
+  { tokenName: "test", tokenAddress: "testTokenAddress" },
+  { tokenName: "hoge", tokenAddress: "hogeTokenAddress" },
+  { tokenName: "token1", tokenAddress: "token1Address" },
+];
+
+export const mockTokenState: TokenState = {
+  token: undefined,
+  userAddress: "",
+  userBalance: "",
+  tokenBasicInfoList: [],
+  tokens: creatorTokenList,
 };

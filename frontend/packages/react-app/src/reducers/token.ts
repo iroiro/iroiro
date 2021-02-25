@@ -19,6 +19,12 @@ import { TokenBasic, AccountToken } from "../interfaces";
 
 export type ACTIONS =
   | {
+      type: "token:set";
+      payload: {
+        token: TokenBasic | undefined;
+      };
+    }
+  | {
       type: "token:getLocal";
       payload: { tokenAddress: string };
     }
@@ -40,6 +46,12 @@ export const tokenReducer = (
   action: ACTIONS
 ): AccountToken => {
   switch (action.type) {
+    case "token:set": {
+      return {
+        ...state,
+        token: action.payload.token,
+      };
+    }
     case "token:getLocal": {
       const tokensJson = window.localStorage.getItem("tokens") as string;
       const tokens = JSON.parse(tokensJson) as TokenBasic[];

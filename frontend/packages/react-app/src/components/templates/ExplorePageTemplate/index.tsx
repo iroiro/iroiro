@@ -25,6 +25,7 @@ import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
+import AppFrame from "../../organisms/AppFrame";
 
 export interface ExplorePageTemplateProps {
   tokenAddress: string;
@@ -41,18 +42,8 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
     history.push(`/explore/${tokenAddress}/history`);
   }, [history, tokenAddress]);
   return (
-    <div style={{ height: "100vh" }}>
-      <AppHeader />
-      <Box
-        m={"auto"}
-        my={5}
-        width={[1, 2 / 3]}
-        p={2}
-        minWidth={320}
-        style={{
-          boxSizing: "border-box",
-        }}
-      >
+    <>
+      <AppFrame>
         <TokenInfoBar />
         <div>
           <ButtonWrapper>
@@ -84,9 +75,8 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
             />
           </ButtonWrapper>
         </div>
-      </Box>
-      <AppFooter />
-    </div>
+      </AppFrame>
+    </>
   );
 };
 

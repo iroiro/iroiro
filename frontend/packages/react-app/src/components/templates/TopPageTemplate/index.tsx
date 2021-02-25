@@ -24,6 +24,7 @@ import { useHistory } from "react-router-dom";
 import { useCallback } from "react";
 import SelectTokenModal from "../../organisms/SelectTokenModal";
 import { useState } from "react";
+import AppFrame from "../../organisms/AppFrame";
 
 const TopPageTemplate = () => {
   const history = useHistory();
@@ -35,34 +36,34 @@ const TopPageTemplate = () => {
     setOpen(true);
   }, []);
   return (
-    <div>
-      <AppHeader />
-      <ButtonWrapper>
-        <div style={{ marginBottom: 16 }}>
-          <MenuButton
-            title="DISTRIBUTION"
-            description="You can create a token distribution campaign. Let's set the tokens to be distributed and create a campaign."
-            color="creator"
-            onClick={handleDistributionButtonClick}
-          />
-        </div>
-        <div>
-          <MenuButton
-            title="EXPLORE"
-            description="Check the status of the tokens you have been distributed and information on the campaign."
-            color="user"
-            onClick={handleExploreButtonClick}
-          />
-        </div>
-      </ButtonWrapper>
-      <AppFooter />
+    <>
+      <AppFrame>
+        <ButtonWrapper>
+          <div style={{ marginBottom: 16 }}>
+            <MenuButton
+              title="DISTRIBUTION"
+              description="You can create a token distribution campaign. Let's set the tokens to be distributed and create a campaign."
+              color="creator"
+              onClick={handleDistributionButtonClick}
+            />
+          </div>
+          <div>
+            <MenuButton
+              title="EXPLORE"
+              description="Check the status of the tokens you have been distributed and information on the campaign."
+              color="user"
+              onClick={handleExploreButtonClick}
+            />
+          </div>
+        </ButtonWrapper>
+      </AppFrame>
       <SelectTokenModal
         open={open}
         onCloseModal={() => {
           setOpen(false);
         }}
       />
-    </div>
+    </>
   );
 };
 

@@ -15,14 +15,38 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import styled from "styled-components";
-import theme from "../../../theme/mui-theme";
 import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import React from "react";
+import { AppFooter } from "../../molecules/AppFooter";
+import AppHeader from "../../molecules/AppHeader";
 
-export const TitleBox = styled(Box)`
-  display: flex;
+export interface AppFrameProps {
+  children?: React.ReactNode;
+}
 
-  ${theme.breakpoints.down(600)} {
-    display: block;
-  }
-`;
+const AppFrame = ({ ...props }) => {
+  return (
+    <div>
+      <AppHeader />
+      <Box m={"40px auto"} minWidth={320}>
+        <Container maxWidth="md">
+          <Box
+            style={{
+              boxSizing: "border-box",
+              padding: 24,
+              maxWidth: 860,
+              margin: "0 auto",
+              minWidth: 320,
+            }}
+          >
+            {props.children}
+          </Box>
+        </Container>
+      </Box>
+      <AppFooter />
+    </div>
+  );
+};
+
+export default AppFrame;

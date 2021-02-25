@@ -54,7 +54,12 @@ const SelectTokenInput = ({
         style={{ width: 300 }}
         size={small ? "small" : undefined}
         renderInput={(params) => (
-          <TextField {...params} label={props.label} variant="outlined" />
+          <TextField
+            {...params}
+            label={props.label}
+            variant="outlined"
+            color={color === "creator" ? "secondary" : "primary"}
+          />
         )}
         onChange={handleChange}
         disabled={disabled}

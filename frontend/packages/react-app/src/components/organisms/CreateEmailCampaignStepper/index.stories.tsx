@@ -18,7 +18,7 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import CreateEmailCampaignPageTemplate, { CampaignInfo } from "./index";
+import CreateEmailCampaignStepper, { CreateEmailCampaignStepperProps } from ".";
 import {
   distributorFormState,
   emailState,
@@ -27,20 +27,35 @@ import {
 import { v4 as uuidv4 } from "uuid";
 
 export default {
-  title: "Templates/CreateEmailCampaignPageTemplate",
-  component: CreateEmailCampaignPageTemplate,
+  title: "Organisms/CreateEmailCampaignStepper",
+  component: CreateEmailCampaignStepper,
 } as Meta;
 
-const Template: Story<CampaignInfo> = (args) => (
+const Template: Story<CreateEmailCampaignStepperProps> = (args) => (
   <BrowserRouter>
-    <CreateEmailCampaignPageTemplate {...args} />
+    <CreateEmailCampaignStepper {...args} />
   </BrowserRouter>
 );
 
 export const Step1 = Template.bind({});
 Step1.args = {
-  active: true,
-  tokenInfo: tokenInfo,
+  tokenInfo,
+  emailState: {
+    ...emailState,
+    quantity: "1",
+    isValidQuantity: false,
+    isCsvUploaded: true,
+    isValidEmails: true,
+    emailList: ["test@example.com"],
+  },
+  distributorFormState: {
+    ...distributorFormState,
+    step: 0,
+  },
+};
+export const Step2 = Template.bind({});
+Step2.args = {
+  tokenInfo,
   emailState: {
     ...emailState,
     quantity: "100",
@@ -48,27 +63,13 @@ Step1.args = {
   },
   distributorFormState: {
     ...distributorFormState,
-    step: 0,
+    step: 1,
   },
-};
-
-export const Step2 = Template.bind({});
-Step2.args = {
-  active: true,
-  tokenInfo: tokenInfo,
-  emailState: {
-    ...emailState,
-    targets: [],
-    quantity: "100",
-    isValidQuantity: true,
-  },
-  distributorFormState,
 };
 
 export const Step3 = Template.bind({});
 Step3.args = {
-  active: true,
-  tokenInfo: tokenInfo,
+  tokenInfo,
   emailState: {
     ...emailState,
     quantity: "100",
@@ -79,11 +80,9 @@ Step3.args = {
     step: 2,
   },
 };
-
 export const Step4 = Template.bind({});
 Step4.args = {
-  active: true,
-  tokenInfo: tokenInfo,
+  tokenInfo,
   emailState: {
     ...emailState,
     quantity: "100",
@@ -91,15 +90,13 @@ Step4.args = {
   },
   distributorFormState: {
     ...distributorFormState,
-    campaignName: "Email Campaign",
+    campaignName: "URL Campaign",
     step: 3,
   },
 };
-
 export const Step5 = Template.bind({});
 Step5.args = {
-  active: true,
-  tokenInfo: tokenInfo,
+  tokenInfo,
   emailState: {
     ...emailState,
     rawTargets: [...Array(3)].map(() => uuidv4()),
@@ -107,7 +104,6 @@ Step5.args = {
   },
   distributorFormState: {
     ...distributorFormState,
-    campaignName: "URL Campaign",
     step: 4,
   },
 };

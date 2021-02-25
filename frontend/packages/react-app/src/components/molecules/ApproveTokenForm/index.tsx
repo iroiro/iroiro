@@ -23,23 +23,26 @@ import {
 } from "../../../reducers/distributorForm";
 
 export interface ApproveTokenFormProps {
-  readonly m: number;
   readonly distributorFormState: createCampaignState;
   distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
 const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
-  m,
   distributorFormState,
   distributorFormDispatch,
 }) => (
-  <Box mt={m}>
-    <Box mt={3}>
+  <Box>
+    <Box mt={3} mb={5}>
       <FormControl>
         <Input
           type="number"
           required
           placeholder="0.0"
+          color="secondary"
+          style={{
+            marginRight: 8,
+            width: 200,
+          }}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             distributorFormDispatch({
               type: "approveAmount:set",
@@ -51,11 +54,9 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
           value={distributorFormState.approveAmount}
         />
       </FormControl>
-    </Box>
-    <Box mt={2}>
       <Button
         color="secondary"
-        variant="contained"
+        variant="outlined"
         onClick={() => {
           distributorFormDispatch({
             type: "token:approve",

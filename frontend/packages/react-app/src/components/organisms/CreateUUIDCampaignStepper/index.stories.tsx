@@ -18,67 +18,64 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import CreateWalletCampaignPageTemplate, { CampaignInfo } from "./index";
-import {
-  walletListState,
-  distributorFormState,
-  tokenInfo,
-} from "../../../utils/mockData";
+import CreateUUIDCampaignStepper, { CreateUUIDCampaignStepperProps } from ".";
+import { distributorFormState, tokenInfo } from "../../../utils/mockData";
+import { uuidInitialState } from "../../../reducers/uuid";
 
 export default {
-  title: "Templates/CreateWalletCampaignPageTemaplate",
-  component: CreateWalletCampaignPageTemplate,
+  title: "Organisms/CreateUUIDCampaignStepper",
+  component: CreateUUIDCampaignStepper,
 } as Meta;
 
-const Template: Story<CampaignInfo> = (args) => (
+const Template: Story<CreateUUIDCampaignStepperProps> = (args) => (
   <BrowserRouter>
-    <CreateWalletCampaignPageTemplate {...args} />
+    <CreateUUIDCampaignStepper {...args} />
   </BrowserRouter>
 );
 
-export const Step1 = Template.bind({});
-Step1.args = {
-  active: true,
-  tokenInfo: tokenInfo,
+export const StepOne = Template.bind({});
+StepOne.args = {
+  uuidState: uuidInitialState,
+  tokenInfo,
   distributorFormState: {
     ...distributorFormState,
     step: 0,
   },
-  walletListState: {
-    ...walletListState,
-    targets: [],
+};
+export const StepTwo = Template.bind({});
+StepTwo.args = {
+  uuidState: uuidInitialState,
+  tokenInfo,
+  distributorFormState: {
+    ...distributorFormState,
+    step: 1,
   },
 };
 
-export const Step2 = Template.bind({});
-Step2.args = {
-  active: true,
-  tokenInfo: tokenInfo,
-  distributorFormState,
-  walletListState: {
-    ...walletListState,
-    targets: [],
-  },
-};
-
-export const Step3 = Template.bind({});
-Step3.args = {
-  active: true,
-  tokenInfo: tokenInfo,
-  walletListState,
+export const StepThree = Template.bind({});
+StepThree.args = {
+  uuidState: uuidInitialState,
+  tokenInfo,
   distributorFormState: {
     ...distributorFormState,
     step: 2,
   },
 };
-
-export const Step4 = Template.bind({});
-Step4.args = {
-  active: true,
-  tokenInfo: tokenInfo,
-  walletListState,
+export const StepFour = Template.bind({});
+StepFour.args = {
+  uuidState: uuidInitialState,
+  tokenInfo,
   distributorFormState: {
     ...distributorFormState,
     step: 3,
+  },
+};
+export const StepFive = Template.bind({});
+StepFive.args = {
+  uuidState: uuidInitialState,
+  tokenInfo,
+  distributorFormState: {
+    ...distributorFormState,
+    step: 4,
   },
 };
