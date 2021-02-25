@@ -41,6 +41,7 @@ Default.args = {
     isCancelRequest: false,
     isRefundRequest: false,
     canRefund: false,
+    canCancel: false,
     depositTokens: "100000",
   },
   distributorType: "audius",

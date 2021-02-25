@@ -39,6 +39,7 @@ Default.args = {
     isCancelRequest: false,
     isRefundRequest: false,
     canRefund: false,
+    canCancel: false,
     depositTokens: "100000",
   },
   targetNumber: "100000",

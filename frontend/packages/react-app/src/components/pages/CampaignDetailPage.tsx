@@ -53,7 +53,7 @@ const CampaignDetailPage: React.FC<
     campaignInitialState
   );
 
-  const [tartgetNumber, setTartgetNumber] = useState("0");
+  const [targetNumber, setTargetNumber] = useState("0");
   const [distributorType, setDistributorType] = useState("");
 
   const getCampaignMetadata = async (campaign: CampaignInfo) => {
@@ -73,7 +73,7 @@ const CampaignDetailPage: React.FC<
     const response = await fetch(url);
     const recipients: Recipients = await response.json();
     if (Object.keys(recipients).indexOf("targets") !== -1) {
-      setTartgetNumber(String(recipients.targets.length));
+      setTargetNumber(String(recipients.targets.length));
     }
     if (Object.keys(recipients).indexOf("addresses") !== -1) {
       //@ts-ignore
@@ -165,11 +165,14 @@ const CampaignDetailPage: React.FC<
       return;
     }
     let canRefund = false;
-
+    let canCancel = false;
+    if (new Date().getTime() < data.campaign.startDate * 1000) {
+      canCancel = true;
+    }
     if (data.campaign.endDate * 1000 < new Date().getTime()) {
       canRefund = true;
     }
-    
+
     const startDate = getDateString(data.campaign.startDate);
     const endDate = getDateString(data.campaign.endDate);
     data.campaign.startDate = startDate;
@@ -177,7 +180,7 @@ const CampaignDetailPage: React.FC<
 
     campaignDispatch({
       type: "campaign:set",
-      payload: { data: { campaign: data.campaign, canRefund: canRefund } },
+      payload: { data: { campaign: data.campaign, canRefund, canCancel } },
     });
 
     getCampaignMetadata(data.campaign);
@@ -212,7 +215,7 @@ const CampaignDetailPage: React.FC<
     <>
       <CampaignDetailPageTemplate
         tokenInfo={tokenState}
-        targetNumber={tartgetNumber}
+        targetNumber={targetNumber}
         campaignData={campaignState}
         campaignDispatch={campaignDispatch}
         distributorType={distributorType}
