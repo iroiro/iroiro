@@ -137,10 +137,14 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
               label="Does CSV contain a header?"
             />
             <FormControl>
-              <InputLabel id="demo-simple-select-helper-label">
+              <InputLabel
+                id="demo-simple-select-helper-label"
+                color="secondary"
+              >
                 Select email column or position
               </InputLabel>
               <StyledSelect
+                color="secondary"
                 value={
                   emailState.columns.length === 0
                     ? ""
