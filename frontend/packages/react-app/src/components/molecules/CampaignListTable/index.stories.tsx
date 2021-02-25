@@ -19,11 +19,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import CampaignListTable, { CampaignListTableProps } from "./index";
-import {
-  campaignsState,
-  creatorTokenList,
-  mockTokenState,
-} from "../../../utils/mockData";
+import { campaignsState, mockTokenState } from "../../../utils/mockData";
 
 export default {
   title: "Molecules/CampaignListTable",

@@ -25,7 +25,6 @@ import {
 import { useLazyQuery } from "@apollo/react-hooks";
 import { GET_CAMPAIGNS_BY_CREATOR } from "../../graphql/subgraph";
 import { getTokenInfo } from "../../utils/web3";
-import { TokenOption } from "../atoms/SelectTokenInput";
 import { useTokenContext } from "../../context/token";
 import { TokenBasic } from "../../interfaces";
 
