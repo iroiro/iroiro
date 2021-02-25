@@ -20,7 +20,13 @@ import { CampaignInfo, Distributor, CampaignMetadata } from "../interfaces";
 export type ACTIONS =
   | {
       type: "campaign:set";
-      payload: { data: { campaign: CampaignInfo; canRefund: boolean } };
+      payload: {
+        data: {
+          campaign: CampaignInfo;
+          canRefund: boolean;
+          canCancel: boolean;
+        };
+      };
     }
   | {
       type: "campaignMetadata:set";
@@ -48,6 +54,7 @@ export interface CampaignData {
   isCancelRequest: boolean;
   isRefundRequest: boolean;
   canRefund: boolean;
+  canCancel: boolean;
   depositTokens: string;
 }
 
@@ -61,6 +68,7 @@ export const campaignReducer = (
         ...state,
         campaign: action.payload.data.campaign,
         canRefund: action.payload.data.canRefund,
+        canCancel: action.payload.data.canCancel,
       };
     case "campaignMetadata:set":
       return {
@@ -136,5 +144,6 @@ export const campaignInitialState: CampaignData = {
   isCancelRequest: false,
   isRefundRequest: false,
   canRefund: false,
+  canCancel: false,
   depositTokens: "0",
 };

@@ -16,15 +16,13 @@
  */
 
 import React from "react";
-import { Box, Typography, Button, Container, Paper } from "@material-ui/core";
+import { Box, Typography, Button, Paper } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { red } from "@material-ui/core/colors";
-import AppHeader from "../../molecules/AppHeader";
 import CampaignDetail from "../../organisms/CampaignDetail";
 import { AccountToken } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
 import { ACTIONS } from "../../../reducers/campaign";
-import { AppFooter } from "../../molecules/AppFooter";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
@@ -71,7 +69,7 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
           />
         </Wrapper>
         <Box style={{ textAlign: "center", borderTop: "2px solid #F8F8F8" }}>
-          {campaignData.campaign.status === 0 && !campaignData.canRefund && (
+          {campaignData.campaign.status === 0 && campaignData.canCancel && (
             <ButtonWrapper>
               <ColorButton
                 variant="outlined"
@@ -87,7 +85,7 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
               </ColorButton>
             </ButtonWrapper>
           )}
-          {campaignData.canRefund && (
+          {campaignData.campaign.status === 0 && campaignData.canRefund && (
             <ButtonWrapper>
               <Button
                 size="small"

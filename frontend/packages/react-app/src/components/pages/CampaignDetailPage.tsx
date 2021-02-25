@@ -165,7 +165,10 @@ const CampaignDetailPage: React.FC<
       return;
     }
     let canRefund = false;
-
+    let canCancel = false;
+    if (new Date().getTime() < data.campaign.startDate * 1000) {
+      canCancel = true;
+    }
     if (data.campaign.endDate * 1000 < new Date().getTime()) {
       canRefund = true;
     }
@@ -177,7 +180,7 @@ const CampaignDetailPage: React.FC<
 
     campaignDispatch({
       type: "campaign:set",
-      payload: { data: { campaign: data.campaign, canRefund: canRefund } },
+      payload: { data: { campaign: data.campaign, canRefund, canCancel } },
     });
 
     getCampaignMetadata(data.campaign);
