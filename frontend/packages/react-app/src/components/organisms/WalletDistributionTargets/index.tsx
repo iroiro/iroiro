@@ -16,9 +16,7 @@
  */
 
 import React from "react";
-import { Box, Typography, Card, Button } from "@material-ui/core";
-// import DistributionTargetList from "../../molecules/DistributionTargetList";
-// import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
+import { Box, Typography, Button } from "@material-ui/core";
 import { WalletList } from "../../../interfaces";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
 
@@ -37,7 +35,52 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
 }) => (
   <>
     <Box mb={5}>
-      {walletListState.targets.length > 0 ? (
+      <Box my={2}>
+        <Box display="flex" alignItems="baseline" mb={1}>
+          <Typography variant={"caption"} style={{ paddingRight: 8 }}>
+            File type:
+          </Typography>
+          <Typography variant={"body1"}>JSON</Typography>
+        </Box>
+        <Box display="flex" alignItems="baseline" mb={1}>
+          <Typography variant={"caption"}>Format: </Typography>
+          <Box ml={2}>
+            <Typography variant={"body1"} color={"secondary"}>
+              {`{"targets": ["walletaddress1", "walletaddress2"]}`}
+            </Typography>
+          </Box>
+        </Box>
+        <Box display="flex" alignItems="baseline" mb={1}>
+          <Typography variant={"caption"}>Target number limit: </Typography>
+          <Box ml={2}>
+            <Typography variant={"body1"}>{upperLimit}</Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Button variant="outlined" component="label" color="secondary">
+        Upload File
+        <input
+          type="file"
+          accept="application/json"
+          hidden
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            walletDispatch({
+              type: "walletlistFile:upload",
+              payload: {
+                walletlistFile: event.target.files,
+              },
+            })
+          }
+        />
+      </Button>
+      {!walletListState.fileformat && (
+        <Box mt={1}>
+          <Typography color={"error"}>
+            Set a file in the correct format.
+          </Typography>
+        </Box>
+      )}
+      {walletListState.targets.length > 0 && (
         <>
           <Box mt={4}>
             <Typography>Total Wallet Addresses</Typography>
@@ -54,54 +97,6 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
               </Box>
             )}
           </Box>
-        </>
-      ) : (
-        <>
-          <Box my={2}>
-            <Box display="flex" alignItems="baseline" mb={1}>
-              <Typography variant={"caption"} style={{ paddingRight: 8 }}>
-                File type:
-              </Typography>
-              <Typography variant={"body1"}>JSON</Typography>
-            </Box>
-            <Box display="flex" alignItems="baseline" mb={1}>
-              <Typography variant={"caption"}>Format: </Typography>
-              <Box ml={2}>
-                <Typography variant={"body1"} color={"secondary"}>
-                  {`{"targets": ["walletaddress1", "walletaddress2"]}`}
-                </Typography>
-              </Box>
-            </Box>
-            <Box display="flex" alignItems="baseline" mb={1}>
-              <Typography variant={"caption"}>Target number limit: </Typography>
-              <Box ml={2}>
-                <Typography variant={"body1"}>{upperLimit}</Typography>
-              </Box>
-            </Box>
-          </Box>
-          <Button variant="outlined" component="label" color="secondary">
-            Upload File
-            <input
-              type="file"
-              accept="application/json"
-              hidden
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                walletDispatch({
-                  type: "walletlistFile:upload",
-                  payload: {
-                    walletlistFile: event.target.files,
-                  },
-                })
-              }
-            />
-          </Button>
-          {!walletListState.fileformat && (
-            <Box mt={1}>
-              <Typography color={"error"}>
-                Set a file in the correct format.
-              </Typography>
-            </Box>
-          )}
         </>
       )}
     </Box>
