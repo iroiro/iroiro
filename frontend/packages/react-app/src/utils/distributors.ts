@@ -76,7 +76,7 @@ const distributors: Distributor[] = [
   };
 });
 
-export const getDistributorType = (type: string) => {
+export const getDistributorType = (type: string): string => {
   switch (type) {
     case "wallet":
       return "Wallet Address Type";
