@@ -17,7 +17,6 @@
 
 import React, { Dispatch } from "react";
 import Typography from "@material-ui/core/Typography";
-import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import {
   CampaignDetailAction,
   CampaignDetailState,
@@ -29,25 +28,29 @@ import TokenInfoBar from "../../molecules/TokenInfoBar";
 import AppFrame from "../../organisms/AppFrame";
 
 export interface TokenCampaignsDetailTemplateProps {
+  readonly active: boolean;
   readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
-  readonly audiusState: AudiusState;
-  readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
   tokenAddress: string;
 }
 
 export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplateProps> = ({
+  active,
   state,
   dispatch,
-  audiusState,
-  audiusDispatch,
   tokenAddress,
 }) => {
   const CampaignDetailPanel = useMemo(() => {
     switch (state.distributorType) {
       case "wallet":
       case "uuid":
-        return <WalletCampaignDetailPanel state={state} dispatch={dispatch} />;
+        return (
+          <WalletCampaignDetailPanel
+            active={active}
+            state={state}
+            dispatch={dispatch}
+          />
+        );
     }
 
     return (
