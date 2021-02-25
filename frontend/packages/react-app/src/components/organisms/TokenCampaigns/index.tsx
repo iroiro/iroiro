@@ -49,7 +49,10 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
       setFilteredCampaigns(campaigns);
     } else {
       const filter = campaigns.filter((campaign) => {
-        return campaign.creator.id === e.target.value;
+        console.debug(campaign.creator.id, e.target.value);
+        return (
+          campaign.creator.id.toLowerCase() === e.target.value.toLowerCase()
+        );
       });
       setFilteredCampaigns(filter);
     }
