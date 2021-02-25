@@ -79,10 +79,10 @@ const distributors: Distributor[] = [
 export const getDistributorType = (type: string): string => {
   switch (type) {
     case "wallet":
-      return "Wallet Address Type";
+      return "Wallet Address Distributor";
     case "uuid":
     case "email":
-      return "URL/Email Type";
+      return "URL/Email Distributor";
     default:
       return "";
   }
