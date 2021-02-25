@@ -9,6 +9,7 @@
     "depcheck": "echo '@chainlink/box' && depcheck --ignore-dirs=build/contracts || true",
     "solhint": "solhint ./contracts/**/*.sol",
     "lint": "yarn solhint",
+    "coverage": "yarn compile && node coverage.js",
     "migrate:dev": "npx truffle migrate --reset --network cldev",
     "migrate:rinkeby": "npx truffle migrate --reset --network rinkeby",
     "migrate:kovan": "npx truffle migrate --reset --network kovan",
