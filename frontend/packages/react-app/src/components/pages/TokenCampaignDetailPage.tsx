@@ -28,7 +28,6 @@ import {
 import { useIsClaimable } from "../../hooks/distributors/useIsClaimable";
 import { useGetAllowance } from "../../hooks/useGetAllowance";
 import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
-import { audiusInitialState, audiusReducer } from "../../reducers/audius";
 import {
   campaignDetailReducer,
   initialState,
@@ -47,12 +46,7 @@ const TokenCampaignDetailPage: React.FC<
   }>
 > = (props) => {
   const [state, dispatch] = useReducer(campaignDetailReducer, initialState);
-  const [audiusState, audiusDispatch] = useReducer(
-    audiusReducer,
-    audiusInitialState
-  );
   const [getCampaign, { data: campaignData }] = useLazyQuery(GET_CAMPAIGN);
-  const { library } = useWeb3React();
   const { active, library } = useWeb3React();
   const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
   const tokenAddress = props.match.params.tokenAddress;
@@ -63,9 +57,6 @@ const TokenCampaignDetailPage: React.FC<
     new URLSearchParams(props.location.search)?.get("uuid") ?? "";
   const hashedUUID: string = ethers.utils.solidityKeccak256(["string"], [uuid]);
 
-  const [getCheckRequests, { data: checkRequestsData }] = useLazyQuery(
-    GET_CHECK_REQUEST
-  );
   const { isClaimable } = useIsClaimable(
     library,
     state?.campaignAddress ?? "",
@@ -194,18 +185,6 @@ const TokenCampaignDetailPage: React.FC<
   }, [distributorAddress]);
 
   useEffect(() => {
-    if (checkRequestsData === undefined) {
-      return;
-    }
-    dispatch({
-      type: "isTokenCheckFinished:set",
-      payload: {
-        checkRequests: checkRequestsData.checkRequests,
-      },
-    });
-  }, [checkRequestsData]);
-
-  useEffect(() => {
     dispatch({
       type: "isCampaignClaimable:set",
       payload: {
@@ -274,8 +253,6 @@ const TokenCampaignDetailPage: React.FC<
       state={state}
       tokenAddress={tokenAddress}
       dispatch={dispatch}
-      audiusState={audiusState}
-      audiusDispatch={audiusDispatch}
     />
   );
 };

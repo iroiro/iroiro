@@ -17,7 +17,6 @@
 
 import React, { Dispatch } from "react";
 import Typography from "@material-ui/core/Typography";
-import { AudiusState, AUDIUS_ACTIONS } from "../../../reducers/audius";
 import {
   CampaignDetailAction,
   CampaignDetailState,
@@ -32,8 +31,6 @@ export interface TokenCampaignsDetailTemplateProps {
   readonly active: boolean;
   readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
-  readonly audiusState: AudiusState;
-  readonly audiusDispatch: Dispatch<AUDIUS_ACTIONS>;
   tokenAddress: string;
 }
 
@@ -41,8 +38,6 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
   active,
   state,
   dispatch,
-  audiusState,
-  audiusDispatch,
   tokenAddress,
 }) => {
   const CampaignDetailPanel = useMemo(() => {
