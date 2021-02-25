@@ -21,7 +21,7 @@ import { Typography, Box, Link } from "@material-ui/core";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 import theme from "../../../theme/mui-theme";
 import { useEffect, useState } from "react";
-import distributors from "../../../utils/distributors";
+import distributors, { getDistributorType } from "../../../utils/distributors";
 
 export interface TokenCampaignDetailProps {
   readonly campaign: CampaignInfo;
@@ -31,22 +31,13 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
   campaign,
 }) => {
   const [distributorType, setDistributorType] = useState("");
-  const distributor = distributors.find(
-    (distributor) =>
-      distributor.id.toLowerCase() === campaign.distributor.id.toLowerCase()
-  );
+
   useEffect(() => {
-    switch (distributor?.type) {
-      case "wallet":
-        setDistributorType("Wallet Address Type");
-        break;
-      case "uuid":
-      case "email":
-        setDistributorType("URL/Email Type");
-        break;
-      default:
-        setDistributorType(campaign.distributor.type);
-    }
+    const distributor = distributors.find(
+      (distributor) =>
+        distributor.id.toLowerCase() === campaign.distributor.id.toLowerCase()
+    );
+    setDistributorType(getDistributorType(distributor?.type ?? ""));
   }, [campaign]);
 
   return (

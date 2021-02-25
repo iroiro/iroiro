@@ -29,7 +29,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { CampaignInfo, Campaigns } from "../../../interfaces";
-import distributors from "../../../utils/distributors";
+import distributors, { getDistributorType } from "../../../utils/distributors";
 import WalletButton from "../../atoms/WalletButton";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
@@ -45,11 +45,12 @@ interface DistributorProps {
 
 function DistributorName(props: DistributorProps) {
   const { campaign } = props;
-  const result = distributors.filter(
-    (distributor) => distributor.id === campaign.distributor.id
+  const result = distributors.find(
+    (distributor) =>
+      distributor.id.toLowerCase() === campaign.distributor.id.toLowerCase()
   );
 
-  return <Typography>{result[0].distributorMetadata.name}</Typography>;
+  return <Typography>{getDistributorType(result?.type ?? "")}</Typography>;
 }
 
 export interface CampaignListTableProps {
