@@ -25,14 +25,17 @@ import {
   CampaignDetailAction,
 } from "../../../reducers/campaignDetail";
 import { useTokenContext } from "../../../context/token";
+import WalletConnect from "../WalletConnect";
 
 export interface WalletCampaignDetailPanelProps {
+  readonly active: boolean;
   readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
 }
 
 // TODO: Add waiting transactions
 const WalletCampaignDetailPanel: React.FC<WalletCampaignDetailPanelProps> = ({
+  active,
   state,
   dispatch,
 }) => {
@@ -52,22 +55,28 @@ const WalletCampaignDetailPanel: React.FC<WalletCampaignDetailPanelProps> = ({
     );
   }
 
+  const child = active ? (
+    <WalletTokenClaimCard
+      campaignAddress={state?.campaignAddress ?? ""}
+      symbol={tokenState.token?.symbol ?? ""}
+      decimals={tokenState.token?.decimals ?? 0}
+      claimAmount={state.campaign.claimAmount}
+      isClaimable={state.isCampaignClaimable}
+      isClaimed={state.isCampaignClaimed}
+      dispatch={dispatch}
+      merkleTreeCid={state.campaign.merkleTreeCid}
+      distributorType={state.distributorType}
+      hashedUUID={state.hashedUUID}
+    />
+  ) : (
+    <WalletConnect />
+  );
+
   return (
     <div>
       <TokenCampaignDetail campaign={state.campaign} />
-      <Box mt={2} style={{ borderTop: "2px solid #f8f8f8" }}>
-        <WalletTokenClaimCard
-          campaignAddress={state?.campaignAddress ?? ""}
-          symbol={tokenState.token?.symbol ?? ""}
-          decimals={tokenState.token?.decimals ?? 0}
-          claimAmount={state.campaign.claimAmount}
-          isClaimable={state.isCampaignClaimable}
-          isClaimed={state.isCampaignClaimed}
-          dispatch={dispatch}
-          merkleTreeCid={state.campaign.merkleTreeCid}
-          distributorType={state.distributorType}
-          hashedUUID={state.hashedUUID}
-        />
+      <Box mt={2} pb={2} style={{ borderTop: "2px solid #f8f8f8" }}>
+        {child}
       </Box>
     </div>
   );

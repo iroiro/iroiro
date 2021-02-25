@@ -62,8 +62,26 @@ IsNotStarted.args = {
   },
 };
 
+export const IsWalletNotConnected = Template.bind({});
+IsWalletNotConnected.args = {
+  active: false,
+  state: {
+    isTokenCheckFinished: false,
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
+    isTokenRequested: false,
+    isTokenApproved: false,
+    hashedUUID: "",
+  },
+};
+
 export const NotLoggedIn = Template.bind({});
 NotLoggedIn.args = {
+  active: true,
   state: {
     isTokenCheckFinished: false,
     campaign: campaign,
@@ -80,6 +98,7 @@ NotLoggedIn.args = {
 
 export const Default = Template.bind({});
 Default.args = {
+  active: true,
   state: {
     isTokenCheckFinished: false,
     campaign: campaign,
@@ -96,6 +115,7 @@ Default.args = {
 
 export const Requested = Template.bind({});
 Requested.args = {
+  active: true,
   state: {
     isTokenCheckFinished: false,
     campaign: campaign,
@@ -112,6 +132,7 @@ Requested.args = {
 
 export const IsClaimable = Template.bind({});
 IsClaimable.args = {
+  active: true,
   state: {
     campaign: campaign,
     campaignAddress: "",
@@ -128,6 +149,7 @@ IsClaimable.args = {
 
 export const IsNotClaimable = Template.bind({});
 IsNotClaimable.args = {
+  active: true,
   state: {
     campaign: campaign,
     campaignAddress: "",
@@ -144,6 +166,7 @@ IsNotClaimable.args = {
 
 export const IsClaimed = Template.bind({});
 IsClaimed.args = {
+  active: true,
   state: {
     campaign: campaign,
     campaignAddress: "",
@@ -160,6 +183,7 @@ IsClaimed.args = {
 
 export const IsEnded = Template.bind({});
 IsEnded.args = {
+  active: true,
   state: {
     campaign: campaign,
     campaignAddress: "",

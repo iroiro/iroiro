@@ -53,6 +53,7 @@ const TokenCampaignDetailPage: React.FC<
   );
   const [getCampaign, { data: campaignData }] = useLazyQuery(GET_CAMPAIGN);
   const { library } = useWeb3React();
+  const { active, library } = useWeb3React();
   const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
   const tokenAddress = props.match.params.tokenAddress;
   const campaignAddress = props.match.params.campaignAddress;
@@ -269,6 +270,7 @@ const TokenCampaignDetailPage: React.FC<
 
   return (
     <TokenCampaignsDetailTemplate
+      active={active}
       state={state}
       tokenAddress={tokenAddress}
       dispatch={dispatch}
