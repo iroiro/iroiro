@@ -244,13 +244,19 @@ export const tokenListState: TokenListState = {
   color: "secondary",
 };
 
+const startDate = new Date();
+startDate.setHours(0, 0, 0, 0);
+const endDate = new Date();
+endDate.setHours(0, 0, 0, 0);
+endDate.setDate(startDate.getDate() + 1);
+
 export const distributorFormState: createCampaignState = {
   step: 1,
   approveAmount: "10000",
   campaignName: "URL Campaign",
   campaignDescription: "This is a campaign.",
-  startDate: new Date().getTime(),
-  endDate: new Date().setDate(new Date().getDate() + 1),
+  startDate: startDate.getTime(),
+  endDate: endDate.getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignAddress: "",
