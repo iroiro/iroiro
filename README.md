@@ -13,15 +13,24 @@ We are working on developing protocols that can leverage Social Token with the g
 - Interface: [app.iroiro.social](https://app.iroiro.social/)
 - Interface Rinekby Test Nework: [rinkeby.app.iroiro.social](https://rinkeby.app.iroiro.social/)
 - Twitter: [@IroiroTokens](https://twitter.com/IroiroTokens/)
-- Discord: [Iroiro](https://discord.gg/KbXxVGzwpz/)
+- Discord: [Iroiro](https://discord.gg/5FHxWBXh)
 - Blog: [Iroiro Social Token](https://medium.com/iroiro-social-token/)
 
 ## How to develop
 
+### Contract 
+
+1. Set environment variables on `contracts/`. 
+1. Run `yarn && yarn compile` on `contracts/` dir to compile contracts. 
+1. Run `ganache-cli` and `yarn migrate:dev` to deploy contracts locally.
+
 ### Frontend
 
-1. To generate contract types, run `yarn` on `contracts/` dir.
-   When command finished, `types/` dir is generated on a frontend src dir.
+1. To generate contract types, run `yarn` on `contracts/`.
+   When command finished, `types/` is generated on a frontend src.
+1. Create `.env` file from `.env.example` file on `frontend/packages/react-app/`, and set environment variables. 
+   See `contracts/` to check deployed contract addresses.
+1. Run `yarn && yarn react-app:start` on `frontend/`, then frontend app starts. 
 
 ## Other
 

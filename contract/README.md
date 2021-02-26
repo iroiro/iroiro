@@ -11,14 +11,11 @@ The naming convention of the contract is as follows:
 
 - `EmailCampaign`: Single campaign for distributing email addresses.
 - `UserIdCampaign`: Continuous distribution campaign for user IDs.
-- `CCTWalletCampaign`: Single campaign for sending a Wallet address that can be changed to send claims.
 
-## How to deploy contract on local
+## Contract Addresses 
 
-(We assume using `oz` command)
+### Rinkeby 
 
-1. Start Ganache
-1. Deploy Vesting contract and StakingPool contract
-1. Deploy TokenFacoty contract with deployed contracts address
-1. To contracts works properly, you have to transfer ownership of Vesting and StakingPool contract to TokenFactory contract
-   So send a transaction with `transferOwnership()` function
+- tIRO(Test Token): 0xb0da4177f4a4d79a9611e69071e67e3367930339
+- UUIDDistributor: 0x8b5abD70339787DF920C982a46fF6066EB13Ab68
+- WalletDistributor: 0xa79c1B3e529c34bA3B7373d95119B16b0714E155
