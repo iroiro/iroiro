@@ -32,7 +32,6 @@ import {
   campaignDetailReducer,
   initialState,
 } from "../../reducers/campaignDetail";
-import { LINK_TOKEN_ADDRESS } from "../../utils/const";
 import { getTokenInfo, getWalletBalance } from "../../utils/web3";
 import { TokenCampaignsDetailTemplate } from "../templates/TokenCampaignsDetailPageTemplate";
 import distributors from "../../utils/distributors";
@@ -62,11 +61,6 @@ const TokenCampaignDetailPage: React.FC<
     state?.campaignAddress ?? "",
     state?.distributorType,
     hashedUUID
-  );
-  const { allowance } = useGetAllowance(
-    library,
-    LINK_TOKEN_ADDRESS,
-    state?.campaignAddress ?? ""
   );
   const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
     GET_CLAIM
@@ -204,16 +198,6 @@ const TokenCampaignDetailPage: React.FC<
       });
     }
   }, [isClaimable, state.distributorType]);
-
-  useEffect(() => {
-    if (allowance === undefined) {
-      return;
-    }
-    dispatch({
-      type: "isTokenApproved:set",
-      payload: { allowance: allowance },
-    });
-  }, [allowance]);
 
   useEffect(() => {
     if (
