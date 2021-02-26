@@ -20,13 +20,8 @@ import { useLazyQuery } from "@apollo/react-hooks";
 import { useWeb3React } from "@web3-react/core";
 import { RouteComponentProps } from "react-router-dom";
 import { useTokenContext } from "../../context/token";
-import {
-  GET_CAMPAIGN,
-  GET_CHECK_REQUEST,
-  GET_CLAIM,
-} from "../../graphql/subgraph";
+import { GET_CAMPAIGN, GET_CLAIM } from "../../graphql/subgraph";
 import { useIsClaimable } from "../../hooks/distributors/useIsClaimable";
-import { useGetAllowance } from "../../hooks/useGetAllowance";
 import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
 import {
   campaignDetailReducer,
