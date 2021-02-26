@@ -37,6 +37,7 @@ import UploadEmailCsvPane from "../UploadEmailCsvPane";
 import { CSVLink } from "react-csv";
 import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
+import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
 
 export interface CreateEmailCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -137,27 +138,11 @@ const CreateEmailCampaignStepper = ({
         <Step>
           <StepLabel>Approve your tokens</StepLabel>
           <StepContent>
-            <div>
-              <ApproveToken
-                tokenInfo={tokenInfo}
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            </div>
-            <div>
-              <StyledButton onClick={() => handleStepChange(1)}>
-                Back
-              </StyledButton>
-              <StyledButton
-                variant="contained"
-                color="secondary"
-                disableElevation
-                disabled={tokenInfo.allowance === "0"}
-                onClick={() => handleStepChange(3)}
-              >
-                Next
-              </StyledButton>
-            </div>
+            <ApproveTokenStep
+              tokenInfo={tokenInfo}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
         <Step>

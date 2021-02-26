@@ -35,6 +35,7 @@ import ApproveToken from "../ApproveToken";
 import SetupCampaign from "../SetupCampaign";
 import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
+import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
 
 export interface CreateWalletAddressCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -111,27 +112,11 @@ const CreateWalletAddressCampaignStepper = ({
         <Step>
           <StepLabel>Approve your tokens</StepLabel>
           <StepContent>
-            <div>
-              <ApproveToken
-                tokenInfo={tokenInfo}
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            </div>
-            <div>
-              <StyledButton onClick={() => handleStepChange(1)}>
-                Back
-              </StyledButton>
-              <StyledButton
-                variant="contained"
-                color="secondary"
-                disableElevation
-                disabled={tokenInfo.allowance === "0"}
-                onClick={() => handleStepChange(3)}
-              >
-                Next
-              </StyledButton>
-            </div>
+            <ApproveTokenStep
+              tokenInfo={tokenInfo}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
         <Step>
