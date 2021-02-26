@@ -72,7 +72,6 @@ export interface Distributor {
 export interface DistributorMetadata {
   name: string;
   description: string;
-  image: string;
 }
 
 export interface Creator {

@@ -97,7 +97,6 @@ const distributor: Distributor = {
   distributorMetadata: {
     name: "",
     description: "",
-    image: "",
   },
   type: "",
   version: "",

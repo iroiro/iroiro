@@ -26,9 +26,10 @@ function ellipseAddress(address = "", width = 5): string {
 }
 
 const WalletButton: React.FC = () => {
-  const { account, deactivate, active, error, activate } = useWeb3React();
+  const { account, active, error, activate, chainId } = useWeb3React();
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
   const [open, setOpen] = useState(false);
+  const [network, setNetwork] = useState("");
 
   useEffect(() => {
     const { ethereum } = window;
@@ -67,6 +68,18 @@ const WalletButton: React.FC = () => {
       };
     }
   }, [active, error, activate]);
+
+  useEffect(() => {
+    if (chainId === 1) {
+      setNetwork("Mainnet");
+    }
+    if (chainId === 4) {
+      setNetwork("Rinkeby test");
+    }
+    if (chainId === 42) {
+      setNetwork("Kovan test");
+    }
+  }, [chainId]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -108,7 +121,7 @@ const WalletButton: React.FC = () => {
               </Typography>
               <Box mt={2}>
                 <Typography>
-                  To access Ioriro, please switch to the Rinkeby test network.
+                  To access Ioriro, please switch to the {network} network.
                 </Typography>
               </Box>
             </Box>
