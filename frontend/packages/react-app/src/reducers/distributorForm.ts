@@ -106,13 +106,19 @@ export const distributorFormReducer = (
   }
 };
 
+const startDate = new Date();
+startDate.setHours(0, 0, 0, 0);
+const endDate = new Date();
+endDate.setHours(0, 0, 0, 0);
+endDate.setDate(startDate.getDate() + 1);
+
 export const distributorFormInitialState: createCampaignState = {
   step: 0,
   approveAmount: "",
   campaignName: "",
   campaignDescription: "",
-  startDate: new Date().getTime(),
-  endDate: new Date().setDate(new Date().getDate() + 1),
+  startDate: startDate.getTime(),
+  endDate: endDate.getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignAddress: "",
