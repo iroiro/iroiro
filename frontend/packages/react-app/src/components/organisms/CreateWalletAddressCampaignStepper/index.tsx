@@ -73,6 +73,7 @@ const CreateWalletAddressCampaignStepper = ({
           </StepLabel>
           <StepContent>
             <InputTokenAddressStep
+              currentStep={distributorFormState.step}
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}
               distributorFormState={distributorFormState}
@@ -112,6 +113,7 @@ const CreateWalletAddressCampaignStepper = ({
           <StepLabel>Approve your tokens</StepLabel>
           <StepContent>
             <ApproveTokenStep
+              currentStep={distributorFormState.step}
               tokenInfo={tokenInfo}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
@@ -122,6 +124,7 @@ const CreateWalletAddressCampaignStepper = ({
           <StepLabel>Setup basic info</StepLabel>
           <StepContent>
             <StartCampaignStep
+              currentStep={distributorFormState.step}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
             />

@@ -17,7 +17,7 @@
 
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { distributorFormState, tokenInfo } from "../../../../utils/mockData";
+import { distributorFormState } from "../../../../utils/mockData";
 import { Step, StepContent, StepLabel, Stepper } from "@material-ui/core";
 import StartCampaignStep, { StartCampaignStepProps } from "./index";
 

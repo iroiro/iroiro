@@ -26,12 +26,14 @@ import styled from "styled-components";
 import ApproveToken from "../../../organisms/ApproveToken";
 
 export interface ApproveTokenStepProps {
+  readonly currentStep: number;
   readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
 const ApproveTokenStep = ({
+  currentStep,
   tokenInfo,
   distributorFormState,
   distributorFormDispatch,
@@ -53,13 +55,15 @@ const ApproveTokenStep = ({
         />
       </div>
       <div>
-        <StyledButton onClick={() => handleStepChange(1)}>Back</StyledButton>
+        <StyledButton onClick={() => handleStepChange(currentStep - 1)}>
+          Back
+        </StyledButton>
         <StyledButton
           variant="contained"
           color="secondary"
           disableElevation
           disabled={tokenInfo.allowance === "0"}
-          onClick={() => handleStepChange(3)}
+          onClick={() => handleStepChange(currentStep + 1)}
         >
           Next
         </StyledButton>

@@ -95,6 +95,7 @@ const CreateEmailCampaignStepper = ({
           </StepLabel>
           <StepContent>
             <InputTokenAddressStep
+              currentStep={distributorFormState.step}
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}
               distributorFormState={distributorFormState}
@@ -138,6 +139,7 @@ const CreateEmailCampaignStepper = ({
           <StepLabel>Approve your tokens</StepLabel>
           <StepContent>
             <ApproveTokenStep
+              currentStep={distributorFormState.step}
               tokenInfo={tokenInfo}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
@@ -148,6 +150,7 @@ const CreateEmailCampaignStepper = ({
           <StepLabel>Setup basic info</StepLabel>
           <StepContent>
             <StartCampaignStep
+              currentStep={distributorFormState.step}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
             />

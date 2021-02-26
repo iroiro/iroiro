@@ -25,11 +25,13 @@ import styled from "styled-components";
 import SetupCampaign from "../../../organisms/SetupCampaign";
 
 export interface StartCampaignStepProps {
+  readonly currentStep: number;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
 const StartCampaignStep = ({
+  currentStep,
   distributorFormState,
   distributorFormDispatch,
 }: StartCampaignStepProps) => {
@@ -49,7 +51,9 @@ const StartCampaignStep = ({
         />
       </div>
       <div style={{ marginTop: 40 }}>
-        <StyledButton onClick={() => handleStepChange(2)}>Back</StyledButton>
+        <StyledButton onClick={() => handleStepChange(currentStep - 1)}>
+          Back
+        </StyledButton>
         <Button
           variant="contained"
           color="secondary"

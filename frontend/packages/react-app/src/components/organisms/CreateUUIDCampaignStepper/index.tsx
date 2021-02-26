@@ -89,6 +89,7 @@ const CreateUUIDCampaignStepper = ({
           </StepLabel>
           <StepContent>
             <InputTokenAddressStep
+              currentStep={distributorFormState.step}
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}
               distributorFormState={distributorFormState}
@@ -130,6 +131,7 @@ const CreateUUIDCampaignStepper = ({
           <StepLabel>Approve your tokens</StepLabel>
           <StepContent>
             <ApproveTokenStep
+              currentStep={distributorFormState.step}
               tokenInfo={tokenInfo}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
@@ -140,6 +142,7 @@ const CreateUUIDCampaignStepper = ({
           <StepLabel>Setup basic info</StepLabel>
           <StepContent>
             <StartCampaignStep
+              currentStep={distributorFormState.step}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
             />

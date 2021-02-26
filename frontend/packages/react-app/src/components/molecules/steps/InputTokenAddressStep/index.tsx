@@ -31,6 +31,7 @@ import { useGetTokenInfo } from "../../../../hooks/useGetTokenInfo";
 import { isAddress } from "ethers/lib/utils";
 
 export interface InputTokenAddressStepProps {
+  readonly currentStep: number;
   readonly tokenInfo: AccountToken;
   readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
@@ -38,6 +39,7 @@ export interface InputTokenAddressStepProps {
 }
 
 const InputTokenAddressStep = ({
+  currentStep,
   tokenInfo,
   tokenDispatch,
   distributorFormState,
@@ -123,7 +125,7 @@ const InputTokenAddressStep = ({
           variant="contained"
           color="secondary"
           disableElevation
-          onClick={() => handleStepChange(1)}
+          onClick={() => handleStepChange(currentStep + 1)}
           disabled={tokenInfo.token === undefined}
         >
           Next
