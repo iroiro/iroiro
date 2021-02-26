@@ -220,9 +220,6 @@ const CreateEmailCampaignStepper = ({
               </StyledCSVLink>
             </div>
             <Box mt={5}>
-              <StyledButton onClick={() => handleStepChange(3)}>
-                Back
-              </StyledButton>
               <Button
                 variant="contained"
                 color="secondary"
