@@ -26,7 +26,8 @@ function ellipseAddress(address = "", width = 5): string {
 }
 
 const WalletButton: React.FC = () => {
-  const { account, active, error, activate, chainId } = useWeb3React();
+  const supportChainId = Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "0");
+  const { account, active, error, activate } = useWeb3React();
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
   const [open, setOpen] = useState(false);
   const [network, setNetwork] = useState("");
@@ -70,16 +71,16 @@ const WalletButton: React.FC = () => {
   }, [active, error, activate]);
 
   useEffect(() => {
-    if (chainId === 1) {
+    if (supportChainId === 1) {
       setNetwork("Mainnet");
     }
-    if (chainId === 4) {
+    if (supportChainId === 4) {
       setNetwork("Rinkeby test");
     }
-    if (chainId === 42) {
+    if (supportChainId === 42) {
       setNetwork("Kovan test");
     }
-  }, [chainId]);
+  }, [supportChainId]);
 
   const handleClickOpen = () => {
     setOpen(true);
