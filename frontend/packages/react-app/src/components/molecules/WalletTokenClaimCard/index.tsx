@@ -81,7 +81,7 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
     dispatch({ type: "isCampaignClaimed:setTrue" });
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
-  }, [dispatch]);
+  }, [dispatch, library]);
 
   let text = "We are sorry but you can not claim token.";
   if (isClaimable) {
