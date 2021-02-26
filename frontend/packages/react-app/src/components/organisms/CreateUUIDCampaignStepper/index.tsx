@@ -28,8 +28,6 @@ import {
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
 import styled from "styled-components";
-import ApproveToken from "../ApproveToken";
-import SetupCampaign from "../SetupCampaign";
 import { UUIDState, UUID_ACTIONS } from "../../../reducers/uuid";
 import UUIDDistributionTargets from "../UUIDDistributionTargets";
 import { Box, Typography } from "@material-ui/core";
@@ -38,6 +36,7 @@ import theme from "../../../theme/mui-theme";
 import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
 import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
+import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
 
 export interface CreateUUIDCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -140,35 +139,10 @@ const CreateUUIDCampaignStepper = ({
         <Step>
           <StepLabel>Setup basic info</StepLabel>
           <StepContent>
-            <div>
-              <SetupCampaign
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            </div>
-            <div style={{ marginTop: 40 }}>
-              <StyledButton onClick={() => handleStepChange(2)}>
-                Back
-              </StyledButton>
-              <Button
-                variant="contained"
-                color="secondary"
-                disableElevation
-                onClick={() => {
-                  distributorFormDispatch({
-                    type: "campaign:deploy",
-                    payload: { requestDeployCampaign: true },
-                  });
-                }}
-                disabled={
-                  distributorFormState.startDate >=
-                    distributorFormState.endDate ||
-                  distributorFormState.campaignName === ""
-                }
-              >
-                Start Campaign
-              </Button>
-            </div>
+            <StartCampaignStep
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
         <Step>

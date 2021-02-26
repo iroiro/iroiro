@@ -31,11 +31,10 @@ import {
 } from "../../../reducers/distributorForm";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import styled from "styled-components";
-import ApproveToken from "../ApproveToken";
-import SetupCampaign from "../SetupCampaign";
 import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
 import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
+import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
 
 export interface CreateWalletAddressCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -122,35 +121,10 @@ const CreateWalletAddressCampaignStepper = ({
         <Step>
           <StepLabel>Setup basic info</StepLabel>
           <StepContent>
-            <div>
-              <SetupCampaign
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            </div>
-            <div style={{ marginTop: 40 }}>
-              <StyledButton onClick={() => handleStepChange(2)}>
-                Back
-              </StyledButton>
-              <Button
-                variant="contained"
-                color="secondary"
-                disableElevation
-                onClick={() => {
-                  distributorFormDispatch({
-                    type: "campaign:deploy",
-                    payload: { requestDeployCampaign: true },
-                  });
-                }}
-                disabled={
-                  distributorFormState.startDate >=
-                    distributorFormState.endDate ||
-                  distributorFormState.campaignName === ""
-                }
-              >
-                Start Campaign
-              </Button>
-            </div>
+            <StartCampaignStep
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
       </Stepper>

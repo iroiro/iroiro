@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -28,8 +28,6 @@ import {
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
 import styled from "styled-components";
-import ApproveToken from "../ApproveToken";
-import SetupCampaign from "../SetupCampaign";
 import { Box, Typography } from "@material-ui/core";
 import theme from "../../../theme/mui-theme";
 import { EmailState, EMAIL_ACTIONS } from "../../../reducers/email";
@@ -38,6 +36,7 @@ import { CSVLink } from "react-csv";
 import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
 import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
+import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
 
 export interface CreateEmailCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -148,35 +147,10 @@ const CreateEmailCampaignStepper = ({
         <Step>
           <StepLabel>Setup basic info</StepLabel>
           <StepContent>
-            <div>
-              <SetupCampaign
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            </div>
-            <div style={{ marginTop: 40 }}>
-              <StyledButton onClick={() => handleStepChange(2)}>
-                Back
-              </StyledButton>
-              <Button
-                variant="contained"
-                color="secondary"
-                disableElevation
-                onClick={() => {
-                  distributorFormDispatch({
-                    type: "campaign:deploy",
-                    payload: { requestDeployCampaign: true },
-                  });
-                }}
-                disabled={
-                  distributorFormState.startDate >=
-                    distributorFormState.endDate ||
-                  distributorFormState.campaignName === ""
-                }
-              >
-                Start Campaign
-              </Button>
-            </div>
+            <StartCampaignStep
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
         <Step>

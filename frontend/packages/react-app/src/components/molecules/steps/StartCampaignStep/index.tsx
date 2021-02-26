@@ -17,25 +17,22 @@
 
 import * as React from "react";
 import Button from "@material-ui/core/Button";
-import { AccountToken } from "../../../../interfaces";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../../reducers/distributorForm";
 import styled from "styled-components";
-import ApproveToken from "../../../organisms/ApproveToken";
+import SetupCampaign from "../../../organisms/SetupCampaign";
 
-export interface ApproveTokenStepProps {
-  readonly tokenInfo: AccountToken;
+export interface StartCampaignStepProps {
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
-const ApproveTokenStep = ({
-  tokenInfo,
+const StartCampaignStep = ({
   distributorFormState,
   distributorFormDispatch,
-}: ApproveTokenStepProps) => {
+}: StartCampaignStepProps) => {
   const handleStepChange = (stepNumber: number) => {
     distributorFormDispatch({
       type: "step:set",
@@ -46,23 +43,30 @@ const ApproveTokenStep = ({
   return (
     <>
       <div>
-        <ApproveToken
-          tokenInfo={tokenInfo}
+        <SetupCampaign
           distributorFormState={distributorFormState}
           distributorFormDispatch={distributorFormDispatch}
         />
       </div>
-      <div>
-        <StyledButton onClick={() => handleStepChange(1)}>Back</StyledButton>
-        <StyledButton
+      <div style={{ marginTop: 40 }}>
+        <StyledButton onClick={() => handleStepChange(2)}>Back</StyledButton>
+        <Button
           variant="contained"
           color="secondary"
           disableElevation
-          disabled={tokenInfo.allowance === "0"}
-          onClick={() => handleStepChange(3)}
+          onClick={() => {
+            distributorFormDispatch({
+              type: "campaign:deploy",
+              payload: { requestDeployCampaign: true },
+            });
+          }}
+          disabled={
+            distributorFormState.startDate >= distributorFormState.endDate ||
+            distributorFormState.campaignName === ""
+          }
         >
-          Next
-        </StyledButton>
+          Start Campaign
+        </Button>
       </div>
     </>
   );
@@ -73,4 +77,4 @@ const StyledButton = styled(Button)`
   margin-right: 8px;
 `;
 
-export default ApproveTokenStep;
+export default StartCampaignStep;

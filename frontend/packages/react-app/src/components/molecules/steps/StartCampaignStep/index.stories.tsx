@@ -19,19 +19,19 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { distributorFormState, tokenInfo } from "../../../../utils/mockData";
 import { Step, StepContent, StepLabel, Stepper } from "@material-ui/core";
-import ApproveTokenStep, { ApproveTokenStepProps } from "./index";
+import StartCampaignStep, { StartCampaignStepProps } from "./index";
 
 export default {
-  title: "Molecules/steps/ApproveTokenStep",
-  component: ApproveTokenStep,
+  title: "Molecules/steps/StartCampaignStep",
+  component: StartCampaignStep,
 } as Meta;
 
-const Template: Story<ApproveTokenStepProps> = (args) => (
+const Template: Story<StartCampaignStepProps> = (args) => (
   <Stepper activeStep={0} orientation="vertical">
     <Step>
-      <StepLabel>Approve your tokens</StepLabel>
+      <StepLabel>Setup basic info</StepLabel>
       <StepContent>
-        <ApproveTokenStep {...args} />
+        <StartCampaignStep {...args} />
       </StepContent>
     </Step>
   </Stepper>
@@ -39,7 +39,6 @@ const Template: Story<ApproveTokenStepProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  tokenInfo,
   distributorFormState: {
     ...distributorFormState,
     step: 0,
