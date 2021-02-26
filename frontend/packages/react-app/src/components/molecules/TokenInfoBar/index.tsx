@@ -133,7 +133,12 @@ const TokenInfoBar = () => {
           </Typography>
           <UserScanLinkWrapper>
             {!!state.userAddress && (
-              <EtherscanLink type="token" address={state.userAddress} small />
+              <EtherscanLink
+                type="user"
+                address={state.userAddress}
+                additionalTokenAddress={state.token?.tokenAddress}
+                small
+              />
             )}
           </UserScanLinkWrapper>
         </BalanceWrapper>

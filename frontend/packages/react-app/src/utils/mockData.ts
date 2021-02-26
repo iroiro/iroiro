@@ -39,13 +39,12 @@ export const campaignMetadata: CampaignMetadata = {
 };
 
 export const distributor: Distributor = {
-  id: "0x590b4465a94be635bf2f760025c61ec3680f687c",
+  id: process.env.REACT_APP_CONTRACT_CCTWALLETDISTRIBUTOR ?? "",
   distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
   distributorMetadata: {
     name: "Audius Followers Distributor",
     description:
       "This distributer enables creators to distributes tokens for their followers on Auduis.",
-    image: "https://example.com/distributerimage.jpg",
   },
   type: "audius",
   version: "1",
@@ -244,13 +243,19 @@ export const tokenListState: TokenListState = {
   color: "secondary",
 };
 
+const startDate = new Date();
+startDate.setHours(0, 0, 0, 0);
+const endDate = new Date();
+endDate.setHours(0, 0, 0, 0);
+endDate.setDate(startDate.getDate() + 1);
+
 export const distributorFormState: createCampaignState = {
   step: 1,
   approveAmount: "10000",
   campaignName: "URL Campaign",
   campaignDescription: "This is a campaign.",
-  startDate: new Date().getTime(),
-  endDate: new Date().setDate(new Date().getDate() + 1),
+  startDate: startDate.getTime(),
+  endDate: endDate.getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignAddress: "",

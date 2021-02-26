@@ -24,14 +24,16 @@ type AddressTypes = "user" | "token";
 
 export interface EtherscanLinkProps {
   readonly type: AddressTypes;
-  readonly address?: string;
-  small?: boolean;
+  readonly address: string;
+  readonly additionalTokenAddress?: string;
+  readonly small?: boolean;
 }
 
 // TODO enable switch network, url regard to address type
 const EtherscanLink: React.FC<EtherscanLinkProps> = ({
   type,
   address,
+  additionalTokenAddress,
   small = false,
 }) => {
   if (!address) {
@@ -39,7 +41,7 @@ const EtherscanLink: React.FC<EtherscanLinkProps> = ({
   }
   const link =
     type === "user"
-      ? `https://rinkeby.etherscan.io/address/${address}`
+      ? `https://rinkeby.etherscan.io/token/${additionalTokenAddress}?a=${address}`
       : `https://rinkeby.etherscan.io/token/${address}`;
 
   return (

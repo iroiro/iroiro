@@ -39,7 +39,7 @@ const getLibrary = (provider: any): Web3Provider => {
 // See all subgraphs: https://thegraph.com/explorer/
 const client = new ApolloClient({
   // TODO Update url to iroiro
-  uri: "https://api.thegraph.com/subgraphs/name/tart-tokyo/iroiro-rinkeby",
+  uri: process.env.REACT_APP_SUBGRAPH,
 });
 
 ReactDOM.render(

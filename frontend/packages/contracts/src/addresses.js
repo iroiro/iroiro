@@ -18,9 +18,10 @@
 // This address points to a dummy ERC20 contract deployed on Ethereum Mainnet,
 // Goerli, Kovan, Rinkeby and Ropsten. Replace it with your smart contracts.
 const addresses = {
-  Migrations: "0x65baE18080F2C34eD2FAF6C1A5946A665fcC0b8c",
-  WalletDistributor: "0xa79c1B3e529c34bA3B7373d95119B16b0714E155",
-  UUIDDistributor: "0x8b5abD70339787DF920C982a46fF6066EB13Ab68",
+  Migrations: process.env.REACT_APP_CONTRACT_MIGRATIONS,
+  WalletDistributor: process.env.REACT_APP_CONTRACT_WALLETDISTRIBUTOR,
+  UUIDDistributor: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR,
+  CCTWalletDistributor: process.env.REACT_APP_CONTRACT_CCTWALLETDISTRIBUTOR,
 };
 
 export default addresses;
