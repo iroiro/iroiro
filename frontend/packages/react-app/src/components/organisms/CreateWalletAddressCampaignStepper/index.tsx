@@ -15,13 +15,12 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useEffect } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
-import TextField from "@material-ui/core/TextField";
 import WalletDistributionTargets, {
   upperLimit,
 } from "../WalletDistributionTargets";
@@ -34,10 +33,8 @@ import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import styled from "styled-components";
 import ApproveToken from "../ApproveToken";
 import SetupCampaign from "../SetupCampaign";
-import { useGetTokenInfo } from "../../../hooks/useGetTokenInfo";
-import { useWeb3React } from "@web3-react/core";
 import { ACTIONS } from "../../../reducers/token";
-import { isAddress } from "ethers/lib/utils";
+import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
 
 export interface CreateWalletAddressCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -62,27 +59,6 @@ const CreateWalletAddressCampaignStepper = ({
       payload: { stepNo: stepNumber },
     });
   };
-  const { library } = useWeb3React();
-  const { getTokenInfo, token } = useGetTokenInfo(
-    library,
-    distributorFormState.tokenAddress
-  );
-
-  useEffect(() => {
-    if (token === undefined) {
-      return;
-    }
-    tokenDispatch({
-      type: "token:set",
-      payload: {
-        token,
-      },
-    });
-  }, [token, tokenDispatch]);
-
-  const isTokenAddressError =
-    distributorFormState.tokenAddress !== "" &&
-    !isAddress(distributorFormState.tokenAddress);
 
   return (
     <div>
@@ -96,61 +72,12 @@ const CreateWalletAddressCampaignStepper = ({
             Fill in Token address that you want to distribute
           </StepLabel>
           <StepContent>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "start",
-                marginBottom: 16,
-              }}
-            >
-              <TextField
-                error={isTokenAddressError}
-                helperText={isTokenAddressError ? "Invalid address" : undefined}
-                color="secondary"
-                label="Token Address"
-                style={{ width: 200, marginRight: 8 }}
-                value={distributorFormState.tokenAddress}
-                onChange={(e) => {
-                  distributorFormDispatch({
-                    type: "tokenAddress:set",
-                    payload: {
-                      tokenAddress: e.target.value,
-                    },
-                  });
-                  tokenDispatch({
-                    type: "token:set",
-                    payload: {
-                      token: undefined,
-                    },
-                  });
-                }}
-              />
-              <Button
-                color="secondary"
-                variant="outlined"
-                onClick={() => getTokenInfo()}
-                disabled={isTokenAddressError}
-              >
-                Confirm
-              </Button>
-            </div>
-            {tokenInfo.token?.name !== "" && (
-              <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
-                {tokenInfo.token?.name}
-              </div>
-            )}
-            <div style={{ marginTop: 40 }}>
-              <StyledButton
-                variant="contained"
-                color="secondary"
-                disableElevation
-                onClick={() => handleStepChange(1)}
-                disabled={tokenInfo.token === undefined}
-              >
-                Next
-              </StyledButton>
-            </div>
+            <InputTokenAddressStep
+              tokenInfo={tokenInfo}
+              tokenDispatch={tokenDispatch}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
         <Step>

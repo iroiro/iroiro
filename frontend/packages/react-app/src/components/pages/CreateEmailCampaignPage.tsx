@@ -45,7 +45,6 @@ import {
 import { BigNumber } from "ethers";
 import { emailInitialState, emailReducer } from "../../reducers/email";
 import CreateEmailCampaignPageTemplate from "../templates/CreateEmailCampaignPageTemaplate";
-import CreateUUIDCampaignPageTemplate from "../templates/CreateUUIDCampaignPageTemaplate";
 import { isAddress } from "ethers/lib/utils";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
