@@ -22,7 +22,7 @@ import {
 } from "@ethersproject/providers";
 import { utils, Signer } from "ethers";
 import { TokenBasic } from "../interfaces";
-import { CampaignInterface__factory as Campaign } from "../types/factories/CampaignInterface__factory";
+import { CampaignInterfaceV1__factory as Campaign } from "../types/factories/CampaignInterfaceV1__factory";
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
 import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
 import { UUIDCampaign__factory as UUIDCampaign } from "../types/factories/UUIDCampaign__factory";
