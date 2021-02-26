@@ -37,6 +37,7 @@ import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
 import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
 import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
+import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 
 export interface CreateUUIDCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -181,9 +182,6 @@ const CreateUUIDCampaignStepper = ({
               </CopyToClipboard>
             </div>
             <Box mt={5}>
-              <StyledButton onClick={() => handleStepChange(3)}>
-                Back
-              </StyledButton>
               <Button
                 variant="contained"
                 color="secondary"

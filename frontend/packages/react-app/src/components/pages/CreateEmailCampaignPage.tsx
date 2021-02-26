@@ -50,12 +50,12 @@ import { isAddress } from "ethers/lib/utils";
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
-interface CreateUUIDCampaignPageProps {
+interface CreateEmailCampaignPageProps {
   readonly props: RouteComponentProps;
   readonly distributorAddress: string;
 }
 
-const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
+const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
   props,
   distributorAddress,
 }) => {
@@ -66,7 +66,10 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   );
   const [distributorFormState, distributorFormDispatch] = useReducer(
     distributorFormReducer,
-    distributorFormInitialState
+    {
+      ...distributorFormInitialState,
+      distributorType: "email",
+    }
   );
   const [emailState, emailDispatch] = useReducer(
     emailReducer,
@@ -142,19 +145,32 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         distributorAddress,
         approveAmount,
         decimals
-      ).then((transaction) => {
-        if (transaction === undefined) {
-          return;
-        }
-        transaction.wait().then((result) => {
-          if (result.status === 1) {
-            tokenDispatch({
-              type: "token:setAllowance",
-              payload: { allowance: parseUnits(approveAmount, decimals) },
-            });
+      )
+        .then(async (transaction) => {
+          if (transaction === undefined) {
+            return;
           }
+          await transaction.wait().then((result) => {
+            if (result.status === 1) {
+              tokenDispatch({
+                type: "token:setAllowance",
+                payload: { allowance: parseUnits(approveAmount, decimals) },
+              });
+            }
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(
+            "There was an error or you rejected transaction. Please try again later."
+          );
+        })
+        .finally(() => {
+          distributorFormDispatch({
+            type: "dialog:set",
+            payload: { dialog: "nothing" },
+          });
         });
-      });
       distributorFormDispatch({
         type: "approveAmount:set",
         payload: { approveAmount: "0" },
@@ -201,6 +217,10 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         type: "campaign:deploy",
         payload: { requestDeployCampaign: false },
       });
+      distributorFormDispatch({
+        type: "dialog:set",
+        payload: { dialog: "creating-campaign" },
+      });
 
       const secondsStartDate = startDate / 1000;
       const secondsEndDate = endDate / 1000;
@@ -215,36 +235,49 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         recipientsNum,
         secondsStartDate,
         secondsEndDate
-      ).then((transaction) => {
-        if (transaction === undefined) {
-          return;
-        }
-        transaction.wait().then((result) => {
-          if (result.status !== 1) {
+      )
+        .then(async (transaction) => {
+          if (transaction === undefined) {
             return;
           }
-          if (result.events == undefined) {
-            return;
-          }
-          const campaignCreatedEvent = result.events.find(
-            (event) =>
-              event.event === "CreateCampaign" &&
-              event.address.toLowerCase() === distributorAddress.toLowerCase()
-          );
-          if (campaignCreatedEvent === undefined) {
-            return;
-          }
-          const campaignAddress: string = campaignCreatedEvent.args?.campaign;
-          distributorFormDispatch({
-            type: "createdCampaignAddress:set",
-            payload: { address: campaignAddress.toLowerCase() },
+          await transaction.wait().then((result) => {
+            if (result.status !== 1) {
+              return;
+            }
+            if (result.events == undefined) {
+              return;
+            }
+            const campaignCreatedEvent = result.events.find(
+              (event) =>
+                event.event === "CreateCampaign" &&
+                event.address.toLowerCase() === distributorAddress.toLowerCase()
+            );
+            if (campaignCreatedEvent === undefined) {
+              return;
+            }
+            const campaignAddress: string = campaignCreatedEvent.args?.campaign;
+            distributorFormDispatch({
+              type: "createdCampaignAddress:set",
+              payload: { address: campaignAddress.toLowerCase() },
+            });
+            distributorFormDispatch({
+              type: "step:set",
+              payload: { stepNo: 4 },
+            });
           });
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(
+            "There was an error or you rejected transaction. Please try again later."
+          );
+        })
+        .finally(() => {
           distributorFormDispatch({
-            type: "step:set",
-            payload: { stepNo: 4 },
+            type: "dialog:set",
+            payload: { dialog: "nothing" },
           });
         });
-      });
     },
     [props.history, distributorFormState.tokenAddress]
   );
@@ -444,4 +477,4 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   );
 };
 
-export default CreateUUIDCampaignPage;
+export default CreateEmailCampaignPage;

@@ -67,7 +67,10 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
   );
   const [distributorFormState, distributorFormDispatch] = useReducer(
     distributorFormReducer,
-    distributorFormInitialState
+    {
+      ...distributorFormInitialState,
+      distributorType: "wallet",
+    }
   );
   const [walletListState, walletListDispatch] = useReducer(
     walletReducer,
@@ -143,19 +146,32 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         distributorAddress,
         approveAmount,
         decimals
-      ).then((transaction) => {
-        if (transaction === undefined) {
-          return;
-        }
-        transaction.wait().then((result) => {
-          if (result.status === 1) {
-            tokenDispatch({
-              type: "token:setAllowance",
-              payload: { allowance: parseUnits(approveAmount, decimals) },
-            });
+      )
+        .then(async (transaction) => {
+          if (transaction === undefined) {
+            return;
           }
+          await transaction.wait().then((result) => {
+            if (result.status === 1) {
+              tokenDispatch({
+                type: "token:setAllowance",
+                payload: { allowance: parseUnits(approveAmount, decimals) },
+              });
+            }
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(
+            "There was an error or you rejected transaction. Please try again later."
+          );
+        })
+        .finally(() => {
+          distributorFormDispatch({
+            type: "dialog:set",
+            payload: { dialog: "nothing" },
+          });
         });
-      });
       distributorFormDispatch({
         type: "approveAmount:set",
         payload: { approveAmount: "0" },
@@ -193,6 +209,10 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         type: "campaign:deploy",
         payload: { requestDeployCampaign: false },
       });
+      distributorFormDispatch({
+        type: "dialog:set",
+        payload: { dialog: "creating-campaign" },
+      });
 
       const secondsStartDate = startDate / 1000;
       const secondsEndDate = endDate / 1000;
@@ -207,32 +227,45 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         recipientsNum,
         secondsStartDate,
         secondsEndDate
-      ).then((transaction) => {
-        if (transaction === undefined) {
-          return;
-        }
-        transaction.wait().then((result) => {
-          if (result.status !== 1) {
+      )
+        .then(async (transaction) => {
+          if (transaction === undefined) {
             return;
           }
-          if (result.events == undefined) {
-            return;
-          }
-          const campaignCreatedEvent = result.events.find(
-            (event) =>
-              event.event === "CreateCampaign" &&
-              event.address.toLowerCase() === distributorAddress.toLowerCase()
+          await transaction.wait().then((result) => {
+            if (result.status !== 1) {
+              return;
+            }
+            if (result.events == undefined) {
+              return;
+            }
+            const campaignCreatedEvent = result.events.find(
+              (event) =>
+                event.event === "CreateCampaign" &&
+                event.address.toLowerCase() === distributorAddress.toLowerCase()
+            );
+            if (campaignCreatedEvent === undefined) {
+              return;
+            }
+            const campaignAddress: string = campaignCreatedEvent.args?.campaign;
+            props.history.push(
+              `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
+                `/campaigns/${campaignAddress}`
+            );
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(
+            "There was an error or you rejected transaction. Please try again later."
           );
-          if (campaignCreatedEvent === undefined) {
-            return;
-          }
-          const campaignAddress: string = campaignCreatedEvent.args?.campaign;
-          props.history.push(
-            `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
-              `/campaigns/${campaignAddress}`
-          );
+        })
+        .finally(() => {
+          distributorFormDispatch({
+            type: "dialog:set",
+            payload: { dialog: "nothing" },
+          });
         });
-      });
     },
     [props.history, distributorFormState.tokenAddress, distributorAddress]
   );

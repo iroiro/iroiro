@@ -16,6 +16,7 @@
  */
 
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import { DistributorTypes } from "../interfaces";
 
 export type DISTRIBUTOR_ACTIONS =
   | {
@@ -39,7 +40,14 @@ export type DISTRIBUTOR_ACTIONS =
       payload: { requestDeployCampaign: boolean };
     }
   | { type: "createdCampaignAddress:set"; payload: { address: string } }
-  | { type: "tokenAddress:set"; payload: { tokenAddress: string } };
+  | { type: "tokenAddress:set"; payload: { tokenAddress: string } }
+  | { type: "dialog:set"; payload: { dialog: DialogStatus } };
+
+type DialogStatus =
+  | "nothing"
+  | "approving-token"
+  | "waiting-api"
+  | "creating-campaign";
 
 export interface createCampaignState {
   step: number;
@@ -52,6 +60,8 @@ export interface createCampaignState {
   requestDeployCampaign: boolean;
   createdCampaignAddress: string;
   tokenAddress: string;
+  distributorType: DistributorTypes | "";
+  dialog: DialogStatus;
 }
 
 export const distributorFormReducer = (
@@ -101,6 +111,9 @@ export const distributorFormReducer = (
     case "tokenAddress:set": {
       return { ...state, tokenAddress: action.payload.tokenAddress };
     }
+    case "dialog:set": {
+      return { ...state, dialog: action.payload.dialog };
+    }
     default:
       throw new Error();
   }
@@ -123,4 +136,6 @@ export const distributorFormInitialState: createCampaignState = {
   requestDeployCampaign: false,
   createdCampaignAddress: "",
   tokenAddress: "",
+  distributorType: "",
+  dialog: "nothing",
 };

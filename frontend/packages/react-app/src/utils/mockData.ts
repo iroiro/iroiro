@@ -260,6 +260,8 @@ export const distributorFormState: createCampaignState = {
   requestDeployCampaign: false,
   createdCampaignAddress: "",
   tokenAddress: "0x9AF70Ab10f94fEAF59B00B2cC20C7AE57e21954e",
+  distributorType: "",
+  dialog: "nothing",
 };
 
 export const audiusTarget: Target = {

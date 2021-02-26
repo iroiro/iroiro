@@ -63,6 +63,10 @@ const StartCampaignStep = ({
               type: "campaign:deploy",
               payload: { requestDeployCampaign: true },
             });
+            distributorFormDispatch({
+              type: "dialog:set",
+              payload: { dialog: "waiting-api" },
+            });
           }}
           disabled={
             distributorFormState.startDate >= distributorFormState.endDate ||
