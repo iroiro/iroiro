@@ -56,9 +56,6 @@ Audius.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "audius",
-    isTokenApproved: true,
-    isTokenCheckFinished: false,
-    isTokenRequested: false,
     hashedUUID: "",
   },
 };
@@ -72,9 +69,6 @@ Wallet.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "wallet",
-    isTokenApproved: true,
-    isTokenCheckFinished: false,
-    isTokenRequested: false,
     hashedUUID: "",
   },
 };
@@ -88,9 +82,6 @@ UUID.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "uuid",
-    isTokenApproved: true,
-    isTokenCheckFinished: false,
-    isTokenRequested: false,
     hashedUUID: "",
   },
 };

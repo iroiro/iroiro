@@ -15,19 +15,9 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import { BigNumber } from "ethers";
-import {
-  CampaignInfo,
-  CheckRequest,
-  Claim,
-  DistributorTypes,
-} from "../interfaces";
-import { LINK_APPROVE_AMOUNT } from "../utils/const";
+import { CampaignInfo, Claim, DistributorTypes } from "../interfaces";
 
 export interface CampaignDetailState {
-  isTokenRequested: boolean;
-  isTokenApproved: boolean;
-  isTokenCheckFinished: boolean;
   campaign: CampaignInfo | null;
   campaignAddress: string;
   isCampaignClaimable: boolean;
@@ -38,30 +28,6 @@ export interface CampaignDetailState {
 }
 
 export type CampaignDetailAction =
-  | {
-      type: "isTokenRequested:setTrue";
-    }
-  | {
-      type: "isTokenApproved:setTrue";
-    }
-  | {
-      type: "isTokenCheckFinished:setTrue";
-    }
-  | {
-      type: "isTokenApproved:set";
-      payload: {
-        allowance: BigNumber;
-      };
-    }
-  | {
-      type: "isTokenCheckFinished:set";
-      payload: {
-        checkRequests: CheckRequest[] | undefined;
-      };
-    }
-  | {
-      type: "isTokenCheckFinished:remove";
-    }
   | {
       type: "campaign:set";
       payload: {
@@ -116,51 +82,6 @@ export const campaignDetailReducer = (
   action: CampaignDetailAction
 ): CampaignDetailState => {
   switch (action.type) {
-    case "isTokenApproved:set": {
-      const isTokenApproved = action.payload.allowance.gte(
-        BigNumber.from(LINK_APPROVE_AMOUNT)
-      );
-      return {
-        ...state,
-        isTokenApproved,
-      };
-    }
-    case "isTokenApproved:setTrue": {
-      return {
-        ...state,
-        isTokenApproved: true,
-      };
-    }
-    case "isTokenRequested:setTrue": {
-      return {
-        ...state,
-        isTokenRequested: true,
-      };
-    }
-    case "isTokenCheckFinished:setTrue": {
-      return {
-        ...state,
-        isTokenCheckFinished: true,
-      };
-    }
-    case "isTokenCheckFinished:set": {
-      if (!action.payload.checkRequests) {
-        return state;
-      }
-      const isTokenCheckFinished =
-        action.payload.checkRequests.filter((req) => req.status !== 0).length >
-        0;
-      return {
-        ...state,
-        isTokenCheckFinished,
-      };
-    }
-    case "isTokenCheckFinished:remove": {
-      return {
-        ...state,
-        isTokenCheckFinished: false,
-      };
-    }
     case "campaign:set": {
       return {
         ...state,
@@ -229,9 +150,6 @@ export const campaignDetailReducer = (
 };
 
 export const initialState: CampaignDetailState = {
-  isTokenRequested: false,
-  isTokenApproved: false,
-  isTokenCheckFinished: false,
   campaign: null,
   campaignAddress: "",
   isCampaignClaimable: false,

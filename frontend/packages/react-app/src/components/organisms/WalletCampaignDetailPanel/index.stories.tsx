@@ -49,15 +49,12 @@ const Template: Story<WalletCampaignDetailPanelProps> = (args) => (
 export const IsNotStarted = Template.bind({});
 IsNotStarted.args = {
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1577836800000),
     distributorType: "",
-    isTokenRequested: false,
-    isTokenApproved: false,
     hashedUUID: "",
   },
 };
@@ -66,15 +63,12 @@ export const IsWalletNotConnected = Template.bind({});
 IsWalletNotConnected.args = {
   active: false,
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: false,
-    isTokenApproved: false,
     hashedUUID: "",
   },
 };
@@ -83,15 +77,12 @@ export const NotLoggedIn = Template.bind({});
 NotLoggedIn.args = {
   active: true,
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: false,
-    isTokenApproved: false,
     hashedUUID: "",
   },
 };
@@ -100,15 +91,12 @@ export const Default = Template.bind({});
 Default.args = {
   active: true,
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: false,
-    isTokenApproved: false,
     hashedUUID: "",
   },
 };
@@ -117,15 +105,12 @@ export const Requested = Template.bind({});
 Requested.args = {
   active: true,
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
@@ -139,10 +124,7 @@ IsClaimable.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: true,
-    isTokenCheckFinished: true,
     isCampaignClaimable: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
@@ -157,9 +139,6 @@ IsNotClaimable.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenCheckFinished: true,
-    isTokenRequested: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
@@ -172,11 +151,8 @@ IsClaimed.args = {
     campaignAddress: "",
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: true,
-    isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
@@ -189,11 +165,8 @@ IsEnded.args = {
     campaignAddress: "",
     now: new Date(1708780800000),
     distributorType: "",
-    isTokenRequested: true,
-    isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
