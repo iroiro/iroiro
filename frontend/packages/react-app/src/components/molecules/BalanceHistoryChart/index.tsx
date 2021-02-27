@@ -31,7 +31,6 @@ export interface BalanceHistoryChartProps {
 const BalanceHistoryChart: React.FC<BalanceHistoryChartProps> = ({
   balances,
 }: BalanceHistoryChartProps) => {
-  console.log(window.innerWidth);
   const chartWidth = useMemo(() => {
     const number = window.innerWidth - 200;
     if (number <= 300) {
