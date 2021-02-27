@@ -53,13 +53,13 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
           <Typography variant="caption" style={{ color: "#797979" }}>
             Description:
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" style={{ lineHeight: 1.2 }}>
             {campaign.campaignMetadata.description !== ""
               ? campaign.campaignMetadata.description
               : "No description"}
           </Typography>
         </Box>
-        <Box display="flex" justifyContent="start" mt={1} mb={1}>
+        <Box display="flex" justifyContent="start" mt={2} mb={1}>
           <Box display="flex" justifyContent="start" alignItems="baseline">
             <Typography variant="caption" style={{ color: "#797979" }}>
               Start Date:

@@ -49,6 +49,18 @@ const CampaignDetail: React.FC<CampaignDetailProps> = ({
             mt={4}
             style={{ alignItems: "center", justifyContent: "left" }}
           >
+            {"campaignMetadata" in campaignData.campaign && (
+              <Item
+                title="Campaign Description"
+                text={campaignData.campaign.campaignMetadata.description}
+              />
+            )}
+          </Box>
+          <Box
+            display="flex"
+            mt={4}
+            style={{ alignItems: "center", justifyContent: "left" }}
+          >
             <Item
               title="Campaign tokens balance"
               text={campaignData.depositTokens}
