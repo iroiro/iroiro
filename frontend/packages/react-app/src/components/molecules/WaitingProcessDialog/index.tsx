@@ -35,7 +35,7 @@ const WaitingProcessDialog: React.FC<WaitingProcessDialogProps> = ({
   const messages = () => {
     switch (distributorFormState.dialog) {
       case "waiting-api":
-        return ["It could take a time if recipients are many."];
+        return ["It could take time if recipients are many."];
       case "creating-campaign":
         if (
           distributorFormState.distributorType === "email" ||
@@ -43,10 +43,10 @@ const WaitingProcessDialog: React.FC<WaitingProcessDialogProps> = ({
         ) {
           return [
             "If you leave from page, you lost campaign information for fans.",
-            "And it could take a time if Ethereum network is congested.",
+            "And it could take time if Ethereum network is congested.",
           ];
         }
-        return ["And it could take a time if Ethereum network is congested."];
+        return ["And it could take time if Ethereum network is congested."];
       default:
         return [];
     }
