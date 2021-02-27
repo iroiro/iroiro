@@ -173,11 +173,6 @@ const CampaignDetailPage: React.FC<
       canRefund = true;
     }
 
-    const startDate = getDateString(data.campaign.startDate);
-    const endDate = getDateString(data.campaign.endDate);
-    data.campaign.startDate = startDate;
-    data.campaign.endDate = endDate;
-
     campaignDispatch({
       type: "campaign:set",
       payload: { data: { campaign: data.campaign, canRefund, canCancel } },
