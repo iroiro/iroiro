@@ -40,6 +40,14 @@ import { ACTIONS } from "../../../reducers/token";
 import { useWeb3React } from "@web3-react/core";
 import { useGetTokenInfo } from "../../../hooks/useGetTokenInfo";
 import { isAddress } from "ethers/lib/utils";
+import {
+  FlexWrapper,
+  StartCampaignButton,
+  StyledStepperButton,
+  StyleStepper,
+  TokenConfirmButton,
+  TokenInput,
+} from "../../../theme/commonStyles";
 
 export interface CreateUUIDCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -103,30 +111,21 @@ const CreateUUIDCampaignStepper = ({
 
   return (
     <div>
-      <Stepper
+      <StyleStepper
         activeStep={distributorFormState.step}
         orientation="vertical"
-        style={{ maxWidth: 680 }}
       >
         <Step>
           <StepLabel>
             Fill in Token address that you want to distribute
           </StepLabel>
           <StepContent>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "start",
-                marginBottom: 16,
-              }}
-            >
-              <TextField
+            <FlexWrapper>
+              <TokenInput
                 error={isTokenAddressError}
                 helperText={isTokenAddressError ? "Invalid address" : undefined}
                 color="secondary"
                 label="Token Address"
-                style={{ width: 200, marginRight: 8 }}
                 value={distributorFormState.tokenAddress}
                 onChange={(e) => {
                   distributorFormDispatch({
@@ -143,15 +142,15 @@ const CreateUUIDCampaignStepper = ({
                   });
                 }}
               />
-              <Button
+              <TokenConfirmButton
                 color="secondary"
                 variant="outlined"
                 onClick={() => getTokenInfo()}
                 disabled={isTokenAddressError}
               >
                 Confirm
-              </Button>
-            </div>
+              </TokenConfirmButton>
+            </FlexWrapper>
             {tokenInfo.token?.name !== undefined &&
               tokenInfo.token?.name !== "" && (
                 <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
@@ -159,7 +158,7 @@ const CreateUUIDCampaignStepper = ({
                 </div>
               )}
             <div style={{ marginTop: 40 }}>
-              <StyledButton
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -167,7 +166,7 @@ const CreateUUIDCampaignStepper = ({
                 disabled={tokenInfo.token === undefined}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </div>
           </StepContent>
         </Step>
@@ -181,10 +180,10 @@ const CreateUUIDCampaignStepper = ({
               />
             </div>
             <Box mt={5}>
-              <StyledButton onClick={() => handleStepChange(0)}>
+              <StyledStepperButton onClick={() => handleStepChange(0)}>
                 Back
-              </StyledButton>
-              <StyledButton
+              </StyledStepperButton>
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -197,7 +196,7 @@ const CreateUUIDCampaignStepper = ({
                 }}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </Box>
           </StepContent>
         </Step>
@@ -212,10 +211,10 @@ const CreateUUIDCampaignStepper = ({
               />
             </div>
             <div>
-              <StyledButton onClick={() => handleStepChange(1)}>
+              <StyledStepperButton onClick={() => handleStepChange(1)}>
                 Back
-              </StyledButton>
-              <StyledButton
+              </StyledStepperButton>
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -223,7 +222,7 @@ const CreateUUIDCampaignStepper = ({
                 onClick={() => handleStepChange(3)}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </div>
           </StepContent>
         </Step>
@@ -237,10 +236,10 @@ const CreateUUIDCampaignStepper = ({
               />
             </div>
             <div style={{ marginTop: 40 }}>
-              <StyledButton onClick={() => handleStepChange(2)}>
+              <StyledStepperButton onClick={() => handleStepChange(2)}>
                 Back
-              </StyledButton>
-              <Button
+              </StyledStepperButton>
+              <StartCampaignButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -257,7 +256,7 @@ const CreateUUIDCampaignStepper = ({
                 }
               >
                 Start Campaign
-              </Button>
+              </StartCampaignButton>
             </div>
           </StepContent>
         </Step>
@@ -288,16 +287,20 @@ const CreateUUIDCampaignStepper = ({
             </div>
             <div>
               <CopyToClipboard text={urlList} onCopy={() => setIsCopied(true)}>
-                <Button color="secondary" variant="contained" disableElevation>
+                <StyledStepperButton
+                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                >
                   Copy URLs to clipboard
-                </Button>
+                </StyledStepperButton>
               </CopyToClipboard>
             </div>
             <Box mt={5}>
-              <StyledButton onClick={() => handleStepChange(3)}>
+              <StyledStepperButton onClick={() => handleStepChange(3)}>
                 Back
-              </StyledButton>
-              <Button
+              </StyledStepperButton>
+              <StartCampaignButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -307,18 +310,13 @@ const CreateUUIDCampaignStepper = ({
                 }}
               >
                 Go to Campaign Detail
-              </Button>
+              </StartCampaignButton>
             </Box>
           </StepContent>
         </Step>
-      </Stepper>
+      </StyleStepper>
     </div>
   );
 };
-
-const StyledButton = styled(Button)`
-  width: 140px;
-  margin-right: 8px;
-`;
 
 export default CreateUUIDCampaignStepper;

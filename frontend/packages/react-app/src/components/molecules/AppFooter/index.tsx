@@ -79,7 +79,7 @@ export const AppFooter = () => {
                   justifyContent: "center",
                   alignItems: "center",
                   borderRadius: "50%",
-                  marginTop: -5,
+                  marginTop: -3,
                 }}
               >
                 <img

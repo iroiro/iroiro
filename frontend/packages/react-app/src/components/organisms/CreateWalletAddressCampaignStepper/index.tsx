@@ -19,7 +19,6 @@ import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
-import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import TextField from "@material-ui/core/TextField";
 import WalletDistributionTargets, {
@@ -31,13 +30,20 @@ import {
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
-import styled from "styled-components";
 import ApproveToken from "../ApproveToken";
 import SetupCampaign from "../SetupCampaign";
 import { useGetTokenInfo } from "../../../hooks/useGetTokenInfo";
 import { useWeb3React } from "@web3-react/core";
 import { ACTIONS } from "../../../reducers/token";
 import { isAddress } from "ethers/lib/utils";
+import {
+  FlexWrapper,
+  StartCampaignButton,
+  StyledStepperButton,
+  StyleStepper,
+  TokenConfirmButton,
+  TokenInput,
+} from "../../../theme/commonStyles";
 
 export interface CreateWalletAddressCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -86,30 +92,21 @@ const CreateWalletAddressCampaignStepper = ({
 
   return (
     <div>
-      <Stepper
+      <StyleStepper
         activeStep={distributorFormState.step}
         orientation="vertical"
-        style={{ maxWidth: 680 }}
       >
         <Step>
           <StepLabel>
             Fill in Token address that you want to distribute
           </StepLabel>
           <StepContent>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "start",
-                marginBottom: 16,
-              }}
-            >
-              <TextField
+            <FlexWrapper>
+              <TokenInput
                 error={isTokenAddressError}
                 helperText={isTokenAddressError ? "Invalid address" : undefined}
                 color="secondary"
                 label="Token Address"
-                style={{ width: 200, marginRight: 8 }}
                 value={distributorFormState.tokenAddress}
                 onChange={(e) => {
                   distributorFormDispatch({
@@ -126,22 +123,22 @@ const CreateWalletAddressCampaignStepper = ({
                   });
                 }}
               />
-              <Button
+              <TokenConfirmButton
                 color="secondary"
                 variant="outlined"
                 onClick={() => getTokenInfo()}
                 disabled={isTokenAddressError}
               >
                 Confirm
-              </Button>
-            </div>
+              </TokenConfirmButton>
+            </FlexWrapper>
             {tokenInfo.token?.name !== "" && (
               <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
                 {tokenInfo.token?.name}
               </div>
             )}
             <div style={{ marginTop: 40 }}>
-              <StyledButton
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -149,7 +146,7 @@ const CreateWalletAddressCampaignStepper = ({
                 disabled={tokenInfo.token === undefined}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </div>
           </StepContent>
         </Step>
@@ -163,10 +160,10 @@ const CreateWalletAddressCampaignStepper = ({
               />
             </div>
             <div>
-              <StyledButton onClick={() => handleStepChange(0)}>
+              <StyledStepperButton onClick={() => handleStepChange(0)}>
                 Back
-              </StyledButton>
-              <StyledButton
+              </StyledStepperButton>
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -177,7 +174,7 @@ const CreateWalletAddressCampaignStepper = ({
                 onClick={() => handleStepChange(2)}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </div>
           </StepContent>
         </Step>
@@ -192,10 +189,10 @@ const CreateWalletAddressCampaignStepper = ({
               />
             </div>
             <div>
-              <StyledButton onClick={() => handleStepChange(1)}>
+              <StyledStepperButton onClick={() => handleStepChange(1)}>
                 Back
-              </StyledButton>
-              <StyledButton
+              </StyledStepperButton>
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -203,7 +200,7 @@ const CreateWalletAddressCampaignStepper = ({
                 onClick={() => handleStepChange(3)}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </div>
           </StepContent>
         </Step>
@@ -217,10 +214,10 @@ const CreateWalletAddressCampaignStepper = ({
               />
             </div>
             <div style={{ marginTop: 40 }}>
-              <StyledButton onClick={() => handleStepChange(2)}>
+              <StyledStepperButton onClick={() => handleStepChange(2)}>
                 Back
-              </StyledButton>
-              <Button
+              </StyledStepperButton>
+              <StartCampaignButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -237,18 +234,13 @@ const CreateWalletAddressCampaignStepper = ({
                 }
               >
                 Start Campaign
-              </Button>
+              </StartCampaignButton>
             </div>
           </StepContent>
         </Step>
-      </Stepper>
+      </StyleStepper>
     </div>
   );
 };
-
-const StyledButton = styled(Button)`
-  width: 140px;
-  margin-right: 8px;
-`;
 
 export default CreateWalletAddressCampaignStepper;

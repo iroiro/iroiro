@@ -27,6 +27,7 @@ import { UUID_ACTIONS, UUIDState } from "../../../reducers/uuid";
 import CreateUUIDCampaignStepper from "../../organisms/CreateUUIDCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
 import { ACTIONS } from "../../../reducers/token";
+import { StyledStepperWrapper } from "../../../theme/commonStyles";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -55,7 +56,7 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
         </Box>
       ) : (
         <Box maxWidth={640} style={{ margin: "auto" }}>
-          <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
+          <StyledStepperWrapper variant="outlined">
             <Box my={1}>
               <Typography variant={"h3"}>URL Campaign</Typography>
             </Box>
@@ -67,7 +68,7 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
               distributorFormDispatch={distributorFormDispatch}
               uuidDispatch={uuidDispatch}
             />
-          </Paper>
+          </StyledStepperWrapper>
         </Box>
       )}
     </AppFrame>

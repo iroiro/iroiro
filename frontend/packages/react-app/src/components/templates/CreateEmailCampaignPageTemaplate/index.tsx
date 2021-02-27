@@ -27,6 +27,7 @@ import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
 import CreateEmailCampaignStepper from "../../organisms/CreateEmailCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
 import { ACTIONS } from "../../../reducers/token";
+import { StyledStepperWrapper } from "../../../theme/commonStyles";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -56,7 +57,7 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
         </Box>
       ) : (
         <Box maxWidth={640} style={{ margin: "auto" }}>
-          <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
+          <StyledStepperWrapper variant="outlined">
             <Box my={1}>
               <Typography variant={"h3"}>Email Campaign</Typography>
             </Box>
@@ -68,7 +69,7 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
               emailState={emailState}
               emailDispatch={emailDispatch}
             />
-          </Paper>
+          </StyledStepperWrapper>
         </Box>
       )}
     </AppFrame>

@@ -22,6 +22,7 @@ import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 import theme from "../../../theme/mui-theme";
 import { useEffect, useState } from "react";
 import distributors, { getDistributorType } from "../../../utils/distributors";
+import styled from "styled-components";
 
 export interface TokenCampaignDetailProps {
   readonly campaign: CampaignInfo;
@@ -42,7 +43,7 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
 
   return (
     <>
-      <div style={{ padding: theme.spacing(4) }}>
+      <Wrapper>
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h4" component="h2">
             {campaign.campaignMetadata.name}
@@ -104,9 +105,16 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
             What’s distributor type?
           </Link>
         </Box>
-      </div>
+      </Wrapper>
     </>
   );
 };
+
+const Wrapper = styled.div`
+  padding: 32px;
+  ${theme.breakpoints.down(760)} {
+    padding: 24px;
+  }
+`;
 
 export default TokenCampaignDetail;

@@ -20,6 +20,8 @@ import { Grid } from "@material-ui/core";
 import UserActivities from "../UserActivities";
 import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
 import { TokenHistoryState } from "../../../reducers/tokenHistory";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface UserHistoryProps {
   readonly state: TokenHistoryState;
@@ -27,7 +29,7 @@ export interface UserHistoryProps {
 
 const UserHistory: React.FC<UserHistoryProps> = ({ state }) => {
   return (
-    <div style={{ padding: "32px 32px", backgroundColor: "#fff" }}>
+    <Wrapepr>
       <Grid container direction="column">
         <Grid item xs={12}>
           <UserActivities state={state} />
@@ -36,8 +38,17 @@ const UserHistory: React.FC<UserHistoryProps> = ({ state }) => {
           <BalanceHistoryChart balances={state.balances} />
         </Grid>
       </Grid>
-    </div>
+    </Wrapepr>
   );
 };
+
+const Wrapepr = styled.div`
+  padding: 32px;
+  background-color: #fff;
+  ${theme.breakpoints.down(760)} {
+    padding: 16px;
+    margin: 0 -44px;
+  }
+`;
 
 export default UserHistory;

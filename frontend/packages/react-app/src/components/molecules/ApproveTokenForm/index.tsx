@@ -21,6 +21,8 @@ import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface ApproveTokenFormProps {
   readonly distributorFormState: createCampaignState;
@@ -33,16 +35,12 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
 }) => (
   <Box>
     <Box mt={3} mb={5}>
-      <FormControl>
-        <Input
+      <StyledFormControl>
+        <AmountInput
           type="number"
           required
           placeholder="0.0"
           color="secondary"
-          style={{
-            marginRight: 8,
-            width: 200,
-          }}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             distributorFormDispatch({
               type: "approveAmount:set",
@@ -53,8 +51,8 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
           }
           value={distributorFormState.approveAmount}
         />
-      </FormControl>
-      <Button
+      </StyledFormControl>
+      <ApproveTokensButton
         color="secondary"
         variant="outlined"
         onClick={() => {
@@ -65,9 +63,34 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
         }}
       >
         Approve tokens
-      </Button>
+      </ApproveTokensButton>
     </Box>
   </Box>
 );
+
+const StyledFormControl = styled(FormControl)`
+  width: 200px;
+  margin-right: 8px;
+  ${theme.breakpoints.down(600)} {
+    width: 100%;
+    margin: 0 0 8px 0;
+  }
+`;
+
+const AmountInput = styled(Input)`
+  width: 200px;
+  margin-right: 8px;
+  ${theme.breakpoints.down(600)} {
+    width: 100%;
+    margin: 0 0 16px 0;
+  }
+`;
+
+const ApproveTokensButton = styled(Button)`
+  ${theme.breakpoints.down(600)} {
+    width: 100%;
+    height: 45px;
+  }
+`;
 
 export default ApproveTokenForm;

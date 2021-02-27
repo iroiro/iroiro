@@ -171,7 +171,7 @@ const BalanceWrapper = styled.div`
   ${theme.breakpoints.down(600)} {
     width: 100%;
     border: none;
-    border-top: 1px solid #000;
+    border-top: 1px solid #ababab;
     margin-top: 24px;
     padding-top: 16px;
     padding-left: 0;

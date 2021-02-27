@@ -76,16 +76,15 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
     enqueueSnackbar("Copied", { variant: "success" });
   };
 
-  console.log(campaignData);
   return (
     <>
       <AppFrame>
         <Paper variant="outlined" style={{ border: "none" }}>
-          <div style={{ padding: "40px 40px 0" }}>
+          <TypeWrapper>
             <Typography variant={"h3"}>
               {campaignNames[distributorType]}
             </Typography>
-          </div>
+          </TypeWrapper>
           <Wrapper>
             <CampaignDetail
               campaignData={campaignData}
@@ -169,6 +168,13 @@ const Wrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   padding: 40px;
+  ${theme.breakpoints.down(600)} {
+    padding: 16px;
+  }
+`;
+
+const TypeWrapper = styled.div`
+  padding: 40px 40px 0;
   ${theme.breakpoints.down(600)} {
     padding: 16px;
   }

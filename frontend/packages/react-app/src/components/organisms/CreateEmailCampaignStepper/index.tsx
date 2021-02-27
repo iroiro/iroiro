@@ -16,12 +16,10 @@
  */
 
 import React, { useEffect, useMemo, useState } from "react";
-import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
-import TextField from "@material-ui/core/TextField";
 import { upperLimit } from "../WalletDistributionTargets";
 import { AccountToken } from "../../../interfaces";
 import {
@@ -40,6 +38,14 @@ import { ACTIONS } from "../../../reducers/token";
 import { useWeb3React } from "@web3-react/core";
 import { useGetTokenInfo } from "../../../hooks/useGetTokenInfo";
 import { isAddress } from "ethers/lib/utils";
+import {
+  FlexWrapper,
+  StartCampaignButton,
+  StyledStepperButton,
+  StyleStepper,
+  TokenConfirmButton,
+  TokenInput,
+} from "../../../theme/commonStyles";
 
 export interface CreateEmailCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -109,30 +115,21 @@ const CreateEmailCampaignStepper = ({
 
   return (
     <div>
-      <Stepper
+      <StyleStepper
         activeStep={distributorFormState.step}
         orientation="vertical"
-        style={{ maxWidth: 680 }}
       >
         <Step>
           <StepLabel>
             Fill in Token address that you want to distribute
           </StepLabel>
           <StepContent>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "start",
-                marginBottom: 16,
-              }}
-            >
-              <TextField
+            <FlexWrapper>
+              <TokenInput
                 error={isTokenAddressError}
                 helperText={isTokenAddressError ? "Invalid address" : undefined}
                 color="secondary"
                 label="Token Address"
-                style={{ width: 200, marginRight: 8 }}
                 value={distributorFormState.tokenAddress}
                 onChange={(e) => {
                   distributorFormDispatch({
@@ -149,22 +146,22 @@ const CreateEmailCampaignStepper = ({
                   });
                 }}
               />
-              <Button
+              <TokenConfirmButton
                 color="secondary"
                 variant="outlined"
                 onClick={() => getTokenInfo()}
                 disabled={isTokenAddressError}
               >
                 Confirm
-              </Button>
-            </div>
+              </TokenConfirmButton>
+            </FlexWrapper>
             {tokenInfo.token?.name !== "" && (
               <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
                 {tokenInfo.token?.name}
               </div>
             )}
             <div style={{ marginTop: 40 }}>
-              <StyledButton
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -172,7 +169,7 @@ const CreateEmailCampaignStepper = ({
                 disabled={tokenInfo.token === undefined}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </div>
           </StepContent>
         </Step>
@@ -186,10 +183,10 @@ const CreateEmailCampaignStepper = ({
               />
             </div>
             <Box mt={5}>
-              <StyledButton onClick={() => handleStepChange(0)}>
+              <StyledStepperButton onClick={() => handleStepChange(0)}>
                 Back
-              </StyledButton>
-              <StyledButton
+              </StyledStepperButton>
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -204,7 +201,7 @@ const CreateEmailCampaignStepper = ({
                 }}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </Box>
           </StepContent>
         </Step>
@@ -219,10 +216,10 @@ const CreateEmailCampaignStepper = ({
               />
             </div>
             <div>
-              <StyledButton onClick={() => handleStepChange(1)}>
+              <StyledStepperButton onClick={() => handleStepChange(1)}>
                 Back
-              </StyledButton>
-              <StyledButton
+              </StyledStepperButton>
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -230,7 +227,7 @@ const CreateEmailCampaignStepper = ({
                 onClick={() => handleStepChange(3)}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </div>
           </StepContent>
         </Step>
@@ -244,10 +241,10 @@ const CreateEmailCampaignStepper = ({
               />
             </div>
             <div style={{ marginTop: 40 }}>
-              <StyledButton onClick={() => handleStepChange(2)}>
+              <StyledStepperButton onClick={() => handleStepChange(2)}>
                 Back
-              </StyledButton>
-              <Button
+              </StyledStepperButton>
+              <StartCampaignButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -264,7 +261,7 @@ const CreateEmailCampaignStepper = ({
                 }
               >
                 Start Campaign
-              </Button>
+              </StartCampaignButton>
             </div>
           </StepContent>
         </Step>
@@ -326,16 +323,20 @@ const CreateEmailCampaignStepper = ({
                 onClick={() => setIsDownloaded(true)}
                 filename="email-distribution-targets.csv"
               >
-                <Button color="secondary" variant="contained" disableElevation>
+                <StyledStepperButton
+                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                >
                   Download CSV file
-                </Button>
+                </StyledStepperButton>
               </StyledCSVLink>
             </div>
             <Box mt={5}>
-              <StyledButton onClick={() => handleStepChange(3)}>
+              <StyledStepperButton onClick={() => handleStepChange(3)}>
                 Back
-              </StyledButton>
-              <Button
+              </StyledStepperButton>
+              <StartCampaignButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -345,19 +346,14 @@ const CreateEmailCampaignStepper = ({
                 }}
               >
                 Go to Campaign Detail
-              </Button>
+              </StartCampaignButton>
             </Box>
           </StepContent>
         </Step>
-      </Stepper>
+      </StyleStepper>
     </div>
   );
 };
-
-const StyledButton = styled(Button)`
-  width: 140px;
-  margin-right: 8px;
-`;
 
 const StyledCSVLink = styled(CSVLink)`
   text-decoration: none;

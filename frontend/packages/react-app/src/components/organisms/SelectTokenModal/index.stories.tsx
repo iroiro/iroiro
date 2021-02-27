@@ -44,4 +44,7 @@ const Template: Story<SelectTokenModalProps> = (args) => (
 );
 
 export const Default = Template.bind({});
+Default.args = {
+  open: true,
+};
 export const NoInput = Template.bind({});

@@ -46,12 +46,12 @@ const SelectTokenInput = ({
   };
 
   return (
-    <div style={{ position: "relative", width: "fit-content" }}>
+    <div style={{ position: "relative", width: "100%" }}>
       <Autocomplete
         value={props.value}
         options={props.options}
         getOptionLabel={(option) => option.tokenName}
-        style={{ width: 300 }}
+        style={{ width: "100%" }}
         size={small ? "small" : undefined}
         renderInput={(params) => (
           <TextField
