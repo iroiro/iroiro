@@ -47,7 +47,7 @@ const Wrapepr = styled.div`
   background-color: #fff;
   ${theme.breakpoints.down(760)} {
     padding: 16px;
-    margin: 0 -44px;
+    margin: 0 -28px;
   }
 `;
 

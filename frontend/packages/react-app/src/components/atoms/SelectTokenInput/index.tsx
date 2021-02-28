@@ -46,7 +46,7 @@ const SelectTokenInput = ({
   };
 
   return (
-    <div style={{ position: "relative", width: "100%" }}>
+    <div style={{ position: "relative", width: "100%", minWidth: 200 }}>
       <Autocomplete
         value={props.value}
         options={props.options}

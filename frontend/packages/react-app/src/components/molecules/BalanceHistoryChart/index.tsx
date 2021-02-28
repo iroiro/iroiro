@@ -69,9 +69,9 @@ const ChartWrapper = styled.div`
   padding: 32px 0;
   display: flex;
   justify-content: center;
-  ${theme.breakpoints.down(600)} {
+  /* ${theme.breakpoints.down(600)} {
     display: block;
-  }
+  } */
 `;
 
 export default BalanceHistoryChart;
