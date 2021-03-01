@@ -27,6 +27,7 @@ import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
 import CreateEmailCampaignStepper from "../../organisms/CreateEmailCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
 import { ACTIONS } from "../../../reducers/token";
+import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -60,6 +61,7 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
             <Box my={1}>
               <Typography variant={"h3"}>Email Campaign</Typography>
             </Box>
+            <WaitingProcessDialog distributorFormState={distributorFormState} />
             <CreateEmailCampaignStepper
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}
