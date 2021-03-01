@@ -19,6 +19,9 @@ import * as React from "react";
 import { Line, LineChart, XAxis, YAxis } from "recharts";
 import { Balance } from "../../../interfaces";
 import { Typography, Box } from "@material-ui/core";
+import { useMemo } from "react";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface BalanceHistoryChartProps {
   balances: Balance[];
@@ -28,16 +31,23 @@ export interface BalanceHistoryChartProps {
 const BalanceHistoryChart: React.FC<BalanceHistoryChartProps> = ({
   balances,
 }: BalanceHistoryChartProps) => {
+  const chartWidth = useMemo(() => {
+    const number = window.innerWidth - 200;
+    if (number <= 300) {
+      return 300;
+    }
+    return number;
+  }, []);
   return (
     <Box mt={2}>
       <Box mb={1}>
         <Typography variant="h3">Balance history</Typography>
       </Box>
-      <Box pt={4} pb={4} display="flex" justifyContent="center">
+      <ChartWrapper>
         {balances.length === 0 ? (
           <Typography>No Data</Typography>
         ) : (
-          <LineChart width={600} height={300} data={balances}>
+          <LineChart width={chartWidth} height={chartWidth / 2} data={balances}>
             <XAxis
               dataKey="timestamp"
               domain={["dataMin", "dataMax"]}
@@ -50,9 +60,18 @@ const BalanceHistoryChart: React.FC<BalanceHistoryChartProps> = ({
             <Line type="monotone" dataKey="balance" stroke="#E25E89" />
           </LineChart>
         )}
-      </Box>
+      </ChartWrapper>
     </Box>
   );
 };
+
+const ChartWrapper = styled.div`
+  padding: 32px 0;
+  display: flex;
+  justify-content: center;
+  /* ${theme.breakpoints.down(600)} {
+    display: block;
+  } */
+`;
 
 export default BalanceHistoryChart;

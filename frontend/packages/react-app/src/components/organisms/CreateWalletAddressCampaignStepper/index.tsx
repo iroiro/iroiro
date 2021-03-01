@@ -16,10 +16,8 @@
  */
 
 import React from "react";
-import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
-import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import WalletDistributionTargets, {
   upperLimit,
@@ -30,11 +28,14 @@ import {
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
-import styled from "styled-components";
 import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
 import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
 import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
+import {
+  StyledStepperButton,
+  StyleStepper,
+} from "../../../theme/commonStyles";
 
 export interface CreateWalletAddressCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -62,10 +63,9 @@ const CreateWalletAddressCampaignStepper = ({
 
   return (
     <div>
-      <Stepper
+      <StyleStepper
         activeStep={distributorFormState.step}
         orientation="vertical"
-        style={{ maxWidth: 680 }}
       >
         <Step>
           <StepLabel>
@@ -91,10 +91,10 @@ const CreateWalletAddressCampaignStepper = ({
               />
             </div>
             <div>
-              <StyledButton onClick={() => handleStepChange(0)}>
+              <StyledStepperButton onClick={() => handleStepChange(0)}>
                 Back
-              </StyledButton>
-              <StyledButton
+              </StyledStepperButton>
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -105,7 +105,7 @@ const CreateWalletAddressCampaignStepper = ({
                 onClick={() => handleStepChange(2)}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </div>
           </StepContent>
         </Step>
@@ -130,14 +130,9 @@ const CreateWalletAddressCampaignStepper = ({
             />
           </StepContent>
         </Step>
-      </Stepper>
+      </StyleStepper>
     </div>
   );
 };
-
-const StyledButton = styled(Button)`
-  width: 140px;
-  margin-right: 8px;
-`;
 
 export default CreateWalletAddressCampaignStepper;

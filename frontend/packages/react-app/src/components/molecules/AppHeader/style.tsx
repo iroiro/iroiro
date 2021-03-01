@@ -49,7 +49,7 @@ export const SpMenuBox = styled(Box)`
   position: absolute;
   right: 0;
   top: 58px;
-  transition: all 0.8s ease-out;
+  transition: all 0.3s ease-out;
   opacity: 0;
   ${theme.breakpoints.up(600)} {
     display: none;
@@ -81,7 +81,7 @@ export const WalletButtonBox = styled(Box)`
 `;
 
 export const SpMenuWrapper = styled.div`
-  transition: all 0.8s ease-out;
+  transition: all 0.3s ease-out;
   ${theme.breakpoints.up(600)} {
     display: none;
   }

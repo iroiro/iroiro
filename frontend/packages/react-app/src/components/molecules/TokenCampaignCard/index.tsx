@@ -29,6 +29,7 @@ import { CampaignInfo } from "../../../interfaces";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 import { useHistory } from "react-router-dom";
 import theme from "../../../theme/mui-theme";
+import styled from "styled-components";
 
 export interface TokenCampaignCardProps {
   readonly campaign: CampaignInfo;
@@ -56,19 +57,16 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
       <CardActionArea>
         <CardContent>
           <div>
-            <Box display="flex" justifyContent="space-between">
-              <Typography
-                variant="h4"
-                style={{ color: theme.palette.primary.main }}
-              >
-                {campaign.campaignMetadata.name}
-              </Typography>
+            <Box display="flex" justifyContent="space-between" mb={2}>
+              <Title variant="h4">{campaign.campaignMetadata.name}</Title>
               <CampaignStatusChip status={campaign.status} />
             </Box>
             <Box>
               {campaign.campaignMetadata &&
               campaign.campaignMetadata.description !== "" ? (
-                <Typography>{campaign.campaignMetadata.description}</Typography>
+                <Description>
+                  {campaign.campaignMetadata.description}
+                </Description>
               ) : (
                 <Typography>-</Typography>
               )}
@@ -79,5 +77,19 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
     </Card>
   );
 };
+
+const Title = styled(Typography)`
+  color: ${theme.palette.primary.main};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+const Description = styled.p`
+  font-size: 1rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+`;
 
 export default TokenCampaignCard;

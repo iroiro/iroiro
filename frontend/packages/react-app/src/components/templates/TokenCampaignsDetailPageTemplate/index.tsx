@@ -26,6 +26,8 @@ import WalletCampaignDetailPanel from "../../organisms/WalletCampaignDetailPanel
 import { useMemo } from "react";
 import TokenInfoBar from "../../molecules/TokenInfoBar";
 import AppFrame from "../../organisms/AppFrame";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface TokenCampaignsDetailTemplateProps {
   readonly active: boolean;
@@ -72,7 +74,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
       <AppFrame>
         <TokenInfoBar />
         <TabMenuForFunPage current={"campaigns"} tokenAddress={tokenAddress} />
-        <div style={{ backgroundColor: "#fff" }}>
+        <Wrapper>
           {state.campaign !== null &&
             state.campaign.campaignMetadata &&
             CampaignDetailPanel}
@@ -88,8 +90,15 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
               <Typography>Campaign not found.</Typography>
             </div>
           )}
-        </div>
+        </Wrapper>
       </AppFrame>
     </>
   );
 };
+
+const Wrapper = styled.div`
+  background-color: #fff;
+  ${theme.breakpoints.down(760)} {
+    margin: 0 -26px;
+  }
+`;

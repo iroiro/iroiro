@@ -73,18 +73,19 @@ export const AppFooter = () => {
               <div
                 style={{
                   backgroundColor: theme.palette.primary.main,
-                  width: 30,
-                  height: 30,
+                  width: 24,
+                  height: 24,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   borderRadius: "50%",
+                  marginTop: -3,
                 }}
               >
                 <img
                   src="/Medium-Symbol-White-RGB@2x.png"
                   alt="Medium icon"
-                  style={{ width: 30 }}
+                  style={{ width: 24 }}
                 />
               </div>
             </Tooltip>

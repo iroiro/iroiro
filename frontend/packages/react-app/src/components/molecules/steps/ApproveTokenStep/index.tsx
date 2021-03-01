@@ -16,14 +16,13 @@
  */
 
 import * as React from "react";
-import Button from "@material-ui/core/Button";
 import { AccountToken } from "../../../../interfaces";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../../reducers/distributorForm";
-import styled from "styled-components";
 import ApproveToken from "../../../organisms/ApproveToken";
+import { StyledStepperButton } from "../../../../theme/commonStyles";
 
 export interface ApproveTokenStepProps {
   readonly currentStep: number;
@@ -55,10 +54,10 @@ const ApproveTokenStep = ({
         />
       </div>
       <div>
-        <StyledButton onClick={() => handleStepChange(currentStep - 1)}>
+        <StyledStepperButton onClick={() => handleStepChange(currentStep - 1)}>
           Back
-        </StyledButton>
-        <StyledButton
+        </StyledStepperButton>
+        <StyledStepperButton
           variant="contained"
           color="secondary"
           disableElevation
@@ -66,15 +65,10 @@ const ApproveTokenStep = ({
           onClick={() => handleStepChange(currentStep + 1)}
         >
           Next
-        </StyledButton>
+        </StyledStepperButton>
       </div>
     </>
   );
 };
-
-const StyledButton = styled(Button)`
-  width: 140px;
-  margin-right: 8px;
-`;
 
 export default ApproveTokenStep;

@@ -18,6 +18,8 @@
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import React from "react";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 import { AppFooter } from "../../molecules/AppFooter";
 import AppHeader from "../../molecules/AppHeader";
 
@@ -31,22 +33,23 @@ const AppFrame = ({ ...props }) => {
       <AppHeader />
       <Box m={"40px auto"} minWidth={320}>
         <Container maxWidth="md">
-          <Box
-            style={{
-              boxSizing: "border-box",
-              padding: 24,
-              maxWidth: 860,
-              margin: "0 auto",
-              minWidth: 320,
-            }}
-          >
-            {props.children}
-          </Box>
+          <StyledBox>{props.children}</StyledBox>
         </Container>
       </Box>
       <AppFooter />
     </div>
   );
 };
+
+const StyledBox = styled(Box)`
+  box-sizing: border-box;
+  padding: 24px;
+  max-width: 860px;
+  margin: 0 auto;
+  min-width: 320px;
+  ${theme.breakpoints.down(760)} {
+    padding: 12px;
+  }
+`;
 
 export default AppFrame;

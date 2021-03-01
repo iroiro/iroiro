@@ -16,9 +16,11 @@
  */
 
 import React from "react";
-import { Box, Typography, Button } from "@material-ui/core";
+import { Box, Typography, Button, ButtonProps } from "@material-ui/core";
 import { WalletList } from "../../../interfaces";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface TargetsProps {
   readonly walletListState: WalletList;
@@ -57,7 +59,7 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
           </Box>
         </Box>
       </Box>
-      <Button variant="outlined" component="label" color="secondary">
+      <UploadFileButton variant="outlined" component="label" color="secondary">
         Upload File
         <input
           type="file"
@@ -72,7 +74,7 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
             })
           }
         />
-      </Button>
+      </UploadFileButton>
       {!walletListState.fileformat && (
         <Box mt={1}>
           <Typography color={"error"}>
@@ -102,5 +104,12 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
     </Box>
   </>
 );
+
+const UploadFileButton: any = styled(Button)`
+  ${theme.breakpoints.down(600)} {
+    width: 100%;
+    height: 45px;
+  }
+`;
 
 export default WalletDistributionTargets;

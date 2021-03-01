@@ -214,6 +214,9 @@ const CampaignDetailPage: React.FC<
         campaignData={campaignState}
         campaignDispatch={campaignDispatch}
         distributorType={distributorType}
+        tokenAddress={tokenAddress}
+        distributorAddress={distributorAddress}
+        campaignAddress={campaignAddress}
       />
     </>
   );

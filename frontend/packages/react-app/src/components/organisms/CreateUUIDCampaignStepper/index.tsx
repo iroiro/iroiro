@@ -16,10 +16,8 @@
  */
 
 import React, { useMemo, useState } from "react";
-import Button from "@material-ui/core/Button";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
-import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import { upperLimit } from "../WalletDistributionTargets";
 import { AccountToken } from "../../../interfaces";
@@ -27,7 +25,6 @@ import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import styled from "styled-components";
 import { UUIDState, UUID_ACTIONS } from "../../../reducers/uuid";
 import UUIDDistributionTargets from "../UUIDDistributionTargets";
 import { Box, Typography } from "@material-ui/core";
@@ -37,7 +34,11 @@ import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
 import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
 import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
-import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
+import {
+  StartCampaignButton,
+  StyledStepperButton,
+  StyleStepper,
+} from "../../../theme/commonStyles";
 
 export interface CreateUUIDCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -79,10 +80,9 @@ const CreateUUIDCampaignStepper = ({
 
   return (
     <div>
-      <Stepper
+      <StyleStepper
         activeStep={distributorFormState.step}
         orientation="vertical"
-        style={{ maxWidth: 680 }}
       >
         <Step>
           <StepLabel>
@@ -108,10 +108,10 @@ const CreateUUIDCampaignStepper = ({
               />
             </div>
             <Box mt={5}>
-              <StyledButton onClick={() => handleStepChange(0)}>
+              <StyledStepperButton onClick={() => handleStepChange(0)}>
                 Back
-              </StyledButton>
-              <StyledButton
+              </StyledStepperButton>
+              <StyledStepperButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -124,7 +124,7 @@ const CreateUUIDCampaignStepper = ({
                 }}
               >
                 Next
-              </StyledButton>
+              </StyledStepperButton>
             </Box>
           </StepContent>
         </Step>
@@ -176,13 +176,20 @@ const CreateUUIDCampaignStepper = ({
             </div>
             <div>
               <CopyToClipboard text={urlList} onCopy={() => setIsCopied(true)}>
-                <Button color="secondary" variant="contained" disableElevation>
+                <StyledStepperButton
+                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                >
                   Copy URLs to clipboard
-                </Button>
+                </StyledStepperButton>
               </CopyToClipboard>
             </div>
             <Box mt={5}>
-              <Button
+              <StyledStepperButton onClick={() => handleStepChange(3)}>
+                Back
+              </StyledStepperButton>
+              <StartCampaignButton
                 variant="contained"
                 color="secondary"
                 disableElevation
@@ -192,18 +199,13 @@ const CreateUUIDCampaignStepper = ({
                 }}
               >
                 Go to Campaign Detail
-              </Button>
+              </StartCampaignButton>
             </Box>
           </StepContent>
         </Step>
-      </Stepper>
+      </StyleStepper>
     </div>
   );
 };
-
-const StyledButton = styled(Button)`
-  width: 140px;
-  margin-right: 8px;
-`;
 
 export default CreateUUIDCampaignStepper;

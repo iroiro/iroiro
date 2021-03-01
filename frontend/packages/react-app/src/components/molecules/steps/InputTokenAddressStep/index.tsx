@@ -17,18 +17,21 @@
 
 import * as React from "react";
 import { useEffect } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import { AccountToken } from "../../../../interfaces";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../../reducers/distributorForm";
-import styled from "styled-components";
 import { ACTIONS } from "../../../../reducers/token";
 import { useWeb3React } from "@web3-react/core";
 import { useGetTokenInfo } from "../../../../hooks/useGetTokenInfo";
 import { isAddress } from "ethers/lib/utils";
+import {
+  FlexWrapper,
+  StyledStepperButton,
+  TokenConfirmButton,
+  TokenInput,
+} from "../../../../theme/commonStyles";
 
 export interface InputTokenAddressStepProps {
   readonly currentStep: number;
@@ -84,36 +87,38 @@ const InputTokenAddressStep = ({
           marginBottom: 16,
         }}
       >
-        <TextField
-          error={isTokenAddressError}
-          helperText={isTokenAddressError ? "Invalid address" : undefined}
-          color="secondary"
-          label="Token Address"
-          style={{ width: 200, marginRight: 8 }}
-          value={distributorFormState.tokenAddress}
-          onChange={(e) => {
-            distributorFormDispatch({
-              type: "tokenAddress:set",
-              payload: {
-                tokenAddress: e.target.value,
-              },
-            });
-            tokenDispatch({
-              type: "token:set",
-              payload: {
-                token: undefined,
-              },
-            });
-          }}
-        />
-        <Button
-          color="secondary"
-          variant="outlined"
-          onClick={() => getTokenInfo()}
-          disabled={isTokenAddressError}
-        >
-          Confirm
-        </Button>
+        <FlexWrapper>
+          <TokenInput
+            error={isTokenAddressError}
+            helperText={isTokenAddressError ? "Invalid address" : undefined}
+            color="secondary"
+            label="Token Address"
+            style={{ width: 200, marginRight: 8 }}
+            value={distributorFormState.tokenAddress}
+            onChange={(e) => {
+              distributorFormDispatch({
+                type: "tokenAddress:set",
+                payload: {
+                  tokenAddress: e.target.value,
+                },
+              });
+              tokenDispatch({
+                type: "token:set",
+                payload: {
+                  token: undefined,
+                },
+              });
+            }}
+          />
+          <TokenConfirmButton
+            color="secondary"
+            variant="outlined"
+            onClick={() => getTokenInfo()}
+            disabled={isTokenAddressError}
+          >
+            Confirm
+          </TokenConfirmButton>
+        </FlexWrapper>
       </div>
       {tokenInfo.token?.name !== "" && (
         <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
@@ -121,7 +126,7 @@ const InputTokenAddressStep = ({
         </div>
       )}
       <div style={{ marginTop: 40 }}>
-        <StyledButton
+        <StyledStepperButton
           variant="contained"
           color="secondary"
           disableElevation
@@ -129,15 +134,10 @@ const InputTokenAddressStep = ({
           disabled={tokenInfo.token === undefined}
         >
           Next
-        </StyledButton>
+        </StyledStepperButton>
       </div>
     </>
   );
 };
-
-const StyledButton = styled(Button)`
-  width: 140px;
-  margin-right: 8px;
-`;
 
 export default InputTokenAddressStep;

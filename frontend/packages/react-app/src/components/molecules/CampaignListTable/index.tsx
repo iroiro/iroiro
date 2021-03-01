@@ -111,9 +111,9 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
         alignItems="center"
         mb={2}
       >
-        <Typography variant={"h4"}>Your Campaigns</Typography>
+        <TableTitle variant={"h4"}>Your Campaigns</TableTitle>
         {walletConnect && displayedList.length > 0 && (
-          <div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <SelectTokenInput
               label={
                 tokenOptions.length === 0
@@ -132,7 +132,7 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
       </TitleWrapper>
       <Paper variant="outlined">
         <TableContainer>
-          <Table>
+          <Table style={{ minWidth: 680 }}>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
@@ -234,6 +234,12 @@ const ButtonWrapper = styled(Box)`
 const TitleWrapper = styled(Box)`
   ${theme.breakpoints.down(600)} {
     display: block;
+  }
+`;
+
+const TableTitle = styled(Typography)`
+  ${theme.breakpoints.down(600)} {
+    margin-bottom: 12px;
   }
 `;
 

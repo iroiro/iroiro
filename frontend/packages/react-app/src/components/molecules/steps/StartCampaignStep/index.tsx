@@ -21,8 +21,8 @@ import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../../reducers/distributorForm";
-import styled from "styled-components";
 import SetupCampaign from "../../../organisms/SetupCampaign";
+import { StyledStepperButton } from "../../../../theme/commonStyles";
 
 export interface StartCampaignStepProps {
   readonly currentStep: number;
@@ -51,9 +51,9 @@ const StartCampaignStep = ({
         />
       </div>
       <div style={{ marginTop: 40 }}>
-        <StyledButton onClick={() => handleStepChange(currentStep - 1)}>
+        <StyledStepperButton onClick={() => handleStepChange(currentStep - 1)}>
           Back
-        </StyledButton>
+        </StyledStepperButton>
         <Button
           variant="contained"
           color="secondary"
@@ -79,10 +79,5 @@ const StartCampaignStep = ({
     </>
   );
 };
-
-const StyledButton = styled(Button)`
-  width: 140px;
-  margin-right: 8px;
-`;
 
 export default StartCampaignStep;

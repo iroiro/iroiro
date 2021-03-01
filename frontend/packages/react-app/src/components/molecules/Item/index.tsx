@@ -29,7 +29,9 @@ const Item: React.FC<ItemProps> = ({ title, text }) => {
       <Typography variant="subtitle2" style={{ fontWeight: "normal" }}>
         {title}
       </Typography>
-      <Typography variant="h4">{text}</Typography>
+      <Typography variant="h4" style={{ lineHeight: 1.2 }}>
+        {text}
+      </Typography>
     </Box>
   );
 };
