@@ -34,7 +34,7 @@ import WalletButton from "../../atoms/WalletButton";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import TokenAmount from "../../atoms/TokenAmount";
 import { TokenState } from "../../../reducers/tokenContext";
@@ -70,6 +70,14 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
   });
 
   const [displayedList, setDisplayedList] = useState(campaignsState.campaigns);
+  const tokenOptions = useMemo(() => {
+    const campaignTokenList = campaignsState.campaigns
+      .map((campaign) => campaign.token as string) // TODO fix type
+      .filter((elem, index, self) => self.indexOf(elem) === index); // distinct
+    return tokenState.tokens.filter((tokenOption) =>
+      campaignTokenList.includes(tokenOption.tokenAddress)
+    );
+  }, [tokenState.tokens, campaignsState.campaigns]);
 
   useEffect(() => {
     if (campaignsState.campaigns.length == 0) {
@@ -108,14 +116,14 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
           <div>
             <SelectTokenInput
               label={
-                tokenState.tokens.length === 0
+                tokenOptions.length === 0
                   ? "Please Wait...⏳"
                   : "Filtered by Token"
               }
-              options={tokenState.tokens}
+              options={tokenOptions}
               value={value}
               onChange={(value: TokenOption) => setValue(value)}
-              disabled={tokenState.tokens.length === 0}
+              disabled={tokenOptions.length === 0}
               small
               color="creator"
             />
@@ -186,7 +194,7 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                         ).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        {tokenState.tokens.find(
+                        {tokenOptions.find(
                           (creatorOption) =>
                             creatorOption.tokenAddress.toLowerCase() ===
                             campaign.token
