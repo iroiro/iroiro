@@ -310,6 +310,13 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         type: "describeStatus:update",
         payload: { status: response.data.status },
       });
+      alert(
+        "There was an error or you rejected transaction. Please try again later."
+      );
+      distributorFormDispatch({
+        type: "dialog:set",
+        payload: { dialog: "nothing" },
+      });
     }
     if (response.data.status === "SUCCEEDED") {
       console.log("SUCCEEDED");
