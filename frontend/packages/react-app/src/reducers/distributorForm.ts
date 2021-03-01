@@ -62,6 +62,7 @@ export interface createCampaignState {
   tokenAddress: string;
   distributorType: DistributorTypes | "";
   dialog: DialogStatus;
+  isEndDatePast: boolean;
 }
 
 export const distributorFormReducer = (
@@ -94,7 +95,10 @@ export const distributorFormReducer = (
     }
     case "endDate:set": {
       const endDate = Number(action.payload.endDate);
-      return { ...state, endDate: endDate };
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const isEndDatePast = endDate <= today.getTime();
+      return { ...state, endDate: endDate, isEndDatePast };
     }
     case "token:approve": {
       return { ...state, approveRequest: action.payload.approveRequest };
@@ -138,4 +142,5 @@ export const distributorFormInitialState: createCampaignState = {
   tokenAddress: "",
   distributorType: "",
   dialog: "nothing",
+  isEndDatePast: false,
 };
