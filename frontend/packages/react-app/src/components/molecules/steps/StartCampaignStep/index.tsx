@@ -70,7 +70,8 @@ const StartCampaignStep = ({
           }}
           disabled={
             distributorFormState.startDate >= distributorFormState.endDate ||
-            distributorFormState.campaignName === ""
+            distributorFormState.campaignName === "" ||
+            distributorFormState.isEndDatePast
           }
         >
           Start Campaign

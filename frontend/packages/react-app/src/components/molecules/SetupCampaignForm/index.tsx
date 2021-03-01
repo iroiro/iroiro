@@ -121,9 +121,15 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
                   "aria-label": "change date",
                 }}
                 error={
+                  distributorFormState.isEndDatePast ||
                   distributorFormState.startDate >= distributorFormState.endDate
                 }
               />
+              {distributorFormState.isEndDatePast && (
+                <FormHelperText style={{ color: "#f00", marginTop: -4 }}>
+                  End date must be future.
+                </FormHelperText>
+              )}
               {distributorFormState.startDate >=
                 distributorFormState.endDate && (
                 <FormHelperText style={{ color: "#f00", marginTop: -4 }}>
