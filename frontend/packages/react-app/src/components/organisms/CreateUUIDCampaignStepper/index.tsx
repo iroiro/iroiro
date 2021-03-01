@@ -133,9 +133,10 @@ const CreateUUIDCampaignStepper = ({
           <StepContent>
             <ApproveTokenStep
               currentStep={distributorFormState.step}
-              tokenInfo={tokenInfo}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
+              recipients={uuidState.targets.length}
+              tokenInfo={tokenInfo}
             />
           </StepContent>
         </Step>

@@ -24,18 +24,19 @@ import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import { UUID_ACTIONS } from "../../../reducers/uuid";
 
 export interface TokenInfo {
-  readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly recipients: number;
+  readonly tokenInfo: AccountToken;
 }
 
 const ApproveToken: React.FC<TokenInfo> = ({
-  tokenInfo,
   distributorFormState,
   distributorFormDispatch,
+  recipients,
+  tokenInfo,
 }) => (
   <>
     <Box>
@@ -57,27 +58,31 @@ const ApproveToken: React.FC<TokenInfo> = ({
             />
           )}
         </Box>
-        <Box>
-          {tokenInfo.allowance && tokenInfo.token ? (
-            <TokenBalance
-              balance={tokenInfo.allowance}
-              symbol={tokenInfo.token.symbol}
-              decimals={tokenInfo.token.decimals}
-              itemName={"Approved Amount:"}
-            />
-          ) : (
-            <TokenBalance
-              balance={"-"}
-              symbol={""}
-              decimals={0}
-              itemName={"Approved Amount:"}
-            />
-          )}
-        </Box>
+        {tokenInfo.allowance !== "0" && (
+          <Box>
+            {tokenInfo.allowance !== undefined && tokenInfo.token ? (
+              <TokenBalance
+                balance={tokenInfo.allowance}
+                symbol={tokenInfo.token.symbol}
+                decimals={tokenInfo.token.decimals}
+                itemName={"Approved Amount:"}
+              />
+            ) : (
+              <TokenBalance
+                balance={"-"}
+                symbol={""}
+                decimals={0}
+                itemName={"Approved Amount:"}
+              />
+            )}
+          </Box>
+        )}
       </Box>
       <ApproveTokenForm
         distributorFormState={distributorFormState}
         distributorFormDispatch={distributorFormDispatch}
+        tokenInfo={tokenInfo}
+        recipients={recipients}
       />
     </Box>
   </>

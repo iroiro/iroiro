@@ -25,6 +25,7 @@ import {
   setApproveAmount,
   parseUnits,
   createUUIDCampaign,
+  getTotalApproveAmount,
 } from "../../utils/web3";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import {
@@ -134,13 +135,14 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   );
 
   const approve = useCallback(
-    async (library, approveAmount, decimals) => {
+    async (library, approveAmount, decimals, recipients: number) => {
       setApproveAmount(
         library,
         distributorFormState.tokenAddress,
         distributorAddress,
         approveAmount,
-        decimals
+        decimals,
+        recipients
       )
         .then(async (transaction) => {
           if (transaction === undefined) {
@@ -150,7 +152,14 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
             if (result.status === 1) {
               tokenDispatch({
                 type: "token:setAllowance",
-                payload: { allowance: parseUnits(approveAmount, decimals) },
+                payload: {
+                  allowance:
+                    getTotalApproveAmount(
+                      approveAmount,
+                      recipients,
+                      decimals
+                    ) ?? "",
+                },
               });
             }
           });
@@ -376,7 +385,8 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         approve(
           library,
           distributorFormState.approveAmount,
-          tokenState.token?.decimals
+          tokenState.token?.decimals,
+          uuidState.targets.length
         );
       }
 
