@@ -26,16 +26,18 @@ import { StyledStepperButton } from "../../../../theme/commonStyles";
 
 export interface ApproveTokenStepProps {
   readonly currentStep: number;
-  readonly tokenInfo: AccountToken;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly recipients: number;
+  readonly tokenInfo: AccountToken;
 }
 
 const ApproveTokenStep = ({
   currentStep,
-  tokenInfo,
   distributorFormState,
   distributorFormDispatch,
+  recipients,
+  tokenInfo,
 }: ApproveTokenStepProps) => {
   const handleStepChange = (stepNumber: number) => {
     distributorFormDispatch({
@@ -48,9 +50,10 @@ const ApproveTokenStep = ({
     <>
       <div>
         <ApproveToken
-          tokenInfo={tokenInfo}
           distributorFormState={distributorFormState}
           distributorFormDispatch={distributorFormDispatch}
+          recipients={recipients}
+          tokenInfo={tokenInfo}
         />
       </div>
       <div>

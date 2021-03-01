@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Box, Typography, Button, ButtonProps } from "@material-ui/core";
+import { Box, Typography, Button } from "@material-ui/core";
 import { WalletList } from "../../../interfaces";
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import styled from "styled-components";
@@ -95,6 +95,13 @@ const WalletDistributionTargets: React.FC<TargetsProps> = ({
               <Box mt={1}>
                 <Typography color={"error"}>
                   Wallet address number exceeds upper limit.
+                </Typography>
+              </Box>
+            )}
+            {0 < walletListState.duplicated && (
+              <Box mt={1}>
+                <Typography>
+                  Duplicated addresses(excluded): {walletListState.duplicated}
                 </Typography>
               </Box>
             )}

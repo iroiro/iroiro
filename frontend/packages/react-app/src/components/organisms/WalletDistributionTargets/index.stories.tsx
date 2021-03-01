@@ -47,6 +47,17 @@ ExceedUpperLimit.args = {
   },
 };
 
+export const DuplicatedTargets = Template.bind({});
+DuplicatedTargets.args = {
+  walletListState: {
+    ...walletListState,
+    targets: [
+      ...Array(5).map(() => "0x0000000000000000000000000000000000000000"),
+    ],
+    duplicated: 2,
+  },
+};
+
 export const NoTarget = Template.bind({});
 NoTarget.args = {
   walletListState: {

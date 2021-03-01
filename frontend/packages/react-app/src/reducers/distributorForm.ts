@@ -131,7 +131,7 @@ endDate.setDate(startDate.getDate() + 1);
 
 export const distributorFormInitialState: createCampaignState = {
   step: 0,
-  approveAmount: "",
+  approveAmount: "0",
   campaignName: "",
   campaignDescription: "",
   startDate: startDate.getTime(),

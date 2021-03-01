@@ -32,10 +32,7 @@ import { ACTIONS } from "../../../reducers/token";
 import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
 import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
 import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
-import {
-  StyledStepperButton,
-  StyleStepper,
-} from "../../../theme/commonStyles";
+import { StyledStepperButton, StyleStepper } from "../../../theme/commonStyles";
 
 export interface CreateWalletAddressCampaignStepperProps {
   readonly tokenInfo: AccountToken;
@@ -114,9 +111,10 @@ const CreateWalletAddressCampaignStepper = ({
           <StepContent>
             <ApproveTokenStep
               currentStep={distributorFormState.step}
-              tokenInfo={tokenInfo}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
+              recipients={walletListState.targets.length}
+              tokenInfo={tokenInfo}
             />
           </StepContent>
         </Step>

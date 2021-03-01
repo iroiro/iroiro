@@ -24,6 +24,7 @@ import {
   setApproveAmount,
   parseUnits,
   createUUIDCampaign,
+  getTotalApproveAmount,
 } from "../../utils/web3";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import {
@@ -138,13 +139,14 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
   );
 
   const approve = useCallback(
-    async (library, approveAmount, decimals) => {
+    async (library, approveAmount, decimals, recipients: number) => {
       setApproveAmount(
         library,
         distributorFormState.tokenAddress,
         distributorAddress,
         approveAmount,
-        decimals
+        decimals,
+        recipients
       )
         .then(async (transaction) => {
           if (transaction === undefined) {
@@ -154,7 +156,14 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
             if (result.status === 1) {
               tokenDispatch({
                 type: "token:setAllowance",
-                payload: { allowance: parseUnits(approveAmount, decimals) },
+                payload: {
+                  allowance:
+                    getTotalApproveAmount(
+                      approveAmount,
+                      recipients,
+                      decimals
+                    ) ?? "",
+                },
               });
             }
           });
@@ -322,6 +331,13 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
         type: "describeStatus:update",
         payload: { status: response.data.status },
       });
+      alert(
+        "There was an error or you rejected transaction. Please try again later."
+      );
+      distributorFormDispatch({
+        type: "dialog:set",
+        payload: { dialog: "nothing" },
+      });
     }
     if (response.data.status === "SUCCEEDED") {
       console.log("SUCCEEDED");
@@ -373,7 +389,8 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
         approve(
           library,
           distributorFormState.approveAmount,
-          tokenState.token?.decimals
+          tokenState.token?.decimals,
+          emailState.targets.length
         );
       }
 

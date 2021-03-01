@@ -20,7 +20,7 @@ import {
   getDefaultProvider,
   Provider,
 } from "@ethersproject/providers";
-import { utils, Signer } from "ethers";
+import { utils, Signer, BigNumber } from "ethers";
 import { TokenBasic } from "../interfaces";
 import { CampaignInterfaceV1__factory as Campaign } from "../types/factories/CampaignInterfaceV1__factory";
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
@@ -33,6 +33,7 @@ import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
 import { MERKLE_PROOF_API } from "../utils/const";
+import { useMemo } from "react";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -127,20 +128,26 @@ export const setApproveAmount = async (
   tokenAddress: string,
   distributorAddress: string,
   approveAmount: string,
-  decimals: number
+  decimals: number,
+  recipients: number
 ): Promise<ContractTransaction | undefined> => {
   if (!library || distributorAddress === "") {
     return undefined;
   }
   const signer = library.getSigner();
   const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
-  const parsedApproveAmount = parseUnits(approveAmount, decimals);
+  const totalAmount = getTotalApproveAmount(
+    approveAmount,
+    recipients,
+    decimals
+  );
+  if (totalAmount === undefined) {
+    return undefined;
+  }
 
-  return erc20
-    .approve(distributorAddress, parsedApproveAmount)
-    .then((transaction) => {
-      return transaction;
-    });
+  return erc20.approve(distributorAddress, totalAmount).then((transaction) => {
+    return transaction;
+  });
 };
 
 export const createWalletCampaign = async (
@@ -298,4 +305,22 @@ export const uuidClaim = async (
     .then((transaction: ContractTransaction) => {
       return transaction;
     });
+};
+
+export const getTotalApproveAmount = (
+  approveAmount: string,
+  recipients: number,
+  decimals?: number
+): string | undefined => {
+  try {
+    const totalAmountWithoutDecimals = parseUnits(
+      approveAmount === "" ? "0" : approveAmount,
+      decimals ?? 0
+    );
+    return BigNumber.from(totalAmountWithoutDecimals)
+      .mul(recipients)
+      .toString();
+  } catch (e) {
+    return undefined;
+  }
 };

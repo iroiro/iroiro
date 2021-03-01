@@ -142,9 +142,10 @@ const CreateEmailCampaignStepper = ({
           <StepContent>
             <ApproveTokenStep
               currentStep={distributorFormState.step}
-              tokenInfo={tokenInfo}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
+              recipients={emailState.targets.length}
+              tokenInfo={tokenInfo}
             />
           </StepContent>
         </Step>

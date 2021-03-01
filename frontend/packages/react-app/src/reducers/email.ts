@@ -64,10 +64,6 @@ const parseRawCsv = (
 
 export type EMAIL_ACTIONS =
   | {
-      type: "emailListFile:upload";
-      payload: { walletlistFile: FileList | null };
-    }
-  | {
       type: "hasCsvHeader:set";
       payload: { hasCsvHeader: boolean };
     }
