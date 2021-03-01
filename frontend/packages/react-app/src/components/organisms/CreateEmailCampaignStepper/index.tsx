@@ -15,10 +15,9 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
-import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import { upperLimit } from "../WalletDistributionTargets";
 import { AccountToken } from "../../../interfaces";
@@ -27,24 +26,19 @@ import {
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
 import styled from "styled-components";
-import ApproveToken from "../ApproveToken";
-import SetupCampaign from "../SetupCampaign";
 import { Box, Typography } from "@material-ui/core";
 import theme from "../../../theme/mui-theme";
 import { EmailState, EMAIL_ACTIONS } from "../../../reducers/email";
 import UploadEmailCsvPane from "../UploadEmailCsvPane";
 import { CSVLink } from "react-csv";
 import { ACTIONS } from "../../../reducers/token";
-import { useWeb3React } from "@web3-react/core";
-import { useGetTokenInfo } from "../../../hooks/useGetTokenInfo";
-import { isAddress } from "ethers/lib/utils";
+import InputTokenAddressStep from "../../molecules/steps/InputTokenAddressStep";
+import ApproveTokenStep from "../../molecules/steps/ApproveTokenStep";
+import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
 import {
-  FlexWrapper,
   StartCampaignButton,
   StyledStepperButton,
   StyleStepper,
-  TokenConfirmButton,
-  TokenInput,
 } from "../../../theme/commonStyles";
 
 export interface CreateEmailCampaignStepperProps {
@@ -82,12 +76,6 @@ const CreateEmailCampaignStepper = ({
       return [email, urlList[index]];
     });
   }, [emailState.emailList, urlList]);
-  const { library } = useWeb3React();
-  const { getTokenInfo, token } = useGetTokenInfo(
-    library,
-    distributorFormState.tokenAddress
-  );
-
   const csvData = [["Email", "Campaign URL"], ...emailUrlPair];
 
   const handleStepChange = (stepNumber: number) => {
@@ -96,22 +84,6 @@ const CreateEmailCampaignStepper = ({
       payload: { stepNo: stepNumber },
     });
   };
-
-  useEffect(() => {
-    if (token === undefined) {
-      return;
-    }
-    tokenDispatch({
-      type: "token:set",
-      payload: {
-        token,
-      },
-    });
-  }, [token, tokenDispatch]);
-
-  const isTokenAddressError =
-    distributorFormState.tokenAddress !== "" &&
-    !isAddress(distributorFormState.tokenAddress);
 
   return (
     <div>
@@ -124,53 +96,13 @@ const CreateEmailCampaignStepper = ({
             Fill in Token address that you want to distribute
           </StepLabel>
           <StepContent>
-            <FlexWrapper>
-              <TokenInput
-                error={isTokenAddressError}
-                helperText={isTokenAddressError ? "Invalid address" : undefined}
-                color="secondary"
-                label="Token Address"
-                value={distributorFormState.tokenAddress}
-                onChange={(e) => {
-                  distributorFormDispatch({
-                    type: "tokenAddress:set",
-                    payload: {
-                      tokenAddress: e.target.value,
-                    },
-                  });
-                  tokenDispatch({
-                    type: "token:set",
-                    payload: {
-                      token: undefined,
-                    },
-                  });
-                }}
-              />
-              <TokenConfirmButton
-                color="secondary"
-                variant="outlined"
-                onClick={() => getTokenInfo()}
-                disabled={isTokenAddressError}
-              >
-                Confirm
-              </TokenConfirmButton>
-            </FlexWrapper>
-            {tokenInfo.token?.name !== "" && (
-              <div style={{ padding: "8px 16px 0", fontWeight: "bold" }}>
-                {tokenInfo.token?.name}
-              </div>
-            )}
-            <div style={{ marginTop: 40 }}>
-              <StyledStepperButton
-                variant="contained"
-                color="secondary"
-                disableElevation
-                onClick={() => handleStepChange(1)}
-                disabled={tokenInfo.token === undefined}
-              >
-                Next
-              </StyledStepperButton>
-            </div>
+            <InputTokenAddressStep
+              currentStep={distributorFormState.step}
+              tokenInfo={tokenInfo}
+              tokenDispatch={tokenDispatch}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
         <Step>
@@ -208,61 +140,22 @@ const CreateEmailCampaignStepper = ({
         <Step>
           <StepLabel>Approve your tokens</StepLabel>
           <StepContent>
-            <div>
-              <ApproveToken
-                tokenInfo={tokenInfo}
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            </div>
-            <div>
-              <StyledStepperButton onClick={() => handleStepChange(1)}>
-                Back
-              </StyledStepperButton>
-              <StyledStepperButton
-                variant="contained"
-                color="secondary"
-                disableElevation
-                disabled={tokenInfo.allowance === "0"}
-                onClick={() => handleStepChange(3)}
-              >
-                Next
-              </StyledStepperButton>
-            </div>
+            <ApproveTokenStep
+              currentStep={distributorFormState.step}
+              tokenInfo={tokenInfo}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
         <Step>
           <StepLabel>Setup basic info</StepLabel>
           <StepContent>
-            <div>
-              <SetupCampaign
-                distributorFormState={distributorFormState}
-                distributorFormDispatch={distributorFormDispatch}
-              />
-            </div>
-            <div style={{ marginTop: 40 }}>
-              <StyledStepperButton onClick={() => handleStepChange(2)}>
-                Back
-              </StyledStepperButton>
-              <StartCampaignButton
-                variant="contained"
-                color="secondary"
-                disableElevation
-                onClick={() => {
-                  distributorFormDispatch({
-                    type: "campaign:deploy",
-                    payload: { requestDeployCampaign: true },
-                  });
-                }}
-                disabled={
-                  distributorFormState.startDate >=
-                    distributorFormState.endDate ||
-                  distributorFormState.campaignName === ""
-                }
-              >
-                Start Campaign
-              </StartCampaignButton>
-            </div>
+            <StartCampaignStep
+              currentStep={distributorFormState.step}
+              distributorFormState={distributorFormState}
+              distributorFormDispatch={distributorFormDispatch}
+            />
           </StepContent>
         </Step>
         <Step>

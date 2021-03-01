@@ -57,6 +57,10 @@ const ApproveTokenForm: React.FC<ApproveTokenFormProps> = ({
         variant="outlined"
         onClick={() => {
           distributorFormDispatch({
+            type: "dialog:set",
+            payload: { dialog: "approving-token" },
+          });
+          distributorFormDispatch({
             type: "token:approve",
             payload: { approveRequest: true },
           });

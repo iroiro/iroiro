@@ -28,6 +28,7 @@ import { WalletList } from "../../../interfaces";
 import CreateWalletAddressCampaignStepper from "../../organisms/CreateWalletAddressCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
 import { ACTIONS } from "../../../reducers/token";
+import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 import { StyledStepperWrapper } from "../../../theme/commonStyles";
 
 export interface CampaignInfo {
@@ -61,6 +62,7 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
             <Box p={1}>
               <Typography variant={"h3"}>Wallet Address Campaign</Typography>
             </Box>
+            <WaitingProcessDialog distributorFormState={distributorFormState} />
             <CreateWalletAddressCampaignStepper
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}

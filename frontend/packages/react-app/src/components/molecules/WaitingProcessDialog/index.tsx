@@ -32,16 +32,39 @@ export interface WaitingProcessDialogProps {
 const WaitingProcessDialog: React.FC<WaitingProcessDialogProps> = ({
   distributorFormState,
 }) => {
+  const messages = () => {
+    switch (distributorFormState.dialog) {
+      case "waiting-api":
+        return ["It could take time if recipients are many."];
+      case "creating-campaign":
+        if (
+          distributorFormState.distributorType === "email" ||
+          distributorFormState.distributorType === "uuid"
+        ) {
+          return [
+            "If you leave from page, you lost campaign information for fans.",
+            "And it could take time if Ethereum network is congested.",
+          ];
+        }
+        return ["And it could take time if Ethereum network is congested."];
+      default:
+        return [];
+    }
+  };
+
   return (
     <Dialog
       aria-labelledby="simple-dialog-title"
-      open={distributorFormState.requestDeployCampaign}
+      open={distributorFormState.dialog !== "nothing"}
     >
       <DialogTitle id="simple-dialog-title">
         Processing is in progress.
       </DialogTitle>
       <Box m={2} textAlign="center">
         <Typography>Please wait at the same screen.</Typography>
+        {messages().map((message, index) => (
+          <Typography key={index}>{message}</Typography>
+        ))}
         <Box m={2}>
           <CircularProgress color="secondary" />
         </Box>

@@ -28,6 +28,7 @@ import CreateUUIDCampaignStepper from "../../organisms/CreateUUIDCampaignStepper
 import AppFrame from "../../organisms/AppFrame";
 import { ACTIONS } from "../../../reducers/token";
 import { StyledStepperWrapper } from "../../../theme/commonStyles";
+import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -60,6 +61,7 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
             <Box my={1}>
               <Typography variant={"h3"}>URL Campaign</Typography>
             </Box>
+            <WaitingProcessDialog distributorFormState={distributorFormState} />
             <CreateUUIDCampaignStepper
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}

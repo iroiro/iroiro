@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import { Claim, Campaign } from "../types/schema";
+import { Claim, Campaign, Account } from "../types/schema";
 import {
   UUIDCampaign,
   Claim as ClaimEvent,
@@ -30,6 +30,11 @@ export function handleClaim(event: ClaimEvent): void {
   let claim = Claim.load(claimId);
   if (claim == null) {
     claim = new Claim(claimId);
+  }
+
+  let account = Account.load(accountId);
+  if (account == null) {
+    account = new Account(accountId);
   }
 
   claim.account = event.params.to.toHexString();
@@ -61,6 +66,7 @@ export function handleClaim(event: ClaimEvent): void {
   }
 
   campaign.save();
+  account.save();
   claim.save();
 }
 
