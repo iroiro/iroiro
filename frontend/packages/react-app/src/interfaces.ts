@@ -174,6 +174,7 @@ export interface TokenListState {
 
 export interface WalletList {
   targets: string[];
+  duplicated: number;
   type: string;
   filelist: FileList | null;
   fileformat: boolean;

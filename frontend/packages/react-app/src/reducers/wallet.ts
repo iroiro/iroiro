@@ -43,9 +43,15 @@ export const walletReducer = (
       };
     }
     case "walletlist:set": {
+      const lowerCasedTargets = action.payload.targets.map((target) =>
+        target.toLowerCase()
+      );
+      const uniqueTargets = Array.from(new Set(lowerCasedTargets));
+      const duplicated = lowerCasedTargets.length - uniqueTargets.length;
       return {
         ...state,
-        targets: action.payload.targets,
+        targets: uniqueTargets,
+        duplicated,
         filelist: null,
         fileformat: true,
       };
@@ -62,5 +68,6 @@ export const walletInitialState: WalletList = {
   filelist: null,
   fileformat: true,
   targets: [],
+  duplicated: 0,
   type: "address",
 };

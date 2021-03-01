@@ -307,6 +307,7 @@ export const walletListState: WalletList = {
     "0x0000000000000000000000000000000000000000",
     "0x0000000000000000000000000000000000000000",
   ],
+  duplicated: 0,
   type: "address",
   filelist: null,
   fileformat: true,
