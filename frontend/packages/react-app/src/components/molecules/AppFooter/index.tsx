@@ -70,7 +70,7 @@ export const AppFooter = () => {
             rel="noopener"
           >
             <Tooltip title="Medium" arrow>
-              <div
+              <span
                 style={{
                   backgroundColor: theme.palette.primary.main,
                   width: 24,
@@ -87,7 +87,7 @@ export const AppFooter = () => {
                   alt="Medium icon"
                   style={{ width: 24 }}
                 />
-              </div>
+              </span>
             </Tooltip>
           </Link>
         </p>
