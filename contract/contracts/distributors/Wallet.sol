@@ -18,68 +18,43 @@
 
 pragma solidity =0.6.11;
 
-import "@iroiro/merkle-distributor/contracts/MerkleDistributor.sol";
+import "@iroiro/merkle-distributor/contracts/MerkleDistributorManager.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/CampaignInterfaceV1.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
-import "../SafeMath32.sol";
 
-contract WalletDistributor is DistributorInterfaceV1 {
+contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
     constructor (string memory _distributorInfoCid) public
     DistributorInterfaceV1(_distributorInfoCid) {}
 
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
-        string memory merkleTreeCid,
-        uint256 claimAmount
+        string memory merkleTreeCid
     ) external override {
-        WalletCampaign campaign = new WalletCampaign(
-            merkleRoot,
-            token,
-            merkleTreeCid,
-            claimAmount
-        );
-        campaignList[nextCampaignId] = address(campaign);
+        tokenMap[nextCampaignId] = token;
+        merkleRootMap[nextCampaignId] = merkleRoot;
+        merkleTreeCidMap[nextCampaignId] = merkleTreeCid;
         nextCampaignId = nextCampaignId.add(1);
-        transferToken(token, msg.sender, address(campaign));
+
+        transferToken(token, msg.sender, address(this));
 
         emit CreateCampaign(
-            address(campaign),
+            nextCampaignId,
             token,
             msg.sender
         );
     }
-}
-
-contract WalletCampaign is CampaignInterfaceV1, MerkleDistributor {
-    using SafeMath32 for uint32;
-
-    string public merkleTreeCid;
-
-    constructor(
-        bytes32 merkleRoot,
-        address payable _campaignToken,
-        string memory _merkleTreeCid,
-        uint256 _claimAmount
-    ) public
-    CampaignInterfaceV1(
-        _campaignToken,
-        _claimAmount
-    )
-    MerkleDistributor(_campaignToken, merkleRoot)
-    {
-        merkleTreeCid = _merkleTreeCid;
-    }
 
     function claim(
+        uint256 campaignId,
         uint256 index,
         address account,
         uint256 amount,
         bytes32[] calldata merkleProof
     ) public override {
         claimedNum = claimedNum.add(1);
-        super.claim(index, account, amount, merkleProof);
+        super.claim(campaignId, index, account, amount, merkleProof);
 
         emit Claim(account, account);
     }
