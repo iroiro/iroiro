@@ -34,15 +34,19 @@ contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
         tokenMap[nextCampaignId] = token;
         merkleRootMap[nextCampaignId] = merkleRoot;
         merkleTreeCidMap[nextCampaignId] = merkleTreeCid;
-        nextCampaignId = nextCampaignId.add(1);
+        ERC20 erc20 = ERC20(token);
+        uint256 allowance = erc20.allowance(msg.sender, address(this));
+        remainingAmountMap[nextCampaignId] = allowance;
 
-        transferToken(token, msg.sender, address(this));
+        erc20.transferFrom(msg.sender, address(this), allowance);
 
         emit CreateCampaign(
             nextCampaignId,
             token,
             msg.sender
         );
+
+        nextCampaignId = nextCampaignId.add(1);
     }
 
     function claim(

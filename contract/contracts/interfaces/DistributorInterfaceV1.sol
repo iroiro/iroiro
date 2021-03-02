@@ -53,29 +53,9 @@ contract DistributorInterfaceV1 {
     uint32 public claimedNum = 0;
     mapping(uint256 => string) public merkleTreeCidMap;
 
-    function calculateClaimAmount(
-        uint256 amount,
-        uint32 recipientsNum
-    ) internal pure returns (uint256) {
-        return amount.div(uint256(recipientsNum));
-    }
-
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
         string memory merkleTreeCid
     ) virtual external {}
-
-    function transferToken(
-        address token,
-        address from,
-        address to
-    ) internal {
-        ERC20 erc20 = ERC20(token);
-        uint256 amount = erc20.allowance(from, address(this));
-        erc20.transferFrom(from, to, amount);
-    }
-
-    // Future functionality
-    // function updateTokenHolder(address newTokenHolder) external; // onlyOwner
 }

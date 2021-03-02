@@ -21,7 +21,6 @@ pragma solidity =0.6.11;
 import "@iroiro/merkle-distributor/contracts/StringMerkleDistributorManager.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
-import "../SafeMath32.sol";
 
 contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManager {
     constructor (string memory _distributorInfoCid) public
@@ -35,15 +34,19 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
         tokenMap[nextCampaignId] = token;
         merkleRootMap[nextCampaignId] = merkleRoot;
         merkleTreeCidMap[nextCampaignId] = merkleTreeCid;
-        nextCampaignId = nextCampaignId.add(1);
+        ERC20 erc20 = ERC20(token);
+        uint256 allowance = erc20.allowance(msg.sender, address(this));
+        remainingAmountMap[nextCampaignId] = allowance;
 
-        transferToken(token, msg.sender, address(this));
+        erc20.transferFrom(msg.sender, address(this), allowance);
 
         emit CreateCampaign(
             nextCampaignId,
             token,
             msg.sender
         );
+
+        nextCampaignId = nextCampaignId.add(1);
     }
 
     function claim(
