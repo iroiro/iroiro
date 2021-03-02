@@ -16,7 +16,7 @@
  */
 
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { AccountToken } from "../../../../interfaces";
 import {
   createCampaignState,
@@ -49,7 +49,7 @@ const InputTokenAddressStep = ({
   distributorFormDispatch,
 }: InputTokenAddressStepProps) => {
   const { library } = useWeb3React();
-  const { getTokenInfo, token } = useGetTokenInfo(
+  const { getTokenInfo, token, error } = useGetTokenInfo(
     library,
     distributorFormState.tokenAddress
   );
@@ -77,6 +77,16 @@ const InputTokenAddressStep = ({
     distributorFormState.tokenAddress !== "" &&
     !isAddress(distributorFormState.tokenAddress);
 
+  const helperAddressText = useMemo(() => {
+    if (isTokenAddressError) {
+      return "Invalid address";
+    }
+    if (error !== undefined) {
+      return "Can not fetch token information. It may be invalid address.";
+    }
+    return undefined;
+  }, [isTokenAddressError, error]);
+
   return (
     <>
       <div
@@ -89,8 +99,8 @@ const InputTokenAddressStep = ({
       >
         <FlexWrapper>
           <TokenInput
-            error={isTokenAddressError}
-            helperText={isTokenAddressError ? "Invalid address" : undefined}
+            error={helperAddressText !== undefined}
+            helperText={helperAddressText}
             color="secondary"
             label="Token Address"
             style={{ width: 200, marginRight: 8 }}

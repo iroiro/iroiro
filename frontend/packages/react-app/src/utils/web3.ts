@@ -65,6 +65,7 @@ export const getTokenInfo = async (
   };
 };
 
+// TODO extract as hooks
 export const getWalletBalance = async (
   library: Web3Provider | undefined,
   tokenAddress: string
@@ -75,7 +76,13 @@ export const getWalletBalance = async (
   const signer = library.getSigner();
   const walletAddress = await signer.getAddress();
   const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
-  const balance = await erc20.balanceOf(walletAddress);
+  const balance = await erc20.balanceOf(walletAddress).catch((error) => {
+    console.error(error);
+    return undefined;
+  });
+  if (balance === undefined) {
+    return balance;
+  }
   return balance.toString();
 };
 
@@ -108,6 +115,7 @@ export const parseUnits = (balance: string, decimals: number): string => {
   return parsedBalance.toString();
 };
 
+// TODO extract as hooks
 export const getAllowance = async (
   library: Web3Provider | undefined,
   tokenAddress: string,
@@ -119,7 +127,15 @@ export const getAllowance = async (
   const signer = library.getSigner();
   const walletAddress = await signer.getAddress();
   const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
-  const allowance = await erc20.allowance(walletAddress, distributorAddress);
+  const allowance = await erc20
+    .allowance(walletAddress, distributorAddress)
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+  if (allowance === undefined) {
+    return undefined;
+  }
   return allowance.toString();
 };
 
