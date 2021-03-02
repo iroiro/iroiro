@@ -44,6 +44,7 @@ describe("WalletDistributor", () => {
     "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
   ];
   const merkleTreeCid = "merkle tree cid";
+  const campaignInfoCid = "campaign info cid";
 
   beforeEach(async () => {
     this.distributor = await Distributor.new("distributor info cid", {
@@ -69,6 +70,7 @@ describe("WalletDistributor", () => {
         merkleRoot,
         this.abctoken.address,
         merkleTreeCid,
+        campaignInfoCid,
         { from: owner }
       );
     });
@@ -86,6 +88,12 @@ describe("WalletDistributor", () => {
     it("has a merkle tree cid", async () => {
       expect(await this.distributor.merkleTreeCidMap("1")).to.equal(
         merkleTreeCid
+      );
+    });
+
+    it("has a campaign info cid", async () => {
+      expect(await this.distributor.campaignInfoCidMap("1")).to.equal(
+        campaignInfoCid
       );
     });
 
@@ -119,6 +127,7 @@ describe("WalletDistributor", () => {
         merkleRoot,
         this.abctoken.address,
         merkleTreeCid,
+        campaignInfoCid,
         { from: owner }
       );
     });
@@ -249,12 +258,14 @@ describe("WalletDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
+          campaignInfoCid,
           { from: owner }
         );
         await this.distributor.createCampaign(
           merkleRoot,
           this.xyztoken.address,
           merkleTreeCid,
+          campaignInfoCid,
           { from: owner }
         );
       });
@@ -299,6 +310,7 @@ describe("WalletDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
+          campaignInfoCid,
           { from: owner }
         );
         await this.abctoken.approve(this.distributor.address, 100, {
@@ -308,6 +320,7 @@ describe("WalletDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
+          campaignInfoCid,
           { from: owner }
         );
       });

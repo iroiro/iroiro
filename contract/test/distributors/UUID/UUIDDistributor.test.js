@@ -46,6 +46,7 @@ describe("UUIDDistributor", () => {
     "0x04b1625747fc935af80ed33fc9f8410b4a7aa57c0e6b24beb892b80890ff9778",
   ];
   const merkleTreeCid = "merkle tree cid";
+  const campaignInfoCid = "campaign info cid";
 
   beforeEach(async () => {
     this.distributor = await Distributor.new("distributor info cid", {
@@ -71,6 +72,7 @@ describe("UUIDDistributor", () => {
         merkleRoot,
         this.abctoken.address,
         merkleTreeCid,
+        campaignInfoCid,
         { from: owner }
       );
     });
@@ -88,6 +90,12 @@ describe("UUIDDistributor", () => {
     it("has a merkle tree cid", async () => {
       expect(await this.distributor.merkleTreeCidMap("1")).to.equal(
         merkleTreeCid
+      );
+    });
+
+    it("has a campaign info cid", async () => {
+      expect(await this.distributor.campaignInfoCidMap("1")).to.equal(
+        campaignInfoCid
       );
     });
 
@@ -121,6 +129,7 @@ describe("UUIDDistributor", () => {
         merkleRoot,
         this.abctoken.address,
         merkleTreeCid,
+        campaignInfoCid,
         { from: owner }
       );
     });
@@ -234,12 +243,14 @@ describe("UUIDDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
+          campaignInfoCid,
           { from: owner }
         );
         await this.distributor.createCampaign(
           merkleRoot,
           this.xyztoken.address,
           merkleTreeCid,
+          campaignInfoCid,
           { from: owner }
         );
       });
@@ -270,6 +281,7 @@ describe("UUIDDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
+          campaignInfoCid,
           { from: owner }
         );
         await this.abctoken.approve(this.distributor.address, 100, {
@@ -279,6 +291,7 @@ describe("UUIDDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
+          campaignInfoCid,
           { from: owner }
         );
       });
