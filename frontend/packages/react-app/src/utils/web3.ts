@@ -46,7 +46,7 @@ export const getTokenInfo = async (
   let provider: Provider | Signer;
 
   if (!library) {
-    provider = getDefaultProvider("rinkeby");
+    provider = getDefaultProvider(process.env?.REACT_APP_NETWORK ?? "mainnet");
   } else {
     provider = library.getSigner();
   }
