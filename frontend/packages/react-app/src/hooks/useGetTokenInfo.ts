@@ -49,18 +49,24 @@ export const useGetTokenInfo = (
     setError(undefined);
     const signer = library.getSigner();
     const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
-    const name = await erc20.name();
-    const symbol = await erc20.symbol();
-    const decimals = await erc20.decimals();
-    const totalSupply = await erc20.totalSupply();
-    setToken({
-      tokenAddress,
-      name,
-      symbol,
-      decimals,
-      totalSupply: totalSupply.toString(),
-    });
-    setLoading(false);
+    try {
+      const name = await erc20.name();
+      const symbol = await erc20.symbol();
+      const decimals = await erc20.decimals();
+      const totalSupply = await erc20.totalSupply();
+      setToken({
+        tokenAddress,
+        name,
+        symbol,
+        decimals,
+        totalSupply: totalSupply.toString(),
+      });
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setError(error);
+      setLoading(false);
+    }
   }, [loading, error, library, tokenAddress, setToken]);
 
   return {
