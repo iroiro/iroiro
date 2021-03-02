@@ -31,36 +31,18 @@ contract WalletDistributor is DistributorInterfaceV1 {
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
-        address tokenSender,
-        string memory campaignInfoCid,
-        string memory recipientsCid,
         string memory merkleTreeCid,
-        uint32 recipientsNum,
-        uint256 startDate,
-        uint256 endDate
+        uint256 claimAmount
     ) external override {
-        // TODO Update checking tokenSender logic with token issuance phase
-        require(msg.sender == tokenSender, "Token holder must match to msg.sender");
-        uint256 allowance = getAllowanceOf(token, tokenSender);
-        require(allowance > 0, "No token is approved to transfer");
-        require(allowance >= recipientsNum, "Token amount is not enough to distribute");
-
-        uint256 claimAmount = calculateClaimAmount(allowance, recipientsNum);
         WalletCampaign campaign = new WalletCampaign(
             merkleRoot,
             token,
-            campaignInfoCid,
-            recipientsCid,
             merkleTreeCid,
-            claimAmount,
-            tokenSender,
-            startDate,
-            endDate
+            claimAmount
         );
         campaignList[nextCampaignId] = address(campaign);
         nextCampaignId = nextCampaignId.add(1);
-        campaign.transferOwnership(msg.sender);
-        transferToken(token, tokenSender, address(campaign), allowance);
+        transferToken(token, msg.sender, address(campaign));
 
         emit CreateCampaign(
             address(campaign),
@@ -78,22 +60,12 @@ contract WalletCampaign is CampaignInterfaceV1, MerkleDistributor {
     constructor(
         bytes32 merkleRoot,
         address payable _campaignToken,
-        string memory _campaignInfoCid,
-        string memory _recipientsCid,
         string memory _merkleTreeCid,
-        uint256 _claimAmount,
-        address _refundDestination,
-        uint256 _startDate,
-        uint256 _endDate
+        uint256 _claimAmount
     ) public
     CampaignInterfaceV1(
         _campaignToken,
-        _campaignInfoCid,
-        _recipientsCid,
-        _claimAmount,
-        _refundDestination,
-        _startDate,
-        _endDate
+        _claimAmount
     )
     MerkleDistributor(_campaignToken, merkleRoot)
     {
@@ -105,7 +77,7 @@ contract WalletCampaign is CampaignInterfaceV1, MerkleDistributor {
         address account,
         uint256 amount,
         bytes32[] calldata merkleProof
-    ) public override mustBeActive inTime {
+    ) public override {
         claimedNum = claimedNum.add(1);
         super.claim(index, account, amount, merkleProof);
 

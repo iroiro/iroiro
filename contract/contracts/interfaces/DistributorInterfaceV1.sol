@@ -17,7 +17,6 @@
  */
 pragma solidity =0.6.11;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
@@ -54,22 +53,17 @@ contract DistributorInterfaceV1 {
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
-        address tokenHolder, // Not only TokenHolder contract address but include creator address
-        string memory campaignInfoCid,
-        string memory recipientsCid,
         string memory merkleTreeCid,
-        uint32 recipientsNum,
-        uint256 startDate,
-        uint256 endDate
+        uint256 claimAmount
     ) virtual external {}
 
     function transferToken(
         address token,
         address from,
-        address to,
-        uint256 amount
+        address to
     ) internal {
         ERC20 erc20 = ERC20(token);
+        uint256 amount = erc20.allowance(from, address(this));
         erc20.transferFrom(from, to, amount);
     }
 
