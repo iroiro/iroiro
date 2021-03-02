@@ -19,9 +19,6 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import SelectTokenModal, { SelectTokenModalProps } from "./index";
-import { tokenInformationState, tokenListState } from "../../../utils/mockData";
-import { TokenProvider } from "../../../context/token";
-import { tokenReducer } from "../../../reducers/tokenContext";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
@@ -31,8 +28,7 @@ export default {
 } as Meta;
 
 const client = new ApolloClient({
-  // TODO Update url to iroiro
-  uri: "https://api.thegraph.com/subgraphs/name/tart-tokyo/iroiro-rinkeby",
+  uri: process.env.REACT_APP_SUBGRAPH,
 });
 
 const Template: Story<SelectTokenModalProps> = (args) => (

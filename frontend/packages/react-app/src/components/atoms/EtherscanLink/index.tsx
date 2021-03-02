@@ -39,10 +39,15 @@ const EtherscanLink: React.FC<EtherscanLinkProps> = ({
   if (!address) {
     return null;
   }
+  const network: string = process.env?.REACT_APP_NETWORK ?? "mainnet";
+  const baseUrl =
+    network === "mainnet"
+      ? "https://etherscan.io/token/"
+      : `https://${network}.etherscan.io/token/`;
   const link =
     type === "user"
-      ? `https://rinkeby.etherscan.io/token/${additionalTokenAddress}?a=${address}`
-      : `https://rinkeby.etherscan.io/token/${address}`;
+      ? `${baseUrl}${additionalTokenAddress}?a=${address}`
+      : `${baseUrl}${address}`;
 
   return (
     <Typography align="center" style={{ fontSize: small ? "14px" : "1rem" }}>
