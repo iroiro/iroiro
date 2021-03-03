@@ -16,13 +16,12 @@
  */
 
 import React from "react";
-import { Card, Box, Typography, Button } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import SetupCampaignForm from "../../molecules/SetupCampaignForm";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 
 export interface SetupCampaignFormProps {
   readonly distributorFormState: createCampaignState;
@@ -41,7 +40,6 @@ const SetupCampaign: React.FC<SetupCampaignFormProps> = ({
           distributorFormState={distributorFormState}
         />
       </Box>
-      <WaitingProcessDialog distributorFormState={distributorFormState} />
     </Box>
   );
 };

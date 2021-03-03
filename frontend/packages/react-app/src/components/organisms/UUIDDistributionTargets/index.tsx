@@ -18,6 +18,8 @@
 import * as React from "react";
 import { Box, Typography, TextField } from "@material-ui/core";
 import { UUID_ACTIONS, UUIDState } from "../../../reducers/uuid";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface TargetsProps {
   readonly uuidState: UUIDState;
@@ -39,7 +41,7 @@ const UUIDDistributionTargets: React.FC<TargetsProps> = ({
         <Typography>Number of unique URLs (up to {upperLimit})</Typography>
       </Box>
       <Box my={2}>
-        <TextField
+        <StyledTextField
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             uuidDispatch({
               type: "quantity:set",
@@ -66,5 +68,15 @@ const UUIDDistributionTargets: React.FC<TargetsProps> = ({
     </Box>
   </>
 );
+
+const StyledTextField = styled(TextField)`
+  width: 200px;
+  min-width: 140px;
+  margin-right: 8px;
+  ${theme.breakpoints.down(600)} {
+    width: 100%;
+    margin: 0 0 16px 0;
+  }
+`;
 
 export default UUIDDistributionTargets;

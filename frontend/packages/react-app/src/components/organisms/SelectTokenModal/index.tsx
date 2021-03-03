@@ -19,12 +19,14 @@ import * as React from "react";
 import { Box, Card, Button, Modal } from "@material-ui/core";
 import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
 import { useTokenContext } from "../../../context/token";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { GET_TOKEN_LIST } from "../../../graphql/subgraph";
 import { getTokenInfo } from "../../../utils/web3";
 import { useWeb3React } from "@web3-react/core";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface SelectTokenModalProps {
   open: boolean;
@@ -101,17 +103,18 @@ const SelectTokenModal: React.FC<SelectTokenModalProps> = ({
     });
   }, [tokenList, open]);
 
-  const handleConfirmButtonClick = () => {
+  useEffect(() => {
     if (value === null || value.tokenAddress === "") {
       return;
     }
+
     history.push(`/explore/${value.tokenAddress}`);
     onCloseModal();
     setValue({
       tokenName: "",
       tokenAddress: "",
     });
-  };
+  }, [value]);
 
   return (
     <Modal
@@ -126,7 +129,7 @@ const SelectTokenModal: React.FC<SelectTokenModalProps> = ({
         justifyContent: "center",
       }}
     >
-      <Card>
+      <StyledCard>
         <Box p={4} mb={3}>
           <Box mt={2}>
             <SelectTokenInput
@@ -142,21 +145,15 @@ const SelectTokenModal: React.FC<SelectTokenModalProps> = ({
             />
           </Box>
         </Box>
-
-        <Box px={4} py={3}>
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={handleConfirmButtonClick}
-            style={{ width: "100%" }}
-            disabled={value === null || value.tokenName === ""}
-          >
-            Confirm
-          </Button>
-        </Box>
-      </Card>
+      </StyledCard>
     </Modal>
   );
 };
+
+const StyledCard = styled(Card)`
+  ${theme.breakpoints.down(600)} {
+    width: 80%;
+  }
+`;
 
 export default SelectTokenModal;

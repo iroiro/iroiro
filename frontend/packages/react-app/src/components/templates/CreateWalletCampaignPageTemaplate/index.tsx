@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Box, Typography, Paper } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
@@ -28,6 +28,8 @@ import { WalletList } from "../../../interfaces";
 import CreateWalletAddressCampaignStepper from "../../organisms/CreateWalletAddressCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
 import { ACTIONS } from "../../../reducers/token";
+import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
+import { StyledStepperWrapper } from "../../../theme/commonStyles";
 
 export interface CampaignInfo {
   readonly active: boolean;
@@ -56,10 +58,11 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
         </Box>
       ) : (
         <Box maxWidth={640} style={{ margin: "auto" }}>
-          <Paper variant="outlined" style={{ padding: 40, border: "none" }}>
-            <Box my={1}>
+          <StyledStepperWrapper variant="outlined">
+            <Box p={1}>
               <Typography variant={"h3"}>Wallet Address Campaign</Typography>
             </Box>
+            <WaitingProcessDialog distributorFormState={distributorFormState} />
             <CreateWalletAddressCampaignStepper
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}
@@ -68,7 +71,7 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
               walletListState={walletListState}
               walletDispatch={walletDispatch}
             />
-          </Paper>
+          </StyledStepperWrapper>
         </Box>
       )}
     </AppFrame>

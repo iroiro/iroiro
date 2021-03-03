@@ -23,6 +23,7 @@ import muiTheme from "../src/theme/mui-theme";
 import { TokenProvider } from "../src/context/token";
 import { initialValue, tokenReducer } from "../src/reducers/tokenContext";
 import { tokenInformationState } from "../src/utils/mockData";
+import { SnackbarProvider } from "notistack";
 
 export const decorators = [
   (Story) => (
@@ -37,7 +38,16 @@ export const decorators = [
           }}
           reducer={tokenReducer}
         >
-          <Story />
+          <SnackbarProvider
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            maxSnack={3}
+            autoHideDuration={4000}
+          >
+            <Story />
+          </SnackbarProvider>
         </TokenProvider>
       </MuiThemeProvider>
     </StylesProvider>

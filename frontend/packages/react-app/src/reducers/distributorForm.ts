@@ -16,6 +16,7 @@
  */
 
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import { DistributorTypes } from "../interfaces";
 
 export type DISTRIBUTOR_ACTIONS =
   | {
@@ -39,7 +40,14 @@ export type DISTRIBUTOR_ACTIONS =
       payload: { requestDeployCampaign: boolean };
     }
   | { type: "createdCampaignAddress:set"; payload: { address: string } }
-  | { type: "tokenAddress:set"; payload: { tokenAddress: string } };
+  | { type: "tokenAddress:set"; payload: { tokenAddress: string } }
+  | { type: "dialog:set"; payload: { dialog: DialogStatus } };
+
+type DialogStatus =
+  | "nothing"
+  | "approving-token"
+  | "waiting-api"
+  | "creating-campaign";
 
 export interface createCampaignState {
   step: number;
@@ -52,6 +60,9 @@ export interface createCampaignState {
   requestDeployCampaign: boolean;
   createdCampaignAddress: string;
   tokenAddress: string;
+  distributorType: DistributorTypes | "";
+  dialog: DialogStatus;
+  isEndDatePast: boolean;
 }
 
 export const distributorFormReducer = (
@@ -84,7 +95,10 @@ export const distributorFormReducer = (
     }
     case "endDate:set": {
       const endDate = Number(action.payload.endDate);
-      return { ...state, endDate: endDate };
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const isEndDatePast = endDate <= today.getTime();
+      return { ...state, endDate: endDate, isEndDatePast };
     }
     case "token:approve": {
       return { ...state, approveRequest: action.payload.approveRequest };
@@ -101,20 +115,32 @@ export const distributorFormReducer = (
     case "tokenAddress:set": {
       return { ...state, tokenAddress: action.payload.tokenAddress };
     }
+    case "dialog:set": {
+      return { ...state, dialog: action.payload.dialog };
+    }
     default:
       throw new Error();
   }
 };
 
+const startDate = new Date();
+startDate.setHours(0, 0, 0, 0);
+const endDate = new Date();
+endDate.setHours(0, 0, 0, 0);
+endDate.setDate(startDate.getDate() + 1);
+
 export const distributorFormInitialState: createCampaignState = {
   step: 0,
-  approveAmount: "",
+  approveAmount: "0",
   campaignName: "",
   campaignDescription: "",
-  startDate: new Date("2021-01-01T00:00:00").getTime(),
-  endDate: new Date("2021-01-01T00:00:00").getTime(),
+  startDate: startDate.getTime(),
+  endDate: endDate.getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignAddress: "",
   tokenAddress: "",
+  distributorType: "",
+  dialog: "nothing",
+  isEndDatePast: false,
 };

@@ -28,7 +28,7 @@ const SelectDistributorsPage: React.FC<
   const tokenAddress = props.match.params.tokenAddress;
   const result = distributors.filter(
     (distributor) =>
-      distributor.id !== "0x590b4465a94be635bf2f760025c61ec3680f687c"
+      distributor.id !== process.env.REACT_APP_CONTRACT_CCTWALLETDISTRIBUTOR
   );
   return (
     <>

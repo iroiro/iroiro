@@ -25,6 +25,7 @@ import {
   setApproveAmount,
   parseUnits,
   createUUIDCampaign,
+  getTotalApproveAmount,
 } from "../../utils/web3";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import {
@@ -35,7 +36,6 @@ import {
   merkletreeReducer,
   merkltreeInitialState,
 } from "../../reducers/merkletree";
-
 import IpfsHttpClient from "ipfs-http-client";
 import useAxios from "axios-hooks";
 import {
@@ -46,7 +46,6 @@ import {
 import { BigNumber } from "ethers";
 import { uuidInitialState, uuidReducer } from "../../reducers/uuid";
 import { isAddress } from "ethers/lib/utils";
-import CreateWalletCampaignPageTemplate from "../templates/CreateWalletCampaignPageTemaplate";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
@@ -67,7 +66,10 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   );
   const [distributorFormState, distributorFormDispatch] = useReducer(
     distributorFormReducer,
-    distributorFormInitialState
+    {
+      ...distributorFormInitialState,
+      distributorType: "uuid",
+    }
   );
   const [uuidState, uuidDispatch] = useReducer(uuidReducer, uuidInitialState);
   const [merkletreeState, merkletreeDispatch] = useReducer(
@@ -133,26 +135,47 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
   );
 
   const approve = useCallback(
-    async (library, approveAmount, decimals) => {
+    async (library, approveAmount, decimals, recipients: number) => {
       setApproveAmount(
         library,
         distributorFormState.tokenAddress,
         distributorAddress,
         approveAmount,
-        decimals
-      ).then((transaction) => {
-        if (transaction === undefined) {
-          return;
-        }
-        transaction.wait().then((result) => {
-          if (result.status === 1) {
-            tokenDispatch({
-              type: "token:setAllowance",
-              payload: { allowance: parseUnits(approveAmount, decimals) },
-            });
+        decimals,
+        recipients
+      )
+        .then(async (transaction) => {
+          if (transaction === undefined) {
+            return;
           }
+          await transaction.wait().then((result) => {
+            if (result.status === 1) {
+              tokenDispatch({
+                type: "token:setAllowance",
+                payload: {
+                  allowance:
+                    getTotalApproveAmount(
+                      approveAmount,
+                      recipients,
+                      decimals
+                    ) ?? "",
+                },
+              });
+            }
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(
+            "There was an error or you rejected transaction. Please try again later."
+          );
+        })
+        .finally(() => {
+          distributorFormDispatch({
+            type: "dialog:set",
+            payload: { dialog: "nothing" },
+          });
         });
-      });
       distributorFormDispatch({
         type: "approveAmount:set",
         payload: { approveAmount: "0" },
@@ -199,6 +222,10 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         type: "campaign:deploy",
         payload: { requestDeployCampaign: false },
       });
+      distributorFormDispatch({
+        type: "dialog:set",
+        payload: { dialog: "creating-campaign" },
+      });
 
       const secondsStartDate = startDate / 1000;
       const secondsEndDate = endDate / 1000;
@@ -213,36 +240,49 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         recipientsNum,
         secondsStartDate,
         secondsEndDate
-      ).then((transaction) => {
-        if (transaction === undefined) {
-          return;
-        }
-        transaction.wait().then((result) => {
-          if (result.status !== 1) {
+      )
+        .then(async (transaction) => {
+          if (transaction === undefined) {
             return;
           }
-          if (result.events == undefined) {
-            return;
-          }
-          const campaignCreatedEvent = result.events.find(
-            (event) =>
-              event.event === "CreateCampaign" &&
-              event.address.toLowerCase() === distributorAddress.toLowerCase()
-          );
-          if (campaignCreatedEvent === undefined) {
-            return;
-          }
-          const campaignAddress: string = campaignCreatedEvent.args?.campaign;
-          distributorFormDispatch({
-            type: "createdCampaignAddress:set",
-            payload: { address: campaignAddress.toLowerCase() },
+          await transaction.wait().then((result) => {
+            if (result.status !== 1) {
+              return;
+            }
+            if (result.events == undefined) {
+              return;
+            }
+            const campaignCreatedEvent = result.events.find(
+              (event) =>
+                event.event === "CreateCampaign" &&
+                event.address.toLowerCase() === distributorAddress.toLowerCase()
+            );
+            if (campaignCreatedEvent === undefined) {
+              return;
+            }
+            const campaignAddress: string = campaignCreatedEvent.args?.campaign;
+            distributorFormDispatch({
+              type: "createdCampaignAddress:set",
+              payload: { address: campaignAddress.toLowerCase() },
+            });
+            distributorFormDispatch({
+              type: "step:set",
+              payload: { stepNo: 4 },
+            });
           });
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(
+            "There was an error or you rejected transaction. Please try again later."
+          );
+        })
+        .finally(() => {
           distributorFormDispatch({
-            type: "step:set",
-            payload: { stepNo: 4 },
+            type: "dialog:set",
+            payload: { dialog: "nothing" },
           });
         });
-      });
     },
     [props.history, distributorFormState.tokenAddress]
   );
@@ -286,6 +326,13 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
       merkletreeDispatch({
         type: "describeStatus:update",
         payload: { status: response.data.status },
+      });
+      alert(
+        "There was an error or you rejected transaction. Please try again later."
+      );
+      distributorFormDispatch({
+        type: "dialog:set",
+        payload: { dialog: "nothing" },
       });
     }
     if (response.data.status === "SUCCEEDED") {
@@ -338,7 +385,8 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
         approve(
           library,
           distributorFormState.approveAmount,
-          tokenState.token?.decimals
+          tokenState.token?.decimals,
+          uuidState.targets.length
         );
       }
 

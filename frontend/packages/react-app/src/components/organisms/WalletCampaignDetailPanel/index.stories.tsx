@@ -49,85 +49,89 @@ const Template: Story<WalletCampaignDetailPanelProps> = (args) => (
 export const IsNotStarted = Template.bind({});
 IsNotStarted.args = {
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1577836800000),
     distributorType: "",
-    isTokenRequested: false,
-    isTokenApproved: false,
+    hashedUUID: "",
+  },
+};
+
+export const IsWalletNotConnected = Template.bind({});
+IsWalletNotConnected.args = {
+  active: false,
+  state: {
+    campaign: campaign,
+    campaignAddress: "",
+    isCampaignClaimable: false,
+    isCampaignClaimed: false,
+    now: new Date(1606780800000),
+    distributorType: "",
     hashedUUID: "",
   },
 };
 
 export const NotLoggedIn = Template.bind({});
 NotLoggedIn.args = {
+  active: true,
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: false,
-    isTokenApproved: false,
     hashedUUID: "",
   },
 };
 
 export const Default = Template.bind({});
 Default.args = {
+  active: true,
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: false,
-    isTokenApproved: false,
     hashedUUID: "",
   },
 };
 
 export const Requested = Template.bind({});
 Requested.args = {
+  active: true,
   state: {
-    isTokenCheckFinished: false,
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
 
 export const IsClaimable = Template.bind({});
 IsClaimable.args = {
+  active: true,
   state: {
     campaign: campaign,
     campaignAddress: "",
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: true,
-    isTokenCheckFinished: true,
     isCampaignClaimable: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
 
 export const IsNotClaimable = Template.bind({});
 IsNotClaimable.args = {
+  active: true,
   state: {
     campaign: campaign,
     campaignAddress: "",
@@ -135,41 +139,34 @@ IsNotClaimable.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenCheckFinished: true,
-    isTokenRequested: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
 
 export const IsClaimed = Template.bind({});
 IsClaimed.args = {
+  active: true,
   state: {
     campaign: campaign,
     campaignAddress: "",
     now: new Date(1606780800000),
     distributorType: "",
-    isTokenRequested: true,
-    isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };
 
 export const IsEnded = Template.bind({});
 IsEnded.args = {
+  active: true,
   state: {
     campaign: campaign,
     campaignAddress: "",
     now: new Date(1708780800000),
     distributorType: "",
-    isTokenRequested: true,
-    isTokenCheckFinished: true,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
-    isTokenApproved: true,
     hashedUUID: "",
   },
 };

@@ -55,7 +55,7 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
             />
             <MenuButton
               title={"User History"}
-              description={"You can check the balance history and activities."}
+              description={"You can check the balance activities."}
               color="user"
               onClick={handleUserHistoryClick}
             />

@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useCallback, useEffect, useReducer } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import Dashboard from "../templates/DashboardPageTemplate";
 import { useWeb3React } from "@web3-react/core";
 import {
@@ -23,7 +23,10 @@ import {
   campaignsReducer,
 } from "../../reducers/campaigns";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { GET_CAMPAIGNS_BY_CREATOR } from "../../graphql/subgraph";
+import {
+  GET_CAMPAIGNS_BY_CREATOR,
+  GET_TOKEN_LIST,
+} from "../../graphql/subgraph";
 import { getTokenInfo } from "../../utils/web3";
 import { useTokenContext } from "../../context/token";
 import { TokenBasic } from "../../interfaces";
@@ -38,6 +41,8 @@ const DashboardPage: React.FC = () => {
   const [getCampaignsByCreator, { data }] = useLazyQuery(
     GET_CAMPAIGNS_BY_CREATOR
   );
+  const [getTokenList, { data: tokenData }] = useLazyQuery(GET_TOKEN_LIST);
+  const [tokenList, setTokenList] = useState([]);
 
   const getCampaignMetadata = useCallback(async (campaigns) => {
     for (let i = 0; i < campaigns.length; i++) {
@@ -71,12 +76,37 @@ const DashboardPage: React.FC = () => {
     }
   }, [data]);
 
+  // TODO: Duplicated. Extract as a custom hooks
   React.useEffect(() => {
+    if (tokenState.tokens.length === 0) {
+      getTokenList();
+    }
+  }, [tokenState.tokens]);
+
+  React.useEffect(() => {
+    if (tokenData === undefined) {
+      return;
+    }
+
+    const tokens = tokenData.campaigns.map((data: any) => {
+      return data.token;
+    });
+
+    setTokenList(Array.from(new Set(tokens)));
+  }, [tokenData]);
+
+  React.useEffect(() => {
+    if (tokenList.length === 0) {
+      return;
+    }
+    if (tokenState.tokens.length !== 0) {
+      return;
+    }
+
     const f = async () => {
-      const tokenBasicInfoList = campaignsState.campaigns
-        .map((campaign) => campaign.token)
-        .filter((elem, index, self) => self.indexOf(elem) === index) // distinct
-        .map(async (token) => await getTokenInfo(library, token as string));
+      const tokenBasicInfoList = tokenList.map(
+        async (token) => await getTokenInfo(library, token as string)
+      );
       return Promise.all(tokenBasicInfoList);
     };
 
@@ -101,7 +131,6 @@ const DashboardPage: React.FC = () => {
     }
   }, [campaignsState, getCampaignMetadata]);
 
-  // TODO: Remove mockData
   return (
     <Dashboard
       campaignsState={campaignsState}

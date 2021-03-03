@@ -16,7 +16,7 @@
  */
 
 import React from "react";
-import { Card, CardContent, Container, Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { CampaignData } from "../../../reducers/campaign";
 import Item from "../../molecules/Item";
 
@@ -49,6 +49,18 @@ const CampaignDetail: React.FC<CampaignDetailProps> = ({
             mt={4}
             style={{ alignItems: "center", justifyContent: "left" }}
           >
+            {"campaignMetadata" in campaignData.campaign && (
+              <Item
+                title="Campaign Description"
+                text={campaignData.campaign.campaignMetadata.description}
+              />
+            )}
+          </Box>
+          <Box
+            display="flex"
+            mt={4}
+            style={{ alignItems: "center", justifyContent: "left" }}
+          >
             <Item
               title="Campaign tokens balance"
               text={campaignData.depositTokens}
@@ -69,8 +81,18 @@ const CampaignDetail: React.FC<CampaignDetailProps> = ({
               <Item title="Status" text={"Ended"} />
             )}
 
-            <Item title="Start Date" text={campaignData.campaign.startDate} />
-            <Item title="End Date" text={campaignData.campaign.endDate} />
+            <Item
+              title="Start Date"
+              text={new Date(
+                parseInt(campaignData.campaign.startDate) * 1000
+              ).toLocaleDateString()}
+            />
+            <Item
+              title="End Date"
+              text={new Date(
+                parseInt(campaignData.campaign.endDate) * 1000
+              ).toLocaleDateString()}
+            />
           </Box>
           <Box
             display="flex"

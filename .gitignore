@@ -14,3 +14,4 @@ env.json
 .netlify
 
 contract/coverage.json
+subgraph/subgraph.yaml

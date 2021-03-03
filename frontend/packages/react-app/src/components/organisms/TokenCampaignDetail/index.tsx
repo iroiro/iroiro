@@ -21,6 +21,8 @@ import { Typography, Box, Link } from "@material-ui/core";
 import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 import theme from "../../../theme/mui-theme";
 import { useEffect, useState } from "react";
+import distributors, { getDistributorType } from "../../../utils/distributors";
+import styled from "styled-components";
 
 export interface TokenCampaignDetailProps {
   readonly campaign: CampaignInfo;
@@ -30,25 +32,18 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
   campaign,
 }) => {
   const [distributorType, setDistributorType] = useState("");
+
   useEffect(() => {
-    switch (campaign.distributor.type) {
-      case "wallet":
-        setDistributorType("Wallet Address Type");
-        break;
-      case "uuid":
-        setDistributorType("UUID Type");
-        break;
-      case "email":
-        setDistributorType("Email Address Type");
-        break;
-      default:
-        setDistributorType(campaign.distributor.type);
-    }
+    const distributor = distributors.find(
+      (distributor) =>
+        distributor.id.toLowerCase() === campaign.distributor.id.toLowerCase()
+    );
+    setDistributorType(getDistributorType(distributor?.type ?? ""));
   }, [campaign]);
 
   return (
     <>
-      <div style={{ padding: theme.spacing(4) }}>
+      <Wrapper>
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h4" component="h2">
             {campaign.campaignMetadata.name}
@@ -59,13 +54,13 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
           <Typography variant="caption" style={{ color: "#797979" }}>
             Description:
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" style={{ lineHeight: 1.2 }}>
             {campaign.campaignMetadata.description !== ""
               ? campaign.campaignMetadata.description
               : "No description"}
           </Typography>
         </Box>
-        <Box display="flex" justifyContent="start" mt={1} mb={1}>
+        <Box display="flex" justifyContent="start" mt={2} mb={1}>
           <Box display="flex" justifyContent="start" alignItems="baseline">
             <Typography variant="caption" style={{ color: "#797979" }}>
               Start Date:
@@ -110,9 +105,16 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
             What’s distributor type?
           </Link>
         </Box>
-      </div>
+      </Wrapper>
     </>
   );
 };
+
+const Wrapper = styled.div`
+  padding: 32px;
+  ${theme.breakpoints.down(760)} {
+    padding: 24px;
+  }
+`;
 
 export default TokenCampaignDetail;

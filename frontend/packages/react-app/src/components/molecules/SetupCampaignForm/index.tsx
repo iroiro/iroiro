@@ -61,13 +61,13 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
           />
         </Box>
         <Box mb={2}>
-          {/* TODO: Change Dispatch and set value */}
           <TextField
             fullWidth
             type="text"
             label="Description"
             color="secondary"
             variant="outlined"
+            inputProps={{ maxLength: 500 }}
             multiline
             rows={4}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -78,6 +78,9 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
             }
             value={distributorFormState.campaignDescription}
           />
+          <FormHelperText
+            style={{ textAlign: "right" }}
+          >{`${distributorFormState.campaignDescription.length}/500`}</FormHelperText>
         </Box>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DateInputWrapper>
@@ -118,9 +121,15 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
                   "aria-label": "change date",
                 }}
                 error={
+                  distributorFormState.isEndDatePast ||
                   distributorFormState.startDate >= distributorFormState.endDate
                 }
               />
+              {distributorFormState.isEndDatePast && (
+                <FormHelperText style={{ color: "#f00", marginTop: -4 }}>
+                  End date must be future.
+                </FormHelperText>
+              )}
               {distributorFormState.startDate >=
                 distributorFormState.endDate && (
                 <FormHelperText style={{ color: "#f00", marginTop: -4 }}>

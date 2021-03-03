@@ -28,6 +28,7 @@ import {
   ThemeProvider as MuiThemeProvider,
 } from "@material-ui/core/styles";
 import muiTheme from "../src/theme/mui-theme";
+import { SnackbarProvider } from "notistack";
 
 const getLibrary = (provider: any): Web3Provider => {
   const library = new Web3Provider(provider);
@@ -39,7 +40,7 @@ const getLibrary = (provider: any): Web3Provider => {
 // See all subgraphs: https://thegraph.com/explorer/
 const client = new ApolloClient({
   // TODO Update url to iroiro
-  uri: "https://api.thegraph.com/subgraphs/name/tart-tokyo/iroiro-rinkeby",
+  uri: process.env.REACT_APP_SUBGRAPH,
 });
 
 ReactDOM.render(
@@ -47,7 +48,16 @@ ReactDOM.render(
     <StylesProvider injectFirst>
       <MuiThemeProvider theme={muiTheme}>
         <Web3ReactProvider getLibrary={getLibrary}>
-          <App />
+          <SnackbarProvider
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            maxSnack={3}
+            autoHideDuration={4000}
+          >
+            <App />
+          </SnackbarProvider>
         </Web3ReactProvider>
       </MuiThemeProvider>
     </StylesProvider>

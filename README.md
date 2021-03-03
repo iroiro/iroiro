@@ -1,72 +1,39 @@
-![logo](https://github.com/TART-tokyo/iroiro/blob/develop/frontend/packages/react-app/public/iroiro_logo.svg)
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/dab965fd-9df5-42b1-8786-1c6f18f3deb5/deploy-status)](https://app.netlify.com/sites/iroiro/deploys)
-  
 # Iroiro
 
-This is a project build for ETHOnline Hackathon.
+## Overview
+
+Iroiro is a management system for Social Tokens.
+
+We think of Social Token as a way to visualize the relationship between the issuer and the holder of the token. And we define it as a kind of communication tool.
+
+We are working on developing protocols that can leverage Social Token with the goal of expanding new possibilities for creators. We use the Ethereum blockchain to provide new options for creators to continue their sustainable creative work.
+
+## Resource
+
+- Interface: [app.iroiro.social](https://app.iroiro.social/)
+- Interface Rinekby Test Nework: [rinkeby.app.iroiro.social](https://rinkeby.app.iroiro.social/)
+- Twitter: [@IroiroTokens](https://twitter.com/IroiroTokens/)
+- Discord: [Iroiro](https://discord.gg/5FHxWBXh)
+- Blog: [Iroiro Social Token](https://medium.com/iroiro-social-token/)
+
+## How to develop
+
+### Contract 
+
+1. Set environment variables on `contracts/`. 
+1. Run `yarn && yarn compile` on `contracts/` dir to compile contracts. 
+1. Run `ganache-cli` and `yarn migrate:dev` to deploy contracts locally.
+
+### Frontend
+
+1. To generate contract types, run `yarn` on `contracts/`.
+   When command finished, `types/` is generated on a frontend src.
+1. Create `.env` file from `.env.example` file on `frontend/packages/react-app/`, and set environment variables. 
+   See `contracts/` to check deployed contract addresses.
+1. Run `yarn && yarn react-app:start` on `frontend/`, then frontend app starts. 
+
+## Other
+
+This project started with the [ETHOnline Hackathon](https://ethonline.org/). We respect and are grateful to this wonderful community.
 
 - [Project Description on ETHOnline](https://hack.ethglobal.co/showcase/iroiro-rec1kljmTWH9KjdDG)
-- [Demo video](https://youtu.be/HyvpCEV-mc8)
-
-## Interface 
-
-To use Iroiro, visit [app.iroiro.social](app.iroiro.social). 
-
-## Description
-
-Iroiro is a decentralized creators support platform.
-
-There two types of users: creators and fans.
-
-Creators who want to earn funds or return own profit to their fans can create an own token to achieve it.
-
-They can decide a basic token property such as token name, symbol, total supply, and additionally special property like token allocation and staking status.
-
-Token allocation enable creator to choose how tokens are distributed between creator and fans.
-
-When token created, tokens allocated for creators are locked on Vesting contract to prevent fraud like ICO.
-
-And tokens allocated for fans are transferred to creators address currently (we want to distributes it without transferring to creator future).
-
-If a creator is a musician utilizing Audius, they can easily distribute tokens to their followers within Audius.
-
-On the other hands, fans can be distributed by creators or get on DEX to support creator.
-
-They can use token for own purpose but this time we made a staking feature on this platform.
-
-If user want more creator token they can stake tokens on a platform, and user can mint a new token according to staked amount and time (we plant that user can get a original creator's NFT by staking a creator token as supporting creator and motivation).
-
-Finally, project name "Iroiro" means a diversity, various, or colorful in Japanese, we hope this application create "Iroiro" tokens for creators and fans.
-
-## How It's Made
-
-Our DApp uses following technologies:
-
-1. Ethereum and Solidity
-Ethereum and Solidity is used for building fundamental application functionality. 
-Technically our TokenFactory contract is a Factory to create a users own token.
-But when we create a multiple token, token explorer page have to fetch all token information one by one.
-
-2. The Graph
-That's where The Graph comes in.  
-The graph fetch an events which emmited when TokenFactory contracts create new token and that tokens transfer. And then frontend fetches most of token information using GraphQL provided by subgraph. 
-
-So our DApp gets more efficiency with The Graph.
-
-3. Audius, IPFS and Chainlink
-When creator creates a new token, they may want to distribute tokens to their fans.
-In this hackathon we achieve this with Audius and Chainlink.
-Audius provides followers of creator(artist) and followers wallet address. 
-DApp save followers address as withdrawable address which can withdraw a creator token. 
-However, followers could be tons of people and saving all followers address on contract can take a lot of gas fees.
-
-So we use IPFS to save that information as JSON.
-After that when DApp user want to withdraw a creator token, he sends withdraw request transaction to contract, and then contract request a Chainlink to check a user's address is contained in that JSON file, finally Chainlink fulfill address existent status to contract.
-
-## How to develop 
-
-### Frontend 
-
-1. To generate contract types, run `yarn` on `contracts/` dir. 
-When command finished, `types/` dir is generated on a frontend src dir.

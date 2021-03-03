@@ -20,9 +20,9 @@ import {
   getDefaultProvider,
   Provider,
 } from "@ethersproject/providers";
-import { utils, Signer } from "ethers";
+import { utils, Signer, BigNumber } from "ethers";
 import { TokenBasic } from "../interfaces";
-import { CampaignInterface__factory as Campaign } from "../types/factories/CampaignInterface__factory";
+import { CampaignInterfaceV1__factory as Campaign } from "../types/factories/CampaignInterfaceV1__factory";
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
 import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
 import { UUIDCampaign__factory as UUIDCampaign } from "../types/factories/UUIDCampaign__factory";
@@ -33,6 +33,7 @@ import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
 import { MERKLE_PROOF_API } from "../utils/const";
+import { useMemo } from "react";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -45,7 +46,7 @@ export const getTokenInfo = async (
   let provider: Provider | Signer;
 
   if (!library) {
-    provider = getDefaultProvider("rinkeby");
+    provider = getDefaultProvider(process.env?.REACT_APP_NETWORK ?? "mainnet");
   } else {
     provider = library.getSigner();
   }
@@ -64,6 +65,7 @@ export const getTokenInfo = async (
   };
 };
 
+// TODO extract as hooks
 export const getWalletBalance = async (
   library: Web3Provider | undefined,
   tokenAddress: string
@@ -74,7 +76,13 @@ export const getWalletBalance = async (
   const signer = library.getSigner();
   const walletAddress = await signer.getAddress();
   const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
-  const balance = await erc20.balanceOf(walletAddress);
+  const balance = await erc20.balanceOf(walletAddress).catch((error) => {
+    console.error(error);
+    return undefined;
+  });
+  if (balance === undefined) {
+    return balance;
+  }
   return balance.toString();
 };
 
@@ -107,6 +115,7 @@ export const parseUnits = (balance: string, decimals: number): string => {
   return parsedBalance.toString();
 };
 
+// TODO extract as hooks
 export const getAllowance = async (
   library: Web3Provider | undefined,
   tokenAddress: string,
@@ -118,7 +127,15 @@ export const getAllowance = async (
   const signer = library.getSigner();
   const walletAddress = await signer.getAddress();
   const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
-  const allowance = await erc20.allowance(walletAddress, distributorAddress);
+  const allowance = await erc20
+    .allowance(walletAddress, distributorAddress)
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+  if (allowance === undefined) {
+    return undefined;
+  }
   return allowance.toString();
 };
 
@@ -127,20 +144,26 @@ export const setApproveAmount = async (
   tokenAddress: string,
   distributorAddress: string,
   approveAmount: string,
-  decimals: number
+  decimals: number,
+  recipients: number
 ): Promise<ContractTransaction | undefined> => {
   if (!library || distributorAddress === "") {
     return undefined;
   }
   const signer = library.getSigner();
   const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
-  const parsedApproveAmount = parseUnits(approveAmount, decimals);
+  const totalAmount = getTotalApproveAmount(
+    approveAmount,
+    recipients,
+    decimals
+  );
+  if (totalAmount === undefined) {
+    return undefined;
+  }
 
-  return erc20
-    .approve(distributorAddress, parsedApproveAmount)
-    .then((transaction) => {
-      return transaction;
-    });
+  return erc20.approve(distributorAddress, totalAmount).then((transaction) => {
+    return transaction;
+  });
 };
 
 export const createWalletCampaign = async (
@@ -298,4 +321,22 @@ export const uuidClaim = async (
     .then((transaction: ContractTransaction) => {
       return transaction;
     });
+};
+
+export const getTotalApproveAmount = (
+  approveAmount: string,
+  recipients: number,
+  decimals?: number
+): string | undefined => {
+  try {
+    const totalAmountWithoutDecimals = parseUnits(
+      approveAmount === "" ? "0" : approveAmount,
+      decimals ?? 0
+    );
+    return BigNumber.from(totalAmountWithoutDecimals)
+      .mul(recipients)
+      .toString();
+  } catch (e) {
+    return undefined;
+  }
 };

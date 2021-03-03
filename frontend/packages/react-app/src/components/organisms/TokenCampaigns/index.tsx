@@ -27,6 +27,8 @@ import TokenCampaignCard from "../../molecules/TokenCampaignCard";
 import { CampaignInfo } from "../../../interfaces";
 import { useEffect, useState } from "react";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
 
 export interface TokenCampaignsProps {
   campaigns: CampaignInfo[];
@@ -49,15 +51,18 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
       setFilteredCampaigns(campaigns);
     } else {
       const filter = campaigns.filter((campaign) => {
-        return campaign.creator.id === e.target.value;
+        console.debug(campaign.creator.id, e.target.value);
+        return (
+          campaign.creator.id.toLowerCase() === e.target.value.toLowerCase()
+        );
       });
       setFilteredCampaigns(filter);
     }
   };
 
   return (
-    <div style={{ backgroundColor: "#fff" }}>
-      <div style={{ padding: "32px 32px 0" }}>
+    <Wrapper>
+      <SearchWrapper>
         <TextField
           label="Search by Creator Address"
           value={searchText}
@@ -71,7 +76,7 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
             ),
           }}
         />
-      </div>
+      </SearchWrapper>
       <Grid container direction="column">
         {filteredCampaigns.length === 0 ? (
           <Box mt={4}>
@@ -80,7 +85,7 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
             </Box>
           </Box>
         ) : (
-          <Box mt={2} p={4} pt={0}>
+          <StyledBox>
             {filteredCampaigns.map((campaign) => (
               <TokenCampaignCard
                 key={campaign.id}
@@ -88,11 +93,35 @@ const TokenCampaigns: React.FC<TokenCampaignsProps> = ({
                 tokenAddress={tokenAddress}
               />
             ))}
-          </Box>
+          </StyledBox>
         )}
       </Grid>
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  background-color: #fff;
+  ${theme.breakpoints.down(760)} {
+    margin: 0 -26px;
+  }
+`;
+
+const SearchWrapper = styled.div`
+  padding: 32px 32px 0;
+  ${theme.breakpoints.down(600)} {
+    padding: 32px 8px 0;
+  }
+`;
+
+const StyledBox = styled(Box)`
+  box-sizing: border-box;
+  margin-top: 16px;
+  padding: 0 32px 32px;
+  ${theme.breakpoints.down(600)} {
+    width: 100%;
+    padding: 8px;
+  }
+`;
 
 export default TokenCampaigns;

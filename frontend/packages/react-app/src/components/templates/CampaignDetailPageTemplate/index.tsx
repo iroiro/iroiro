@@ -16,18 +16,27 @@
  */
 
 import React from "react";
-import { Box, Typography, Button, Container, Paper } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  Button,
+  Paper,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { red } from "@material-ui/core/colors";
-import AppHeader from "../../molecules/AppHeader";
 import CampaignDetail from "../../organisms/CampaignDetail";
 import { AccountToken } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
 import { ACTIONS } from "../../../reducers/campaign";
-import { AppFooter } from "../../molecules/AppFooter";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
+import AssignmentRoundedIcon from "@material-ui/icons/AssignmentRounded";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useSnackbar } from "notistack";
 
 export interface CampaignInfoProps {
   readonly tokenInfo: AccountToken;
@@ -35,6 +44,9 @@ export interface CampaignInfoProps {
   readonly campaignData: CampaignData;
   campaignDispatch: React.Dispatch<ACTIONS>;
   readonly distributorType: string;
+  readonly campaignAddress: string;
+  readonly tokenAddress: string;
+  readonly distributorAddress: string;
 }
 
 const ColorButton = withStyles(() => ({
@@ -55,59 +67,97 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
   campaignData,
   campaignDispatch,
   distributorType,
-}) => (
-  <>
-    <AppFrame>
-      <Paper variant="outlined" style={{ border: "none" }}>
-        <div style={{ padding: "40px 40px 0" }}>
-          <Typography variant={"h3"}>
-            {campaignNames[distributorType]}
-          </Typography>
-        </div>
-        <Wrapper>
-          <CampaignDetail
-            campaignData={campaignData}
-            targetNumber={targetNumber}
-          />
-        </Wrapper>
-        <Box style={{ textAlign: "center", borderTop: "2px solid #F8F8F8" }}>
-          {campaignData.campaign.status === 0 && !campaignData.canRefund && (
-            <ButtonWrapper>
-              <ColorButton
-                variant="outlined"
-                size="small"
-                onClick={() =>
-                  campaignDispatch({
-                    type: "campaign:cancel",
-                    payload: { data: true },
-                  })
-                }
-              >
-                Cancel campaign
-              </ColorButton>
-            </ButtonWrapper>
-          )}
-          {campaignData.canRefund && (
-            <ButtonWrapper>
-              <Button
-                size="small"
-                color="secondary"
-                onClick={() =>
-                  campaignDispatch({
-                    type: "campaign:refund",
-                    payload: { data: true },
-                  })
-                }
-              >
-                End campaign and refund tokens
-              </Button>
-            </ButtonWrapper>
-          )}
-        </Box>
-      </Paper>
-    </AppFrame>
-  </>
-);
+  campaignAddress,
+  tokenAddress,
+  distributorAddress,
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickClipboard = () => {
+    enqueueSnackbar("Copied", { variant: "success" });
+  };
+
+  return (
+    <>
+      <AppFrame>
+        <Paper variant="outlined" style={{ border: "none" }}>
+          <TypeWrapper>
+            <Typography variant={"h3"}>
+              {campaignNames[distributorType]}
+            </Typography>
+          </TypeWrapper>
+          <Wrapper>
+            <CampaignDetail
+              campaignData={campaignData}
+              targetNumber={targetNumber}
+            />
+            {distributorType === "wallet" && (
+              <Box mt={4}>
+                <Typography
+                  variant="subtitle2"
+                  style={{ fontWeight: "normal" }}
+                >
+                  Canpaign page URL
+                </Typography>
+                <TextField
+                  value={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignAddress}`}
+                  fullWidth
+                  disabled
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CopyToClipboard
+                          text={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignAddress}`}
+                        >
+                          <IconButton onClick={handleClickClipboard}>
+                            <AssignmentRoundedIcon />
+                          </IconButton>
+                        </CopyToClipboard>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+            )}
+          </Wrapper>
+          <Box style={{ textAlign: "center", borderTop: "2px solid #F8F8F8" }}>
+            {campaignData.campaign.status === 0 && campaignData.canCancel && (
+              <ButtonWrapper>
+                <ColorButton
+                  variant="outlined"
+                  size="small"
+                  onClick={() =>
+                    campaignDispatch({
+                      type: "campaign:cancel",
+                      payload: { data: true },
+                    })
+                  }
+                >
+                  Cancel campaign
+                </ColorButton>
+              </ButtonWrapper>
+            )}
+            {campaignData.campaign.status === 0 && campaignData.canRefund && (
+              <ButtonWrapper>
+                <Button
+                  size="small"
+                  color="secondary"
+                  onClick={() =>
+                    campaignDispatch({
+                      type: "campaign:refund",
+                      payload: { data: true },
+                    })
+                  }
+                >
+                  End campaign and refund tokens
+                </Button>
+              </ButtonWrapper>
+            )}
+          </Box>
+        </Paper>
+      </AppFrame>
+    </>
+  );
+};
 
 const Wrapper = styled.div`
   padding: 20px 40px 40px;
@@ -118,6 +168,13 @@ const Wrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   padding: 40px;
+  ${theme.breakpoints.down(600)} {
+    padding: 16px;
+  }
+`;
+
+const TypeWrapper = styled.div`
+  padding: 40px 40px 0;
   ${theme.breakpoints.down(600)} {
     padding: 16px;
   }

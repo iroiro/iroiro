@@ -29,12 +29,12 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { CampaignInfo, Campaigns } from "../../../interfaces";
-import distributors from "../../../utils/distributors";
+import distributors, { getDistributorType } from "../../../utils/distributors";
 import WalletButton from "../../atoms/WalletButton";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import TokenAmount from "../../atoms/TokenAmount";
 import { TokenState } from "../../../reducers/tokenContext";
@@ -45,11 +45,12 @@ interface DistributorProps {
 
 function DistributorName(props: DistributorProps) {
   const { campaign } = props;
-  const result = distributors.filter(
-    (distributor) => distributor.id === campaign.distributor.id
+  const result = distributors.find(
+    (distributor) =>
+      distributor.id.toLowerCase() === campaign.distributor.id.toLowerCase()
   );
 
-  return <Typography>{result[0].distributorMetadata.name}</Typography>;
+  return <Typography>{getDistributorType(result?.type ?? "")}</Typography>;
 }
 
 export interface CampaignListTableProps {
@@ -69,6 +70,14 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
   });
 
   const [displayedList, setDisplayedList] = useState(campaignsState.campaigns);
+  const tokenOptions = useMemo(() => {
+    const campaignTokenList = campaignsState.campaigns
+      .map((campaign) => campaign.token as string) // TODO fix type
+      .filter((elem, index, self) => self.indexOf(elem) === index); // distinct
+    return tokenState.tokens.filter((tokenOption) =>
+      campaignTokenList.includes(tokenOption.tokenAddress)
+    );
+  }, [tokenState.tokens, campaignsState.campaigns]);
 
   useEffect(() => {
     if (campaignsState.campaigns.length == 0) {
@@ -102,19 +111,19 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
         alignItems="center"
         mb={2}
       >
-        <Typography variant={"h4"}>Your Campaigns</Typography>
+        <TableTitle variant={"h4"}>Your Campaigns</TableTitle>
         {walletConnect && displayedList.length > 0 && (
-          <div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <SelectTokenInput
               label={
-                tokenState.tokens.length === 0
+                tokenOptions.length === 0
                   ? "Please Wait...⏳"
                   : "Filtered by Token"
               }
-              options={tokenState.tokens}
+              options={tokenOptions}
               value={value}
               onChange={(value: TokenOption) => setValue(value)}
-              disabled={tokenState.tokens.length === 0}
+              disabled={tokenOptions.length === 0}
               small
               color="creator"
             />
@@ -123,7 +132,7 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
       </TitleWrapper>
       <Paper variant="outlined">
         <TableContainer>
-          <Table>
+          <Table style={{ minWidth: 680 }}>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
@@ -185,7 +194,7 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                         ).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        {tokenState.tokens.find(
+                        {tokenOptions.find(
                           (creatorOption) =>
                             creatorOption.tokenAddress.toLowerCase() ===
                             campaign.token
@@ -225,6 +234,12 @@ const ButtonWrapper = styled(Box)`
 const TitleWrapper = styled(Box)`
   ${theme.breakpoints.down(600)} {
     display: block;
+  }
+`;
+
+const TableTitle = styled(Typography)`
+  ${theme.breakpoints.down(600)} {
+    margin-bottom: 12px;
   }
 `;
 

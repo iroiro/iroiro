@@ -22,7 +22,7 @@ import {
   TokenCampaignsDetailTemplate,
   TokenCampaignsDetailTemplateProps,
 } from "./index";
-import { audiusState, tokenInformationState } from "../../../utils/mockData";
+import { tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
 import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
 
@@ -56,12 +56,8 @@ Audius.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "audius",
-    isTokenApproved: true,
-    isTokenCheckFinished: false,
-    isTokenRequested: false,
     hashedUUID: "",
   },
-  audiusState: audiusState,
 };
 
 export const Wallet = Template.bind({});
@@ -73,12 +69,8 @@ Wallet.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "wallet",
-    isTokenApproved: true,
-    isTokenCheckFinished: false,
-    isTokenRequested: false,
     hashedUUID: "",
   },
-  audiusState: audiusState,
 };
 
 export const UUID = Template.bind({});
@@ -90,10 +82,6 @@ UUID.args = {
     isCampaignClaimed: false,
     now: new Date(1606780800000),
     distributorType: "uuid",
-    isTokenApproved: true,
-    isTokenCheckFinished: false,
-    isTokenRequested: false,
     hashedUUID: "",
   },
-  audiusState: audiusState,
 };
