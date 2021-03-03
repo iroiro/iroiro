@@ -34,9 +34,6 @@ const UserHistory: React.FC<UserHistoryProps> = ({ state }) => {
         <Grid item xs={12}>
           <UserActivities state={state} />
         </Grid>
-        <Grid item xs={12}>
-          <BalanceHistoryChart balances={state.balances} />
-        </Grid>
       </Grid>
     </Wrapepr>
   );

@@ -27,6 +27,7 @@ export interface BalanceHistoryChartProps {
   balances: Balance[];
 }
 
+// TODO: currently disabled. Fix styles and overflow
 // TODO: Fix overflow. See https://github.com/recharts/recharts/issues/1127
 const BalanceHistoryChart: React.FC<BalanceHistoryChartProps> = ({
   balances,
