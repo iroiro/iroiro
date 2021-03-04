@@ -18,15 +18,23 @@
 
 pragma solidity =0.6.11;
 
-import "@iroiro/merkle-distributor/contracts/MerkleDistributor.sol";
+import "@iroiro/merkle-distributor/contracts/InitializableMerkleDistributor.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/proxy/Clones.sol";
+import "@openzeppelin/contracts/proxy/Initializable.sol";
 import "../interfaces/CampaignInterfaceV1.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
 import "../SafeMath32.sol";
 
 contract WalletDistributor is DistributorInterfaceV1 {
+    address campaignImplementation;
+
     constructor (string memory _distributorInfoCid) public
-    DistributorInterfaceV1(_distributorInfoCid) {}
+    DistributorInterfaceV1(_distributorInfoCid)
+    {
+        WalletCampaign campaign = new WalletCampaign();
+        campaignImplementation = address(campaign);
+    }
 
     function createCampaign(
         bytes32 merkleRoot,
@@ -34,7 +42,8 @@ contract WalletDistributor is DistributorInterfaceV1 {
         string memory merkleTreeCid,
         uint256 claimAmount
     ) external override {
-        WalletCampaign campaign = new WalletCampaign(
+        address campaign = Clones.clone(campaignImplementation);
+        WalletCampaign(campaign).initialize(
             merkleRoot,
             token,
             merkleTreeCid,
@@ -52,23 +61,22 @@ contract WalletDistributor is DistributorInterfaceV1 {
     }
 }
 
-contract WalletCampaign is CampaignInterfaceV1, MerkleDistributor {
+contract WalletCampaign is CampaignInterfaceV1, InitializableMerkleDistributor {
     using SafeMath32 for uint32;
 
     string public merkleTreeCid;
+    address payable public campaignToken;
+    uint256 public claimAmount;
 
-    constructor(
+    function initialize(
         bytes32 merkleRoot,
         address payable _campaignToken,
         string memory _merkleTreeCid,
         uint256 _claimAmount
-    ) public
-    CampaignInterfaceV1(
-        _campaignToken,
-        _claimAmount
-    )
-    MerkleDistributor(_campaignToken, merkleRoot)
-    {
+    ) public initializer {
+        super.initialize(_campaignToken, merkleRoot);
+        campaignToken = _campaignToken;
+        claimAmount = _claimAmount;
         merkleTreeCid = _merkleTreeCid;
     }
 

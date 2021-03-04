@@ -23,9 +23,9 @@
   "license": "MIT",
   "dependencies": {
     "@chainlink/contracts": "^0.0.10",
-    "@iroiro/merkle-distributor": "^1.1.0",
+    "@iroiro/merkle-distributor": "2.0.0-beta",
     "@openzeppelin/cli": "^2.8.2",
-    "@openzeppelin/contracts": "^3.2.0",
+    "@openzeppelin/contracts": "^3.4.0",
     "@truffle/hdwallet-provider": "^1.0.40",
     "dotenv": "^8.2.0"
   },

@@ -28,15 +28,5 @@ contract CampaignInterfaceV1 {
         address indexed to
     );
 
-    address payable public campaignToken;
-    uint256 public claimAmount;
     uint32 public claimedNum = 0;
-
-    constructor(
-        address payable _campaignToken,
-        uint256 _claimAmount
-    ) public {
-        campaignToken = _campaignToken;
-        claimAmount = _claimAmount;
-    }
 }

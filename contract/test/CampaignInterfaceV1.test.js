@@ -36,12 +36,6 @@ contract("CampaignInterfaceV1", (accounts) => {
 
   describe("constructor", async () => {
     it("has a state variables", async () => {
-      expect(await this.campaign.campaignToken()).to.be.equal(
-        this.abctoken.address
-      );
-      expect((await this.campaign.claimAmount()).toString()).to.be.equal(
-        "100000"
-      );
       expect((await this.campaign.claimedNum()).toString()).to.be.equal("0");
     });
   });
