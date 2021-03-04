@@ -15,22 +15,18 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const { accounts, contract } = require("@openzeppelin/test-environment");
 const {
   BN,
   expectEvent,
   expectRevert,
-  time,
 } = require("@openzeppelin/test-helpers");
 const { expect } = require("chai");
 
-const Distributor = contract.fromArtifact("UUIDDistributor");
-const ERC20Mock = contract.fromArtifact("ERC20Mock");
+const Distributor = artifacts.require("UUIDDistributor");
+const ERC20Mock = artifacts.require("ERC20Mock");
 
-describe("UUIDDistributor", () => {
+contract("UUIDDistributor", (accounts) => {
   const [owner, alice] = accounts;
-
-  let now, future;
 
   const merkleRoot =
     "0xf23c8c7ccd32b230dde25eafaaa8c65d04d06752ffaa703679bb7c51bd5ea1b7";
@@ -58,8 +54,6 @@ describe("UUIDDistributor", () => {
     this.xyztoken = await ERC20Mock.new("XYZToken", "XYZ", owner, 1000000000, {
       from: owner,
     });
-    now = await time.latest();
-    future = now.add(time.duration.weeks(1));
   });
 
   describe("createCampaign", () => {
