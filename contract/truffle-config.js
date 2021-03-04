@@ -65,5 +65,9 @@ module.exports = {
   },
   mocha: {
     timeout: 10000,
+    reporter: 'eth-gas-reporter',
+    reporterOptions: {
+      currency: "JPY"
+    }
   },
 };

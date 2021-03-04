@@ -15,14 +15,12 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const { accounts, contract } = require("@openzeppelin/test-environment");
-const { constants } = require("@openzeppelin/test-helpers");
-const { assert, expect } = require("chai");
+const { expect } = require("chai");
 
-const Distributor = contract.fromArtifact("DistributorInterfaceV1");
-const ERC20Mock = contract.fromArtifact("ERC20Mock");
+const Distributor = artifacts.require("DistributorInterfaceV1");
+const ERC20Mock = artifacts.require("ERC20Mock");
 
-describe("DistributorInterfaceV1", () => {
+contract("DistributorInterfaceV1", (accounts) => {
   const [owner, alice] = accounts;
 
   beforeEach(async () => {
@@ -39,7 +37,7 @@ describe("DistributorInterfaceV1", () => {
 
   it("has a cid", async () => {
     expect(await this.distributor.distributorInfoCid()).to.equal(
-      "distributor info cid"
+        "distributor info cid"
     );
   });
 });

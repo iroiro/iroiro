@@ -15,20 +15,19 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const { accounts, contract } = require("@openzeppelin/test-environment");
 const {
   BN,
   expectEvent,
   expectRevert,
   time,
 } = require("@openzeppelin/test-helpers");
-const { assert, expect } = require("chai");
+const { expect } = require("chai");
 
-const Distributor = contract.fromArtifact("UUIDDistributor");
-const Campaign = contract.fromArtifact("UUIDCampaign");
-const ERC20Mock = contract.fromArtifact("ERC20Mock");
+const Distributor = artifacts.require("UUIDDistributor");
+const Campaign = artifacts.require("UUIDCampaign");
+const ERC20Mock = artifacts.require("ERC20Mock");
 
-describe("UUIDCampaign", () => {
+contract("UUIDCampaign", (accounts) => {
   const [defaultAccount, alice, bob, consumer, follower, metamask] = accounts;
 
   let cc, distributor, campaign, abctoken, now, future;
@@ -46,10 +45,7 @@ describe("UUIDCampaign", () => {
     "0xefd22e1ab98750f9d285a6a0a4c251de668878db2d5c824630f4f763494e0b2e",
     "0x04b1625747fc935af80ed33fc9f8410b4a7aa57c0e6b24beb892b80890ff9778",
   ];
-  const campaignInfoCid = "campaign info cid";
-  const recipientsCid = "recipients cid";
   const merkleTreeCid = "merkle tree cid";
-  const recipientsNum = 100;
 
   beforeEach(async () => {
     distributor = await Distributor.new("Wallet Test Distributor", {
@@ -70,13 +66,8 @@ describe("UUIDCampaign", () => {
     await distributor.createCampaign(
       merkleRoot,
       abctoken.address,
-      consumer,
-      campaignInfoCid,
-      recipientsCid,
       merkleTreeCid,
-      recipientsNum,
-      now,
-      future,
+      1000000000,
       { from: consumer }
     );
     const campaignAddress = await distributor.campaignList(1);
@@ -89,81 +80,6 @@ describe("UUIDCampaign", () => {
   });
 
   describe("claim", () => {
-    describe("future campaign", () => {
-      let futurecc;
-      beforeEach(async () => {
-        await abctoken.transfer(consumer, 1000, { from: defaultAccount });
-        await abctoken.approve(distributor.address, 1000, { from: consumer });
-        const oneweeklater = await now.add(time.duration.weeks(1));
-        const twoweeklater = await now.add(time.duration.weeks(2));
-        await abctoken.approve(distributor.address, 100, {
-          from: defaultAccount,
-        });
-        await distributor.createCampaign(
-          merkleRoot,
-          abctoken.address,
-          consumer,
-          campaignInfoCid,
-          recipientsCid,
-          merkleTreeCid,
-          recipientsNum,
-          oneweeklater,
-          twoweeklater,
-          { from: consumer }
-        );
-        const futurecampaignaddress = await distributor.campaignList(2);
-        futurecc = await Campaign.at(futurecampaignaddress);
-      });
-
-      it("throws an error if campaign is not started yet", async () => {
-        try {
-          await futurecc.claim(1, hashed, new BN(100), proof);
-          assert.fail();
-        } catch (error) {
-          expect(error.reason).to.equal("Campaign is not started yet");
-          assert(true);
-        }
-      });
-    });
-
-    describe("past campaign", () => {
-      let pastcc;
-      beforeEach(async () => {
-        await abctoken.transfer(consumer, 1000, { from: defaultAccount });
-        await abctoken.approve(distributor.address, 1000, { from: consumer });
-        const now = await time.latest();
-        const oneweeklater = await now.add(time.duration.weeks(1));
-        await abctoken.approve(distributor.address, 100, {
-          from: defaultAccount,
-        });
-        await distributor.createCampaign(
-          merkleRoot,
-          abctoken.address,
-          consumer,
-          campaignInfoCid,
-          recipientsCid,
-          merkleTreeCid,
-          recipientsNum,
-          now,
-          oneweeklater,
-          { from: consumer }
-        );
-        const pastcampaignaddress = await distributor.campaignList(2);
-        pastcc = await Campaign.at(pastcampaignaddress);
-      });
-
-      it("throws an error if campaign is finished", async () => {
-        time.increase(time.duration.weeks(2));
-        try {
-          await pastcc.claim(1, hashed, new BN(100), proof);
-          assert.fail();
-        } catch (error) {
-          expect(error.reason).to.equal("Campaign is finished");
-          assert(true);
-        }
-      });
-    });
-
     describe("active campaign", () => {
       it("claim", async () => {
         await cc.claim(1, hashed, new BN(100), proof);
