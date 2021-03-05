@@ -19,12 +19,12 @@
 pragma solidity =0.7.6;
 
 import "@iroiro/merkle-distributor/contracts/StringMerkleDistributorManager.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
+import "../SafeMath64.sol";
 
 contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManager {
-    using SafeMath for uint256;
+    using SafeMath64 for uint64;
 
     constructor (string memory _distributorInfoCid)
     DistributorInterfaceV1(_distributorInfoCid) {}
@@ -55,7 +55,7 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
     }
 
     function claim(
-        uint256 campaignId,
+        uint64 campaignId,
         uint256 index,
         string calldata hashed,
         uint256 amount,

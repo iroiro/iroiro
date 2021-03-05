@@ -19,12 +19,12 @@
 pragma solidity =0.7.6;
 
 import "@iroiro/merkle-distributor/contracts/MerkleDistributorManager.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
+import "../SafeMath64.sol";
 
 contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
-    using SafeMath for uint256;
+    using SafeMath64 for uint64;
 
     constructor (string memory _distributorInfoCid)
     DistributorInterfaceV1(_distributorInfoCid) {}
@@ -55,7 +55,7 @@ contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
     }
 
     function claim(
-        uint256 campaignId,
+        uint64 campaignId,
         uint256 index,
         address account,
         uint256 amount,

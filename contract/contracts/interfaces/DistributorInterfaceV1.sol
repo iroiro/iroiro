@@ -24,7 +24,7 @@ contract DistributorInterfaceV1 {
     );
 
     event CreateCampaign(
-        uint256 indexed campaignId,
+        uint64 indexed campaignId,
         address indexed token,
         address indexed creator,
         string merkleTreeCid,
@@ -37,7 +37,7 @@ contract DistributorInterfaceV1 {
 
     string public distributorInfoCid;
     // TODO: Add features updatable or whitelist
-    uint256 public nextCampaignId = 1;
+    uint64 public nextCampaignId = 1;
 
     function createCampaign(
         bytes32 merkleRoot,
