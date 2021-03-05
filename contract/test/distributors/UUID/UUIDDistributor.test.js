@@ -141,14 +141,6 @@ describe("UUIDDistributor", () => {
         await this.distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
       });
 
-      it("increment claimedNum", async () => {
-        const claimedNumBefore = await this.distributor.claimedNum();
-        expect(claimedNumBefore).to.equal(BigNumber.from(0));
-        await this.distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
-        const claimedNumAfter = await this.distributor.claimedNum();
-        expect(claimedNumAfter).to.equal(BigNumber.from(1));
-      });
-
       it("emits event", async () => {
         const receipt = await this.distributor
           .connect(alice)
@@ -161,6 +153,8 @@ describe("UUIDDistributor", () => {
         expect(claimEvent.args.account).to.equal(alice.address);
         expect(claimEvent.args.amount).to.equal(100);
       });
+
+      xit("claimed num topic");
 
       it("revert if index is invalid", async () => {
         await expect(

@@ -22,11 +22,9 @@ import "@iroiro/merkle-distributor/contracts/StringMerkleDistributorManager.sol"
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
-import "../SafeMath32.sol";
 
 contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManager {
     using SafeMath for uint256;
-    using SafeMath32 for uint32;
 
     constructor (string memory _distributorInfoCid)
     DistributorInterfaceV1(_distributorInfoCid) {}
@@ -63,7 +61,6 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
         uint256 amount,
         bytes32[] calldata merkleProof
     ) public override {
-        claimedNum = claimedNum.add(1);
         super.claim(campaignId, index, hashed, amount, merkleProof);
     }
 }
