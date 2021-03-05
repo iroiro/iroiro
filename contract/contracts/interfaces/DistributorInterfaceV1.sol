@@ -21,7 +21,9 @@ contract DistributorInterfaceV1 {
     event CreateCampaign(
         uint256 indexed campaignId,
         address indexed token,
-        address indexed creator
+        address indexed creator,
+        string merkleTreeCid,
+        string campaignInfoCid
     );
 
     struct Campaign {

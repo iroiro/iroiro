@@ -40,8 +40,6 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
     ) external override {
         tokenMap[nextCampaignId] = token;
         merkleRootMap[nextCampaignId] = merkleRoot;
-        merkleTreeCidMap[nextCampaignId] = merkleTreeCid;
-        campaignInfoCidMap[nextCampaignId] = campaignInfoCid;
         ERC20 erc20 = ERC20(token);
         remainingAmountMap[nextCampaignId] = allowance;
 
@@ -50,7 +48,9 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
         emit CreateCampaign(
             nextCampaignId,
             token,
-            msg.sender
+            msg.sender,
+            merkleTreeCid,
+            campaignInfoCid
         );
 
         nextCampaignId = nextCampaignId.add(1);

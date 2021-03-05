@@ -79,18 +79,6 @@ describe("WalletDistributor", () => {
         expect(await this.distributor.merkleRootMap("1")).to.equal(merkleRoot);
       });
 
-      it("has a merkle tree cid", async () => {
-        expect(await this.distributor.merkleTreeCidMap("1")).to.equal(
-          merkleTreeCid
-        );
-      });
-
-      it("has a campaign info cid", async () => {
-        expect(await this.distributor.campaignInfoCidMap("1")).to.equal(
-          campaignInfoCid
-        );
-      });
-
       it("transfers token of approved amount", async () => {
         expect(
           (await this.abctoken.balanceOf(this.distributor.address)).toString()
@@ -111,6 +99,8 @@ describe("WalletDistributor", () => {
         expect(claimEvent.args.campaignId).to.equal("1");
         expect(claimEvent.args.token).to.equal(this.abctoken.address);
         expect(claimEvent.args.creator).to.equal(owner.address);
+        expect(claimEvent.args.merkleTreeCid).to.equal(merkleTreeCid);
+        expect(claimEvent.args.campaignInfoCid).to.equal(campaignInfoCid);
       });
     });
 
