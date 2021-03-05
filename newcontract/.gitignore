@@ -31,3 +31,6 @@ package-lock.json
 
 coverage.json
 coverage/
+
+artifacts/
+cache/
