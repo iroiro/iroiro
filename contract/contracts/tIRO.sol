@@ -16,14 +16,14 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-pragma solidity =0.6.11;
+pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract tIRO is ERC20 {
     uint256 public drop;
     
-    constructor() public ERC20("testIroiro", "tIRO") {
+    constructor() ERC20("testIroiro", "tIRO") {
         uint256 totalSupply = 1000000 * 10 ** 18;
         _mint(msg.sender, totalSupply);
         drop = 1000 * 10 ** 18;

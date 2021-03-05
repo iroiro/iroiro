@@ -15,16 +15,9 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
-pragma solidity =0.6.11;
-
-import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "../SafeMath32.sol";
+pragma solidity =0.7.6;
 
 contract DistributorInterfaceV1 {
-    using SafeMath for uint256;
-    using SafeMath32 for uint32;
-
     event CreateCampaign(
         uint256 indexed campaignId,
         address indexed token,
@@ -43,7 +36,7 @@ contract DistributorInterfaceV1 {
         string merkleTreeCid;
     }
 
-    constructor(string memory _distributorInfoCid) public {
+    constructor(string memory _distributorInfoCid) {
         distributorInfoCid = _distributorInfoCid;
     }
 
