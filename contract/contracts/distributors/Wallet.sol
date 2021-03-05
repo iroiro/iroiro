@@ -16,14 +16,19 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-pragma solidity =0.6.11;
+pragma solidity =0.7.6;
 
 import "@iroiro/merkle-distributor/contracts/MerkleDistributorManager.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
+import "../SafeMath32.sol";
 
 contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
-    constructor (string memory _distributorInfoCid) public
+    using SafeMath for uint256;
+    using SafeMath32 for uint32;
+
+    constructor (string memory _distributorInfoCid)
     DistributorInterfaceV1(_distributorInfoCid) {}
 
     function createCampaign(
