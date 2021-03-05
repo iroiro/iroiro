@@ -40,9 +40,6 @@ contract DistributorInterfaceV1 {
     string public distributorInfoCid;
     // TODO: Add features updatable or whitelist
     uint256 public nextCampaignId = 1;
-    uint32 public claimedNum = 0;
-    mapping(uint256 => string) public merkleTreeCidMap;
-    mapping(uint256 => string) public campaignInfoCidMap;
 
     function createCampaign(
         bytes32 merkleRoot,
