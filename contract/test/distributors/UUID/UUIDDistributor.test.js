@@ -34,8 +34,8 @@ describe("UUIDDistributor", () => {
     "0xefd22e1ab98750f9d285a6a0a4c251de668878db2d5c824630f4f763494e0b2e",
     "0x04b1625747fc935af80ed33fc9f8410b4a7aa57c0e6b24beb892b80890ff9778",
   ];
-  const merkleTreeCid = "QmVFbeS49jSRAPxzmTgK9vFYfp4iS5bd4jBmListUm3Ejk";
-  const campaignInfoCid = "QmVFbeS49jSRAPxzmTgK9vFYfp4iS5bd4jBmListUm3Ejk";
+  const merkleTreeCid = "merkle tree cid";
+  const campaignInfoCid = "campaign info cid";
 
   beforeEach(async () => {
     const Distributor = await ethers.getContractFactory("UUIDDistributor");

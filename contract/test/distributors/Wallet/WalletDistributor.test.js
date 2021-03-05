@@ -32,8 +32,8 @@ describe("WalletDistributor", () => {
     "0xb13a9406568e667caa70cc8b271c9ada0ff7b8ce4ebe5e6889e07632db66809e",
     "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
   ];
-  const merkleTreeCid = "QmVFbeS49jSRAPxzmTgK9vFYfp4iS5bd4jBmListUm3Ejk";
-  const campaignInfoCid = "QmVFbeS49jSRAPxzmTgK9vFYfp4iS5bd4jBmListUm3Ejk";
+  const merkleTreeCid = "merkle tree cid";
+  const campaignInfoCid = "campaign info cid";
 
   beforeEach(async () => {
     const Distributor = await ethers.getContractFactory("WalletDistributor");

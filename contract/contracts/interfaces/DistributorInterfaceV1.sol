@@ -18,11 +18,6 @@
 pragma solidity =0.7.6;
 
 contract DistributorInterfaceV1 {
-    event CreateDistributor(
-        address indexed distributor,
-        string distributorInfoCid
-    );
-
     event CreateCampaign(
         uint64 indexed campaignId,
         address indexed token,
@@ -31,8 +26,15 @@ contract DistributorInterfaceV1 {
         string campaignInfoCid
     );
 
+    struct Campaign {
+        address campaignToken;
+        uint256 claimAmount;
+        uint32 claimedNum;
+        string merkleTreeCid;
+    }
+
     constructor(string memory _distributorInfoCid) {
-        emit CreateDistributor(address(this), distributorInfoCid);
+        distributorInfoCid = _distributorInfoCid;
     }
 
     string public distributorInfoCid;
