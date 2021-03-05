@@ -70,14 +70,16 @@ describe("WalletDistributor", () => {
       });
 
       it("has a token address", async () => {
-        expect(await this.distributor.tokenMap("1")).to.equal(
+        expect(await this.distributor.token("1")).to.equal(
           this.abctoken.address
         );
       });
 
       it("has a merkle root", async () => {
-        expect(await this.distributor.merkleRootMap("1")).to.equal(merkleRoot);
+        expect(await this.distributor.merkleRoot("1")).to.equal(merkleRoot);
       });
+
+      xit("has a remaining map");
 
       it("transfers token of approved amount", async () => {
         expect(
@@ -335,6 +337,8 @@ describe("WalletDistributor", () => {
           proof
         );
       });
+
+      xit("remaining amount is decreased");
 
       it("claim does not use other campaign's tokens", async () => {
         await this.distributor.claim(

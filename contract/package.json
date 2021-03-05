@@ -39,7 +39,7 @@
     "truffle": "^5.2.2"
   },
   "dependencies": {
-    "@iroiro/merkle-distributor": "1.2.6",
+    "@iroiro/merkle-distributor": "1.2.7",
     "@openzeppelin/contracts": "^3.4.1",
     "hardhat-typechain": "^0.3.5",
     "ts-generator": "^0.1.1",
