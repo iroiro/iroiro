@@ -35,14 +35,14 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
         bytes32 merkleRoot,
         address payable token,
         string memory merkleTreeCid,
-        string memory campaignInfoCid
+        string memory campaignInfoCid,
+        uint256 allowance
     ) external override {
         tokenMap[nextCampaignId] = token;
         merkleRootMap[nextCampaignId] = merkleRoot;
         merkleTreeCidMap[nextCampaignId] = merkleTreeCid;
         campaignInfoCidMap[nextCampaignId] = campaignInfoCid;
         ERC20 erc20 = ERC20(token);
-        uint256 allowance = erc20.allowance(msg.sender, address(this));
         remainingAmountMap[nextCampaignId] = allowance;
 
         erc20.transferFrom(msg.sender, address(this), allowance);

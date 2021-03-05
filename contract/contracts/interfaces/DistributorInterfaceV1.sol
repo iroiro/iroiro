@@ -51,6 +51,7 @@ contract DistributorInterfaceV1 {
         bytes32 merkleRoot,
         address payable token,
         string memory merkleTreeCid,
-        string memory campaignInfoCid
+        string memory campaignInfoCid,
+        uint256 allowance
     ) virtual external {}
 }

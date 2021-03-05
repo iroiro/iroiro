@@ -59,58 +59,78 @@ describe("UUIDDistributor", () => {
 
   describe("createCampaign", () => {
     let receipt;
-    beforeEach(async () => {
-      await this.abctoken.approve(this.distributor.address, 100);
-      receipt = await this.distributor.createCampaign(
-        merkleRoot,
-        this.abctoken.address,
-        merkleTreeCid,
-        campaignInfoCid
-      );
+    describe("success case", () => {
+      beforeEach(async () => {
+        await this.abctoken.approve(this.distributor.address, 100);
+        receipt = await this.distributor.createCampaign(
+          merkleRoot,
+          this.abctoken.address,
+          merkleTreeCid,
+          campaignInfoCid,
+          100
+        );
+      });
+
+      it("has a token address", async () => {
+        expect(await this.distributor.tokenMap("1")).to.equal(
+          this.abctoken.address
+        );
+      });
+
+      it("has a merkle root", async () => {
+        expect(await this.distributor.merkleRootMap("1")).to.equal(merkleRoot);
+      });
+
+      it("has a merkle tree cid", async () => {
+        expect(await this.distributor.merkleTreeCidMap("1")).to.equal(
+          merkleTreeCid
+        );
+      });
+
+      it("has a campaign info cid", async () => {
+        expect(await this.distributor.campaignInfoCidMap("1")).to.equal(
+          campaignInfoCid
+        );
+      });
+
+      it("transfers token of approved amount", async () => {
+        expect(
+          (await this.abctoken.balanceOf(this.distributor.address)).toString()
+        ).to.equal("100");
+      });
+
+      it("increment next campaign id", async () => {
+        expect((await this.distributor.nextCampaignId()).toString()).to.equal(
+          "2"
+        );
+      });
+
+      it("emits event", async () => {
+        const result = await receipt.wait();
+        const claimEvent = result.events.find(
+          (event) => event.event === "CreateCampaign"
+        );
+        expect(claimEvent.args.campaignId).to.equal("1");
+        expect(claimEvent.args.token).to.equal(this.abctoken.address);
+        expect(claimEvent.args.creator).to.equal(owner.address);
+      });
     });
 
-    it("has a token address", async () => {
-      expect(await this.distributor.tokenMap("1")).to.equal(
-        this.abctoken.address
-      );
-    });
+    xit("transfer allowance", () => {});
 
-    it("has a merkle root", async () => {
-      expect(await this.distributor.merkleRootMap("1")).to.equal(merkleRoot);
-    });
-
-    it("has a merkle tree cid", async () => {
-      expect(await this.distributor.merkleTreeCidMap("1")).to.equal(
-        merkleTreeCid
-      );
-    });
-
-    it("has a campaign info cid", async () => {
-      expect(await this.distributor.campaignInfoCidMap("1")).to.equal(
-        campaignInfoCid
-      );
-    });
-
-    it("transfers token of approved amount", async () => {
-      expect(
-        (await this.abctoken.balanceOf(this.distributor.address)).toString()
-      ).to.equal("100");
-    });
-
-    it("increment next campaign id", async () => {
-      expect((await this.distributor.nextCampaignId()).toString()).to.equal(
-        "2"
-      );
-    });
-
-    it("emits event", async () => {
-      const result = await receipt.wait();
-      const claimEvent = result.events.find(
-        (event) => event.event === "CreateCampaign"
-      );
-      expect(claimEvent.args.campaignId).to.equal("1");
-      expect(claimEvent.args.token).to.equal(this.abctoken.address);
-      expect(claimEvent.args.creator).to.equal(owner.address);
+    describe("failed case", () => {
+      it("revert when allowance is insufficient", async () => {
+        await this.abctoken.approve(this.distributor.address, 99);
+        await expect(
+          this.distributor.createCampaign(
+            merkleRoot,
+            this.abctoken.address,
+            merkleTreeCid,
+            campaignInfoCid,
+            100
+          )
+        ).to.be.revertedWith("ERC20: transfer amount exceeds allowance");
+      });
     });
   });
 
@@ -121,7 +141,8 @@ describe("UUIDDistributor", () => {
         merkleRoot,
         this.abctoken.address,
         merkleTreeCid,
-        campaignInfoCid
+        campaignInfoCid,
+        100
       );
     });
 
@@ -210,13 +231,15 @@ describe("UUIDDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid
+          campaignInfoCid,
+          100
         );
         await this.distributor.createCampaign(
           merkleRoot,
           this.xyztoken.address,
           merkleTreeCid,
-          campaignInfoCid
+          campaignInfoCid,
+          100
         );
       });
 
@@ -246,14 +269,16 @@ describe("UUIDDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid
+          campaignInfoCid,
+          100
         );
         await this.abctoken.approve(this.distributor.address, 100);
         await this.distributor.createCampaign(
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid
+          campaignInfoCid,
+          100
         );
       });
 
