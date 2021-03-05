@@ -79,7 +79,9 @@ describe("WalletDistributor", () => {
         expect(await this.distributor.merkleRoot("1")).to.equal(merkleRoot);
       });
 
-      xit("has a remaining map");
+      it("has a remaining map", async () => {
+        expect(await this.distributor.remainingAmount("1")).to.equal(100);
+      });
 
       it("transfers token of approved amount", async () => {
         expect(
@@ -106,8 +108,6 @@ describe("WalletDistributor", () => {
       });
     });
 
-    xit("transfer allowance", () => {});
-
     describe("failed case", () => {
       it("revert when allowance is insufficient", async () => {
         await this.abctoken.approve(this.distributor.address, 99);
@@ -122,6 +122,18 @@ describe("WalletDistributor", () => {
         ).to.be.revertedWith("ERC20: transfer amount exceeds allowance");
       });
     });
+  });
+
+  it("transfer allowance", async () => {
+    await this.abctoken.approve(this.distributor.address, 100);
+    receipt = await this.distributor.createCampaign(
+      merkleRoot,
+      this.abctoken.address,
+      merkleTreeCid,
+      campaignInfoCid,
+      50
+    );
+    expect(await this.distributor.remainingAmount("1")).to.equal(50);
   });
 
   describe("claim", () => {
@@ -161,14 +173,13 @@ describe("WalletDistributor", () => {
         const claimEvent = result.events.find(
           (event) => event.event === "Claimed"
         );
+        expect(claimEvent.args.campaignId).to.equal(1);
         expect(claimEvent.args.index).to.equal(1);
         expect(claimEvent.args.account).to.equal(
           "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1"
         );
         expect(claimEvent.args.amount).to.equal(100);
       });
-
-      xit("claimed num topic");
 
       it("revert if index is invalid", async () => {
         await expect(
@@ -338,7 +349,26 @@ describe("WalletDistributor", () => {
         );
       });
 
-      xit("remaining amount is decreased");
+      it("decrease remaining map", async () => {
+        await this.distributor.claim(
+          1,
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          BigNumber.from(100),
+          proof
+        );
+        expect(await this.distributor.remainingAmount("1")).to.equal(0);
+        expect(await this.distributor.remainingAmount("2")).to.equal(100);
+        await this.distributor.claim(
+          2,
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          BigNumber.from(100),
+          proof
+        );
+        expect(await this.distributor.remainingAmount("1")).to.equal(0);
+        expect(await this.distributor.remainingAmount("2")).to.equal(0);
+      });
 
       it("claim does not use other campaign's tokens", async () => {
         await this.distributor.claim(
