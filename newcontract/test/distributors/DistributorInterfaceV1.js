@@ -18,14 +18,21 @@
 const { expect } = require("chai");
 
 describe("DistributorInterfaceV1", () => {
-  let owner
+  let owner;
 
   beforeEach(async () => {
-    const Distributor = await ethers.getContractFactory("DistributorInterfaceV1");
+    const Distributor = await ethers.getContractFactory(
+      "DistributorInterfaceV1"
+    );
     const Token = await ethers.getContractFactory("ERC20Mock");
-    [owner] = await ethers.getSigners()
+    [owner] = await ethers.getSigners();
     this.distributor = await Distributor.deploy("distributor info cid");
-    this.abctoken = await Token.deploy("ABCToken", "ABC", owner.address, 1000000000)
+    this.abctoken = await Token.deploy(
+      "ABCToken",
+      "ABC",
+      owner.address,
+      1000000000
+    );
   });
 
   it("has a cid", async () => {
@@ -38,8 +45,8 @@ describe("DistributorInterfaceV1", () => {
     await this.distributor.createCampaign(
       "0x33e954d45e481a7c78be8cb27f39277113b2519ef0c0d237ab91a054d4bc4f7a",
       this.abctoken.address,
-     "merkle tree cid",
-     "campaign info cid",
-    )
-  })
+      "merkle tree cid",
+      "campaign info cid"
+    );
+  });
 });
