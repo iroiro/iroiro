@@ -34,8 +34,8 @@ contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
-        string memory merkleTreeCid,
-        string memory campaignInfoCid,
+        string calldata merkleTreeCid,
+        string calldata campaignInfoCid,
         uint256 allowance
     ) external override {
         tokenMap[nextCampaignId] = token;

@@ -34,8 +34,8 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
-        string memory merkleTreeCid,
-        string memory campaignInfoCid,
+        string calldata merkleTreeCid,
+        string calldata campaignInfoCid,
         uint256 allowance
     ) external override {
         tokenMap[nextCampaignId] = token;
@@ -59,7 +59,7 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
     function claim(
         uint256 campaignId,
         uint256 index,
-        string memory hashed,
+        string calldata hashed,
         uint256 amount,
         bytes32[] calldata merkleProof
     ) public override {
