@@ -15,18 +15,11 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const {
-  BN,
-  expectEvent,
-  expectRevert,
-} = require("@openzeppelin/test-helpers");
+const { BigNumber } = require("ethers");
 const { expect } = require("chai");
 
-const Distributor = artifacts.require("UUIDDistributor");
-const ERC20Mock = artifacts.require("ERC20Mock");
-
-contract("UUIDDistributor", (accounts) => {
-  const [owner, alice] = accounts;
+describe("UUIDDistributor", () => {
+  let owner, alice;
 
   const merkleRoot =
     "0xf23c8c7ccd32b230dde25eafaaa8c65d04d06752ffaa703679bb7c51bd5ea1b7";
@@ -45,29 +38,34 @@ contract("UUIDDistributor", (accounts) => {
   const campaignInfoCid = "campaign info cid";
 
   beforeEach(async () => {
-    this.distributor = await Distributor.new("distributor info cid", {
-      from: owner,
-    });
-    this.abctoken = await ERC20Mock.new("ABCToken", "ABC", owner, 1000000000, {
-      from: owner,
-    });
-    this.xyztoken = await ERC20Mock.new("XYZToken", "XYZ", owner, 1000000000, {
-      from: owner,
-    });
+    const Distributor = await ethers.getContractFactory("UUIDDistributor");
+    const Token = await ethers.getContractFactory("ERC20Mock");
+
+    [owner, alice] = await ethers.getSigners();
+    this.distributor = await Distributor.deploy("distributor info cid");
+    this.abctoken = await Token.deploy(
+      "ABCToken",
+      "ABC",
+      owner.address,
+      1000000000
+    );
+    this.xyztoken = await Token.deploy(
+      "XYZToken",
+      "XYZ",
+      owner.address,
+      1000000000
+    );
   });
 
   describe("createCampaign", () => {
     let receipt;
     beforeEach(async () => {
-      await this.abctoken.approve(this.distributor.address, 100, {
-        from: owner,
-      });
+      await this.abctoken.approve(this.distributor.address, 100);
       receipt = await this.distributor.createCampaign(
         merkleRoot,
         this.abctoken.address,
         merkleTreeCid,
-        campaignInfoCid,
-        { from: owner }
+        campaignInfoCid
       );
     });
 
@@ -106,87 +104,75 @@ contract("UUIDDistributor", (accounts) => {
     });
 
     it("emits event", async () => {
-      expectEvent(receipt, "CreateCampaign", {
-        campaignId: "1",
-        token: this.abctoken.address,
-        creator: owner,
-      });
+      const result = await receipt.wait();
+      const claimEvent = result.events.find(
+        (event) => event.event === "CreateCampaign"
+      );
+      expect(claimEvent.args.campaignId).to.equal("1");
+      expect(claimEvent.args.token).to.equal(this.abctoken.address);
+      expect(claimEvent.args.creator).to.equal(owner.address);
     });
   });
 
   describe("claim", () => {
     beforeEach(async () => {
-      await this.abctoken.approve(this.distributor.address, 100, {
-        from: owner,
-      });
+      await this.abctoken.approve(this.distributor.address, 100);
       await this.distributor.createCampaign(
         merkleRoot,
         this.abctoken.address,
         merkleTreeCid,
-        campaignInfoCid,
-        { from: owner }
+        campaignInfoCid
       );
     });
 
     describe("active campaign", () => {
       it("claim", async () => {
-        await this.distributor.claim(1, 1, hashed, new BN(100), proof);
+        await this.distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
       });
 
       it("increment claimedNum", async () => {
         const claimedNumBefore = await this.distributor.claimedNum();
-        expect(claimedNumBefore).to.be.bignumber.equal(new BN(0));
-        await this.distributor.claim(1, 1, hashed, new BN(100), proof);
+        expect(claimedNumBefore).to.equal(BigNumber.from(0));
+        await this.distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
         const claimedNumAfter = await this.distributor.claimedNum();
-        expect(claimedNumAfter).to.be.bignumber.equal(new BN(1));
+        expect(claimedNumAfter).to.equal(BigNumber.from(1));
       });
 
       it("emits event", async () => {
-        const receipt = await this.distributor.claim(
-          1,
-          1,
-          hashed,
-          new BN(100),
-          proof,
-          { from: alice }
+        const receipt = await this.distributor
+          .connect(alice)
+          .claim(1, 1, hashed, BigNumber.from(100), proof);
+        const result = await receipt.wait();
+        const claimEvent = result.events.find(
+          (event) => event.event === "Claim"
         );
-        expectEvent(receipt, "Claim", {
-          from: alice,
-          to: alice,
-        });
+        expect(claimEvent.args.from).to.equal(alice.address);
+        expect(claimEvent.args.to).to.equal(alice.address);
       });
 
       it("revert if index is invalid", async () => {
-        await expectRevert(
-          this.distributor.claim(1, 2, hashed, new BN(100), proof, {
-            from: alice,
-          }),
-          "MerkleDistributor: Invalid proof."
-        );
+        await expect(
+          this.distributor.claim(1, 2, hashed, BigNumber.from(100), proof)
+        ).to.be.revertedWith("MerkleDistributor: Invalid proof.");
       });
 
-      it("revert if address is invalid", async () => {
-        await expectRevert(
+      it("revert if hash is invalid", async () => {
+        await expect(
           this.distributor.claim(
             1,
             1,
             "00a89857cb180be7b0cc2a6db58b35e69a4c54aa7990bda230f527595e280285",
-            new BN(100),
-            proof,
-            { from: alice }
-          ),
-          "MerkleDistributor: Invalid proof."
-        );
+            BigNumber.from(100),
+            proof
+          )
+        ).to.be.revertedWith("MerkleDistributor: Invalid proof.");
       });
 
       it("revert if amount is invalid", async () => {
-        await expectRevert(
-          this.distributor.claim(
-            1,
-            1,
-            hashed,
-            new BN(10),
-            [
+        await expect(
+          this.distributor
+            .connect(alice)
+            .claim(1, 1, hashed, BigNumber.from(10), [
               "0xb2edb7e841c03b8394638ba04b3bd2e9769b0d29586a4d476bf71d84e1612b46",
               "0x0f2293d2199b068a92bd8359ac7f189a4ac49c6aaefcfefdbd3b24fae3ffc198",
               "0x6bea169605062ad96694d33c2918b3a12ffae68cb4a2238921f37e37e2640c0b",
@@ -194,32 +180,23 @@ contract("UUIDDistributor", (accounts) => {
               "0xf8cb76a9be4588036a88209807d0293ca1a0d7dd100c1bfac881bdb8fa6302c5",
               "0xb13a9406568e667caa70cc8b271c9ada0ff7b8ce4ebe5e6889e07632db66809e",
               "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
-            ],
-            { from: alice }
-          ),
-          "MerkleDistributor: Invalid proof."
-        );
+            ])
+        ).to.be.revertedWith("MerkleDistributor: Invalid proof.");
       });
 
       it("revert if proof is invalid", async () => {
-        await expectRevert(
-          this.distributor.claim(
-            1,
-            1,
-            hashed,
-            new BN(100),
-            [
+        await expect(
+          this.distributor
+            .connect(alice)
+            .claim(1, 1, hashed, BigNumber.from(100), [
               "0x0f2293d2199b068a92bd8359ac7f189a4ac49c6aaefcfefdbd3b24fae3ffc198",
               "0x6bea169605062ad96694d33c2918b3a12ffae68cb4a2238921f37e37e2640c0b",
               "0x356bdf6769a352b886c6f54b3e003a35e0ec7de615121d9544c3bdc5779f457d",
               "0xf8cb76a9be4588036a88209807d0293ca1a0d7dd100c1bfac881bdb8fa6302c5",
               "0xb13a9406568e667caa70cc8b271c9ada0ff7b8ce4ebe5e6889e07632db66809e",
               "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
-            ],
-            { from: alice }
-          ),
-          "MerkleDistributor: Invalid proof."
-        );
+            ])
+        ).to.be.revertedWith("MerkleDistributor: Invalid proof.");
       });
     });
   });
@@ -227,39 +204,35 @@ contract("UUIDDistributor", (accounts) => {
   describe("multiple campaign", () => {
     describe("different tokens", () => {
       beforeEach(async () => {
-        await this.abctoken.approve(this.distributor.address, 100, {
-          from: owner,
-        });
-        await this.xyztoken.approve(this.distributor.address, 100, {
-          from: owner,
-        });
+        await this.abctoken.approve(this.distributor.address, 100);
+        await this.xyztoken.approve(this.distributor.address, 100);
         await this.distributor.createCampaign(
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid,
-          { from: owner }
+          campaignInfoCid
         );
         await this.distributor.createCampaign(
           merkleRoot,
           this.xyztoken.address,
           merkleTreeCid,
-          campaignInfoCid,
-          { from: owner }
+          campaignInfoCid
         );
       });
 
       it("send proper token when user claimed", async () => {
-        expect((await this.abctoken.balanceOf(alice)).toString()).to.equal("0");
-        await this.distributor.claim(1, 1, hashed, new BN(100), proof, {
-          from: alice,
-        });
+        expect(
+          (await this.abctoken.balanceOf(alice.address)).toString()
+        ).to.equal("0");
+        await this.distributor
+          .connect(alice)
+          .claim(1, 1, hashed, BigNumber.from(100), proof);
         expect(
           (await this.abctoken.balanceOf(this.distributor.address)).toString()
         ).to.equal("0");
-        expect((await this.abctoken.balanceOf(alice)).toString()).to.equal(
-          "100"
-        );
+        expect(
+          (await this.abctoken.balanceOf(alice.address)).toString()
+        ).to.equal("100");
         expect(
           (await this.xyztoken.balanceOf(this.distributor.address)).toString()
         ).to.equal("100");
@@ -268,25 +241,19 @@ contract("UUIDDistributor", (accounts) => {
 
     describe("same tokens", () => {
       beforeEach(async () => {
-        await this.abctoken.approve(this.distributor.address, 100, {
-          from: owner,
-        });
+        await this.abctoken.approve(this.distributor.address, 100);
         await this.distributor.createCampaign(
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid,
-          { from: owner }
+          campaignInfoCid
         );
-        await this.abctoken.approve(this.distributor.address, 100, {
-          from: owner,
-        });
+        await this.abctoken.approve(this.distributor.address, 100);
         await this.distributor.createCampaign(
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid,
-          { from: owner }
+          campaignInfoCid
         );
       });
 
@@ -297,14 +264,14 @@ contract("UUIDDistributor", (accounts) => {
       });
 
       it("claim use each campaign token", async () => {
-        await this.distributor.claim(1, 1, hashed, new BN(100), proof);
-        await this.distributor.claim(2, 1, hashed, new BN(100), proof);
+        await this.distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
+        await this.distributor.claim(2, 1, hashed, BigNumber.from(100), proof);
       });
 
       it("claim does not use other campaign's tokens", async () => {
-        await this.distributor.claim(1, 1, hashed, new BN(100), proof);
-        await expectRevert(
-          this.distributor.claim(1, 2, hashed, new BN(100), [
+        await this.distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
+        await expect(
+          this.distributor.claim(1, 2, hashed, BigNumber.from(100), [
             "0xd77db87087a1cd0a89b7eb04e0c180dbca03f46b1aed7618dd8c1520ed20969e",
             "0x1aa7eb3923684d4f0213dcf513ed8a529cdf8f0fb89901a3dc0ed1a883e30460",
             "0x3bbb656f8ba0de770b2c6743036f7e1c6e9b4f51813d07d396bd308b97a01d67",
@@ -312,9 +279,8 @@ contract("UUIDDistributor", (accounts) => {
             "0x9446c03efafeb100f8d8546268672a191df7ff9d270e5f8aa9b74a38716252d2",
             "0xb13a9406568e667caa70cc8b271c9ada0ff7b8ce4ebe5e6889e07632db66809e",
             "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
-          ]),
-          "MerkleDistributor: Insufficient token."
-        );
+          ])
+        ).to.be.revertedWith("MerkleDistributor: Insufficient token.");
       });
     });
   });

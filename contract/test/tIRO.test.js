@@ -15,51 +15,53 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const { assert, expect } = require("chai");
+const { expect } = require("chai");
 
-const tIRO = artifacts.require("tIRO");
-
-contract("tIRO", (accounts) => {
-  const [owner, alice, bob] = accounts;
+describe("tIRO", function () {
+  let owner, alice, bob, testToken, tIRO;
 
   beforeEach(async () => {
-    this.testToken = await tIRO.deployed()
+    tIRO = await ethers.getContractFactory("tIRO");
+    [owner, alice, bob] = await ethers.getSigners();
+    testToken = await tIRO.deploy();
   });
 
   it("has a name", async () => {
-    expect(await this.testToken.name.call()).to.equal("testIroiro");
+    expect(await testToken.name()).to.equal("testIroiro");
   });
 
   it("has a symbol", async () => {
-    expect(await this.testToken.symbol.call()).to.equal("tIRO");
+    expect(await testToken.symbol()).to.equal("tIRO");
   });
 
   it("mints a token", async () => {
-    expect((await this.testToken.totalSupply.call()).toString()).to.equal(
+    expect((await testToken.totalSupply()).toString()).to.equal(
       "1000000000000000000000000"
     );
   });
 
   it("transferred a token to creator", async () => {
-    expect((await this.testToken.balanceOf.call(owner)).toString()).to.equal(
+    expect((await testToken.balanceOf(owner.address)).toString()).to.equal(
       "1000000000000000000000000"
     );
   });
 
   it("set decimals given as argument", async () => {
-    expect((await this.testToken.decimals.call()).toString()).to.equal("18");
+    expect((await testToken.decimals()).toString()).to.equal("18");
   });
 
   it("everybody can mint a token", async () => {
-    await this.testToken.mint(alice, { from: alice });
-    expect((await this.testToken.balanceOf.call(alice)).toString()).to.equal(
+    await testToken.connect(alice).mint(alice.address);
+    expect((await testToken.balanceOf(alice.address)).toString()).to.equal(
       "1000000000000000000000"
     );
   });
 
   it("Sending a 0 value transaction will give sender tokens.", async () => {
-    await this.testToken.send(0, { from: bob });
-    expect((await this.testToken.balanceOf.call(bob)).toString()).to.equal(
+    await bob.sendTransaction({
+      to: testToken.address,
+    });
+    expect((await testToken.balanceOf(bob.address)).toString()).to.equal(
       "1000000000000000000000"
     );
   });

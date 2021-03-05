@@ -20,7 +20,7 @@ const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
   networks: {
-    cldev: {
+    local: {
       host: "127.0.0.1",
       port: 8545,
       network_id: "*",
@@ -65,9 +65,5 @@ module.exports = {
   },
   mocha: {
     timeout: 10000,
-    reporter: 'eth-gas-reporter',
-    reporterOptions: {
-      currency: "JPY"
-    }
   },
 };

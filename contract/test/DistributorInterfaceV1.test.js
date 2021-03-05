@@ -17,27 +17,36 @@
 
 const { expect } = require("chai");
 
-const Distributor = artifacts.require("DistributorInterfaceV1");
-const ERC20Mock = artifacts.require("ERC20Mock");
-
-contract("DistributorInterfaceV1", (accounts) => {
-  const [owner, alice] = accounts;
+describe("DistributorInterfaceV1", () => {
+  let owner;
 
   beforeEach(async () => {
-    this.distributor = await Distributor.new("distributor info cid", {
-      from: owner,
-    });
-    this.abctoken = await ERC20Mock.new("ABCToken", "ABC", owner, 1000000000, {
-      from: owner,
-    });
-    this.xyztoken = await ERC20Mock.new("XYZToken", "XYZ", owner, 1000000000, {
-      from: owner,
-    });
+    const Distributor = await ethers.getContractFactory(
+      "DistributorInterfaceV1"
+    );
+    const Token = await ethers.getContractFactory("ERC20Mock");
+    [owner] = await ethers.getSigners();
+    this.distributor = await Distributor.deploy("distributor info cid");
+    this.abctoken = await Token.deploy(
+      "ABCToken",
+      "ABC",
+      owner.address,
+      1000000000
+    );
   });
 
   it("has a cid", async () => {
     expect(await this.distributor.distributorInfoCid()).to.equal(
       "distributor info cid"
+    );
+  });
+
+  it("create campaign do nothing", async () => {
+    await this.distributor.createCampaign(
+      "0x33e954d45e481a7c78be8cb27f39277113b2519ef0c0d237ab91a054d4bc4f7a",
+      this.abctoken.address,
+      "merkle tree cid",
+      "campaign info cid"
     );
   });
 });
