@@ -1922,6 +1922,16 @@
   dependencies:
     ethers "^5.0.2"
 
+"@typechain/ethers-v5@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@typechain/ethers-v5/-/ethers-v5-6.0.1.tgz#af6d3186a93c7bb96ca3add706d0a355ac0412c4"
+  integrity sha512-MNrB/lR9TQoubAXWscPzSMCmPNWVwoRlABYQS/al7lP6kGkaA3ObtLy3v1YHCF9T3qdxdpID/5qrmn89s4MEWw==
+
+"@typechain/web3-v1@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@typechain/web3-v1/-/web3-v1-2.2.0.tgz#fb4edae1bf4ed797be4102f48d46697be0f88998"
+  integrity sha512-vSJ+qhTXLsgvyx/cRYgHQZEifU7xNJLkWHYw8CSu3TTqankN7mKUwl2pwGNbWkRDY7U9hE0bKs9b0hWuLjB0DA==
+
 "@types/accepts@*", "@types/accepts@^1.3.5":
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/@types/accepts/-/accepts-1.3.5.tgz#c34bec115cfc746e04fe5a059df4ce7e7b391575"
