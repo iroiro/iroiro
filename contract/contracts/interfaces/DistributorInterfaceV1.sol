@@ -26,13 +26,6 @@ contract DistributorInterfaceV1 {
         string campaignInfoCid
     );
 
-    struct Campaign {
-        address campaignToken;
-        uint256 claimAmount;
-        uint32 claimedNum;
-        string merkleTreeCid;
-    }
-
     constructor(string memory _distributorInfoCid) {
         distributorInfoCid = _distributorInfoCid;
     }
