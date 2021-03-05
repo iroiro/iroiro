@@ -65,7 +65,5 @@ contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
     ) public override {
         claimedNum = claimedNum.add(1);
         super.claim(campaignId, index, account, amount, merkleProof);
-
-        emit Claim(account, account);
     }
 }

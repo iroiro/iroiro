@@ -165,10 +165,11 @@ describe("UUIDDistributor", () => {
           .claim(1, 1, hashed, BigNumber.from(100), proof);
         const result = await receipt.wait();
         const claimEvent = result.events.find(
-          (event) => event.event === "Claim"
+          (event) => event.event === "Claimed"
         );
-        expect(claimEvent.args.from).to.equal(alice.address);
-        expect(claimEvent.args.to).to.equal(alice.address);
+        expect(claimEvent.args.index).to.equal(1);
+        expect(claimEvent.args.account).to.equal(alice.address);
+        expect(claimEvent.args.amount).to.equal(100);
       });
 
       it("revert if index is invalid", async () => {

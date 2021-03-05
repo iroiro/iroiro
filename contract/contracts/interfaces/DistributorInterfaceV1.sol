@@ -24,11 +24,6 @@ contract DistributorInterfaceV1 {
         address indexed creator
     );
 
-    event Claim(
-        address indexed from,
-        address indexed to
-    );
-
     struct Campaign {
         address campaignToken;
         uint256 claimAmount;

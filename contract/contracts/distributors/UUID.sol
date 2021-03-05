@@ -65,7 +65,5 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
     ) public override {
         claimedNum = claimedNum.add(1);
         super.claim(campaignId, index, hashed, amount, merkleProof);
-
-        emit Claim(msg.sender, msg.sender);
     }
 }

@@ -181,14 +181,13 @@ describe("WalletDistributor", () => {
           );
         const result = await receipt.wait();
         const claimEvent = result.events.find(
-          (event) => event.event === "Claim"
+          (event) => event.event === "Claimed"
         );
-        expect(claimEvent.args.from).to.equal(
+        expect(claimEvent.args.index).to.equal(1);
+        expect(claimEvent.args.account).to.equal(
           "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1"
         );
-        expect(claimEvent.args.to).to.equal(
-          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1"
-        );
+        expect(claimEvent.args.amount).to.equal(100);
       });
 
       it("revert if index is invalid", async () => {
