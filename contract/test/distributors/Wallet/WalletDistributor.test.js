@@ -57,59 +57,83 @@ describe("WalletDistributor", () => {
 
   describe("createCampaign", () => {
     let receipt;
-    beforeEach(async () => {
-      await this.abctoken.approve(this.distributor.address, 100);
-      receipt = await this.distributor.createCampaign(
-        merkleRoot,
-        this.abctoken.address,
-        merkleTreeCid,
-        campaignInfoCid
-      );
+    describe("success case", () => {
+      beforeEach(async () => {
+        await this.abctoken.approve(this.distributor.address, 100);
+        receipt = await this.distributor.createCampaign(
+          merkleRoot,
+          this.abctoken.address,
+          merkleTreeCid,
+          campaignInfoCid,
+          100
+        );
+      });
+
+      it("has a token address", async () => {
+        expect(await this.distributor.token("1")).to.equal(
+          this.abctoken.address
+        );
+      });
+
+      it("has a merkle root", async () => {
+        expect(await this.distributor.merkleRoot("1")).to.equal(merkleRoot);
+      });
+
+      it("has a remaining map", async () => {
+        expect(await this.distributor.remainingAmount("1")).to.equal(100);
+      });
+
+      it("transfers token of approved amount", async () => {
+        expect(
+          (await this.abctoken.balanceOf(this.distributor.address)).toString()
+        ).to.equal("100");
+      });
+
+      it("increment next campaign id", async () => {
+        expect((await this.distributor.nextCampaignId()).toString()).to.equal(
+          "2"
+        );
+      });
+
+      it("emits event", async () => {
+        const result = await receipt.wait();
+        const claimEvent = result.events.find(
+          (event) => event.event === "CreateCampaign"
+        );
+        expect(claimEvent.args.campaignId).to.equal("1");
+        expect(claimEvent.args.token).to.equal(this.abctoken.address);
+        expect(claimEvent.args.creator).to.equal(owner.address);
+        expect(claimEvent.args.merkleTreeCid).to.equal(merkleTreeCid);
+        expect(claimEvent.args.campaignInfoCid).to.equal(campaignInfoCid);
+      });
     });
 
-    it("has a token address", async () => {
-      expect(await this.distributor.tokenMap("1")).to.equal(
-        this.abctoken.address
-      );
+    describe("failed case", () => {
+      it("revert when allowance is insufficient", async () => {
+        await this.abctoken.approve(this.distributor.address, 99);
+        await expect(
+          this.distributor.createCampaign(
+            merkleRoot,
+            this.abctoken.address,
+            merkleTreeCid,
+            campaignInfoCid,
+            100
+          )
+        ).to.be.revertedWith("ERC20: transfer amount exceeds allowance");
+      });
     });
+  });
 
-    it("has a merkle root", async () => {
-      expect(await this.distributor.merkleRootMap("1")).to.equal(merkleRoot);
-    });
-
-    it("has a merkle tree cid", async () => {
-      expect(await this.distributor.merkleTreeCidMap("1")).to.equal(
-        merkleTreeCid
-      );
-    });
-
-    it("has a campaign info cid", async () => {
-      expect(await this.distributor.campaignInfoCidMap("1")).to.equal(
-        campaignInfoCid
-      );
-    });
-
-    it("transfers token of approved amount", async () => {
-      expect(
-        (await this.abctoken.balanceOf(this.distributor.address)).toString()
-      ).to.equal("100");
-    });
-
-    it("increment next campaign id", async () => {
-      expect((await this.distributor.nextCampaignId()).toString()).to.equal(
-        "2"
-      );
-    });
-
-    it("emits event", async () => {
-      const result = await receipt.wait();
-      const claimEvent = result.events.find(
-        (event) => event.event === "CreateCampaign"
-      );
-      expect(claimEvent.args.campaignId).to.equal("1");
-      expect(claimEvent.args.token).to.equal(this.abctoken.address);
-      expect(claimEvent.args.creator).to.equal(owner.address);
-    });
+  it("transfer allowance", async () => {
+    await this.abctoken.approve(this.distributor.address, 100);
+    receipt = await this.distributor.createCampaign(
+      merkleRoot,
+      this.abctoken.address,
+      merkleTreeCid,
+      campaignInfoCid,
+      50
+    );
+    expect(await this.distributor.remainingAmount("1")).to.equal(50);
   });
 
   describe("claim", () => {
@@ -119,7 +143,8 @@ describe("WalletDistributor", () => {
         merkleRoot,
         this.abctoken.address,
         merkleTreeCid,
-        campaignInfoCid
+        campaignInfoCid,
+        100
       );
     });
 
@@ -134,20 +159,6 @@ describe("WalletDistributor", () => {
         );
       });
 
-      it("increment claimedNum", async () => {
-        const claimedNumBefore = await this.distributor.claimedNum();
-        expect(claimedNumBefore).to.equal(BigNumber.from(0));
-        await this.distributor.claim(
-          1,
-          1,
-          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
-          BigNumber.from(100),
-          proof
-        );
-        const claimedNumAfter = await this.distributor.claimedNum();
-        expect(claimedNumAfter).to.equal(BigNumber.from(1));
-      });
-
       it("emits event", async () => {
         const receipt = await this.distributor
           .connect(alice)
@@ -160,14 +171,14 @@ describe("WalletDistributor", () => {
           );
         const result = await receipt.wait();
         const claimEvent = result.events.find(
-          (event) => event.event === "Claim"
+          (event) => event.event === "Claimed"
         );
-        expect(claimEvent.args.from).to.equal(
+        expect(claimEvent.args.campaignId).to.equal(1);
+        expect(claimEvent.args.index).to.equal(1);
+        expect(claimEvent.args.account).to.equal(
           "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1"
         );
-        expect(claimEvent.args.to).to.equal(
-          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1"
-        );
+        expect(claimEvent.args.amount).to.equal(100);
       });
 
       it("revert if index is invalid", async () => {
@@ -252,13 +263,15 @@ describe("WalletDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid
+          campaignInfoCid,
+          100
         );
         await this.distributor.createCampaign(
           merkleRoot,
           this.xyztoken.address,
           merkleTreeCid,
-          campaignInfoCid
+          campaignInfoCid,
+          100
         );
       });
 
@@ -300,14 +313,16 @@ describe("WalletDistributor", () => {
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid
+          campaignInfoCid,
+          100
         );
         await this.abctoken.approve(this.distributor.address, 100);
         await this.distributor.createCampaign(
           merkleRoot,
           this.abctoken.address,
           merkleTreeCid,
-          campaignInfoCid
+          campaignInfoCid,
+          100
         );
       });
 
@@ -332,6 +347,27 @@ describe("WalletDistributor", () => {
           BigNumber.from(100),
           proof
         );
+      });
+
+      it("decrease remaining map", async () => {
+        await this.distributor.claim(
+          1,
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          BigNumber.from(100),
+          proof
+        );
+        expect(await this.distributor.remainingAmount("1")).to.equal(0);
+        expect(await this.distributor.remainingAmount("2")).to.equal(100);
+        await this.distributor.claim(
+          2,
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          BigNumber.from(100),
+          proof
+        );
+        expect(await this.distributor.remainingAmount("1")).to.equal(0);
+        expect(await this.distributor.remainingAmount("2")).to.equal(0);
       });
 
       it("claim does not use other campaign's tokens", async () => {

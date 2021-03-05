@@ -19,38 +19,25 @@ pragma solidity =0.7.6;
 
 contract DistributorInterfaceV1 {
     event CreateCampaign(
-        uint256 indexed campaignId,
+        uint64 indexed campaignId,
         address indexed token,
-        address indexed creator
+        address indexed creator,
+        string merkleTreeCid,
+        string campaignInfoCid
     );
-
-    event Claim(
-        address indexed from,
-        address indexed to
-    );
-
-    struct Campaign {
-        address campaignToken;
-        uint256 claimAmount;
-        uint32 claimedNum;
-        string merkleTreeCid;
-    }
 
     constructor(string memory _distributorInfoCid) {
         distributorInfoCid = _distributorInfoCid;
     }
 
     string public distributorInfoCid;
-    // TODO: Add features updatable or whitelist
-    uint256 public nextCampaignId = 1;
-    uint32 public claimedNum = 0;
-    mapping(uint256 => string) public merkleTreeCidMap;
-    mapping(uint256 => string) public campaignInfoCidMap;
+    uint64 public nextCampaignId = 1;
 
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
         string memory merkleTreeCid,
-        string memory campaignInfoCid
+        string memory campaignInfoCid,
+        uint256 allowance
     ) virtual external {}
 }

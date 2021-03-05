@@ -46,7 +46,8 @@ describe("DistributorInterfaceV1", () => {
       "0x33e954d45e481a7c78be8cb27f39277113b2519ef0c0d237ab91a054d4bc4f7a",
       this.abctoken.address,
       "merkle tree cid",
-      "campaign info cid"
+      "campaign info cid",
+      100
     );
   });
 });
