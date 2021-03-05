@@ -8,20 +8,26 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/test-helpers": "^0.5.10",
+    "@truffle/hdwallet-provider": "^1.2.2",
     "chai": "^4.3.3",
+    "dotenv": "^8.2.0",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.0.31",
     "hardhat": "^2.1.0",
     "hardhat-gas-reporter": "^1.0.4",
-    "solidity-coverage": "^0.7.15"
+    "solidity-coverage": "^0.7.15",
+    "truffle": "^5.2.2"
   },
   "dependencies": {
     "@iroiro/merkle-distributor": "1.2.1",
-    "@openzeppelin/contracts": "^3.4.1"
+    "@openzeppelin/contracts": "^3.4.1",
+    "hardhat-typechain": "^0.3.5",
+    "ts-generator": "^0.1.1",
+    "typechain": "^4.0.2"
   }
 }
