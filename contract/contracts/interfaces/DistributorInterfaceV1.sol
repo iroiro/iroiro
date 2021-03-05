@@ -38,7 +38,6 @@ contract DistributorInterfaceV1 {
     }
 
     string public distributorInfoCid;
-    // TODO: Add features updatable or whitelist
     uint64 public nextCampaignId = 1;
 
     function createCampaign(
