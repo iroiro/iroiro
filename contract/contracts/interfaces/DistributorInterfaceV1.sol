@@ -31,7 +31,6 @@ contract DistributorInterfaceV1 {
     }
 
     string public distributorInfoCid;
-    uint64 public nextCampaignId = 1;
 
     function createCampaign(
         bytes32 merkleRoot,
