@@ -92,9 +92,9 @@ describe("UUIDDistributor", () => {
       });
 
       it("increment next campaign id", async () => {
-        expect((await this.distributor.nextCampaignId()).toString()).to.equal(
-          "2"
-        );
+        expect(
+          (await this.distributor.nextDistributionId()).toString()
+        ).to.equal("2");
       });
 
       it("emits event", async () => {
@@ -102,7 +102,7 @@ describe("UUIDDistributor", () => {
         const claimEvent = result.events.find(
           (event) => event.event === "CreateCampaign"
         );
-        expect(claimEvent.args.campaignId).to.equal("1");
+        expect(claimEvent.args.distributionId).to.equal("1");
         expect(claimEvent.args.token).to.equal(this.abctoken.address);
         expect(claimEvent.args.creator).to.equal(owner.address);
         expect(claimEvent.args.merkleTreeCid).to.equal(merkleTreeCid);
@@ -163,7 +163,7 @@ describe("UUIDDistributor", () => {
         const claimEvent = result.events.find(
           (event) => event.event === "Claimed"
         );
-        expect(claimEvent.args.campaignId).to.equal(1);
+        expect(claimEvent.args.distributionId).to.equal(1);
         expect(claimEvent.args.index).to.equal(1);
         expect(claimEvent.args.account).to.equal(alice.address);
         expect(claimEvent.args.amount).to.equal(100);

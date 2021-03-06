@@ -19,7 +19,7 @@ pragma solidity =0.7.6;
 
 contract DistributorInterfaceV1 {
     event CreateCampaign(
-        uint64 indexed campaignId,
+        uint64 indexed distributionId,
         address indexed token,
         address indexed creator,
         string merkleTreeCid,

@@ -39,7 +39,7 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
         addDistribution(token, merkleRoot, allowance);
 
         emit CreateCampaign(
-            nextCampaignId.sub(1),
+            nextDistributionId.sub(1),
             token,
             msg.sender,
             merkleTreeCid,
