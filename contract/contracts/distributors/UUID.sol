@@ -46,14 +46,4 @@ contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManag
             campaignInfoCid
         );
     }
-
-    function claim(
-        uint64 campaignId,
-        uint256 index,
-        string calldata hashed,
-        uint256 amount,
-        bytes32[] calldata merkleProof
-    ) public override {
-        super.claim(campaignId, index, hashed, amount, merkleProof);
-    }
 }

@@ -46,14 +46,4 @@ contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
             campaignInfoCid
         );
     }
-
-    function claim(
-        uint64 campaignId,
-        uint256 index,
-        address account,
-        uint256 amount,
-        bytes32[] calldata merkleProof
-    ) public override {
-        super.claim(campaignId, index, account, amount, merkleProof);
-    }
 }
