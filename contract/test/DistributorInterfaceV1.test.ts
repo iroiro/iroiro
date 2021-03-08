@@ -16,7 +16,7 @@
  */
 
 import { assert, expect } from "chai";
-import { Contract, ContractFactory, ContractReceipt, Signer } from "ethers";
+import { Contract, ContractFactory, Signer } from "ethers";
 import { ethers } from "hardhat";
 import { DistributorInterfaceV1 } from "../types";
 

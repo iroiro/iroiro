@@ -35,14 +35,14 @@ contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
         string calldata campaignInfoCid,
         uint256 allowance
     ) external override {
-        addDistribution(token, merkleRoot, allowance);
-
         emit CreateCampaign(
-            nextDistributionId.sub(1),
+            nextDistributionId,
             token,
             msg.sender,
             merkleTreeCid,
             campaignInfoCid
         );
+
+        addDistribution(token, merkleRoot, allowance);
     }
 }
