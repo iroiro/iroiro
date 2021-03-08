@@ -15,53 +15,58 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const { accounts, contract } = require("@openzeppelin/test-environment");
-const { assert, expect } = require("chai");
+import { expect } from "chai";
+import { Contract, ContractFactory, Signer } from "ethers";
+import { ethers } from "hardhat";
 
-const tIRO = contract.fromArtifact("tIRO");
-
-describe("tIRO", () => {
-  const [owner, alice, bob] = accounts;
+describe("tIRO", function () {
+  let owner: Signer, alice: Signer, bob: Signer;
+  let testToken: Contract;
+  let tIRO: ContractFactory;
 
   beforeEach(async () => {
-    this.testToken = await tIRO.new({ from: owner });
+    tIRO = await ethers.getContractFactory("tIRO");
+    [owner, alice, bob] = await ethers.getSigners();
+    testToken = await tIRO.deploy();
   });
 
   it("has a name", async () => {
-    expect(await this.testToken.name()).to.equal("testIroiro");
+    expect(await testToken.name()).to.equal("testIroiro");
   });
 
   it("has a symbol", async () => {
-    expect(await this.testToken.symbol()).to.equal("tIRO");
+    expect(await testToken.symbol()).to.equal("tIRO");
   });
 
   it("mints a token", async () => {
-    expect((await this.testToken.totalSupply()).toString()).to.equal(
+    expect((await testToken.totalSupply()).toString()).to.equal(
       "1000000000000000000000000"
     );
   });
 
   it("transferred a token to creator", async () => {
-    expect((await this.testToken.balanceOf(owner)).toString()).to.equal(
-      "1000000000000000000000000"
-    );
+    expect(
+      (await testToken.balanceOf(await owner.getAddress())).toString()
+    ).to.equal("1000000000000000000000000");
   });
 
   it("set decimals given as argument", async () => {
-    expect((await this.testToken.decimals()).toString()).to.equal("18");
+    expect((await testToken.decimals()).toString()).to.equal("18");
   });
 
   it("everybody can mint a token", async () => {
-    await this.testToken.mint(alice, { from: alice });
-    expect((await this.testToken.balanceOf(alice)).toString()).to.equal(
-      "1000000000000000000000"
-    );
+    await testToken.connect(alice).mint(await alice.getAddress());
+    expect(
+      (await testToken.balanceOf(await alice.getAddress())).toString()
+    ).to.equal("1000000000000000000000");
   });
 
   it("Sending a 0 value transaction will give sender tokens.", async () => {
-    await this.testToken.send(0, { from: bob });
-    expect((await this.testToken.balanceOf(bob)).toString()).to.equal(
-      "1000000000000000000000"
-    );
+    await bob.sendTransaction({
+      to: testToken.address,
+    });
+    expect(
+      (await testToken.balanceOf(await bob.getAddress())).toString()
+    ).to.equal("1000000000000000000000");
   });
 });
