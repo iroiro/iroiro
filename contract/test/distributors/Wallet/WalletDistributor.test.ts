@@ -16,15 +16,9 @@
  */
 
 import { assert, expect } from "chai";
-import {
-  BigNumber,
-  Contract,
-  ContractFactory,
-  ContractTransaction,
-  Signer,
-} from "ethers";
+import { BigNumber, Contract, ContractTransaction, Signer } from "ethers";
 import { ethers } from "hardhat";
-import { UUIDDistributor, WalletDistributor } from "../../../types";
+import { WalletDistributor } from "../../../types";
 
 describe("WalletDistributor", () => {
   let owner: Signer;
@@ -138,6 +132,47 @@ describe("WalletDistributor", () => {
             100
           )
         ).to.be.revertedWith("ERC20: transfer amount exceeds allowance");
+      });
+
+      it("no emits if reverted", async () => {
+        expect(
+          (
+            await distributor.queryFilter(
+              distributor.filters.CreateCampaign(null, null, null, null, null)
+            )
+          ).length
+        ).to.equals(0);
+        await abctoken.approve(distributor.address, 100);
+        await distributor.createCampaign(
+          merkleRoot,
+          abctoken.address,
+          merkleTreeCid,
+          campaignInfoCid,
+          100
+        );
+        expect(
+          (
+            await distributor.queryFilter(
+              distributor.filters.CreateCampaign(null, null, null, null, null)
+            )
+          ).length
+        ).to.equals(1);
+        await expect(
+          distributor.createCampaign(
+            merkleRoot,
+            abctoken.address,
+            merkleTreeCid,
+            campaignInfoCid,
+            100
+          )
+        ).to.be.revertedWith("ERC20: transfer amount exceeds allowance");
+        expect(
+          (
+            await distributor.queryFilter(
+              distributor.filters.CreateCampaign(null, null, null, null, null)
+            )
+          ).length
+        ).to.equals(1);
       });
     });
   });
