@@ -17,7 +17,13 @@
  */
 pragma solidity =0.7.6;
 
-contract DistributorInterfaceV1 {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract DistributorInterfaceV1 is Ownable {
+    event UpdateDistributorInfo(
+        string cid
+    );
+
     event CreateCampaign(
         uint64 indexed distributionId,
         address indexed token,
@@ -26,11 +32,9 @@ contract DistributorInterfaceV1 {
         string campaignInfoCid
     );
 
-    constructor(string memory _distributorInfoCid) {
-        distributorInfoCid = _distributorInfoCid;
+    constructor(string memory distributorInfoCid) {
+        emit UpdateDistributorInfo(distributorInfoCid);
     }
-
-    string public distributorInfoCid;
 
     function createCampaign(
         bytes32 merkleRoot,
@@ -39,4 +43,8 @@ contract DistributorInterfaceV1 {
         string memory campaignInfoCid,
         uint256 allowance
     ) virtual external {}
+
+    function updateDistributorInfo(string calldata distributorInfoCid) external onlyOwner {
+        emit UpdateDistributorInfo(distributorInfoCid);
+    }
 }

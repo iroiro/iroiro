@@ -20,7 +20,6 @@ pragma solidity =0.7.6;
 
 import "@iroiro/merkle-distributor/contracts/MerkleDistributorManager.sol";
 import "@iroiro/merkle-distributor/contracts/SafeMath64.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
 
 contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
@@ -36,14 +35,14 @@ contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
         string calldata campaignInfoCid,
         uint256 allowance
     ) external override {
-        addDistribution(token, merkleRoot, allowance);
-
         emit CreateCampaign(
-            nextDistributionId.sub(1),
+            nextDistributionId,
             token,
             msg.sender,
             merkleTreeCid,
             campaignInfoCid
         );
+
+        addDistribution(token, merkleRoot, allowance);
     }
 }

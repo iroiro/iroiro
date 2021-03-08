@@ -15,10 +15,14 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const { expect } = require("chai");
+import { expect } from "chai";
+import { Contract, ContractFactory, Signer } from "ethers";
+import { ethers } from "hardhat";
 
 describe("tIRO", function () {
-  let owner, alice, bob, testToken, tIRO;
+  let owner: Signer, alice: Signer, bob: Signer;
+  let testToken: Contract;
+  let tIRO: ContractFactory;
 
   beforeEach(async () => {
     tIRO = await ethers.getContractFactory("tIRO");
@@ -41,9 +45,9 @@ describe("tIRO", function () {
   });
 
   it("transferred a token to creator", async () => {
-    expect((await testToken.balanceOf(owner.address)).toString()).to.equal(
-      "1000000000000000000000000"
-    );
+    expect(
+      (await testToken.balanceOf(await owner.getAddress())).toString()
+    ).to.equal("1000000000000000000000000");
   });
 
   it("set decimals given as argument", async () => {
@@ -51,18 +55,18 @@ describe("tIRO", function () {
   });
 
   it("everybody can mint a token", async () => {
-    await testToken.connect(alice).mint(alice.address);
-    expect((await testToken.balanceOf(alice.address)).toString()).to.equal(
-      "1000000000000000000000"
-    );
+    await testToken.connect(alice).mint(await alice.getAddress());
+    expect(
+      (await testToken.balanceOf(await alice.getAddress())).toString()
+    ).to.equal("1000000000000000000000");
   });
 
   it("Sending a 0 value transaction will give sender tokens.", async () => {
     await bob.sendTransaction({
       to: testToken.address,
     });
-    expect((await testToken.balanceOf(bob.address)).toString()).to.equal(
-      "1000000000000000000000"
-    );
+    expect(
+      (await testToken.balanceOf(await bob.getAddress())).toString()
+    ).to.equal("1000000000000000000000");
   });
 });
