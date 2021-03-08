@@ -20,7 +20,6 @@ pragma solidity =0.7.6;
 
 import "@iroiro/merkle-distributor/contracts/MerkleDistributorManager.sol";
 import "@iroiro/merkle-distributor/contracts/SafeMath64.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
 
 contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
