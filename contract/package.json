@@ -16,8 +16,8 @@
     "test": "npx hardhat test",
     "format": "yarn prettier --write .",
     "generate-types:web3": "typechain --target=web3-v1 'build/contracts/*.json' --outDir=../types/web3",
-    "generate-types:ethers": "typechain --target=ethers-v5 'build/contracts/*.json' --outDir=../frontend/packages/react-app/src/types",
-    "postinstall": "yarn compile && yarn generate-types:web3 && yarn generate-types:ethers"
+    "generate-types:ethers": "typechain --target=ethers-v5 'build/contracts/*.json'",
+    "postinstall": "yarn compile && yarn generate-types:web3 && yarn generate-types:ethers --outDir=types && yarn generate-types:ethers --outDir=../frontend/packages/react-app/src/types"
   },
   "keywords": [],
   "author": "",
