@@ -15,13 +15,15 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import { expect } from "chai";
-import { Contract, ContractFactory, Signer } from "ethers";
+import { assert, expect } from "chai";
+import { Contract, ContractFactory, ContractReceipt, Signer } from "ethers";
 import { ethers } from "hardhat";
+import { DistributorInterfaceV1 } from "../types";
 
 describe("DistributorInterfaceV1", () => {
   let owner: Signer;
-  let distributor: Contract;
+  let alice: Signer;
+  let distributor: DistributorInterfaceV1;
   let abctoken: Contract;
 
   beforeEach(async () => {
@@ -29,8 +31,10 @@ describe("DistributorInterfaceV1", () => {
       "DistributorInterfaceV1"
     );
     const Token: ContractFactory = await ethers.getContractFactory("ERC20Mock");
-    [owner] = await ethers.getSigners();
-    distributor = await Distributor.deploy("distributor info cid");
+    [owner, alice] = await ethers.getSigners();
+    distributor = (await Distributor.deploy(
+      "distributor info cid"
+    )) as DistributorInterfaceV1;
     abctoken = await Token.deploy(
       "ABCToken",
       "ABC",
@@ -40,9 +44,16 @@ describe("DistributorInterfaceV1", () => {
   });
 
   it("has a cid", async () => {
-    expect(await distributor.distributorInfoCid()).to.equal(
-      "distributor info cid"
+    const events = await distributor.queryFilter(
+      distributor.filters.UpdateDistributorInfo(null)
     );
+    const updateEvent = events.find(
+      (event) => event.event === "UpdateDistributorInfo"
+    );
+    if (updateEvent === undefined || updateEvent.args === undefined) {
+      assert.fail();
+    }
+    expect(updateEvent.args.cid).to.equal("distributor info cid");
   });
 
   it("create campaign do nothing", async () => {
@@ -53,5 +64,33 @@ describe("DistributorInterfaceV1", () => {
       "campaign info cid",
       100
     );
+  });
+
+  describe("updateDistributorInfo", () => {
+    it("emits event", async () => {
+      const transaction = await distributor.updateDistributorInfo(
+        "new distributor info cid"
+      );
+      const receipt = await transaction.wait();
+      if (receipt.events === undefined) {
+        assert.fail();
+      }
+      const updateEvent = receipt.events.find(
+        (event) => event.event === "UpdateDistributorInfo"
+      );
+      if (updateEvent === undefined || updateEvent.args === undefined) {
+        assert.fail();
+      }
+      expect(updateEvent.args.cid).to.equal("new distributor info cid");
+    });
+
+    it("only owner", async () => {
+      await distributor.updateDistributorInfo("new distributor info cid");
+      await expect(
+        distributor
+          .connect(alice)
+          .updateDistributorInfo("new distributor info cid")
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
   });
 });
