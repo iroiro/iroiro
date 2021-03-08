@@ -15,28 +15,36 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import { log } from "@graphprotocol/graph-ts";
-import { Campaign, Creator, Distributor } from "../types/schema";
-import { WalletCampaign as CampaignTemplate } from "../types/templates";
+import { BigInt, log } from "@graphprotocol/graph-ts";
+import {
+  Account,
+  Campaign,
+  Claim,
+  Creator,
+  Distributor,
+} from "../types/schema";
 import {
   WalletDistributor,
   CreateCampaign,
+  Claimed as ClaimedEvent,
+  UpdateDistributorInfo,
 } from "../types/WalletDistributor/WalletDistributor";
-import { WalletCampaign } from "../types/templates/WalletCampaign/WalletCampaign";
 
-export function handleCreateCampaign(event: CreateCampaign): void {
+export function handleUpdateDistributorInfo(
+  event: UpdateDistributorInfo
+): void {
   let distributorId = event.address.toHexString();
   let distributor = Distributor.load(distributorId);
   if (distributor == null) {
     distributor = new Distributor(distributorId);
   }
+  distributor.distributorInfoCid = event.params.cid;
+
+  distributor.save();
+}
+
+export function handleCreateCampaign(event: CreateCampaign): void {
   let distributorContract = WalletDistributor.bind(event.address);
-  let callDistributorCid = distributorContract.try_distributorInfoCid();
-  if (callDistributorCid.reverted) {
-    log.warning("Distributor cid not found. Campaign: {}", [distributorId]);
-  } else {
-    distributor.distributorCid = callDistributorCid.value;
-  }
 
   let creatorId = event.params.creator.toHexString();
   let creator = Creator.load(creatorId);
@@ -44,7 +52,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     creator = new Creator(creatorId);
   }
 
-  let campaignId = event.params.campaign.toHexString();
+  let campaignId = event.params.distributionId.toString();
   let campaign = Campaign.load(campaignId);
   if (campaign == null) {
     campaign = new Campaign(campaignId);
@@ -52,66 +60,53 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   campaign.distributor = event.address.toHexString();
   campaign.token = event.params.token.toHexString();
   campaign.creator = event.params.creator.toHexString();
-
-  let campaignContract = WalletCampaign.bind(event.params.campaign);
-  let callStartDate = campaignContract.try_startDate();
-  if (callStartDate.reverted) {
-    log.warning("Start date not found. Campaign: {}", [campaignId]);
-  } else {
-    campaign.startDate = callStartDate.value;
-  }
-  let callEndDate = campaignContract.try_endDate();
-  if (callEndDate.reverted) {
-    log.warning("End date not found. Campaign: {}", [campaignId]);
-  } else {
-    campaign.endDate = callEndDate.value;
-  }
-  let callClaimAmount = campaignContract.try_claimAmount();
-  if (callClaimAmount.reverted) {
-    log.warning("Claim amount not found. Campaign: {}", [campaignId]);
-  } else {
-    campaign.claimAmount = callClaimAmount.value;
-  }
-  let callClaimedNum = campaignContract.try_claimedNum();
-  if (callClaimedNum.reverted) {
-    log.warning("Claimed num not found. Campaign: {}", [campaignId]);
-  } else {
-    campaign.claimedNum = callClaimedNum.value;
-  }
-  let callCampaignInfoCid = campaignContract.try_campaignInfoCid();
-  if (callCampaignInfoCid.reverted) {
-    log.warning("Campaign info cid not found. Campaign: {}", [campaignId]);
-  } else {
-    campaign.campaignInfoCid = callCampaignInfoCid.value;
-  }
-  let callRecipientsCid = campaignContract.try_recipientsCid();
-  if (callRecipientsCid.reverted) {
-    log.warning("Recipients cid not found. Campaign: {}", [campaignId]);
-  } else {
-    campaign.recipientsCid = callRecipientsCid.value;
-  }
-  let merkleTreeCid = campaignContract.try_merkleTreeCid();
-  if (merkleTreeCid.reverted) {
-    log.warning("Merkle tree cid not found. Campaign: {}", [campaignId]);
-  } else {
-    campaign.merkleTreeCid = merkleTreeCid.value;
-  }
-  let merkleRoot = campaignContract.try_merkleRoot();
+  campaign.claimedNum = new BigInt(0);
+  campaign.campaignInfoCid = event.params.campaignInfoCid;
+  campaign.merkleTreeCid = event.params.merkleTreeCid;
+  let merkleRoot = distributorContract.try_merkleRoot(
+    event.params.distributionId
+  );
   if (merkleRoot.reverted) {
     log.warning("Merkle root not found. Campaign: {}", [campaignId]);
   } else {
     campaign.merkleRoot = merkleRoot.value;
   }
-  let callStatus = campaignContract.try_status();
-  if (callStatus.reverted) {
-    log.warning("Status not found. Campaign: {}", [campaignId]);
-  } else {
-    campaign.status = callStatus.value;
-  }
 
   campaign.save();
-  distributor.save();
   creator.save();
+}
 
-  CampaignTemplate.create(event.params.campaign);
+export function handleClaimed(event: ClaimedEvent): void {
+  let accountId = event.transaction.from.toHexString();
+  let campaignId = event.params.distributionId;
+  let claimId = accountId.concat("-").concat(campaignId.toString());
+  let account = Account.load(accountId);
+  if (account == null) {
+    account = new Account(accountId);
+  }
+  let campaign = Campaign.load(campaignId.toString());
+  if (campaign == null) {
+    campaign = new Campaign(campaignId.toString());
+  }
+  let claimedNum = campaign.claimedNum;
+  campaign.claimedNum = claimedNum.plus(new BigInt(1));
+
+  let claim = Claim.load(claimId);
+  if (claim == null) {
+    claim = new Claim(claimId);
+  }
+  claim.account = event.params.account.toHexString();
+  claim.campaign = event.params.distributionId.toString();
+  let distributorContract = WalletDistributor.bind(event.address);
+  let callToken = distributorContract.try_token(campaignId);
+  if (callToken.reverted) {
+    log.warning("Token not found. Campaign: {}", [campaignId.toString()]);
+  } else {
+    claim.token = callToken.value.toHexString();
+  }
+  claim.amount = event.params.amount;
+
+  campaign.save();
+  account.save();
+  claim.save();
 }

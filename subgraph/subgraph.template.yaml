@@ -16,15 +16,18 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Campaign
+        - Claim
         - Distributor
       abis:
         - name: WalletDistributor
           file: ../contract/build/contracts/WalletDistributor.json
-        - name: WalletCampaign
-          file: ../contract/build/contracts/WalletCampaign.json
       eventHandlers:
-        - event: CreateCampaign(indexed address,indexed address,indexed address)
+        - event: UpdateDistributorInfo(string)
+          handler: handleUpdateDistributorInfo
+        - event: CreateCampaign(indexed uint64,indexed address,indexed address,string,string)
           handler: handleCreateCampaign
+        - event: Claimed(indexed uint64,uint256,indexed address,uint256)
+          handler: handleClaimed
       file: ./src/distributors/wallet-distributor.ts
 
   - kind: ethereum/contract
@@ -44,54 +47,11 @@ dataSources:
       abis:
         - name: UUIDDistributor
           file: ../contract/build/contracts/UUIDDistributor.json
-        - name: UUIDCampaign
-          file: ../contract/build/contracts/UUIDCampaign.json
       eventHandlers:
-        - event: CreateCampaign(indexed address,indexed address,indexed address)
+        - event: UpdateDistributorInfo(string)
+          handler: handleUpdateDistributorInfo
+        - event: CreateCampaign(indexed uint64,indexed address,indexed address,string,string)
           handler: handleCreateCampaign
+        - event: Claimed(indexed uint64,uint256,indexed address,uint256)
+          handler: handleClaimed
       file: ./src/distributors/uuid-distributor.ts
-
-templates:
-  - kind: ethereum/contract
-    name: WalletCampaign
-    network: {{network}}
-    source:
-      abi: WalletCampaign
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Campaign
-        - Claim
-      abis:
-        - name: WalletCampaign
-          file: ../contract/build/contracts/WalletCampaign.json
-      eventHandlers:
-        - event: Claim(indexed address,indexed address)
-          handler: handleClaim
-        - event: UpdateStatus()
-          handler: handleUpdateStatus
-      file: ./src/campaigns/wallet-campaign.ts
-
-  - kind: ethereum/contract
-    name: UUIDCampaign
-    network: {{network}}
-    source:
-      abi: UUIDCampaign
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Campaign
-        - Claim
-      abis:
-        - name: UUIDCampaign
-          file: ../contract/build/contracts/UUIDCampaign.json
-      eventHandlers:
-        - event: Claim(indexed address,indexed address)
-          handler: handleClaim
-        - event: UpdateStatus()
-          handler: handleUpdateStatus
-      file: ./src/campaigns/uuid-campaign.ts
