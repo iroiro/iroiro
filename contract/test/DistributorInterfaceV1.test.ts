@@ -15,36 +15,40 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const { expect } = require("chai");
+import { expect } from "chai";
+import { Contract, ContractFactory, Signer } from "ethers";
+import { ethers } from "hardhat";
 
 describe("DistributorInterfaceV1", () => {
-  let owner;
+  let owner: Signer;
+  let distributor: Contract;
+  let abctoken: Contract;
 
   beforeEach(async () => {
-    const Distributor = await ethers.getContractFactory(
+    const Distributor: ContractFactory = await ethers.getContractFactory(
       "DistributorInterfaceV1"
     );
-    const Token = await ethers.getContractFactory("ERC20Mock");
+    const Token: ContractFactory = await ethers.getContractFactory("ERC20Mock");
     [owner] = await ethers.getSigners();
-    this.distributor = await Distributor.deploy("distributor info cid");
-    this.abctoken = await Token.deploy(
+    distributor = await Distributor.deploy("distributor info cid");
+    abctoken = await Token.deploy(
       "ABCToken",
       "ABC",
-      owner.address,
+      await owner.getAddress(),
       1000000000
     );
   });
 
   it("has a cid", async () => {
-    expect(await this.distributor.distributorInfoCid()).to.equal(
+    expect(await distributor.distributorInfoCid()).to.equal(
       "distributor info cid"
     );
   });
 
   it("create campaign do nothing", async () => {
-    await this.distributor.createCampaign(
+    await distributor.createCampaign(
       "0x33e954d45e481a7c78be8cb27f39277113b2519ef0c0d237ab91a054d4bc4f7a",
-      this.abctoken.address,
+      abctoken.address,
       "merkle tree cid",
       "campaign info cid",
       100
