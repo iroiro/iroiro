@@ -11,14 +11,11 @@ input CheckRequestsCondition {
 }
 
 type Query {
-  tokens: [Token!]!
   account(id: ID!): Account
   creator(id: ID!): Creator
-  accountToken(id: ID!): AccountToken
   campaigns(where: CampaignsCondition!): [Campaign!]!
   campaign(id: ID!): Campaign
   distributors: [Distributor!]!
-  checkRequests(where: CheckRequestsCondition!): [CheckRequest!]!
   claim(id: ID!): Claim
 }
 
