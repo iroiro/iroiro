@@ -24,7 +24,7 @@ import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 interface IMerkleDistributorManagerInterface extends ethers.utils.Interface {
   functions: {
     "distributionMap(uint64)": FunctionFragment;
-    "nextCampaignId()": FunctionFragment;
+    "nextDistributionId()": FunctionFragment;
     "token(uint64)": FunctionFragment;
     "merkleRoot(uint64)": FunctionFragment;
     "remainingAmount(uint64)": FunctionFragment;
@@ -37,7 +37,7 @@ interface IMerkleDistributorManagerInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "nextCampaignId",
+    functionFragment: "nextDistributionId",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "token", values: [BigNumberish]): string;
@@ -63,7 +63,7 @@ interface IMerkleDistributorManagerInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "nextCampaignId",
+    functionFragment: "nextDistributionId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
@@ -151,62 +151,62 @@ export class IMerkleDistributorManager extends Contract {
       }
     >;
 
-    nextCampaignId(overrides?: CallOverrides): Promise<[BigNumber]>;
+    nextDistributionId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "nextCampaignId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    "nextDistributionId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     token(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     "token(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     merkleRoot(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     "merkleRoot(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     remainingAmount(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     "remainingAmount(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     isClaimed(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     "isClaimed(uint64,uint256)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     addDistribution(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     "addDistribution(address,bytes32,uint256)"(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
@@ -234,59 +234,62 @@ export class IMerkleDistributorManager extends Contract {
     }
   >;
 
-  nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
+  nextDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
+  "nextDistributionId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  token(campaignId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  token(
+    distributionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   "token(uint64)"(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
   merkleRoot(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
   "merkleRoot(uint64)"(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
   remainingAmount(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   "remainingAmount(uint64)"(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   isClaimed(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     index: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   "isClaimed(uint64,uint256)"(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     index: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   addDistribution(
-    token: string,
-    merkleRoot: BytesLike,
+    newToken: string,
+    newMerkleRoot: BytesLike,
     allowance: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   "addDistribution(address,bytes32,uint256)"(
-    token: string,
-    merkleRoot: BytesLike,
+    newToken: string,
+    newMerkleRoot: BytesLike,
     allowance: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
@@ -314,59 +317,62 @@ export class IMerkleDistributorManager extends Contract {
       }
     >;
 
-    nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
+    nextDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "nextDistributionId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    token(campaignId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    token(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     "token(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
     merkleRoot(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
     "merkleRoot(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
     remainingAmount(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "remainingAmount(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     isClaimed(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     "isClaimed(uint64,uint256)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     addDistribution(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     "addDistribution(address,bytes32,uint256)"(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -374,14 +380,14 @@ export class IMerkleDistributorManager extends Contract {
 
   filters: {
     Claimed(
-      campaignId: null,
+      distributionId: BigNumberish | null,
       index: null,
-      account: null,
+      account: string | null,
       amount: null
     ): TypedEventFilter<
       [BigNumber, BigNumber, string, BigNumber],
       {
-        campaignId: BigNumber;
+        distributionId: BigNumber;
         index: BigNumber;
         account: string;
         amount: BigNumber;
@@ -400,62 +406,62 @@ export class IMerkleDistributorManager extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
+    nextDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "nextDistributionId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     token(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "token(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     merkleRoot(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "merkleRoot(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     remainingAmount(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "remainingAmount(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     isClaimed(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "isClaimed(uint64,uint256)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     addDistribution(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     "addDistribution(address,bytes32,uint256)"(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
@@ -472,64 +478,66 @@ export class IMerkleDistributorManager extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    nextCampaignId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    nextDistributionId(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    "nextCampaignId()"(
+    "nextDistributionId()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     token(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "token(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     merkleRoot(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "merkleRoot(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     remainingAmount(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "remainingAmount(uint64)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isClaimed(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "isClaimed(uint64,uint256)"(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     addDistribution(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "addDistribution(address,bytes32,uint256)"(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;

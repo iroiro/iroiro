@@ -19,64 +19,62 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
+import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
 interface DistributorInterfaceV1Interface extends ethers.utils.Interface {
   functions: {
-    "campaignList(uint256)": FunctionFragment;
-    "distributorInfoCid()": FunctionFragment;
-    "nextCampaignId()": FunctionFragment;
-    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)": FunctionFragment;
+    "owner()": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "createCampaign(bytes32,address,string,string,uint256)": FunctionFragment;
+    "updateDistributorInfo(string)": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "campaignList",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "distributorInfoCid",
+    functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "nextCampaignId",
-    values?: undefined
+    functionFragment: "transferOwnership",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "createCampaign",
-    values: [
-      BytesLike,
-      string,
-      string,
-      string,
-      string,
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish
-    ]
+    values: [BytesLike, string, string, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateDistributorInfo",
+    values: [string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "campaignList",
+    functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "distributorInfoCid",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "nextCampaignId",
+    functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "createCampaign",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateDistributorInfo",
     data: BytesLike
   ): Result;
 
   events: {
-    "CreateCampaign(address,address,address)": EventFragment;
+    "CreateCampaign(uint64,address,address,string,string)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+    "UpdateDistributorInfo(string)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CreateCampaign"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdateDistributorInfo"): EventFragment;
 }
 
 export class DistributorInterfaceV1 extends Contract {
@@ -84,249 +82,399 @@ export class DistributorInterfaceV1 extends Contract {
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  on(event: EventFilter | string, listener: Listener): this;
-  once(event: EventFilter | string, listener: Listener): this;
-  addListener(eventName: EventFilter | string, listener: Listener): this;
-  removeAllListeners(eventName: EventFilter | string): this;
-  removeListener(eventName: any, listener: Listener): this;
+  listeners<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
+  ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
+  off<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+    listener: TypedListener<EventArgsArray, EventArgsObject>
+  ): this;
+  on<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+    listener: TypedListener<EventArgsArray, EventArgsObject>
+  ): this;
+  once<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+    listener: TypedListener<EventArgsArray, EventArgsObject>
+  ): this;
+  removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+    listener: TypedListener<EventArgsArray, EventArgsObject>
+  ): this;
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
+  ): this;
+
+  listeners(eventName?: string): Array<Listener>;
+  off(eventName: string, listener: Listener): this;
+  on(eventName: string, listener: Listener): this;
+  once(eventName: string, listener: Listener): this;
+  removeListener(eventName: string, listener: Listener): this;
+  removeAllListeners(eventName?: string): this;
+
+  queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
+    event: TypedEventFilter<EventArgsArray, EventArgsObject>,
+    fromBlockOrBlockhash?: string | number | undefined,
+    toBlock?: string | number | undefined
+  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
   interface: DistributorInterfaceV1Interface;
 
   functions: {
-    campaignList(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(overrides?: CallOverrides): Promise<[string]>;
 
-    "campaignList(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+    /**
+     * Returns the address of the current owner.
+     */
+    "owner()"(overrides?: CallOverrides): Promise<[string]>;
 
-    distributorInfoCid(overrides?: CallOverrides): Promise<[string]>;
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>;
 
-    "distributorInfoCid()"(overrides?: CallOverrides): Promise<[string]>;
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-    nextCampaignId(overrides?: CallOverrides): Promise<[BigNumber]>;
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
-    "nextCampaignId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
     createCampaign(
       merkleRoot: BytesLike,
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: BigNumberish,
-      startDate: BigNumberish,
-      endDate: BigNumberish,
+      campaignInfoCid: string,
+      allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,string,string,uint256)"(
       merkleRoot: BytesLike,
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: BigNumberish,
-      startDate: BigNumberish,
-      endDate: BigNumberish,
+      campaignInfoCid: string,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    updateDistributorInfo(
+      distributorInfoCid: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "updateDistributorInfo(string)"(
+      distributorInfoCid: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
   };
 
-  campaignList(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  /**
+   * Returns the address of the current owner.
+   */
+  owner(overrides?: CallOverrides): Promise<string>;
 
-  "campaignList(uint256)"(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
+  /**
+   * Returns the address of the current owner.
+   */
+  "owner()"(overrides?: CallOverrides): Promise<string>;
 
-  distributorInfoCid(overrides?: CallOverrides): Promise<string>;
+  /**
+   * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+   */
+  renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>;
 
-  "distributorInfoCid()"(overrides?: CallOverrides): Promise<string>;
+  /**
+   * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+   */
+  "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-  nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
+  /**
+   * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+   */
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
+  /**
+   * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+   */
+  "transferOwnership(address)"(
+    newOwner: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   createCampaign(
     merkleRoot: BytesLike,
     token: string,
-    tokenHolder: string,
-    campaignInfoCid: string,
-    recipientsCid: string,
     merkleTreeCid: string,
-    recipientsNum: BigNumberish,
-    startDate: BigNumberish,
-    endDate: BigNumberish,
+    campaignInfoCid: string,
+    allowance: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+  "createCampaign(bytes32,address,string,string,uint256)"(
     merkleRoot: BytesLike,
     token: string,
-    tokenHolder: string,
-    campaignInfoCid: string,
-    recipientsCid: string,
     merkleTreeCid: string,
-    recipientsNum: BigNumberish,
-    startDate: BigNumberish,
-    endDate: BigNumberish,
+    campaignInfoCid: string,
+    allowance: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  updateDistributorInfo(
+    distributorInfoCid: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "updateDistributorInfo(string)"(
+    distributorInfoCid: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    campaignList(
-      arg0: BigNumberish,
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    "owner()"(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(
+      newOwner: string,
       overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<void>;
 
-    "campaignList(uint256)"(
-      arg0: BigNumberish,
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    "transferOwnership(address)"(
+      newOwner: string,
       overrides?: CallOverrides
-    ): Promise<string>;
-
-    distributorInfoCid(overrides?: CallOverrides): Promise<string>;
-
-    "distributorInfoCid()"(overrides?: CallOverrides): Promise<string>;
-
-    nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
+    ): Promise<void>;
 
     createCampaign(
       merkleRoot: BytesLike,
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: BigNumberish,
-      startDate: BigNumberish,
-      endDate: BigNumberish,
+      campaignInfoCid: string,
+      allowance: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,string,string,uint256)"(
       merkleRoot: BytesLike,
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: BigNumberish,
-      startDate: BigNumberish,
-      endDate: BigNumberish,
+      campaignInfoCid: string,
+      allowance: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateDistributorInfo(
+      distributorInfoCid: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "updateDistributorInfo(string)"(
+      distributorInfoCid: string,
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
     CreateCampaign(
-      campaign: string | null,
+      distributionId: BigNumberish | null,
       token: string | null,
-      creator: string | null
-    ): EventFilter;
+      creator: string | null,
+      merkleTreeCid: null,
+      campaignInfoCid: null
+    ): TypedEventFilter<
+      [BigNumber, string, string, string, string],
+      {
+        distributionId: BigNumber;
+        token: string;
+        creator: string;
+        merkleTreeCid: string;
+        campaignInfoCid: string;
+      }
+    >;
+
+    OwnershipTransferred(
+      previousOwner: string | null,
+      newOwner: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
+
+    UpdateDistributorInfo(
+      cid: null
+    ): TypedEventFilter<[string], { cid: string }>;
   };
 
   estimateGas: {
-    campaignList(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(overrides?: Overrides): Promise<BigNumber>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    "renounceOwnership()"(overrides?: Overrides): Promise<BigNumber>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "campaignList(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
     ): Promise<BigNumber>;
-
-    distributorInfoCid(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "distributorInfoCid()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    nextCampaignId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "nextCampaignId()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     createCampaign(
       merkleRoot: BytesLike,
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: BigNumberish,
-      startDate: BigNumberish,
-      endDate: BigNumberish,
+      campaignInfoCid: string,
+      allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,string,string,uint256)"(
       merkleRoot: BytesLike,
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: BigNumberish,
-      startDate: BigNumberish,
-      endDate: BigNumberish,
+      campaignInfoCid: string,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    updateDistributorInfo(
+      distributorInfoCid: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "updateDistributorInfo(string)"(
+      distributorInfoCid: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    campaignList(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(overrides?: Overrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    "renounceOwnership()"(overrides?: Overrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "campaignList(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    distributorInfoCid(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "distributorInfoCid()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    nextCampaignId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "nextCampaignId()"(
-      overrides?: CallOverrides
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     createCampaign(
       merkleRoot: BytesLike,
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: BigNumberish,
-      startDate: BigNumberish,
-      endDate: BigNumberish,
+      campaignInfoCid: string,
+      allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createCampaign(bytes32,address,address,string,string,string,uint32,uint256,uint256)"(
+    "createCampaign(bytes32,address,string,string,uint256)"(
       merkleRoot: BytesLike,
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: BigNumberish,
-      startDate: BigNumberish,
-      endDate: BigNumberish,
+      campaignInfoCid: string,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    updateDistributorInfo(
+      distributorInfoCid: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "updateDistributorInfo(string)"(
+      distributorInfoCid: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

@@ -24,23 +24,22 @@ import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 interface StringMerkleDistributorManagerInterface
   extends ethers.utils.Interface {
   functions: {
-    "merkleRootMap(uint256)": FunctionFragment;
-    "remainingAmountMap(uint256)": FunctionFragment;
-    "tokenMap(uint256)": FunctionFragment;
-    "isClaimed(uint256,uint256)": FunctionFragment;
-    "claim(uint256,uint256,string,uint256,bytes32[])": FunctionFragment;
+    "addDistribution(address,bytes32,uint256)": FunctionFragment;
+    "distributionMap(uint64)": FunctionFragment;
+    "isClaimed(uint64,uint256)": FunctionFragment;
+    "merkleRoot(uint64)": FunctionFragment;
+    "nextDistributionId()": FunctionFragment;
+    "remainingAmount(uint64)": FunctionFragment;
+    "token(uint64)": FunctionFragment;
+    "claim(uint64,uint256,string,uint256,bytes32[])": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "merkleRootMap",
-    values: [BigNumberish]
+    functionFragment: "addDistribution",
+    values: [string, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "remainingAmountMap",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenMap",
+    functionFragment: "distributionMap",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -48,24 +47,46 @@ interface StringMerkleDistributorManagerInterface
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "merkleRoot",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nextDistributionId",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "remainingAmount",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "token", values: [BigNumberish]): string;
+  encodeFunctionData(
     functionFragment: "claim",
     values: [BigNumberish, BigNumberish, string, BigNumberish, BytesLike[]]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "merkleRootMap",
+    functionFragment: "addDistribution",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "remainingAmountMap",
+    functionFragment: "distributionMap",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "tokenMap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isClaimed", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "merkleRoot", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "nextDistributionId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "remainingAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
 
   events: {
-    "Claimed(uint256,address,uint256)": EventFragment;
+    "Claimed(uint64,uint256,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
@@ -115,47 +136,90 @@ export class StringMerkleDistributorManager extends Contract {
   interface: StringMerkleDistributorManagerInterface;
 
   functions: {
-    merkleRootMap(
+    addDistribution(
+      newToken: string,
+      newMerkleRoot: BytesLike,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "addDistribution(address,bytes32,uint256)"(
+      newToken: string,
+      newMerkleRoot: BytesLike,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    distributionMap(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string]>;
+    ): Promise<
+      [string, string, BigNumber] & {
+        token: string;
+        merkleRoot: string;
+        remainingAmount: BigNumber;
+      }
+    >;
 
-    "merkleRootMap(uint256)"(
+    "distributionMap(uint64)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    remainingAmountMap(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    "remainingAmountMap(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    tokenMap(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
-
-    "tokenMap(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+    ): Promise<
+      [string, string, BigNumber] & {
+        token: string;
+        merkleRoot: string;
+        remainingAmount: BigNumber;
+      }
+    >;
 
     isClaimed(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    "isClaimed(uint256,uint256)"(
-      campaignId: BigNumberish,
+    "isClaimed(uint64,uint256)"(
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    merkleRoot(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "merkleRoot(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    nextDistributionId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "nextDistributionId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    remainingAmount(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "remainingAmount(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    token(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "token(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     claim(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       target: string,
       amount: BigNumberish,
@@ -163,8 +227,8 @@ export class StringMerkleDistributorManager extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "claim(uint256,uint256,string,uint256,bytes32[])"(
-      campaignId: BigNumberish,
+    "claim(uint64,uint256,string,uint256,bytes32[])"(
+      distributionId: BigNumberish,
       index: BigNumberish,
       target: string,
       amount: BigNumberish,
@@ -173,44 +237,90 @@ export class StringMerkleDistributorManager extends Contract {
     ): Promise<ContractTransaction>;
   };
 
-  merkleRootMap(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  addDistribution(
+    newToken: string,
+    newMerkleRoot: BytesLike,
+    allowance: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  "merkleRootMap(uint256)"(
+  "addDistribution(address,bytes32,uint256)"(
+    newToken: string,
+    newMerkleRoot: BytesLike,
+    allowance: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  distributionMap(
     arg0: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<string>;
+  ): Promise<
+    [string, string, BigNumber] & {
+      token: string;
+      merkleRoot: string;
+      remainingAmount: BigNumber;
+    }
+  >;
 
-  remainingAmountMap(
+  "distributionMap(uint64)"(
     arg0: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  "remainingAmountMap(uint256)"(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  tokenMap(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  "tokenMap(uint256)"(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
+  ): Promise<
+    [string, string, BigNumber] & {
+      token: string;
+      merkleRoot: string;
+      remainingAmount: BigNumber;
+    }
+  >;
 
   isClaimed(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     index: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  "isClaimed(uint256,uint256)"(
-    campaignId: BigNumberish,
+  "isClaimed(uint64,uint256)"(
+    distributionId: BigNumberish,
     index: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  merkleRoot(
+    distributionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  "merkleRoot(uint64)"(
+    distributionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  nextDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "nextDistributionId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  remainingAmount(
+    distributionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "remainingAmount(uint64)"(
+    distributionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  token(
+    distributionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  "token(uint64)"(
+    distributionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   claim(
-    campaignId: BigNumberish,
+    distributionId: BigNumberish,
     index: BigNumberish,
     target: string,
     amount: BigNumberish,
@@ -218,8 +328,8 @@ export class StringMerkleDistributorManager extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "claim(uint256,uint256,string,uint256,bytes32[])"(
-    campaignId: BigNumberish,
+  "claim(uint64,uint256,string,uint256,bytes32[])"(
+    distributionId: BigNumberish,
     index: BigNumberish,
     target: string,
     amount: BigNumberish,
@@ -228,47 +338,90 @@ export class StringMerkleDistributorManager extends Contract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    merkleRootMap(
+    addDistribution(
+      newToken: string,
+      newMerkleRoot: BytesLike,
+      allowance: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "addDistribution(address,bytes32,uint256)"(
+      newToken: string,
+      newMerkleRoot: BytesLike,
+      allowance: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    distributionMap(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<
+      [string, string, BigNumber] & {
+        token: string;
+        merkleRoot: string;
+        remainingAmount: BigNumber;
+      }
+    >;
 
-    "merkleRootMap(uint256)"(
+    "distributionMap(uint64)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<string>;
-
-    remainingAmountMap(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "remainingAmountMap(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenMap(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    "tokenMap(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<
+      [string, string, BigNumber] & {
+        token: string;
+        merkleRoot: string;
+        remainingAmount: BigNumber;
+      }
+    >;
 
     isClaimed(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "isClaimed(uint256,uint256)"(
-      campaignId: BigNumberish,
+    "isClaimed(uint64,uint256)"(
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    merkleRoot(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "merkleRoot(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    nextDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "nextDistributionId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    remainingAmount(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "remainingAmount(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    token(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "token(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     claim(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       target: string,
       amount: BigNumberish,
@@ -276,8 +429,8 @@ export class StringMerkleDistributorManager extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "claim(uint256,uint256,string,uint256,bytes32[])"(
-      campaignId: BigNumberish,
+    "claim(uint64,uint256,string,uint256,bytes32[])"(
+      distributionId: BigNumberish,
       index: BigNumberish,
       target: string,
       amount: BigNumberish,
@@ -288,57 +441,94 @@ export class StringMerkleDistributorManager extends Contract {
 
   filters: {
     Claimed(
+      distributionId: BigNumberish | null,
       index: null,
-      account: null,
+      account: string | null,
       amount: null
     ): TypedEventFilter<
-      [BigNumber, string, BigNumber],
-      { index: BigNumber; account: string; amount: BigNumber }
+      [BigNumber, BigNumber, string, BigNumber],
+      {
+        distributionId: BigNumber;
+        index: BigNumber;
+        account: string;
+        amount: BigNumber;
+      }
     >;
   };
 
   estimateGas: {
-    merkleRootMap(
+    addDistribution(
+      newToken: string,
+      newMerkleRoot: BytesLike,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "addDistribution(address,bytes32,uint256)"(
+      newToken: string,
+      newMerkleRoot: BytesLike,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    distributionMap(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "merkleRootMap(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    remainingAmountMap(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "remainingAmountMap(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenMap(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "tokenMap(uint256)"(
+    "distributionMap(uint64)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     isClaimed(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "isClaimed(uint256,uint256)"(
-      campaignId: BigNumberish,
+    "isClaimed(uint64,uint256)"(
+      distributionId: BigNumberish,
       index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    merkleRoot(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "merkleRoot(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    nextDistributionId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "nextDistributionId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    remainingAmount(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "remainingAmount(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    token(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "token(uint64)"(
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     claim(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       target: string,
       amount: BigNumberish,
@@ -346,8 +536,8 @@ export class StringMerkleDistributorManager extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "claim(uint256,uint256,string,uint256,bytes32[])"(
-      campaignId: BigNumberish,
+    "claim(uint64,uint256,string,uint256,bytes32[])"(
+      distributionId: BigNumberish,
       index: BigNumberish,
       target: string,
       amount: BigNumberish,
@@ -357,50 +547,82 @@ export class StringMerkleDistributorManager extends Contract {
   };
 
   populateTransaction: {
-    merkleRootMap(
+    addDistribution(
+      newToken: string,
+      newMerkleRoot: BytesLike,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "addDistribution(address,bytes32,uint256)"(
+      newToken: string,
+      newMerkleRoot: BytesLike,
+      allowance: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    distributionMap(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "merkleRootMap(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    remainingAmountMap(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "remainingAmountMap(uint256)"(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    tokenMap(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "tokenMap(uint256)"(
+    "distributionMap(uint64)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isClaimed(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "isClaimed(uint256,uint256)"(
-      campaignId: BigNumberish,
+    "isClaimed(uint64,uint256)"(
+      distributionId: BigNumberish,
       index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    merkleRoot(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "merkleRoot(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    nextDistributionId(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "nextDistributionId()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    remainingAmount(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "remainingAmount(uint64)"(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    token(
+      distributionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "token(uint64)"(
+      distributionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     claim(
-      campaignId: BigNumberish,
+      distributionId: BigNumberish,
       index: BigNumberish,
       target: string,
       amount: BigNumberish,
@@ -408,8 +630,8 @@ export class StringMerkleDistributorManager extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "claim(uint256,uint256,string,uint256,bytes32[])"(
-      campaignId: BigNumberish,
+    "claim(uint64,uint256,string,uint256,bytes32[])"(
+      distributionId: BigNumberish,
       index: BigNumberish,
       target: string,
       amount: BigNumberish,

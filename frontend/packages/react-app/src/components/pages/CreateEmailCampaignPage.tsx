@@ -212,16 +212,7 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
   );
 
   const deployCampaign = useCallback(
-    async (
-      library,
-      merkleRoot,
-      campaignInfoCid,
-      recipientsCid,
-      merkleTreeCid,
-      recipientsNum,
-      startDate,
-      endDate
-    ) => {
+    async (library, merkleRoot, campaignInfoCid, merkleTreeCid) => {
       distributorFormDispatch({
         type: "campaign:deploy",
         payload: { requestDeployCampaign: false },
@@ -231,19 +222,13 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
         payload: { dialog: "creating-campaign" },
       });
 
-      const secondsStartDate = startDate / 1000;
-      const secondsEndDate = endDate / 1000;
-
       createUUIDCampaign(
         library,
         merkleRoot,
         distributorFormState.tokenAddress,
         campaignInfoCid,
-        recipientsCid,
         merkleTreeCid,
-        recipientsNum,
-        secondsStartDate,
-        secondsEndDate
+        tokenState.allowance
       )
         .then(async (transaction) => {
           if (transaction === undefined) {
@@ -264,10 +249,10 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
             if (campaignCreatedEvent === undefined) {
               return;
             }
-            const campaignAddress: string = campaignCreatedEvent.args?.campaign;
+            const campaignId: string = campaignCreatedEvent.args?.distributionId.toString();
             distributorFormDispatch({
-              type: "createdCampaignAddress:set",
-              payload: { address: campaignAddress.toLowerCase() },
+              type: "createdCampaignId:set",
+              payload: { campaignId },
             });
             distributorFormDispatch({
               type: "step:set",
@@ -288,7 +273,7 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
           });
         });
     },
-    [props.history, distributorFormState.tokenAddress]
+    [props.history, distributorFormState.tokenAddress, tokenState.allowance]
   );
 
   const makeMerkleProof = useCallback(
@@ -355,12 +340,12 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
     }
     props.history.push(
       `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
-        `/campaigns/${distributorFormState.createdCampaignAddress}`
+        `/campaigns/${distributorFormState.createdCampaignId}`
     );
   }, [
     props.history,
     emailState.moveToCampaignPage,
-    distributorFormState.createdCampaignAddress,
+    distributorFormState.createdCampaignId,
     distributorFormState.tokenAddress,
     distributorAddress,
   ]);
@@ -430,8 +415,6 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
       campaignInfoCid === "" ||
       recipientsCid === "" ||
       !emailState.isValidQuantity ||
-      distributorFormState.startDate == null ||
-      distributorFormState.endDate == null ||
       tokenState.allowance === ""
     ) {
       return;
@@ -468,11 +451,7 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
           library,
           merkletreeState.merkleRoot,
           campaignInfoCid,
-          recipientsCid,
-          merkletreeState.merkleTreeCid,
-          emailState.quantity,
-          distributorFormState.startDate,
-          distributorFormState.endDate
+          merkletreeState.merkleTreeCid
         );
         return;
       }

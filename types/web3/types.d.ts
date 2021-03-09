@@ -32,22 +32,22 @@ export interface ContractEventEmitter<T> extends EventEmitter {
 }
 
 export interface NonPayableTx {
-  nonce?: string | number;
-  chainId?: string | number;
+  nonce?: string | number | BN;
+  chainId?: string | number | BN;
   from?: string;
   to?: string;
   data?: string;
-  gas?: string | number;
-  gasPrice?: string | number;
+  gas?: string | number | BN;
+  gasPrice?: string | number | BN;
 }
 
 export interface PayableTx extends NonPayableTx {
-  value?: string | number;
+  value?: string | number | BN;
 }
 
 export interface NonPayableTransactionObject<T> {
   arguments: any[];
-  call(tx?: NonPayableTx): Promise<T>;
+  call(tx?: NonPayableTx, block?: BlockType): Promise<T>;
   send(tx?: NonPayableTx): PromiEvent<TransactionReceipt>;
   estimateGas(tx?: NonPayableTx): Promise<number>;
   encodeABI(): string;
@@ -55,11 +55,17 @@ export interface NonPayableTransactionObject<T> {
 
 export interface PayableTransactionObject<T> {
   arguments: any[];
-  call(tx?: PayableTx): Promise<T>;
+  call(tx?: PayableTx, block?: BlockType): Promise<T>;
   send(tx?: PayableTx): PromiEvent<TransactionReceipt>;
   estimateGas(tx?: PayableTx): Promise<number>;
   encodeABI(): string;
 }
 
-export type BlockType = "latest" | "pending" | "genesis" | number;
+export type BlockType =
+  | "latest"
+  | "pending"
+  | "genesis"
+  | "earliest"
+  | number
+  | BN;
 export type BaseContract = Omit<Contract, "clone" | "once">;

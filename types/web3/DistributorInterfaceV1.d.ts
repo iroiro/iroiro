@@ -22,12 +22,26 @@ interface EventOptions {
 }
 
 export type CreateCampaign = ContractEventLog<{
-  campaign: string;
+  distributionId: string;
   token: string;
   creator: string;
+  merkleTreeCid: string;
+  campaignInfoCid: string;
   0: string;
   1: string;
   2: string;
+  3: string;
+  4: string;
+}>;
+export type OwnershipTransferred = ContractEventLog<{
+  previousOwner: string;
+  newOwner: string;
+  0: string;
+  1: string;
+}>;
+export type UpdateDistributorInfo = ContractEventLog<{
+  cid: string;
+  0: string;
 }>;
 
 export interface DistributorInterfaceV1 extends BaseContract {
@@ -38,22 +52,31 @@ export interface DistributorInterfaceV1 extends BaseContract {
   ): DistributorInterfaceV1;
   clone(): DistributorInterfaceV1;
   methods: {
-    campaignList(arg0: number | string): NonPayableTransactionObject<string>;
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(): NonPayableTransactionObject<string>;
 
-    distributorInfoCid(): NonPayableTransactionObject<string>;
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(): NonPayableTransactionObject<void>;
 
-    nextCampaignId(): NonPayableTransactionObject<string>;
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(newOwner: string): NonPayableTransactionObject<void>;
 
     createCampaign(
       merkleRoot: string | number[],
       token: string,
-      tokenHolder: string,
-      campaignInfoCid: string,
-      recipientsCid: string,
       merkleTreeCid: string,
-      recipientsNum: number | string,
-      startDate: number | string,
-      endDate: number | string
+      campaignInfoCid: string,
+      allowance: number | string | BN
+    ): NonPayableTransactionObject<void>;
+
+    updateDistributorInfo(
+      distributorInfoCid: string
     ): NonPayableTransactionObject<void>;
   };
   events: {
@@ -61,6 +84,18 @@ export interface DistributorInterfaceV1 extends BaseContract {
     CreateCampaign(
       options?: EventOptions,
       cb?: Callback<CreateCampaign>
+    ): EventEmitter;
+
+    OwnershipTransferred(cb?: Callback<OwnershipTransferred>): EventEmitter;
+    OwnershipTransferred(
+      options?: EventOptions,
+      cb?: Callback<OwnershipTransferred>
+    ): EventEmitter;
+
+    UpdateDistributorInfo(cb?: Callback<UpdateDistributorInfo>): EventEmitter;
+    UpdateDistributorInfo(
+      options?: EventOptions,
+      cb?: Callback<UpdateDistributorInfo>
     ): EventEmitter;
 
     allEvents(options?: EventOptions, cb?: Callback<EventLog>): EventEmitter;
@@ -71,5 +106,22 @@ export interface DistributorInterfaceV1 extends BaseContract {
     event: "CreateCampaign",
     options: EventOptions,
     cb: Callback<CreateCampaign>
+  ): void;
+
+  once(event: "OwnershipTransferred", cb: Callback<OwnershipTransferred>): void;
+  once(
+    event: "OwnershipTransferred",
+    options: EventOptions,
+    cb: Callback<OwnershipTransferred>
+  ): void;
+
+  once(
+    event: "UpdateDistributorInfo",
+    cb: Callback<UpdateDistributorInfo>
+  ): void;
+  once(
+    event: "UpdateDistributorInfo",
+    options: EventOptions,
+    cb: Callback<UpdateDistributorInfo>
   ): void;
 }

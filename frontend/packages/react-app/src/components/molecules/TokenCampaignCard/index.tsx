@@ -20,13 +20,10 @@ import {
   Card,
   CardContent,
   Typography,
-  Link,
   Box,
-  Container,
   CardActionArea,
 } from "@material-ui/core";
 import { CampaignInfo } from "../../../interfaces";
-import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 import { useHistory } from "react-router-dom";
 import theme from "../../../theme/mui-theme";
 import styled from "styled-components";
@@ -59,7 +56,6 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
           <div>
             <Box display="flex" justifyContent="space-between" mb={2}>
               <Title variant="h4">{campaign.campaignMetadata.name}</Title>
-              <CampaignStatusChip status={campaign.status} />
             </Box>
             <Box>
               {campaign.campaignMetadata &&

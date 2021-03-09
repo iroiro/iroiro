@@ -107,7 +107,7 @@ const App: React.FC = () => {
               })}
               <Route
                 exact
-                path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
+                path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
                 component={CampaignDetailPage}
               />
 
@@ -124,7 +124,7 @@ const App: React.FC = () => {
                 component={TokenCampaignsPage}
               />
               <Route
-                path="/explore/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignAddress"
+                path="/explore/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
                 component={TokenCampaignDetailPage}
               />
               <Route

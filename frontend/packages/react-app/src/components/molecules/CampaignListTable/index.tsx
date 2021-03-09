@@ -136,8 +136,6 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Start Date</TableCell>
                 <TableCell>Token</TableCell>
                 <TableCell>Distributor</TableCell>
               </TableRow>
@@ -179,20 +177,6 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                       ) : (
                         <TableCell>loading...</TableCell>
                       )}
-                      <TableCell>
-                        <TokenAmount
-                          amount={campaign.claimAmount}
-                          decimals={token?.decimals ?? 0}
-                          symbol={token?.symbol ?? ""}
-                          align="inherit"
-                          variant="body2"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        {new Date(
-                          parseInt(campaign.startDate) * 1000
-                        ).toLocaleDateString()}
-                      </TableCell>
                       <TableCell>
                         {tokenOptions.find(
                           (creatorOption) =>

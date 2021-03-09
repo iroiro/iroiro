@@ -16,7 +16,7 @@
  */
 
 import * as React from "react";
-import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
+import { Button, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { Dispatch, useCallback } from "react";
 import TokenAmount from "../../atoms/TokenAmount";
@@ -24,21 +24,23 @@ import { uuidClaim, walletClaim } from "../../../utils/web3";
 import { CampaignDetailAction } from "../../../reducers/campaignDetail";
 import { DistributorTypes } from "../../../interfaces";
 
+// TODO Replace props with simply state
 export interface WalletTokenClaimCardProps {
-  campaignAddress: string;
-  symbol: string;
-  claimAmount: string;
-  isClaimable: boolean;
-  isClaimed: boolean;
-  decimals: number;
+  readonly campaignId: string;
+  readonly symbol: string;
+  readonly claimAmount: string;
+  readonly isClaimable: boolean;
+  readonly isClaimed: boolean;
+  readonly decimals: number;
   readonly dispatch: Dispatch<CampaignDetailAction>;
-  merkleTreeCid: string;
-  distributorType: DistributorTypes | string;
-  hashedUUID: string;
+  readonly merkleTreeCid: string;
+  readonly distributorAddress: string;
+  readonly distributorType: DistributorTypes | string;
+  readonly hashedUUID: string;
 }
 
 const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
-  campaignAddress,
+  campaignId,
   symbol,
   claimAmount,
   isClaimable,
@@ -46,6 +48,7 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
   decimals,
   dispatch,
   merkleTreeCid,
+  distributorAddress,
   distributorType,
   hashedUUID,
 }) => {
@@ -57,14 +60,16 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
       case "wallet":
         transaction = await walletClaim(
           library,
-          campaignAddress,
+          distributorAddress,
+          campaignId,
           merkleTreeCid
         );
         break;
       case "uuid":
         transaction = await uuidClaim(
           library,
-          campaignAddress,
+          distributorAddress,
+          campaignId,
           merkleTreeCid,
           hashedUUID
         );

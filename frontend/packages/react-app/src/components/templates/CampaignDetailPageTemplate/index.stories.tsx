@@ -35,7 +35,6 @@ const Template: Story<CampaignInfoProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   tokenInfo: tokenInfo,
-  targetNumber: "1234567890123450",
   campaignData: {
     campaign,
     isCancelRequest: false,

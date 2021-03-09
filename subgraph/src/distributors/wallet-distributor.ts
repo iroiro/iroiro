@@ -77,9 +77,14 @@ export function handleCreateCampaign(event: CreateCampaign): void {
 }
 
 export function handleClaimed(event: ClaimedEvent): void {
-  let accountId = event.transaction.from.toHexString();
+  let accountId = event.params.account.toHexString();
+  let distributorId = event.transaction.to.toHexString();
   let campaignId = event.params.distributionId;
-  let claimId = accountId.concat("-").concat(campaignId.toString());
+  let claimId = distributorId
+    .concat("-")
+    .concat(campaignId.toString())
+    .concat("-")
+    .concat(accountId);
   let account = Account.load(accountId);
   if (account == null) {
     account = new Account(accountId);
@@ -95,7 +100,7 @@ export function handleClaimed(event: ClaimedEvent): void {
   if (claim == null) {
     claim = new Claim(claimId);
   }
-  claim.account = event.params.account.toHexString();
+  claim.account = accountId;
   claim.campaign = event.params.distributionId.toString();
   let distributorContract = WalletDistributor.bind(event.address);
   let callToken = distributorContract.try_token(campaignId);

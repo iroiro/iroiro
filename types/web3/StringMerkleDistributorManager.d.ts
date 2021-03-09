@@ -22,12 +22,14 @@ interface EventOptions {
 }
 
 export type Claimed = ContractEventLog<{
+  distributionId: string;
   index: string;
   account: string;
   amount: string;
   0: string;
   1: string;
   2: string;
+  3: string;
 }>;
 
 export interface StringMerkleDistributorManager extends BaseContract {
@@ -38,23 +40,44 @@ export interface StringMerkleDistributorManager extends BaseContract {
   ): StringMerkleDistributorManager;
   clone(): StringMerkleDistributorManager;
   methods: {
-    merkleRootMap(
-      arg0: number | string | BN
-    ): NonPayableTransactionObject<string>;
+    addDistribution(
+      newToken: string,
+      newMerkleRoot: string | number[],
+      allowance: number | string | BN
+    ): NonPayableTransactionObject<void>;
 
-    remainingAmountMap(
+    distributionMap(
       arg0: number | string | BN
-    ): NonPayableTransactionObject<string>;
-
-    tokenMap(arg0: number | string | BN): NonPayableTransactionObject<string>;
+    ): NonPayableTransactionObject<{
+      token: string;
+      merkleRoot: string;
+      remainingAmount: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
 
     isClaimed(
-      campaignId: number | string | BN,
+      distributionId: number | string | BN,
       index: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
+    merkleRoot(
+      distributionId: number | string | BN
+    ): NonPayableTransactionObject<string>;
+
+    nextDistributionId(): NonPayableTransactionObject<string>;
+
+    remainingAmount(
+      distributionId: number | string | BN
+    ): NonPayableTransactionObject<string>;
+
+    token(
+      distributionId: number | string | BN
+    ): NonPayableTransactionObject<string>;
+
     claim(
-      campaignId: number | string | BN,
+      distributionId: number | string | BN,
       index: number | string | BN,
       target: string,
       amount: number | string | BN,

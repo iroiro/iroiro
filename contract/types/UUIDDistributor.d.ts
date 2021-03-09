@@ -181,15 +181,15 @@ export class UUIDDistributor extends Contract {
 
   functions: {
     addDistribution(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     "addDistribution(address,bytes32,uint256)"(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
@@ -346,15 +346,15 @@ export class UUIDDistributor extends Contract {
   };
 
   addDistribution(
-    token: string,
-    merkleRoot: BytesLike,
+    newToken: string,
+    newMerkleRoot: BytesLike,
     allowance: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   "addDistribution(address,bytes32,uint256)"(
-    token: string,
-    merkleRoot: BytesLike,
+    newToken: string,
+    newMerkleRoot: BytesLike,
     allowance: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
@@ -511,15 +511,15 @@ export class UUIDDistributor extends Contract {
 
   callStatic: {
     addDistribution(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     "addDistribution(address,bytes32,uint256)"(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -677,9 +677,9 @@ export class UUIDDistributor extends Contract {
 
   filters: {
     Claimed(
-      distributionId: null,
+      distributionId: BigNumberish | null,
       index: null,
-      account: null,
+      account: string | null,
       amount: null
     ): TypedEventFilter<
       [BigNumber, BigNumber, string, BigNumber],
@@ -723,15 +723,15 @@ export class UUIDDistributor extends Contract {
 
   estimateGas: {
     addDistribution(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     "addDistribution(address,bytes32,uint256)"(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
@@ -877,15 +877,15 @@ export class UUIDDistributor extends Contract {
 
   populateTransaction: {
     addDistribution(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "addDistribution(address,bytes32,uint256)"(
-      token: string,
-      merkleRoot: BytesLike,
+      newToken: string,
+      newMerkleRoot: BytesLike,
       allowance: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;

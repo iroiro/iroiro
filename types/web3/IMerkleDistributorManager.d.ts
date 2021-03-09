@@ -22,7 +22,7 @@ interface EventOptions {
 }
 
 export type Claimed = ContractEventLog<{
-  campaignId: string;
+  distributionId: string;
   index: string;
   account: string;
   amount: string;
@@ -51,28 +51,28 @@ export interface IMerkleDistributorManager extends BaseContract {
       2: string;
     }>;
 
-    nextCampaignId(): NonPayableTransactionObject<string>;
+    nextDistributionId(): NonPayableTransactionObject<string>;
 
     token(
-      campaignId: number | string | BN
+      distributionId: number | string | BN
     ): NonPayableTransactionObject<string>;
 
     merkleRoot(
-      campaignId: number | string | BN
+      distributionId: number | string | BN
     ): NonPayableTransactionObject<string>;
 
     remainingAmount(
-      campaignId: number | string | BN
+      distributionId: number | string | BN
     ): NonPayableTransactionObject<string>;
 
     isClaimed(
-      campaignId: number | string | BN,
+      distributionId: number | string | BN,
       index: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     addDistribution(
-      token: string,
-      merkleRoot: string | number[],
+      newToken: string,
+      newMerkleRoot: string | number[],
       allowance: number | string | BN
     ): NonPayableTransactionObject<void>;
   };
