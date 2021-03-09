@@ -61,7 +61,7 @@ export interface IERC20 extends BaseContract {
      */
     transfer(
       recipient: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -77,7 +77,7 @@ export interface IERC20 extends BaseContract {
      */
     approve(
       spender: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -86,7 +86,7 @@ export interface IERC20 extends BaseContract {
     transferFrom(
       sender: string,
       recipient: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
   };
   events: {
