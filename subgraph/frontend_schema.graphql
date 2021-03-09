@@ -28,7 +28,7 @@ type Campaign @entity {
 }
 
 type Claim @entity {
-  " Equals to: <accountAddress>-<campaignId>"
+  " Equals to: <distributorAddress>-<campaignId>-<accountAddress>"
   id: ID!
   account: Account!
   campaign: Campaign!

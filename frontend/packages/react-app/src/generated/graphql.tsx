@@ -48,7 +48,7 @@ export type CheckRequestsCondition = {
 
 export type Claim = {
   __typename?: 'Claim';
-  /**  Equals to: <accountAddress>-<campaignId> */
+  /**  Equals to: <distributorAddress>-<campaignId>-<accountAddress> */
   id: Scalars['ID'];
   account: Account;
   campaign: Campaign;
