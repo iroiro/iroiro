@@ -202,18 +202,24 @@ const TokenCampaignDetailPage: React.FC<
   useEffect(() => {
     if (
       tokenState.userAddress === undefined ||
+      tokenState.userAddress === "" ||
       state.campaignId === undefined ||
+      state.campaignId === "" ||
       state.distributorType === "uuid"
     ) {
       return;
     }
+    console.debug(
+      tokenState.userAddress,
+      `${distributorAddress.toLowerCase()}-${
+        state.campaignId
+      }-${tokenState.userAddress.toLowerCase()}`
+    );
     getClaim({
       variables: {
-        id: `
-        ${distributorAddress.toLowerCase()}-${
+        id: `${distributorAddress.toLowerCase()}-${
           state.campaignId
-        }-${tokenState.userAddress.toLowerCase()}
-        `,
+        }-${tokenState.userAddress.toLowerCase()}`,
       },
     });
   }, [
