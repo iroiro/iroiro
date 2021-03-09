@@ -210,7 +210,11 @@ const TokenCampaignDetailPage: React.FC<
     }
     getClaim({
       variables: {
-        id: `${tokenState.userAddress.toLowerCase()}-${state.campaignId}`,
+        id: `
+        ${distributorAddress.toLowerCase()}-${
+          state.campaignId
+        }-${tokenState.userAddress.toLowerCase()}
+        `,
       },
     });
   }, [
