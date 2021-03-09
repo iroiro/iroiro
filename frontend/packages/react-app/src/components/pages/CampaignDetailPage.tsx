@@ -22,11 +22,7 @@ import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import { GET_CAMPAIGN } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { campaignReducer, campaignInitialState } from "../../reducers/campaign";
-import {
-  cancelCampaign,
-  refundCampaign,
-  getCampaignBalance,
-} from "../../utils/web3";
+import { getCampaignBalance } from "../../utils/web3";
 import { useWeb3React } from "@web3-react/core";
 import { CampaignInfo } from "../../interfaces";
 import distributors from "../../utils/distributors";
@@ -65,46 +61,6 @@ const CampaignDetailPage: React.FC<
       payload: { data: campaignMetadata },
     });
   };
-
-  const cancel = useCallback(async (library, campaignAddress) => {
-    campaignDispatch({
-      type: "campaign:cancel",
-      payload: { data: false },
-    });
-    cancelCampaign(library, campaignAddress).then((transaction) => {
-      if (transaction === undefined) {
-        return;
-      }
-      transaction.wait().then((result) => {
-        if (result.status === 1) {
-          campaignDispatch({
-            type: "status:update",
-            payload: { data: 1 },
-          });
-        }
-      });
-    });
-  }, []);
-
-  const refund = useCallback(async (library, campaignAddress) => {
-    campaignDispatch({
-      type: "campaign:refund",
-      payload: { data: false },
-    });
-    refundCampaign(library, campaignAddress).then((transaction) => {
-      if (transaction === undefined) {
-        return;
-      }
-      transaction.wait().then((result) => {
-        if (result.status === 1) {
-          campaignDispatch({
-            type: "status:update",
-            payload: { data: 2 },
-          });
-        }
-      });
-    });
-  }, []);
 
   const getBalance = useCallback(
     async (library, campaignId: string) => {
@@ -167,24 +123,6 @@ const CampaignDetailPage: React.FC<
       getBalance(library, campaignId);
     }
   }, [library, campaignId, getBalance]);
-
-  useEffect(() => {
-    if (
-      library &&
-      campaignState.isCancelRequest === true &&
-      campaignId !== ""
-    ) {
-      cancel(library, campaignId);
-    }
-
-    if (
-      library &&
-      campaignState.isRefundRequest === true &&
-      campaignId !== ""
-    ) {
-      refund(library, campaignId);
-    }
-  }, [library, campaignState, campaignId, cancel, refund]);
 
   return (
     <>

@@ -22,10 +22,8 @@ import {
 } from "@ethersproject/providers";
 import { utils, Signer, BigNumber } from "ethers";
 import { TokenBasic } from "../interfaces";
-import { CampaignInterfaceV1__factory as Campaign } from "../types/factories/CampaignInterfaceV1__factory";
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
 import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
-import { UUIDCampaign__factory as UUIDCampaign } from "../types/factories/UUIDCampaign__factory";
 import {
   UUIDDistributor__factory,
   UUIDDistributor__factory as UUIDDistributor,
@@ -232,41 +230,6 @@ export const createUUIDCampaign = async (
       campaignInfoCid,
       allowance
     )
-    .then((transaction: ContractTransaction) => {
-      return transaction;
-    });
-};
-
-export const cancelCampaign = async (
-  library: Web3Provider | undefined,
-  campaignAddress: string
-): Promise<ContractTransaction | undefined> => {
-  if (!library) {
-    return undefined;
-  }
-  const signer = library.getSigner();
-
-  const campaignContract = Campaign.connect(campaignAddress, signer);
-
-  return campaignContract
-    .cancelCampaign()
-    .then((transaction: ContractTransaction) => {
-      return transaction;
-    });
-};
-
-export const refundCampaign = async (
-  library: Web3Provider | undefined,
-  campaignAddress: string
-): Promise<ContractTransaction | undefined> => {
-  if (!library) {
-    return undefined;
-  }
-  const signer = library.getSigner();
-  const campaignContract = Campaign.connect(campaignAddress, signer);
-
-  return campaignContract
-    .refundRemainingTokens()
     .then((transaction: ContractTransaction) => {
       return transaction;
     });
