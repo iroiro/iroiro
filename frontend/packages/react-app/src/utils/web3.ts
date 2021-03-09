@@ -26,14 +26,19 @@ import { CampaignInterfaceV1__factory as Campaign } from "../types/factories/Cam
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
 import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
 import { UUIDCampaign__factory as UUIDCampaign } from "../types/factories/UUIDCampaign__factory";
-import { UUIDDistributor__factory as UUIDDistributor } from "../types/factories/UUIDDistributor__factory";
+import {
+  UUIDDistributor__factory,
+  UUIDDistributor__factory as UUIDDistributor,
+} from "../types/factories/UUIDDistributor__factory";
 import { WalletDistributor__factory as WalletDistributor } from "../types/factories/WalletDistributor__factory";
-import { WalletCampaign__factory as WalletCampaign } from "../types/factories/WalletCampaign__factory";
 import { ContractTransaction } from "@ethersproject/contracts";
 // @ts-ignore
 import { addresses } from "@project/contracts";
 import { MERKLE_PROOF_API } from "../utils/const";
-import { useMemo } from "react";
+import {
+  WalletDistributor__factory,
+  IMerkleDistributorManager__factory,
+} from "../types";
 
 export const getTokenInfo = async (
   library: Web3Provider | undefined,
@@ -86,17 +91,22 @@ export const getWalletBalance = async (
   return balance.toString();
 };
 
-export const getContractTokenBalance = async (
+export const getCampaignBalance = async (
   library: Web3Provider | undefined,
-  tokenAddress: string,
-  contractAddress: string
+  distributorAddress: string,
+  campaignId: string
 ): Promise<string | undefined> => {
-  if (!library || tokenAddress === "") {
+  if (!library || distributorAddress === "" || campaignId === "") {
     return undefined;
   }
   const signer = library.getSigner();
-  const erc20 = ERC20MockFactory.connect(tokenAddress, signer);
-  const balance = await erc20.balanceOf(contractAddress);
+  const manager = IMerkleDistributorManager__factory.connect(
+    distributorAddress,
+    signer
+  );
+  const token = await manager.token(campaignId);
+  const balance = await manager.remainingAmount(campaignId);
+  const erc20 = ERC20MockFactory.connect(token, signer);
   const decimals = await erc20.decimals();
   const formatBalance = utils.formatUnits(balance, decimals.toString());
   return formatBalance;
@@ -171,17 +181,13 @@ export const createWalletCampaign = async (
   merkleRoot: string,
   tokenAddress: string,
   campaignInfoCid: string,
-  recipientsCid: string,
   merkleTreeCid: string,
-  recipientsNum: number,
-  startDate: number,
-  endDate: number
+  allowance: string | undefined
 ): Promise<ContractTransaction | undefined> => {
-  if (!library) {
+  if (!library || allowance === undefined) {
     return undefined;
   }
   const signer = library.getSigner();
-  const walletAddress = await signer.getAddress();
   const distributor = WalletDistributor.connect(
     addresses.WalletDistributor,
     signer
@@ -191,13 +197,9 @@ export const createWalletCampaign = async (
     .createCampaign(
       merkleRoot,
       tokenAddress,
-      walletAddress,
-      campaignInfoCid,
-      recipientsCid,
       merkleTreeCid,
-      recipientsNum,
-      startDate,
-      endDate
+      campaignInfoCid,
+      allowance
     )
     .then((transaction: ContractTransaction) => {
       return transaction;
@@ -210,17 +212,13 @@ export const createUUIDCampaign = async (
   merkleRoot: string,
   tokenAddress: string,
   campaignInfoCid: string,
-  recipientsCid: string,
   merkleTreeCid: string,
-  recipientsNum: number,
-  startDate: number,
-  endDate: number
+  allowance: string | undefined
 ): Promise<ContractTransaction | undefined> => {
-  if (!library) {
+  if (!library || allowance === undefined) {
     return undefined;
   }
   const signer = library.getSigner();
-  const walletAddress = await signer.getAddress();
   const distributor = UUIDDistributor.connect(
     addresses.UUIDDistributor,
     signer
@@ -230,13 +228,9 @@ export const createUUIDCampaign = async (
     .createCampaign(
       merkleRoot,
       tokenAddress,
-      walletAddress,
-      campaignInfoCid,
-      recipientsCid,
       merkleTreeCid,
-      recipientsNum,
-      startDate,
-      endDate
+      campaignInfoCid,
+      allowance
     )
     .then((transaction: ContractTransaction) => {
       return transaction;
@@ -280,30 +274,35 @@ export const refundCampaign = async (
 
 export const walletClaim = async (
   library: Web3Provider | undefined,
-  campaignAddress: string,
+  distributorAddress: string,
+  campaignId: string,
   merkleTreeCid: string
 ): Promise<ContractTransaction | undefined> => {
   if (!library) {
     return undefined;
   }
   const signer = library.getSigner();
-  const campaignContract = WalletCampaign.connect(campaignAddress, signer);
+  const distributor = WalletDistributor__factory.connect(
+    distributorAddress,
+    signer
+  );
   const walletAddress = await signer.getAddress();
   const walletAddressLow = walletAddress.toLowerCase();
   const response = await fetch(
     `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddressLow}.json`
   );
   const data = await response.json();
-  return campaignContract
-    .claim(data.index, walletAddress, data.amount, data.proof)
-    .then((transaction: ContractTransaction) => {
+  return distributor.functions
+    .claim(campaignId, data.index, walletAddress, data.amount, data.proof)
+    .then((transaction) => {
       return transaction;
     });
 };
 
 export const uuidClaim = async (
   library: Web3Provider | undefined,
-  campaignAddress: string,
+  distributorAddress: string,
+  campaignId: string,
   merkleTreeCid: string,
   hashedUUID: string
 ): Promise<ContractTransaction | undefined> => {
@@ -311,13 +310,16 @@ export const uuidClaim = async (
     return undefined;
   }
   const signer = library.getSigner();
-  const campaignContract = UUIDCampaign.connect(campaignAddress, signer);
+  const distributor = UUIDDistributor__factory.connect(
+    distributorAddress,
+    signer
+  );
   const response = await fetch(
     `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`
   );
   const data = await response.json();
-  return campaignContract
-    .claim(data.index, hashedUUID, data.amount, data.proof)
+  return distributor.functions
+    .claim(campaignId, data.index, hashedUUID, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {
       return transaction;
     });

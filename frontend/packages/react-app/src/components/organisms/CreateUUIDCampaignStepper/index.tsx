@@ -65,7 +65,7 @@ const CreateUUIDCampaignStepper = ({
           `${window.location.origin}${window.location.pathname}#/explore/${
             tokenInfo.token?.tokenAddress ?? ""
           }/distributors/${uuidState.distributorAddress}/campaigns/${
-            distributorFormState.createdCampaignAddress
+            distributorFormState.createdCampaignId
           }?uuid=${uuid}`
       )
       .join("\n");

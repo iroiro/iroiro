@@ -25,22 +25,21 @@ import { campaignReducer, campaignInitialState } from "../../reducers/campaign";
 import {
   cancelCampaign,
   refundCampaign,
-  getContractTokenBalance,
+  getCampaignBalance,
 } from "../../utils/web3";
 import { useWeb3React } from "@web3-react/core";
-import dayjs from "dayjs";
-import { CampaignInfo, Recipients } from "../../interfaces";
+import { CampaignInfo } from "../../interfaces";
 import distributors from "../../utils/distributors";
 
 const CampaignDetailPage: React.FC<
   RouteComponentProps<{
     tokenAddress: string;
     distributorAddress: string;
-    campaignAddress: string;
+    campaignId: string;
   }>
 > = (props) => {
   const tokenAddress = props.match.params.tokenAddress;
-  const campaignAddress = props.match.params.campaignAddress;
+  const campaignId = props.match.params.campaignId;
   const distributorAddress = props.match.params.distributorAddress;
 
   const { library } = useWeb3React();
@@ -53,7 +52,7 @@ const CampaignDetailPage: React.FC<
     campaignInitialState
   );
 
-  const [targetNumber, setTargetNumber] = useState("0");
+  const [distributor, setDistributor] = useState("");
   const [distributorType, setDistributorType] = useState("");
 
   const getCampaignMetadata = async (campaign: CampaignInfo) => {
@@ -65,25 +64,6 @@ const CampaignDetailPage: React.FC<
       type: "campaignMetadata:set",
       payload: { data: campaignMetadata },
     });
-  };
-
-  const getTargets = useCallback(async (campaign) => {
-    const cid = campaign.recipientsCid;
-    const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
-    const response = await fetch(url);
-    const recipients: Recipients = await response.json();
-    if (Object.keys(recipients).indexOf("targets") !== -1) {
-      setTargetNumber(String(recipients.targets.length));
-    }
-    if (Object.keys(recipients).indexOf("addresses") !== -1) {
-      //@ts-ignore
-      setTartgetNumber(String(recipients.addresses.length));
-    }
-  }, []);
-
-  const getDateString = (timestamp: number) => {
-    const dateString = dayjs(Number(timestamp) * 1000).format("MM-DD-YYYY");
-    return dateString;
   };
 
   const cancel = useCallback(async (library, campaignAddress) => {
@@ -127,11 +107,11 @@ const CampaignDetailPage: React.FC<
   }, []);
 
   const getBalance = useCallback(
-    async (library, tokenAddress, campaignAddress) => {
-      const balance = await getContractTokenBalance(
+    async (library, campaignId: string) => {
+      const balance = await getCampaignBalance(
         library,
-        tokenAddress,
-        campaignAddress
+        distributor,
+        campaignId
       );
 
       if (balance === undefined) {
@@ -142,23 +122,24 @@ const CampaignDetailPage: React.FC<
         payload: { data: String(balance) },
       });
     },
-    []
+    [distributor]
   );
 
   useEffect(() => {
     const distributor = distributors.find(
       (distributor) => distributor.id === distributorAddress
     );
+    setDistributor(distributor?.id ?? "");
     setDistributorType(distributor?.type ?? "");
   }, [distributorAddress]);
 
   useEffect(() => {
     getCampaign({
       variables: {
-        id: campaignAddress.toLowerCase(),
+        id: campaignId,
       },
     });
-  }, [getCampaign, campaignAddress]);
+  }, [getCampaign, campaignId]);
 
   useEffect(() => {
     if (data === undefined || data === null || data.campaign == undefined) {
@@ -179,44 +160,41 @@ const CampaignDetailPage: React.FC<
     });
 
     getCampaignMetadata(data.campaign);
-    getTargets(data.campaign);
-  }, [data, getTargets]);
+  }, [data]);
 
   useEffect(() => {
-    if (library && campaignAddress !== "" && tokenAddress !== "") {
-      getBalance(library, tokenAddress, campaignAddress);
+    if (library && campaignId !== "") {
+      getBalance(library, campaignId);
     }
-  }, [library, tokenAddress, campaignAddress, getBalance]);
+  }, [library, campaignId, getBalance]);
 
   useEffect(() => {
     if (
       library &&
       campaignState.isCancelRequest === true &&
-      campaignAddress !== ""
+      campaignId !== ""
     ) {
-      cancel(library, campaignAddress);
+      cancel(library, campaignId);
     }
 
     if (
       library &&
       campaignState.isRefundRequest === true &&
-      campaignAddress !== ""
+      campaignId !== ""
     ) {
-      refund(library, campaignAddress);
+      refund(library, campaignId);
     }
-  }, [library, campaignState, campaignAddress, cancel, refund]);
+  }, [library, campaignState, campaignId, cancel, refund]);
 
   return (
     <>
       <CampaignDetailPageTemplate
         tokenInfo={tokenState}
-        targetNumber={targetNumber}
         campaignData={campaignState}
-        campaignDispatch={campaignDispatch}
         distributorType={distributorType}
         tokenAddress={tokenAddress}
         distributorAddress={distributorAddress}
-        campaignAddress={campaignAddress}
+        campaignId={campaignId}
       />
     </>
   );
