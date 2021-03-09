@@ -47,27 +47,15 @@ const Template: Story<TokenCampaignsDetailTemplateProps> = (args) => (
   </BrowserRouter>
 );
 
-export const Audius = Template.bind({});
-Audius.args = {
-  state: {
-    campaign: tokenInformationState.campaigns[0],
-    campaignAddress: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorType: "audius",
-    hashedUUID: "",
-  },
-};
-
 export const Wallet = Template.bind({});
 Wallet.args = {
   state: {
     campaign: tokenInformationState.campaigns[0],
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimable: true,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "wallet",
     hashedUUID: "",
   },
@@ -77,10 +65,11 @@ export const UUID = Template.bind({});
 UUID.args = {
   state: {
     campaign: tokenInformationState.campaigns[0],
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimable: true,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "uuid",
     hashedUUID: "",
   },

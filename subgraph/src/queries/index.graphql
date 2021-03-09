@@ -1,56 +1,3 @@
-query getTokens {
-    tokens {
-        id
-    }
-}
-
-# Pass id as lower case string, subgraph id is case sensitive
-query getTokensBalanceUserHolds($id: ID!) {
-    account(id: $id) {
-        tokens {
-            id
-            balance
-            token {
-                id
-                name
-                symbol
-                decimals
-            }
-        }
-    }
-}
-
-query getCreatorTokens($id: ID!) {
-    creator(id: $id) {
-        id
-        tokens {
-            id
-            name
-            symbol
-            decimals
-            totalSupply
-            creatorTokenRatio
-            enableStakeToToken
-        }
-    }
-}
-
-query getAccountToken($id: ID!) {
-    accountToken(id: $id) {
-        id
-        balance
-        token {
-            id
-            name
-            symbol
-            totalSupply
-            decimals
-            creatorTokenRatio
-            lockupPeriod
-        }
-    }
-}
-
 query getCampaigns($where: CampaignsCondition!) {
     campaigns(where: $where) {
         id
@@ -59,10 +6,6 @@ query getCampaigns($where: CampaignsCondition!) {
             id
         }
         campaignInfoCid
-        startDate
-        endDate
-        claimAmount
-        status
         creator {
             id
         }
@@ -76,30 +19,14 @@ query getCampaign($id: ID!) {
             id
         }
         campaignInfoCid
-        recipientsCid
-        startDate
-        endDate
-        claimAmount
         claimedNum
-        status
     }
 }
 
 query getDistributors {
     distributors {
         id
-        distributorCid
-    }
-}
-
-query getCheckRequest($where: CheckRequestsCondition!) {
-    checkRequests(where: $where) {
-        id
-        account {
-            id
-        }
-        result
-        status
+        distributorInfoCid
     }
 }
 

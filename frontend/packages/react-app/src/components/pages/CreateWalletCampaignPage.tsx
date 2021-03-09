@@ -47,6 +47,7 @@ import {
 } from "../../utils/const";
 import { BigNumber } from "ethers";
 import { isAddress } from "ethers/lib/utils";
+import { WalletDistributor } from "../../types";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
@@ -203,16 +204,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
   );
 
   const deployCampaign = useCallback(
-    async (
-      library,
-      merkleRoot,
-      campaignInfoCid,
-      recipientsCid,
-      merkleTreeCid,
-      recipientsNum,
-      startDate,
-      endDate
-    ) => {
+    async (library, merkleRoot, campaignInfoCid, merkleTreeCid) => {
       distributorFormDispatch({
         type: "campaign:deploy",
         payload: { requestDeployCampaign: false },
@@ -222,19 +214,13 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
         payload: { dialog: "creating-campaign" },
       });
 
-      const secondsStartDate = startDate / 1000;
-      const secondsEndDate = endDate / 1000;
-
       createWalletCampaign(
         library,
         merkleRoot,
         distributorFormState.tokenAddress,
         campaignInfoCid,
-        recipientsCid,
         merkleTreeCid,
-        recipientsNum,
-        secondsStartDate,
-        secondsEndDate
+        tokenState.allowance
       )
         .then(async (transaction) => {
           if (transaction === undefined) {
@@ -255,10 +241,11 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
             if (campaignCreatedEvent === undefined) {
               return;
             }
-            const campaignAddress: string = campaignCreatedEvent.args?.campaign;
+            const distributionId: BigNumber =
+              campaignCreatedEvent.args?.distributionId;
             props.history.push(
               `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
-                `/campaigns/${campaignAddress}`
+                `/campaigns/${distributionId.toString()}`
             );
           });
         })
@@ -275,7 +262,12 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
           });
         });
     },
-    [props.history, distributorFormState.tokenAddress, distributorAddress]
+    [
+      props.history,
+      distributorFormState.tokenAddress,
+      distributorAddress,
+      tokenState.allowance,
+    ]
   );
 
   const makeMerkleProof = useCallback(
@@ -401,8 +393,6 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       campaignInfoCid === "" ||
       recipientsCid === "" ||
       walletListState.targets.length === 0 ||
-      distributorFormState.startDate == null ||
-      distributorFormState.endDate == null ||
       tokenState.allowance === ""
     ) {
       return;
@@ -439,11 +429,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
           library,
           merkletreeState.merkleRoot,
           campaignInfoCid,
-          recipientsCid,
-          merkletreeState.merkleTreeCid,
-          walletListState.targets.length,
-          distributorFormState.startDate,
-          distributorFormState.endDate
+          merkletreeState.merkleTreeCid
         );
         return;
       }

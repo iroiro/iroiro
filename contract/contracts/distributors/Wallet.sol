@@ -16,99 +16,33 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-pragma solidity =0.6.11;
+pragma solidity =0.7.6;
 
-import "@iroiro/merkle-distributor/contracts/MerkleDistributor.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "../interfaces/CampaignInterfaceV1.sol";
+import "@iroiro/merkle-distributor/contracts/MerkleDistributorManager.sol";
+import "@iroiro/merkle-distributor/contracts/SafeMath64.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
-import "../SafeMath32.sol";
 
-contract WalletDistributor is DistributorInterfaceV1 {
-    constructor (string memory _distributorInfoCid) public
+contract WalletDistributor is DistributorInterfaceV1, MerkleDistributorManager {
+    using SafeMath64 for uint64;
+
+    constructor (string memory _distributorInfoCid)
     DistributorInterfaceV1(_distributorInfoCid) {}
 
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
-        address tokenSender,
-        string memory campaignInfoCid,
-        string memory recipientsCid,
-        string memory merkleTreeCid,
-        uint32 recipientsNum,
-        uint256 startDate,
-        uint256 endDate
+        string calldata merkleTreeCid,
+        string calldata campaignInfoCid,
+        uint256 allowance
     ) external override {
-        // TODO Update checking tokenSender logic with token issuance phase
-        require(msg.sender == tokenSender, "Token holder must match to msg.sender");
-        uint256 allowance = getAllowanceOf(token, tokenSender);
-        require(allowance > 0, "No token is approved to transfer");
-        require(allowance >= recipientsNum, "Token amount is not enough to distribute");
-
-        uint256 claimAmount = calculateClaimAmount(allowance, recipientsNum);
-        WalletCampaign campaign = new WalletCampaign(
-            merkleRoot,
-            token,
-            campaignInfoCid,
-            recipientsCid,
-            merkleTreeCid,
-            claimAmount,
-            tokenSender,
-            startDate,
-            endDate
-        );
-        campaignList[nextCampaignId] = address(campaign);
-        nextCampaignId = nextCampaignId.add(1);
-        campaign.transferOwnership(msg.sender);
-        transferToken(token, tokenSender, address(campaign), allowance);
-
         emit CreateCampaign(
-            address(campaign),
+            nextDistributionId,
             token,
-            msg.sender
+            msg.sender,
+            merkleTreeCid,
+            campaignInfoCid
         );
-    }
-}
 
-contract WalletCampaign is CampaignInterfaceV1, MerkleDistributor {
-    using SafeMath32 for uint32;
-
-    string public merkleTreeCid;
-
-    constructor(
-        bytes32 merkleRoot,
-        address payable _campaignToken,
-        string memory _campaignInfoCid,
-        string memory _recipientsCid,
-        string memory _merkleTreeCid,
-        uint256 _claimAmount,
-        address _refundDestination,
-        uint256 _startDate,
-        uint256 _endDate
-    ) public
-    CampaignInterfaceV1(
-        _campaignToken,
-        _campaignInfoCid,
-        _recipientsCid,
-        _claimAmount,
-        _refundDestination,
-        _startDate,
-        _endDate
-    )
-    MerkleDistributor(_campaignToken, merkleRoot)
-    {
-        merkleTreeCid = _merkleTreeCid;
-    }
-
-    function claim(
-        uint256 index,
-        address account,
-        uint256 amount,
-        bytes32[] calldata merkleProof
-    ) public override mustBeActive inTime {
-        claimedNum = claimedNum.add(1);
-        super.claim(index, account, amount, merkleProof);
-
-        emit Claim(account, account);
+        addDistribution(token, merkleRoot, allowance);
     }
 }

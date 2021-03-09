@@ -18,7 +18,6 @@
 import * as React from "react";
 import { CampaignInfo } from "../../../interfaces";
 import { Typography, Box, Link } from "@material-ui/core";
-import CampaignStatusChip from "../../atoms/CampaignStatusChip";
 import theme from "../../../theme/mui-theme";
 import { useEffect, useState } from "react";
 import distributors, { getDistributorType } from "../../../utils/distributors";
@@ -48,7 +47,6 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
           <Typography variant="h4" component="h2">
             {campaign.campaignMetadata.name}
           </Typography>
-          <CampaignStatusChip status={campaign.status} />
         </Box>
         <Box mt={2}>
           <Typography variant="caption" style={{ color: "#797979" }}>
@@ -59,31 +57,6 @@ const TokenCampaignDetail: React.FC<TokenCampaignDetailProps> = ({
               ? campaign.campaignMetadata.description
               : "No description"}
           </Typography>
-        </Box>
-        <Box display="flex" justifyContent="start" mt={2} mb={1}>
-          <Box display="flex" justifyContent="start" alignItems="baseline">
-            <Typography variant="caption" style={{ color: "#797979" }}>
-              Start Date:
-            </Typography>
-            <Typography variant="body1">
-              {new Date(
-                parseInt(campaign.startDate) * 1000
-              ).toLocaleDateString()}
-            </Typography>
-          </Box>
-          <Box
-            ml={4}
-            display="flex"
-            justifyContent="start"
-            alignItems="baseline"
-          >
-            <Typography variant="caption" style={{ color: "#797979" }}>
-              End Date:
-            </Typography>
-            <Typography variant="body1">
-              {new Date(parseInt(campaign.endDate) * 1000).toLocaleDateString()}
-            </Typography>
-          </Box>
         </Box>
         <Box display="flex" justifyContent="start" alignItems="baseline">
           <Typography variant="caption" style={{ color: "#797979" }}>

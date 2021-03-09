@@ -15,64 +15,36 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
-pragma solidity =0.6.11;
+pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract DistributorInterfaceV1 {
-    using SafeMath for uint256;
-
-    event CreateCampaign(
-        address indexed campaign,
-        address indexed token,
-        address indexed creator
+contract DistributorInterfaceV1 is Ownable {
+    event UpdateDistributorInfo(
+        string cid
     );
 
-    constructor(string memory _distributorInfoCid) public {
-        distributorInfoCid = _distributorInfoCid;
-    }
+    event CreateCampaign(
+        uint64 indexed distributionId,
+        address indexed token,
+        address indexed creator,
+        string merkleTreeCid,
+        string campaignInfoCid
+    );
 
-    string public distributorInfoCid;
-    // TODO: Add features updatable or whitelist
-    uint256 public nextCampaignId = 1;
-    mapping(uint256 => address) public campaignList;
-
-    function getAllowanceOf(address token, address owner) internal view returns (uint256) {
-        ERC20 erc20 = ERC20(token);
-        return erc20.allowance(owner, address(this));
-    }
-
-    function calculateClaimAmount(
-        uint256 amount,
-        uint32 recipientsNum
-    ) internal pure returns (uint256) {
-        return amount.div(uint256(recipientsNum));
+    constructor(string memory distributorInfoCid) {
+        emit UpdateDistributorInfo(distributorInfoCid);
     }
 
     function createCampaign(
         bytes32 merkleRoot,
         address payable token,
-        address tokenHolder, // Not only TokenHolder contract address but include creator address
-        string memory campaignInfoCid,
-        string memory recipientsCid,
         string memory merkleTreeCid,
-        uint32 recipientsNum,
-        uint256 startDate,
-        uint256 endDate
+        string memory campaignInfoCid,
+        uint256 allowance
     ) virtual external {}
 
-    function transferToken(
-        address token,
-        address from,
-        address to,
-        uint256 amount
-    ) internal {
-        ERC20 erc20 = ERC20(token);
-        erc20.transferFrom(from, to, amount);
+    function updateDistributorInfo(string calldata distributorInfoCid) external onlyOwner {
+        emit UpdateDistributorInfo(distributorInfoCid);
     }
-
-    // Future functionality
-    // function updateTokenHolder(address newTokenHolder) external; // onlyOwner
 }

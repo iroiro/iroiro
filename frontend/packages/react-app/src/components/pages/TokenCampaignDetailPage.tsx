@@ -35,25 +35,30 @@ import { ethers } from "ethers";
 const TokenCampaignDetailPage: React.FC<
   RouteComponentProps<{
     tokenAddress: string;
-    campaignAddress: string;
+    campaignId: string;
     distributorAddress: string;
   }>
 > = (props) => {
-  const [state, dispatch] = useReducer(campaignDetailReducer, initialState);
+  const tokenAddress = props.match.params.tokenAddress;
+  const campaignId = props.match.params.campaignId;
+  const distributorAddress = props.match.params.distributorAddress;
+
+  const [state, dispatch] = useReducer(campaignDetailReducer, {
+    ...initialState,
+    distributorAddress,
+  });
   const [getCampaign, { data: campaignData }] = useLazyQuery(GET_CAMPAIGN);
   const { active, library } = useWeb3React();
   const { state: tokenState, dispatch: tokenStateDispatch } = useTokenContext();
-  const tokenAddress = props.match.params.tokenAddress;
-  const campaignAddress = props.match.params.campaignAddress;
-  const distributorAddress = props.match.params.distributorAddress;
 
   const uuid: string =
     new URLSearchParams(props.location.search)?.get("uuid") ?? "";
   const hashedUUID: string = ethers.utils.solidityKeccak256(["string"], [uuid]);
 
-  const { isClaimable } = useIsClaimable(
+  const { isClaimable, claimableAmount } = useIsClaimable(
     library,
-    state?.campaignAddress ?? "",
+    state?.campaignId ?? "",
+    distributorAddress,
     state?.distributorType,
     hashedUUID
   );
@@ -66,8 +71,8 @@ const TokenCampaignDetailPage: React.FC<
   }, [hashedUUID]);
 
   useEffect(() => {
-    dispatch({ type: "campaignAddress:set", payload: { campaignAddress } });
-  }, [campaignAddress]);
+    dispatch({ type: "campaignId:set", payload: { campaignId } });
+  }, [campaignId]);
 
   useEffect(() => {
     if (
@@ -126,10 +131,10 @@ const TokenCampaignDetailPage: React.FC<
   useEffect(() => {
     getCampaign({
       variables: {
-        id: campaignAddress.toLowerCase(),
+        id: campaignId,
       },
     });
-  }, [campaignAddress, getCampaign]);
+  }, [campaignId, getCampaign]);
 
   useEffect(() => {
     const f = async () => {
@@ -197,20 +202,30 @@ const TokenCampaignDetailPage: React.FC<
   useEffect(() => {
     if (
       tokenState.userAddress === undefined ||
-      state.campaignAddress === undefined ||
+      tokenState.userAddress === "" ||
+      state.campaignId === undefined ||
+      state.campaignId === "" ||
       state.distributorType === "uuid"
     ) {
       return;
     }
+    console.debug(
+      tokenState.userAddress,
+      `${distributorAddress.toLowerCase()}-${
+        state.campaignId
+      }-${tokenState.userAddress.toLowerCase()}`
+    );
     getClaim({
       variables: {
-        id: `${tokenState.userAddress.toLowerCase()}-${state.campaignAddress.toLowerCase()}`,
+        id: `${distributorAddress.toLowerCase()}-${
+          state.campaignId
+        }-${tokenState.userAddress.toLowerCase()}`,
       },
     });
   }, [
     getClaim,
     tokenState.userAddress,
-    state.campaignAddress,
+    state.campaignId,
     state.distributorType,
   ]);
 
@@ -232,6 +247,7 @@ const TokenCampaignDetailPage: React.FC<
       state={state}
       tokenAddress={tokenAddress}
       dispatch={dispatch}
+      claimAmount={claimableAmount}
     />
   );
 };

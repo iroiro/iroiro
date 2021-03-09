@@ -76,7 +76,7 @@ export interface ERC20 extends BaseContract {
      */
     transfer(
       recipient: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -92,7 +92,7 @@ export interface ERC20 extends BaseContract {
      */
     approve(
       spender: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -101,7 +101,7 @@ export interface ERC20 extends BaseContract {
     transferFrom(
       sender: string,
       recipient: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -109,7 +109,7 @@ export interface ERC20 extends BaseContract {
      */
     increaseAllowance(
       spender: string,
-      addedValue: number | string
+      addedValue: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -117,7 +117,7 @@ export interface ERC20 extends BaseContract {
      */
     decreaseAllowance(
       spender: string,
-      subtractedValue: number | string
+      subtractedValue: number | string | BN
     ): NonPayableTransactionObject<boolean>;
   };
   events: {
