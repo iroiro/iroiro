@@ -129,7 +129,6 @@ const TokenCampaignDetailPage: React.FC<
   }, [library, tokenState.token, tokenStateDispatch]);
 
   useEffect(() => {
-    console.debug(campaignId);
     getCampaign({
       variables: {
         id: campaignId,
