@@ -28,6 +28,7 @@ import TokenInfoBar from "../../molecules/TokenInfoBar";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
+import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 
 export interface TokenCampaignsDetailTemplateProps {
   readonly active: boolean;
@@ -77,6 +78,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
       <AppFrame>
         <TokenInfoBar />
         <TabMenuForFunPage current={"campaigns"} tokenAddress={tokenAddress} />
+        <WaitingProcessDialog state={state} />
         <Wrapper>
           {state.campaign !== null &&
             state.campaign.campaignMetadata &&

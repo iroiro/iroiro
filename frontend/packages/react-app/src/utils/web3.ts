@@ -259,6 +259,10 @@ export const walletClaim = async (
     .claim(campaignId, data.index, walletAddress, data.amount, data.proof)
     .then((transaction) => {
       return transaction;
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
     });
 };
 
@@ -285,6 +289,10 @@ export const uuidClaim = async (
     .claim(campaignId, data.index, hashedUUID, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {
       return transaction;
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
     });
 };
 

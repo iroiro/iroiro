@@ -34,12 +34,12 @@ const Template: Story<WaitingProcessDialogProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  distributorFormState,
+  state: distributorFormState,
 };
 
 export const Request = Template.bind({});
 Request.args = {
-  distributorFormState: {
+  state: {
     ...distributorFormState,
     requestDeployCampaign: true,
   },

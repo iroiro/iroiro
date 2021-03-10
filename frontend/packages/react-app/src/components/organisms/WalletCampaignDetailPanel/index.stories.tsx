@@ -57,6 +57,8 @@ IsNotStarted.args = {
     distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -72,6 +74,8 @@ IsWalletNotConnected.args = {
     distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -87,6 +91,8 @@ NotLoggedIn.args = {
     distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -102,6 +108,8 @@ Default.args = {
     distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -117,6 +125,8 @@ Requested.args = {
     distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -132,6 +142,8 @@ IsClaimable.args = {
     distributorType: "",
     isCampaignClaimable: true,
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -147,6 +159,8 @@ IsNotClaimable.args = {
     distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -162,6 +176,8 @@ IsClaimed.args = {
     isCampaignClaimable: true,
     isCampaignClaimed: true,
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -177,5 +193,7 @@ IsEnded.args = {
     isCampaignClaimable: true,
     isCampaignClaimed: true,
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };

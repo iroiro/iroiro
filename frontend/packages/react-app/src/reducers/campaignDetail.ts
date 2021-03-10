@@ -16,6 +16,7 @@
  */
 
 import { CampaignInfo, Claim, DistributorTypes } from "../interfaces";
+import { DialogStatus } from "./distributorForm";
 
 export interface CampaignDetailState {
   campaign: CampaignInfo | null;
@@ -26,6 +27,8 @@ export interface CampaignDetailState {
   distributorAddress: string;
   distributorType: DistributorTypes | string;
   hashedUUID: string;
+  dialog: DialogStatus;
+  transactionHash: string;
 }
 
 export type CampaignDetailAction =
@@ -81,6 +84,19 @@ export type CampaignDetailAction =
       type: "hashedUUID:set";
       payload: {
         hashedUUID: string;
+      };
+    }
+  | {
+      // TODO merge with distributionForm
+      type: "dialog:set";
+      payload: {
+        dialog: DialogStatus;
+      };
+    }
+  | {
+      type: "transactionHash:set";
+      payload: {
+        transactionHash: string;
       };
     };
 
@@ -157,6 +173,18 @@ export const campaignDetailReducer = (
         hashedUUID: action.payload.hashedUUID,
       };
     }
+    case "dialog:set": {
+      return {
+        ...state,
+        dialog: action.payload.dialog,
+      };
+    }
+    case "transactionHash:set": {
+      return {
+        ...state,
+        transactionHash: action.payload.transactionHash,
+      };
+    }
     default:
       return state;
   }
@@ -171,4 +199,6 @@ export const initialState: CampaignDetailState = {
   distributorAddress: "",
   distributorType: "",
   hashedUUID: "",
+  dialog: "nothing",
+  transactionHash: "",
 };

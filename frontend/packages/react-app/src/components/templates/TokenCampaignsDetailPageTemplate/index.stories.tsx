@@ -58,6 +58,8 @@ Wallet.args = {
     distributorAddress: "",
     distributorType: "wallet",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -72,5 +74,7 @@ UUID.args = {
     distributorAddress: "",
     distributorType: "uuid",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };

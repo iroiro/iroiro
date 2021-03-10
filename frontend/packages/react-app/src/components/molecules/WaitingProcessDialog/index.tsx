@@ -24,22 +24,24 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { createCampaignState } from "../../../reducers/distributorForm";
+import { CampaignDetailState } from "../../../reducers/campaignDetail";
 
 export interface WaitingProcessDialogProps {
-  readonly distributorFormState: createCampaignState;
+  readonly state: createCampaignState | CampaignDetailState;
 }
 
+// TODO move as app wrapper if possible
 const WaitingProcessDialog: React.FC<WaitingProcessDialogProps> = ({
-  distributorFormState,
+  state,
 }) => {
   const messages = () => {
-    switch (distributorFormState.dialog) {
+    switch (state.dialog) {
       case "waiting-api":
         return ["It could take time if recipients are many."];
       case "creating-campaign":
         if (
-          distributorFormState.distributorType === "email" ||
-          distributorFormState.distributorType === "uuid"
+          state.distributorType === "email" ||
+          state.distributorType === "uuid"
         ) {
           return [
             "If you leave from page, you lost campaign information for fans.",
@@ -55,7 +57,7 @@ const WaitingProcessDialog: React.FC<WaitingProcessDialogProps> = ({
   return (
     <Dialog
       aria-labelledby="simple-dialog-title"
-      open={distributorFormState.dialog !== "nothing"}
+      open={state.dialog !== "nothing"}
     >
       <DialogTitle id="simple-dialog-title">
         Processing is in progress.

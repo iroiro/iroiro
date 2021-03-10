@@ -21,8 +21,12 @@ import { useWeb3React } from "@web3-react/core";
 import { Dispatch, useCallback } from "react";
 import TokenAmount from "../../atoms/TokenAmount";
 import { uuidClaim, walletClaim } from "../../../utils/web3";
-import { CampaignDetailAction } from "../../../reducers/campaignDetail";
+import {
+  CampaignDetailAction,
+  CampaignDetailState,
+} from "../../../reducers/campaignDetail";
 import { DistributorTypes } from "../../../interfaces";
+import EtherscanLink from "../../atoms/EtherscanLink";
 
 // TODO Replace props with simply state
 export interface WalletTokenClaimCardProps {
@@ -37,6 +41,7 @@ export interface WalletTokenClaimCardProps {
   readonly distributorAddress: string;
   readonly distributorType: DistributorTypes | string;
   readonly hashedUUID: string;
+  readonly state: CampaignDetailState;
 }
 
 const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
@@ -51,10 +56,12 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
   distributorAddress,
   distributorType,
   hashedUUID,
+  state,
 }) => {
   const { library } = useWeb3React();
 
   const onClickClaim = useCallback(async () => {
+    dispatch({ type: "dialog:set", payload: { dialog: "claim" } });
     let transaction;
     switch (distributorType) {
       case "wallet":
@@ -74,16 +81,21 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
           hashedUUID
         );
         break;
-      default:
-        console.error("Distributor type is not matched.");
-        return;
     }
 
+    dispatch({ type: "dialog:set", payload: { dialog: "nothing" } });
     if (transaction === undefined) {
       console.error("Transaction failed");
+      alert(
+        "There was an error or you rejected transaction. Please try again later."
+      );
       return;
     }
     dispatch({ type: "isCampaignClaimed:setTrue" });
+    dispatch({
+      type: "transactionHash:set",
+      payload: { transactionHash: transaction.hash },
+    });
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
   }, [dispatch, library]);
@@ -125,6 +137,12 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
               >
                 {isClaimed ? "Claimed" : "Claim"}
               </Button>
+            </Box>
+            <Box mt={2} textAlign="center">
+              <EtherscanLink
+                type="tx"
+                addressOrTxHash={state.transactionHash}
+              />
             </Box>
           </>
         )}
