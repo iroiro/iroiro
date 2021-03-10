@@ -14,8 +14,17 @@ The naming convention of the contract is as follows:
 
 ## Contract Addresses 
 
-### Rinkeby 
+### Mainnet
+
+To be deployed soon...
+
+### Rinkeby
 
 - tIRO(Test Token): 0xb0da4177f4a4d79a9611e69071e67e3367930339
-- UUIDDistributor: 0x8b5abD70339787DF920C982a46fF6066EB13Ab68
-- WalletDistributor: 0xa79c1B3e529c34bA3B7373d95119B16b0714E155
+- UUIDDistributor: 0xEE88b9d4378E5f506568a446d8Bff575FB3E233c
+- WalletDistributor: 0x26e2eAc7977046Fe92735263A51b44F68b6fb379
+
+### Kovan
+
+- UUIDDistributor: 0x2bc33Da1A1866d92a2f045E4Ed63921802061C34
+- WalletDistributor: 0x85399fD7FDC409710aB5F1d6aff8A5CF1B68AA21
