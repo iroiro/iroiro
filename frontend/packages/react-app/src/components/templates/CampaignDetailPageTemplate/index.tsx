@@ -45,8 +45,7 @@ export interface CampaignInfoProps {
 
 const campaignNames: { [type: string]: string } = {
   wallet: "Wallet Address Campaign",
-  uuid: "URL Campaign",
-  audius: "Audius Follower Campaign",
+  uuid: "URL/Email Campaign",
 };
 
 const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
@@ -109,13 +108,6 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
 
 const Wrapper = styled.div`
   padding: 20px 40px 40px;
-  ${theme.breakpoints.down(600)} {
-    padding: 16px;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  padding: 40px;
   ${theme.breakpoints.down(600)} {
     padding: 16px;
   }
