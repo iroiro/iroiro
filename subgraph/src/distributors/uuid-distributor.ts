@@ -95,7 +95,7 @@ export function handleClaimed(event: ClaimedEvent): void {
     campaign = new Campaign(campaignId.toString());
   }
   let claimedNum = campaign.claimedNum;
-  campaign.claimedNum = claimedNum.plus(new BigInt(1));
+  campaign.claimedNum = claimedNum.plus(BigInt.fromI32(1));
 
   let claim = Claim.load(claimId);
   if (claim == null) {
