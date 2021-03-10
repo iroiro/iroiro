@@ -44,7 +44,8 @@ export function handleUpdateDistributorInfo(
 }
 
 export function handleCreateCampaign(event: CreateCampaign): void {
-  let distributorContract = UUIDDistributor.bind(event.address);
+  let distributorId = event.address;
+  let distributorContract = UUIDDistributor.bind(distributorId);
 
   let creatorId = event.params.creator.toHexString();
   let creator = Creator.load(creatorId);
@@ -52,7 +53,10 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     creator = new Creator(creatorId);
   }
 
-  let campaignId = event.params.distributionId.toString();
+  let campaignId = distributorId
+    .toHexString()
+    .concat("-")
+    .concat(event.params.distributionId.toString());
   let campaign = Campaign.load(campaignId);
   if (campaign == null) {
     campaign = new Campaign(campaignId);
@@ -79,12 +83,9 @@ export function handleCreateCampaign(event: CreateCampaign): void {
 export function handleClaimed(event: ClaimedEvent): void {
   let accountId = event.params.account.toHexString();
   let distributorId = event.transaction.to.toHexString();
-  let campaignId = event.params.distributionId;
-  let claimId = distributorId
-    .concat("-")
-    .concat(campaignId.toString())
-    .concat("-")
-    .concat(accountId);
+  let distributionId = event.params.distributionId;
+  let campaignId = distributorId.concat("-").concat(distributionId.toString());
+  let claimId = campaignId.concat("-").concat(accountId);
   let account = Account.load(accountId);
   if (account == null) {
     account = new Account(accountId);
@@ -103,7 +104,7 @@ export function handleClaimed(event: ClaimedEvent): void {
   claim.account = accountId;
   claim.campaign = event.params.distributionId.toString();
   let distributorContract = UUIDDistributor.bind(event.address);
-  let callToken = distributorContract.try_token(campaignId);
+  let callToken = distributorContract.try_token(distributionId);
   if (callToken.reverted) {
     log.warning("Token not found. Campaign: {}", [campaignId.toString()]);
   } else {
