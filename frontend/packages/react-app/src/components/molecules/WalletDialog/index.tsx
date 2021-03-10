@@ -36,7 +36,6 @@ import { useInactiveListener } from "../../../hooks/web3react/useInactiveListene
 import {
   injected,
   walletconnect,
-  authereum,
   fortmatic,
   portis,
 } from "../../../utils/connectors";
@@ -44,7 +43,6 @@ import {
 enum ConnectorNames {
   Injected = "Metamask",
   WalletConnect = "WalletConnect",
-  Authereum = "Authereum",
   Fortmatic = "Fortmatic",
   Portis = "Portis",
 }
@@ -52,7 +50,6 @@ enum ConnectorNames {
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect]: walletconnect,
-  [ConnectorNames.Authereum]: authereum,
   [ConnectorNames.Fortmatic]: fortmatic,
   [ConnectorNames.Portis]: portis,
 };

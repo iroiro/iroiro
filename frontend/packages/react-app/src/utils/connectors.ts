@@ -17,7 +17,6 @@
 
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
-import { AuthereumConnector } from "@web3-react/authereum-connector";
 import { FortmaticConnector } from "@web3-react/fortmatic-connector";
 import { PortisConnector } from "@web3-react/portis-connector";
 import { TorusConnector } from "@web3-react/torus-connector";
@@ -35,8 +34,6 @@ export const walletconnect = new WalletConnectConnector({
   qrcode: true,
   pollingInterval: POLLING_INTERVAL,
 });
-
-export const authereum = new AuthereumConnector({ chainId: chainId });
 
 export const fortmatic = new FortmaticConnector({
   apiKey: process.env.REACT_APP_FORTMATIC_API_KEY as string,
