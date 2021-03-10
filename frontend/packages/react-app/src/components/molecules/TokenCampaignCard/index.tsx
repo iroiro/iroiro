@@ -37,10 +37,11 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
   campaign,
   tokenAddress,
 }) => {
+  const pair = campaign.id.split("-");
   const history = useHistory();
   const onClickDetail = () => {
     history.push(
-      `/explore/${tokenAddress}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`
+      `/explore/${tokenAddress}/distributors/${pair[0]}/campaigns/${pair[1]}`
     );
   };
 

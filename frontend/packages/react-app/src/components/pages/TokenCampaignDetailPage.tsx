@@ -131,7 +131,7 @@ const TokenCampaignDetailPage: React.FC<
   useEffect(() => {
     getCampaign({
       variables: {
-        id: campaignId,
+        id: `${distributorAddress.toLowerCase()}-${campaignId}`,
       },
     });
   }, [campaignId, getCampaign]);
