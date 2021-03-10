@@ -19,18 +19,14 @@ import React from "react";
 import {
   Box,
   Typography,
-  Button,
   Paper,
   IconButton,
   InputAdornment,
   TextField,
 } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import { red } from "@material-ui/core/colors";
 import CampaignDetail from "../../organisms/CampaignDetail";
 import { AccountToken } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
-import { ACTIONS } from "../../../reducers/campaign";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
@@ -40,34 +36,22 @@ import { useSnackbar } from "notistack";
 
 export interface CampaignInfoProps {
   readonly tokenInfo: AccountToken;
-  readonly targetNumber: string;
   readonly campaignData: CampaignData;
-  campaignDispatch: React.Dispatch<ACTIONS>;
   readonly distributorType: string;
-  readonly campaignAddress: string;
+  readonly campaignId: string;
   readonly tokenAddress: string;
   readonly distributorAddress: string;
 }
 
-const ColorButton = withStyles(() => ({
-  root: {
-    color: red[500],
-    borderColor: red[500],
-  },
-}))(Button);
-
 const campaignNames: { [type: string]: string } = {
   wallet: "Wallet Address Campaign",
-  uuid: "URL Campaign",
-  audius: "Audius Follower Campaign",
+  uuid: "URL/Email Campaign",
 };
 
 const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
-  targetNumber,
   campaignData,
-  campaignDispatch,
   distributorType,
-  campaignAddress,
+  campaignId,
   tokenAddress,
   distributorAddress,
 }) => {
@@ -86,10 +70,7 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
             </Typography>
           </TypeWrapper>
           <Wrapper>
-            <CampaignDetail
-              campaignData={campaignData}
-              targetNumber={targetNumber}
-            />
+            <CampaignDetail campaignData={campaignData} />
             {distributorType === "wallet" && (
               <Box mt={4}>
                 <Typography
@@ -99,14 +80,14 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
                   Canpaign page URL
                 </Typography>
                 <TextField
-                  value={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignAddress}`}
+                  value={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
                   fullWidth
                   disabled
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <CopyToClipboard
-                          text={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignAddress}`}
+                          text={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
                         >
                           <IconButton onClick={handleClickClipboard}>
                             <AssignmentRoundedIcon />
@@ -119,40 +100,6 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
               </Box>
             )}
           </Wrapper>
-          <Box style={{ textAlign: "center", borderTop: "2px solid #F8F8F8" }}>
-            {campaignData.campaign.status === 0 && campaignData.canCancel && (
-              <ButtonWrapper>
-                <ColorButton
-                  variant="outlined"
-                  size="small"
-                  onClick={() =>
-                    campaignDispatch({
-                      type: "campaign:cancel",
-                      payload: { data: true },
-                    })
-                  }
-                >
-                  Cancel campaign
-                </ColorButton>
-              </ButtonWrapper>
-            )}
-            {campaignData.campaign.status === 0 && campaignData.canRefund && (
-              <ButtonWrapper>
-                <Button
-                  size="small"
-                  color="secondary"
-                  onClick={() =>
-                    campaignDispatch({
-                      type: "campaign:refund",
-                      payload: { data: true },
-                    })
-                  }
-                >
-                  End campaign and refund tokens
-                </Button>
-              </ButtonWrapper>
-            )}
-          </Box>
         </Paper>
       </AppFrame>
     </>
@@ -161,13 +108,6 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
 
 const Wrapper = styled.div`
   padding: 20px 40px 40px;
-  ${theme.breakpoints.down(600)} {
-    padding: 16px;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  padding: 40px;
   ${theme.breakpoints.down(600)} {
     padding: 16px;
   }

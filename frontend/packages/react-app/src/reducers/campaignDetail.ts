@@ -16,15 +16,19 @@
  */
 
 import { CampaignInfo, Claim, DistributorTypes } from "../interfaces";
+import { DialogStatus } from "./distributorForm";
 
 export interface CampaignDetailState {
   campaign: CampaignInfo | null;
-  campaignAddress: string;
+  campaignId: string;
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
   now: Date;
+  distributorAddress: string;
   distributorType: DistributorTypes | string;
   hashedUUID: string;
+  dialog: DialogStatus;
+  transactionHash: string;
 }
 
 export type CampaignDetailAction =
@@ -35,9 +39,9 @@ export type CampaignDetailAction =
       };
     }
   | {
-      type: "campaignAddress:set";
+      type: "campaignId:set";
       payload: {
-        campaignAddress: string;
+        campaignId: string;
       };
     }
   | {
@@ -65,6 +69,12 @@ export type CampaignDetailAction =
       type: "isCampaignClaimed:remove";
     }
   | {
+      type: "distributorAddress:set";
+      payload: {
+        distributorAddress: string;
+      };
+    }
+  | {
       type: "distributorType:set";
       payload: {
         distributorType: DistributorTypes | string; // TODO remove string
@@ -74,6 +84,19 @@ export type CampaignDetailAction =
       type: "hashedUUID:set";
       payload: {
         hashedUUID: string;
+      };
+    }
+  | {
+      // TODO merge with distributionForm
+      type: "dialog:set";
+      payload: {
+        dialog: DialogStatus;
+      };
+    }
+  | {
+      type: "transactionHash:set";
+      payload: {
+        transactionHash: string;
       };
     };
 
@@ -88,10 +111,10 @@ export const campaignDetailReducer = (
         campaign: action.payload.campaign,
       };
     }
-    case "campaignAddress:set":
+    case "campaignId:set":
       return {
         ...state,
-        campaignAddress: action.payload.campaignAddress,
+        campaignId: action.payload.campaignId,
       };
     case "isCampaignClaimable:setTrue": {
       return {
@@ -132,6 +155,12 @@ export const campaignDetailReducer = (
         isCampaignClaimed: false,
       };
     }
+    case "distributorAddress:set": {
+      return {
+        ...state,
+        distributorAddress: action.payload.distributorAddress,
+      };
+    }
     case "distributorType:set": {
       return {
         ...state,
@@ -144,6 +173,18 @@ export const campaignDetailReducer = (
         hashedUUID: action.payload.hashedUUID,
       };
     }
+    case "dialog:set": {
+      return {
+        ...state,
+        dialog: action.payload.dialog,
+      };
+    }
+    case "transactionHash:set": {
+      return {
+        ...state,
+        transactionHash: action.payload.transactionHash,
+      };
+    }
     default:
       return state;
   }
@@ -151,10 +192,13 @@ export const campaignDetailReducer = (
 
 export const initialState: CampaignDetailState = {
   campaign: null,
-  campaignAddress: "",
+  campaignId: "",
   isCampaignClaimable: false,
   isCampaignClaimed: false,
   now: new Date(),
+  distributorAddress: "",
   distributorType: "",
   hashedUUID: "",
+  dialog: "nothing",
+  transactionHash: "",
 };

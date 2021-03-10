@@ -28,12 +28,14 @@ import TokenInfoBar from "../../molecules/TokenInfoBar";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
+import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 
 export interface TokenCampaignsDetailTemplateProps {
   readonly active: boolean;
   readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
-  tokenAddress: string;
+  readonly claimAmount: string;
+  readonly tokenAddress: string;
 }
 
 export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplateProps> = ({
@@ -41,6 +43,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
   state,
   dispatch,
   tokenAddress,
+  claimAmount,
 }) => {
   const CampaignDetailPanel = useMemo(() => {
     switch (state.distributorType) {
@@ -51,6 +54,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
             active={active}
             state={state}
             dispatch={dispatch}
+            claimAmount={claimAmount}
           />
         );
     }
@@ -74,6 +78,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
       <AppFrame>
         <TokenInfoBar />
         <TabMenuForFunPage current={"campaigns"} tokenAddress={tokenAddress} />
+        <WaitingProcessDialog state={state} />
         <Wrapper>
           {state.campaign !== null &&
             state.campaign.campaignMetadata &&

@@ -59,7 +59,7 @@ export interface ERC20Mock extends BaseContract {
      */
     approve(
       spender: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -77,7 +77,7 @@ export interface ERC20Mock extends BaseContract {
      */
     decreaseAllowance(
       spender: string,
-      subtractedValue: number | string
+      subtractedValue: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -85,7 +85,7 @@ export interface ERC20Mock extends BaseContract {
      */
     increaseAllowance(
       spender: string,
-      addedValue: number | string
+      addedValue: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -108,7 +108,7 @@ export interface ERC20Mock extends BaseContract {
      */
     transfer(
       recipient: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     /**
@@ -117,29 +117,29 @@ export interface ERC20Mock extends BaseContract {
     transferFrom(
       sender: string,
       recipient: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     mint(
       account: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<void>;
 
     burn(
       account: string,
-      amount: number | string
+      amount: number | string | BN
     ): NonPayableTransactionObject<void>;
 
     transferInternal(
       from: string,
       to: string,
-      value: number | string
+      value: number | string | BN
     ): NonPayableTransactionObject<void>;
 
     approveInternal(
       owner: string,
       spender: string,
-      value: number | string
+      value: number | string | BN
     ): NonPayableTransactionObject<void>;
   };
   events: {

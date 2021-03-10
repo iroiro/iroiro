@@ -112,7 +112,7 @@ const TokenInfoBar = () => {
             {!!state.token && (
               <EtherscanLink
                 type="token"
-                address={state.token.tokenAddress}
+                addressOrTxHash={state.token.tokenAddress}
                 small
               />
             )}
@@ -135,7 +135,7 @@ const TokenInfoBar = () => {
             {!!state.userAddress && (
               <EtherscanLink
                 type="user"
-                address={state.userAddress}
+                addressOrTxHash={state.userAddress}
                 additionalTokenAddress={state.token?.tokenAddress}
                 small
               />

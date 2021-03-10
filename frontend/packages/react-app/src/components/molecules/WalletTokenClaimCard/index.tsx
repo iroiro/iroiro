@@ -16,29 +16,36 @@
  */
 
 import * as React from "react";
-import { Button, Card, CardContent, Typography, Box } from "@material-ui/core";
+import { Button, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { Dispatch, useCallback } from "react";
 import TokenAmount from "../../atoms/TokenAmount";
 import { uuidClaim, walletClaim } from "../../../utils/web3";
-import { CampaignDetailAction } from "../../../reducers/campaignDetail";
+import {
+  CampaignDetailAction,
+  CampaignDetailState,
+} from "../../../reducers/campaignDetail";
 import { DistributorTypes } from "../../../interfaces";
+import EtherscanLink from "../../atoms/EtherscanLink";
 
+// TODO Replace props with simply state
 export interface WalletTokenClaimCardProps {
-  campaignAddress: string;
-  symbol: string;
-  claimAmount: string;
-  isClaimable: boolean;
-  isClaimed: boolean;
-  decimals: number;
+  readonly campaignId: string;
+  readonly symbol: string;
+  readonly claimAmount: string;
+  readonly isClaimable: boolean;
+  readonly isClaimed: boolean;
+  readonly decimals: number;
   readonly dispatch: Dispatch<CampaignDetailAction>;
-  merkleTreeCid: string;
-  distributorType: DistributorTypes | string;
-  hashedUUID: string;
+  readonly merkleTreeCid: string;
+  readonly distributorAddress: string;
+  readonly distributorType: DistributorTypes | string;
+  readonly hashedUUID: string;
+  readonly state: CampaignDetailState;
 }
 
 const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
-  campaignAddress,
+  campaignId,
   symbol,
   claimAmount,
   isClaimable,
@@ -46,39 +53,49 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
   decimals,
   dispatch,
   merkleTreeCid,
+  distributorAddress,
   distributorType,
   hashedUUID,
+  state,
 }) => {
   const { library } = useWeb3React();
 
   const onClickClaim = useCallback(async () => {
+    dispatch({ type: "dialog:set", payload: { dialog: "claim" } });
     let transaction;
     switch (distributorType) {
       case "wallet":
         transaction = await walletClaim(
           library,
-          campaignAddress,
+          distributorAddress,
+          campaignId,
           merkleTreeCid
         );
         break;
       case "uuid":
         transaction = await uuidClaim(
           library,
-          campaignAddress,
+          distributorAddress,
+          campaignId,
           merkleTreeCid,
           hashedUUID
         );
         break;
-      default:
-        console.error("Distributor type is not matched.");
-        return;
     }
 
+    dispatch({ type: "dialog:set", payload: { dialog: "nothing" } });
     if (transaction === undefined) {
       console.error("Transaction failed");
+      alert(
+        "There was an error or you rejected transaction. Please try again later."
+      );
       return;
     }
     dispatch({ type: "isCampaignClaimed:setTrue" });
+    dispatch({
+      type: "transactionHash:set",
+      payload: { transactionHash: transaction.hash },
+    });
     console.debug(transaction);
     // TODO After approving finished, switch request button to enable
   }, [dispatch, library]);
@@ -120,6 +137,12 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
               >
                 {isClaimed ? "Claimed" : "Claim"}
               </Button>
+            </Box>
+            <Box mt={2} textAlign="center">
+              <EtherscanLink
+                type="tx"
+                addressOrTxHash={state.transactionHash}
+              />
             </Box>
           </>
         )}

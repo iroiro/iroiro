@@ -17,28 +17,34 @@
 
 import { useEffect, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
-import { UUIDCampaign__factory } from "../../types/factories/UUIDCampaign__factory";
-import { WalletCampaign__factory } from "../../types/factories/WalletCampaign__factory";
 import { MERKLE_PROOF_API } from "../../utils/const";
 import { StringClaim } from "@iroiro/merkle-distributor";
+import {
+  UUIDDistributor__factory,
+  WalletDistributor__factory,
+} from "../../types";
+import { BigNumber } from "ethers";
 
 export const useIsClaimable = (
   library: Web3Provider | undefined,
-  campaignAddress: string,
+  campaignId: string,
+  distributorAddress: string,
   distributorType: string,
   hashedUUID: string
 ): {
   isClaimable: boolean;
+  claimableAmount: string;
   loading: boolean;
   error: any;
 } => {
-  const [result, setResult] = useState<boolean>(false);
+  const [isClaimable, setIsClaimable] = useState<boolean>(false);
+  const [claimableAmount, setClaimableAmount] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any | undefined>();
 
   useEffect(() => {
     const checkWalletState = async () => {
-      if (!library || campaignAddress === "") {
+      if (!library || distributorAddress === "" || campaignId === "") {
         setError("Invalid arguments.");
         return;
       }
@@ -46,40 +52,88 @@ export const useIsClaimable = (
       setError(undefined);
       const signer = library.getSigner();
       const walletAddress = (await signer.getAddress()).toLowerCase();
-      const campaign = WalletCampaign__factory.connect(campaignAddress, signer);
-      const merkleTreeCid = await campaign.merkleTreeCid();
+      const distributor = WalletDistributor__factory.connect(
+        distributorAddress,
+        signer
+      );
+      const events = await distributor.queryFilter(
+        distributor.filters.CreateCampaign(
+          BigNumber.from(campaignId),
+          null,
+          null,
+          null,
+          null
+        )
+      );
+      const event = events.find(
+        (event) => event.args.distributionId.toString() === campaignId
+      );
+      if (event === undefined) {
+        setError("Event not found.");
+        setLoading(false);
+        return;
+      }
+      const merkleTreeCid = event.args.merkleTreeCid;
       const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddress}.json`;
       const response = await fetch(url);
       const claim = (await response.json()) as StringClaim;
       setLoading(false);
       if (claim === undefined) {
-        setResult(false);
+        setIsClaimable(false);
         return;
       }
-      const isClaimed = await campaign.isClaimed(claim.index);
-      setResult(!isClaimed);
+      const [isClaimed] = await distributor.functions.isClaimed(
+        campaignId,
+        claim.index
+      );
+      setIsClaimable(!isClaimed);
+      setClaimableAmount(claim.amount);
     };
 
     const checkUUIDState = async () => {
-      if (!library || campaignAddress === "" || hashedUUID === undefined) {
+      if (!library || campaignId === "" || hashedUUID === undefined) {
         setError("Invalid arguments.");
         return;
       }
       setLoading(true);
       setError(undefined);
       const signer = library.getSigner();
-      const campaign = UUIDCampaign__factory.connect(campaignAddress, signer);
-      const merkleTreeCid = await campaign.merkleTreeCid();
+      const distributor = UUIDDistributor__factory.connect(
+        distributorAddress,
+        signer
+      );
+      const events = await distributor.queryFilter(
+        distributor.filters.CreateCampaign(
+          BigNumber.from(campaignId),
+          null,
+          null,
+          null,
+          null
+        )
+      );
+      const event = events.find(
+        (event) => event.args.distributionId.toString() === campaignId
+      );
+      if (event === undefined) {
+        setError("Event not found.");
+        setLoading(false);
+        return;
+      }
+      const merkleTreeCid = event.args.merkleTreeCid;
       const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`;
       const response = await fetch(url);
       const claim = (await response.json()) as StringClaim;
       setLoading(false);
       if (claim === undefined) {
-        setResult(false);
+        setIsClaimable(false);
         return;
       }
-      const isClaimed = await campaign.isClaimed(claim.index);
-      setResult(!isClaimed);
+      const [isClaimed] = await distributor.functions.isClaimed(
+        campaignId,
+        claim.index
+      );
+      setIsClaimable(!isClaimed);
+      setClaimableAmount(claim.amount);
     };
 
     switch (distributorType) {
@@ -90,6 +144,6 @@ export const useIsClaimable = (
         checkUUIDState();
         break;
     }
-  }, [library, campaignAddress]);
-  return { isClaimable: result, loading, error };
+  }, [library, campaignId]);
+  return { isClaimable, claimableAmount, loading, error };
 };

@@ -65,7 +65,7 @@ const CreateUUIDCampaignStepper = ({
           `${window.location.origin}${window.location.pathname}#/explore/${
             tokenInfo.token?.tokenAddress ?? ""
           }/distributors/${uuidState.distributorAddress}/campaigns/${
-            distributorFormState.createdCampaignAddress
+            distributorFormState.createdCampaignId
           }?uuid=${uuid}`
       )
       .join("\n");
@@ -175,7 +175,7 @@ const CreateUUIDCampaignStepper = ({
                 </Typography>
               </Box>
             </div>
-            <div>
+            <Box mt={5}>
               <CopyToClipboard text={urlList} onCopy={() => setIsCopied(true)}>
                 <StyledStepperButton
                   color="secondary"
@@ -185,11 +185,6 @@ const CreateUUIDCampaignStepper = ({
                   Copy URLs to clipboard
                 </StyledStepperButton>
               </CopyToClipboard>
-            </div>
-            <Box mt={5}>
-              <StyledStepperButton onClick={() => handleStepChange(3)}>
-                Back
-              </StyledStepperButton>
               <StartCampaignButton
                 variant="contained"
                 color="secondary"

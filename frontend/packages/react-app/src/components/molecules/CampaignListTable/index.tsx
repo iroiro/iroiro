@@ -136,8 +136,6 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Start Date</TableCell>
                 <TableCell>Token</TableCell>
                 <TableCell>Distributor</TableCell>
               </TableRow>
@@ -160,15 +158,13 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
               {walletConnect &&
                 displayedList.length > 0 &&
                 displayedList.map((campaign, index) => {
-                  const token = tokenState.tokenBasicInfoList.find(
-                    (tokenBasic) => tokenBasic.tokenAddress === campaign.token
-                  );
+                  const pair = campaign.id.split("-");
                   return (
                     <TableRow key={campaign.id + index}>
                       {"campaignMetadata" in campaign ? (
                         <TableCell>
                           <Link
-                            to={`/dashboard/${campaign.token}/distributors/${campaign.distributor.id}/campaigns/${campaign.id}`}
+                            to={`/dashboard/${campaign.token}/distributors/${pair[0]}/campaigns/${pair[1]}`}
                             style={{ textDecoration: "none", color: "#48C5D5" }}
                           >
                             <Typography variant={"body2"}>
@@ -179,20 +175,6 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                       ) : (
                         <TableCell>loading...</TableCell>
                       )}
-                      <TableCell>
-                        <TokenAmount
-                          amount={campaign.claimAmount}
-                          decimals={token?.decimals ?? 0}
-                          symbol={token?.symbol ?? ""}
-                          align="inherit"
-                          variant="body2"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        {new Date(
-                          parseInt(campaign.startDate) * 1000
-                        ).toLocaleDateString()}
-                      </TableCell>
                       <TableCell>
                         {tokenOptions.find(
                           (creatorOption) =>

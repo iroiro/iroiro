@@ -34,17 +34,19 @@ const Template: Story<EtherscanLinkProps> = (args) => (
 export const User = Template.bind({});
 User.args = {
   type: "user",
-  address: "0x0000000000000000000000000000000000000000",
+  addressOrTxHash: "0x0000000000000000000000000000000000000000",
+  additionalTokenAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
 };
 
 export const Token = Template.bind({});
 Token.args = {
   type: "token",
-  address: "0x01BE23585060835E02B77ef475b0Cc51aA1e0709",
+  addressOrTxHash: "0x01BE23585060835E02B77ef475b0Cc51aA1e0709",
 };
 
-export const NoAddress = Template.bind({});
-NoAddress.args = {
-  type: "user",
-  address: "",
+export const Transaction = Template.bind({});
+Transaction.args = {
+  type: "tx",
+  addressOrTxHash:
+    "0xd07cbde817318492092cc7a27b3064a69bd893c01cb593d6029683ffd290ab3a",
 };

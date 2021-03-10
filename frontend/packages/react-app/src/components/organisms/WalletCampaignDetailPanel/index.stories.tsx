@@ -50,12 +50,15 @@ export const IsNotStarted = Template.bind({});
 IsNotStarted.args = {
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1577836800000),
+    distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -64,12 +67,15 @@ IsWalletNotConnected.args = {
   active: false,
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -78,12 +84,15 @@ NotLoggedIn.args = {
   active: true,
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -92,12 +101,15 @@ Default.args = {
   active: true,
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -106,12 +118,15 @@ Requested.args = {
   active: true,
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -120,12 +135,15 @@ IsClaimable.args = {
   active: true,
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimed: false,
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "",
     isCampaignClaimable: true,
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -134,12 +152,15 @@ IsNotClaimable.args = {
   active: true,
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     isCampaignClaimable: false,
     isCampaignClaimed: false,
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "",
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -148,12 +169,15 @@ IsClaimed.args = {
   active: true,
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     now: new Date(1606780800000),
+    distributorAddress: "",
     distributorType: "",
     isCampaignClaimable: true,
     isCampaignClaimed: true,
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };
 
@@ -162,11 +186,14 @@ IsEnded.args = {
   active: true,
   state: {
     campaign: campaign,
-    campaignAddress: "",
+    campaignId: "",
     now: new Date(1708780800000),
+    distributorAddress: "",
     distributorType: "",
     isCampaignClaimable: true,
     isCampaignClaimed: true,
     hashedUUID: "",
+    dialog: "nothing",
+    transactionHash: "",
   },
 };

@@ -15,7 +15,6 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import { DistributorTypes } from "../interfaces";
 
 export type DISTRIBUTOR_ACTIONS =
@@ -32,19 +31,18 @@ export type DISTRIBUTOR_ACTIONS =
       type: "campaignDescription:set";
       payload: { campaignDescription: string };
     }
-  | { type: "startDate:set"; payload: { startDate: MaterialUiPickersDate } }
-  | { type: "endDate:set"; payload: { endDate: MaterialUiPickersDate } }
   | { type: "token:approve"; payload: { approveRequest: boolean } }
   | {
       type: "campaign:deploy";
       payload: { requestDeployCampaign: boolean };
     }
-  | { type: "createdCampaignAddress:set"; payload: { address: string } }
+  | { type: "createdCampaignId:set"; payload: { campaignId: string } }
   | { type: "tokenAddress:set"; payload: { tokenAddress: string } }
   | { type: "dialog:set"; payload: { dialog: DialogStatus } };
 
-type DialogStatus =
+export type DialogStatus =
   | "nothing"
+  | "claim"
   | "approving-token"
   | "waiting-api"
   | "creating-campaign";
@@ -54,11 +52,9 @@ export interface createCampaignState {
   approveAmount: string;
   campaignName: string;
   campaignDescription: string;
-  startDate: number;
-  endDate: number;
   approveRequest: boolean;
   requestDeployCampaign: boolean;
-  createdCampaignAddress: string;
+  createdCampaignId: string;
   tokenAddress: string;
   distributorType: DistributorTypes | "";
   dialog: DialogStatus;
@@ -89,17 +85,6 @@ export const distributorFormReducer = (
         campaignDescription: action.payload.campaignDescription,
       };
     }
-    case "startDate:set": {
-      const startDate = Number(action.payload.startDate);
-      return { ...state, startDate: startDate };
-    }
-    case "endDate:set": {
-      const endDate = Number(action.payload.endDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const isEndDatePast = endDate <= today.getTime();
-      return { ...state, endDate: endDate, isEndDatePast };
-    }
     case "token:approve": {
       return { ...state, approveRequest: action.payload.approveRequest };
     }
@@ -109,8 +94,8 @@ export const distributorFormReducer = (
         requestDeployCampaign: action.payload.requestDeployCampaign,
       };
     }
-    case "createdCampaignAddress:set": {
-      return { ...state, createdCampaignAddress: action.payload.address };
+    case "createdCampaignId:set": {
+      return { ...state, createdCampaignId: action.payload.campaignId };
     }
     case "tokenAddress:set": {
       return { ...state, tokenAddress: action.payload.tokenAddress };
@@ -123,22 +108,14 @@ export const distributorFormReducer = (
   }
 };
 
-const startDate = new Date();
-startDate.setHours(0, 0, 0, 0);
-const endDate = new Date();
-endDate.setHours(0, 0, 0, 0);
-endDate.setDate(startDate.getDate() + 1);
-
 export const distributorFormInitialState: createCampaignState = {
   step: 0,
   approveAmount: "0",
   campaignName: "",
   campaignDescription: "",
-  startDate: startDate.getTime(),
-  endDate: endDate.getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
-  createdCampaignAddress: "",
+  createdCampaignId: "",
   tokenAddress: "",
   distributorType: "",
   dialog: "nothing",

@@ -31,6 +31,7 @@ export interface WalletCampaignDetailPanelProps {
   readonly active: boolean;
   readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
+  readonly claimAmount: string;
 }
 
 // TODO: Add waiting transactions
@@ -38,35 +39,28 @@ const WalletCampaignDetailPanel: React.FC<WalletCampaignDetailPanelProps> = ({
   active,
   state,
   dispatch,
+  claimAmount,
 }) => {
   const { state: tokenState } = useTokenContext();
   if (state.campaign === null) {
     return null;
   }
 
-  const startDate = Number.parseInt(state.campaign.startDate);
-  const endDate = Number.parseInt(state.campaign.endDate);
-  const now = state.now.getTime() / 1000;
-  if (now < startDate || endDate <= now) {
-    return (
-      <div>
-        <TokenCampaignDetail campaign={state.campaign} />
-      </div>
-    );
-  }
-
+  // TODO get claim amount from proof json
   const child = active ? (
     <WalletTokenClaimCard
-      campaignAddress={state?.campaignAddress ?? ""}
+      campaignId={state?.campaignId ?? ""}
       symbol={tokenState.token?.symbol ?? ""}
       decimals={tokenState.token?.decimals ?? 0}
-      claimAmount={state.campaign.claimAmount}
+      claimAmount={claimAmount}
       isClaimable={state.isCampaignClaimable}
       isClaimed={state.isCampaignClaimed}
       dispatch={dispatch}
       merkleTreeCid={state.campaign.merkleTreeCid}
+      distributorAddress={state.distributorAddress}
       distributorType={state.distributorType}
       hashedUUID={state.hashedUUID}
+      state={state}
     />
   ) : (
     <WalletConnect />

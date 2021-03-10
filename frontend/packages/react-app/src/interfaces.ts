@@ -98,14 +98,9 @@ export interface CampaignInfo {
   readonly id: string;
   readonly distributor: Distributor;
   readonly token: AccountToken; // TODO string value is mixed for subgraph result. Fix it
-  readonly startDate: string;
-  readonly endDate: string;
   readonly creator: Creator;
   readonly campaignInfoCid: string;
-  readonly recipientsCid: string;
-  readonly claimAmount: string;
   readonly claimedNum: string;
-  readonly status: number;
   readonly claims: Claim[];
   readonly checkRequests: CheckRequest[];
   readonly campaignMetadata: CampaignMetadata;

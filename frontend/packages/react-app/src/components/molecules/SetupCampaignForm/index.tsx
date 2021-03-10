@@ -82,63 +82,6 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
             style={{ textAlign: "right" }}
           >{`${distributorFormState.campaignDescription.length}/500`}</FormHelperText>
         </Box>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DateInputWrapper>
-            <div style={{ marginRight: 16 }}>
-              <KeyboardDatePicker
-                margin="normal"
-                color="secondary"
-                id="date-picker-dialog"
-                label="Start Date"
-                format="MM/dd/yyyy"
-                value={distributorFormState.startDate}
-                onChange={(date: MaterialUiPickersDate) =>
-                  distributorFormDispatch({
-                    type: "startDate:set",
-                    payload: { startDate: date },
-                  })
-                }
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </div>
-            <div>
-              <KeyboardDatePicker
-                margin="normal"
-                color="secondary"
-                id="date-picker-dialog"
-                label="End Date"
-                format="MM/dd/yyyy"
-                value={distributorFormState.endDate}
-                onChange={(date: MaterialUiPickersDate) =>
-                  distributorFormDispatch({
-                    type: "endDate:set",
-                    payload: { endDate: date },
-                  })
-                }
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-                error={
-                  distributorFormState.isEndDatePast ||
-                  distributorFormState.startDate >= distributorFormState.endDate
-                }
-              />
-              {distributorFormState.isEndDatePast && (
-                <FormHelperText style={{ color: "#f00", marginTop: -4 }}>
-                  End date must be future.
-                </FormHelperText>
-              )}
-              {distributorFormState.startDate >=
-                distributorFormState.endDate && (
-                <FormHelperText style={{ color: "#f00", marginTop: -4 }}>
-                  End date must be after Start date.
-                </FormHelperText>
-              )}
-            </div>
-          </DateInputWrapper>
-        </MuiPickersUtilsProvider>
       </FormControl>
     </Box>
   </Box>

@@ -33,7 +33,9 @@ export interface Migrations extends BaseContract {
 
     owner(): NonPayableTransactionObject<string>;
 
-    setCompleted(completed: number | string): NonPayableTransactionObject<void>;
+    setCompleted(
+      completed: number | string | BN
+    ): NonPayableTransactionObject<void>;
 
     upgrade(new_address: string): NonPayableTransactionObject<void>;
   };

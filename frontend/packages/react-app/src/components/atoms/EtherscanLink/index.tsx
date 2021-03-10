@@ -16,15 +16,16 @@
  */
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Link, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 
-type AddressTypes = "user" | "token";
+type AddressTypes = "user" | "token" | "tx";
 
 export interface EtherscanLinkProps {
   readonly type: AddressTypes;
-  readonly address: string;
+  readonly addressOrTxHash: string;
   readonly additionalTokenAddress?: string;
   readonly small?: boolean;
 }
@@ -32,26 +33,34 @@ export interface EtherscanLinkProps {
 // TODO enable switch network, url regard to address type
 const EtherscanLink: React.FC<EtherscanLinkProps> = ({
   type,
-  address,
+  addressOrTxHash,
   additionalTokenAddress,
   small = false,
 }) => {
-  if (!address) {
-    return null;
-  }
   const network: string = process.env?.REACT_APP_NETWORK ?? "mainnet";
   const baseUrl =
     network === "mainnet"
-      ? "https://etherscan.io/token/"
-      : `https://${network}.etherscan.io/token/`;
-  const link =
-    type === "user"
-      ? `${baseUrl}${additionalTokenAddress}?a=${address}`
-      : `${baseUrl}${address}`;
+      ? "https://etherscan.io/"
+      : `https://${network}.etherscan.io/`;
+
+  const link = useMemo(() => {
+    switch (type) {
+      case "user":
+        return `${baseUrl}token/${additionalTokenAddress}?a=${addressOrTxHash}`;
+      case "token":
+        return `${baseUrl}token/${addressOrTxHash}`;
+      case "tx":
+        return `${baseUrl}tx/${addressOrTxHash}`;
+    }
+  }, [baseUrl, addressOrTxHash, additionalTokenAddress]);
+
+  if (addressOrTxHash === "") {
+    return null;
+  }
 
   return (
     <Typography align="center" style={{ fontSize: small ? "14px" : "1rem" }}>
-      <Link href={link}>
+      <Link href={link} target="_blank">
         View on Etherscan&nbsp;&nbsp;
         <FontAwesomeIcon
           icon={faExternalLinkAlt}

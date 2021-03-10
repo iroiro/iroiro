@@ -28,3 +28,9 @@ package-lock.json
 
 .openzeppelin/dev-*.json
 .openzeppelin/.session
+
+coverage.json
+coverage/
+
+artifacts/
+cache/

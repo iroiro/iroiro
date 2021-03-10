@@ -61,7 +61,7 @@ const CreateUUIDCampaignPageTemplate: React.FC<CampaignInfo> = ({
             <Box my={1}>
               <Typography variant={"h3"}>URL Campaign</Typography>
             </Box>
-            <WaitingProcessDialog distributorFormState={distributorFormState} />
+            <WaitingProcessDialog state={distributorFormState} />
             <CreateUUIDCampaignStepper
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}

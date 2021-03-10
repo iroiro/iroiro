@@ -87,10 +87,6 @@ export const GET_CAMPAIGNS = gql`
         id
       }
       campaignInfoCid
-      startDate
-      endDate
-      claimAmount
-      status
       merkleRoot
       merkleTreeCid
       creator {
@@ -109,10 +105,6 @@ export const GET_CAMPAIGNS_BY_CREATOR = gql`
         id
       }
       campaignInfoCid
-      startDate
-      endDate
-      claimAmount
-      status
     }
   }
 `;
@@ -142,12 +134,7 @@ export const GET_CAMPAIGN = gql`
         id
       }
       campaignInfoCid
-      recipientsCid
-      startDate
-      endDate
-      claimAmount
       claimedNum
-      status
       merkleRoot
       merkleTreeCid
     }

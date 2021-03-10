@@ -77,11 +77,6 @@ export const campaignReducer = (
       };
     case "campaign:cancel":
       return { ...state, isCancelRequest: action.payload.data };
-    case "status:update":
-      return {
-        ...state,
-        campaign: { ...state.campaign, status: action.payload.data },
-      };
     case "campaign:refund":
       return { ...state, isRefundRequest: action.payload.data };
     case "depositToken:set":
@@ -114,10 +109,7 @@ export const campaignInitialState: CampaignData = {
     id: "",
     campaignInfoCid: "",
     campaignMetadata: campaignMetadata,
-    claimAmount: "0",
     distributor: distributor,
-    startDate: "-",
-    status: 0,
     claimed: 0,
     token: {
       token: {
@@ -129,11 +121,9 @@ export const campaignInitialState: CampaignData = {
       },
       balance: "",
     },
-    endDate: "-",
     creator: {
       id: "",
     },
-    recipientsCid: "",
     claimedNum: "-",
     claims: [],
     checkRequests: [],

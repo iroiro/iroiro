@@ -62,7 +62,7 @@ const CreateEmailCampaignPageTemplate: React.FC<CampaignInfo> = ({
             <Box my={1}>
               <Typography variant={"h3"}>Email Campaign</Typography>
             </Box>
-            <WaitingProcessDialog distributorFormState={distributorFormState} />
+            <WaitingProcessDialog state={distributorFormState} />
             <CreateEmailCampaignStepper
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}

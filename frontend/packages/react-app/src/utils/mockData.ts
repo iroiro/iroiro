@@ -25,12 +25,14 @@ import {
   TokenListState,
   WalletList,
   Campaigns,
+  DistributorTypes,
 } from "../interfaces";
-import { createCampaignState } from "../reducers/distributorForm";
+import { createCampaignState, DialogStatus } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
 import { EmailState } from "../reducers/email";
 import { TokenOption } from "../components/atoms/SelectTokenInput";
 import { TokenState } from "../reducers/tokenContext";
+import { CampaignDetailState } from "../reducers/campaignDetail";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -60,10 +62,7 @@ export const campaign: CampaignInfo = {
       "Audiusアカウントのフォロワーの方へトークンを配布します。手順はXXX...",
     image: "https://example.com/campaignimage.jpg",
   },
-  claimAmount: "1000000000000000000000",
   distributor: distributor,
-  startDate: "1606780800",
-  status: 0,
   claimed: 10,
   token: {
     token: {
@@ -75,11 +74,9 @@ export const campaign: CampaignInfo = {
     },
     balance: "",
   },
-  endDate: "1612137600",
   creator: {
     id: "",
   },
-  recipientsCid: "",
   claimedNum: "100",
   claims: [],
   checkRequests: [],
@@ -107,14 +104,12 @@ export const tokenInformationState: TokenInformationState = {
     },
     {
       ...campaign,
-      status: 1,
       creator: {
         id: "0x0000000000000000000000000000000000000002",
       },
     },
     {
       ...campaign,
-      status: 2,
       creator: {
         id: "0x0000000000000000000000000000000000000003",
       },
@@ -254,11 +249,9 @@ export const distributorFormState: createCampaignState = {
   approveAmount: "10000",
   campaignName: "URL Campaign",
   campaignDescription: "This is a campaign.",
-  startDate: startDate.getTime(),
-  endDate: endDate.getTime(),
   approveRequest: false,
   requestDeployCampaign: false,
-  createdCampaignAddress: "",
+  createdCampaignId: "",
   tokenAddress: "0x9AF70Ab10f94fEAF59B00B2cC20C7AE57e21954e",
   distributorType: "",
   dialog: "nothing",
@@ -390,4 +383,17 @@ export const mockTokenState: TokenState = {
   userBalance: "",
   tokenBasicInfoList: [],
   tokens: creatorTokenList,
+};
+
+export const campaignDetailState: CampaignDetailState = {
+  campaign: campaign,
+  campaignId: "",
+  isCampaignClaimable: false,
+  isCampaignClaimed: false,
+  now: new Date(1577836800000),
+  distributorAddress: "",
+  distributorType: "",
+  hashedUUID: "",
+  dialog: "nothing",
+  transactionHash: "",
 };
