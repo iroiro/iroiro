@@ -60,6 +60,7 @@ const WalletCampaignDetailPanel: React.FC<WalletCampaignDetailPanelProps> = ({
       distributorAddress={state.distributorAddress}
       distributorType={state.distributorType}
       hashedUUID={state.hashedUUID}
+      state={state}
     />
   ) : (
     <WalletConnect />

@@ -62,7 +62,7 @@ const CreateWalletCampaignPageTemplate: React.FC<CampaignInfo> = ({
             <Box p={1}>
               <Typography variant={"h3"}>Wallet Address Campaign</Typography>
             </Box>
-            <WaitingProcessDialog distributorFormState={distributorFormState} />
+            <WaitingProcessDialog state={distributorFormState} />
             <CreateWalletAddressCampaignStepper
               tokenInfo={tokenInfo}
               tokenDispatch={tokenDispatch}

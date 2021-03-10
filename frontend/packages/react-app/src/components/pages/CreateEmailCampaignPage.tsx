@@ -22,7 +22,6 @@ import {
   getWalletBalance,
   getAllowance,
   setApproveAmount,
-  parseUnits,
   createUUIDCampaign,
   getTotalApproveAmount,
 } from "../../utils/web3";

@@ -20,6 +20,7 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import WalletTokenClaimCard from "./index";
 import { WalletTokenClaimCardProps } from "./index";
+import { campaignDetailState } from "../../../utils/mockData";
 
 export default {
   title: "Molecules/WalletTokenClaimCard",
@@ -39,6 +40,7 @@ NotClaimable.args = {
   isClaimable: false,
   isClaimed: false,
   decimals: 6,
+  state: campaignDetailState,
 };
 
 export const IsClaimable = Template.bind({});
@@ -48,6 +50,7 @@ IsClaimable.args = {
   isClaimable: true,
   isClaimed: false,
   decimals: 6,
+  state: campaignDetailState,
 };
 
 export const Claimed = Template.bind({});
@@ -57,4 +60,8 @@ Claimed.args = {
   isClaimable: true,
   isClaimed: true,
   decimals: 6,
+  state: {
+    ...campaignDetailState,
+    transactionHash: "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
+  },
 };

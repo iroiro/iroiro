@@ -85,7 +85,10 @@ const BasicTokenInformation: React.FC = () => {
       </Card>
       <div className={classes.link}>
         {!!state.token && (
-          <EtherscanLink type="token" address={state.token.tokenAddress} />
+          <EtherscanLink
+            type="token"
+            addressOrTxHash={state.token.tokenAddress}
+          />
         )}
       </div>
     </div>

@@ -40,8 +40,9 @@ export type DISTRIBUTOR_ACTIONS =
   | { type: "tokenAddress:set"; payload: { tokenAddress: string } }
   | { type: "dialog:set"; payload: { dialog: DialogStatus } };
 
-type DialogStatus =
+export type DialogStatus =
   | "nothing"
+  | "claim"
   | "approving-token"
   | "waiting-api"
   | "creating-campaign";

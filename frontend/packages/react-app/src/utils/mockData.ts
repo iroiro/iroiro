@@ -25,12 +25,14 @@ import {
   TokenListState,
   WalletList,
   Campaigns,
+  DistributorTypes,
 } from "../interfaces";
-import { createCampaignState } from "../reducers/distributorForm";
+import { createCampaignState, DialogStatus } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
 import { EmailState } from "../reducers/email";
 import { TokenOption } from "../components/atoms/SelectTokenInput";
 import { TokenState } from "../reducers/tokenContext";
+import { CampaignDetailState } from "../reducers/campaignDetail";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -381,4 +383,17 @@ export const mockTokenState: TokenState = {
   userBalance: "",
   tokenBasicInfoList: [],
   tokens: creatorTokenList,
+};
+
+export const campaignDetailState: CampaignDetailState = {
+  campaign: campaign,
+  campaignId: "",
+  isCampaignClaimable: false,
+  isCampaignClaimed: false,
+  now: new Date(1577836800000),
+  distributorAddress: "",
+  distributorType: "",
+  hashedUUID: "",
+  dialog: "nothing",
+  transactionHash: "",
 };
