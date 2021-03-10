@@ -92,7 +92,7 @@ const CampaignDetailPage: React.FC<
   useEffect(() => {
     getCampaign({
       variables: {
-        id: campaignId,
+        id: `${distributorAddress.toLowerCase()}-${campaignId}`,
       },
     });
   }, [getCampaign, campaignId]);
