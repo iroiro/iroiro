@@ -209,12 +209,6 @@ const TokenCampaignDetailPage: React.FC<
     ) {
       return;
     }
-    console.debug(
-      tokenState.userAddress,
-      `${distributorAddress.toLowerCase()}-${
-        state.campaignId
-      }-${tokenState.userAddress.toLowerCase()}`
-    );
     getClaim({
       variables: {
         id: `${distributorAddress.toLowerCase()}-${
