@@ -1,7 +1,7 @@
 {
   "network": "rinkeby",
-  "walletDistributorAddress": "0x03101580C5bc18a2B673a8aa5dA92D21842a0319",
-  "blockNumberWalletDistributorDeployed": "8203804",
-  "uuidDistributorAddress": "0x57583B973F316d490e8dF14cac40C391c39d08c8",
-  "blockNumberUuidDistributorDeployed": "8203806"
+  "walletDistributorAddress": "0x26e2eAc7977046Fe92735263A51b44F68b6fb379",
+  "blockNumberWalletDistributorDeployed": "8207348",
+  "uuidDistributorAddress": "0xEE88b9d4378E5f506568a446d8Bff575FB3E233c",
+  "blockNumberUuidDistributorDeployed": "8207350"
 }
