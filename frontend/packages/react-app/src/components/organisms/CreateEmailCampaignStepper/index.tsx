@@ -211,7 +211,7 @@ const CreateEmailCampaignStepper = ({
                 </Typography>
               </Box>
             </div>
-            <div>
+            <Box mt={5}>
               <StyledCSVLink
                 data={csvData}
                 onClick={() => setIsDownloaded(true)}
@@ -225,11 +225,6 @@ const CreateEmailCampaignStepper = ({
                   Download CSV file
                 </StyledStepperButton>
               </StyledCSVLink>
-            </div>
-            <Box mt={5}>
-              <StyledStepperButton onClick={() => handleStepChange(3)}>
-                Back
-              </StyledStepperButton>
               <StartCampaignButton
                 variant="contained"
                 color="secondary"
