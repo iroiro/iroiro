@@ -77,7 +77,7 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
                   variant="subtitle2"
                   style={{ fontWeight: "normal" }}
                 >
-                  Canpaign page URL
+                  Campaign page URL
                 </Typography>
                 <TextField
                   value={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}

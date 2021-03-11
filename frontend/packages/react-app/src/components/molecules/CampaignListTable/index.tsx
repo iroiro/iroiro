@@ -36,7 +36,6 @@ import theme from "../../../theme/mui-theme";
 import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
-import TokenAmount from "../../atoms/TokenAmount";
 import { TokenState } from "../../../reducers/tokenContext";
 
 interface DistributorProps {
@@ -137,7 +136,7 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>Token</TableCell>
-                <TableCell>Distributor</TableCell>
+                <TableCell>Distribution with</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
