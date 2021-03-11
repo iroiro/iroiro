@@ -56,7 +56,7 @@ describe("Tests Generator", function () {
     expect(result.bucket).to.equal(process.env.MERKLE_TREE_BUCKET);
     expect(result.key).to.be.an("string");
     expect(result.key).to.equal(
-      "0xd37bdc738b33d45e4106dcc00167b4a3c4390ee39741d0bc46ac4e1f5602523d.json"
+      "0xa86722d7ef8b3198c8f0a8936de30591dd9a328370f3155adf3bccea34c607da.json"
     );
   });
 
@@ -73,7 +73,7 @@ describe("Tests Generator", function () {
     expect(result.bucket).to.equal(process.env.MERKLE_TREE_BUCKET);
     expect(result.key).to.be.an("string");
     expect(result.key).to.equal(
-      "0xd37bdc738b33d45e4106dcc00167b4a3c4390ee39741d0bc46ac4e1f5602523d.json"
+      "0xa86722d7ef8b3198c8f0a8936de30591dd9a328370f3155adf3bccea34c607da.json"
     );
   });
 
