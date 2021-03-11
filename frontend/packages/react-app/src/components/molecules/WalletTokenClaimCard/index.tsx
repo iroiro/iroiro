@@ -133,7 +133,6 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
                 color="primary"
                 disabled={isClaimed}
                 onClick={onClickClaim}
-                // onClick={() => {}}
               >
                 {isClaimed ? "Claimed" : "Claim"}
               </Button>
