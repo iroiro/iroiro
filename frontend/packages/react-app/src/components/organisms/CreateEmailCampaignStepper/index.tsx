@@ -93,7 +93,7 @@ const CreateEmailCampaignStepper = ({
       >
         <Step>
           <StepLabel>
-            Fill in Token address that you want to distribute
+            Fill in the token address that you want to distribute
           </StepLabel>
           <StepContent>
             <InputTokenAddressStep
@@ -179,11 +179,12 @@ const CreateEmailCampaignStepper = ({
                   Email addresses that you have uploaded.
                 </Typography>
                 <Typography style={{ lineHeight: "1.2" }}>
-                  Download CSV contains Email and campaign URL pair for each
-                  address and send a email for them!
+                  Download CSV contains email and campaign URL pair for each
+                  address and send an email for them!
                 </Typography>
                 <Typography style={{ lineHeight: "1.2" }}>
-                  You can send a Email using batch email sending service such as{" "}
+                  You can send an email using a batch email sending service such
+                  as{" "}
                   <a
                     href="https://www.mergemail.co/"
                     target="_blank"
@@ -198,8 +199,8 @@ const CreateEmailCampaignStepper = ({
                     rel="noreferrer"
                   >
                     GMass
-                  </a>{" "}
-                  or{" "}
+                  </a>
+                  , or{" "}
                   <a href="https://yamm.com/" target="_blank" rel="noreferrer">
                     YAMM
                   </a>

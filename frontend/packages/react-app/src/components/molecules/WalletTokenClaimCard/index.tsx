@@ -102,7 +102,7 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
 
   let text = "We are sorry but you can not claim token.";
   if (isClaimable) {
-    text = "You can claim token.";
+    text = "You can claim a token.";
   }
   if (isClaimed) {
     switch (distributorType) {

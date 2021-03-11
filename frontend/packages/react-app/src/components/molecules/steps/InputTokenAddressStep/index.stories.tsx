@@ -29,7 +29,9 @@ export default {
 const Template: Story<InputTokenAddressStepProps> = (args) => (
   <Stepper activeStep={0} orientation="vertical">
     <Step>
-      <StepLabel>Fill in Token address that you want to distribute</StepLabel>
+      <StepLabel>
+        Fill in the token address that you want to distribute
+      </StepLabel>
       <StepContent>
         <InputTokenAddressStep {...args} />
       </StepContent>

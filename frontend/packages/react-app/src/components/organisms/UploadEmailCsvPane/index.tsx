@@ -166,8 +166,8 @@ const UploadEmailCsvPane: React.FC<TargetsProps> = ({
                 })}
               </StyledSelect>
               <FormHelperText>
-                If non header value is shown after uploading, you have to
-                uncheck header checkbox.
+                If non-header value is shown after uploading, you have to
+                uncheck the header checkbox.
               </FormHelperText>
             </FormControl>
           </FormGroup>
