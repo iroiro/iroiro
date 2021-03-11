@@ -19,12 +19,9 @@
 pragma solidity =0.7.6;
 
 import "@iroiro/merkle-distributor/contracts/StringMerkleDistributorManager.sol";
-import "@iroiro/merkle-distributor/contracts/SafeMath64.sol";
 import "../interfaces/DistributorInterfaceV1.sol";
 
 contract UUIDDistributor is DistributorInterfaceV1, StringMerkleDistributorManager {
-    using SafeMath64 for uint64;
-
     constructor (string memory _distributorInfoCid)
     DistributorInterfaceV1(_distributorInfoCid) {}
 
