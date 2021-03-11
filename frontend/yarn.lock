@@ -2314,10 +2314,10 @@
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
   integrity sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==
 
-"@iroiro/merkle-distributor@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@iroiro/merkle-distributor/-/merkle-distributor-1.1.2.tgz#1b01c65f4c62bf988ba487fd0194f7e478af86ad"
-  integrity sha512-9JkrmJMcLq+Cihw9V6geLpFdV1wNwj4Iseyn9G4i2ECq3v0YWp7N+drz/MOJmhVdMsfBPreWOrJm8Ynv/YR+pQ==
+"@iroiro/merkle-distributor@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@iroiro/merkle-distributor/-/merkle-distributor-1.3.0.tgz#38de3b5a107bb7d2adcfc2c34140b70a3f6477b8"
+  integrity sha512-/HIWKP2ToocBDNgzcBEMdHmZ8MpBjoUbIBWwD25E3ICps8kOYyuJuIl+jRcNCNE1OLqbK6QpDBlBXQR4cXI/yA==
   dependencies:
     ethers "^5.0.1"
 

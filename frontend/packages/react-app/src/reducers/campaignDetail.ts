@@ -26,6 +26,7 @@ export interface CampaignDetailState {
   now: Date;
   distributorAddress: string;
   distributorType: DistributorTypes | string;
+  uuid: string;
   hashedUUID: string;
   dialog: DialogStatus;
   transactionHash: string;
@@ -78,6 +79,12 @@ export type CampaignDetailAction =
       type: "distributorType:set";
       payload: {
         distributorType: DistributorTypes | string; // TODO remove string
+      };
+    }
+  | {
+      type: "uuid:set";
+      payload: {
+        uuid: string;
       };
     }
   | {
@@ -167,6 +174,12 @@ export const campaignDetailReducer = (
         distributorType: action.payload.distributorType,
       };
     }
+    case "uuid:set": {
+      return {
+        ...state,
+        uuid: action.payload.uuid,
+      };
+    }
     case "hashedUUID:set": {
       return {
         ...state,
@@ -198,6 +211,7 @@ export const initialState: CampaignDetailState = {
   now: new Date(),
   distributorAddress: "",
   distributorType: "",
+  uuid: "",
   hashedUUID: "",
   dialog: "nothing",
   transactionHash: "",

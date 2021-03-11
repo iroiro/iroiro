@@ -393,6 +393,7 @@ export const campaignDetailState: CampaignDetailState = {
   now: new Date(1577836800000),
   distributorAddress: "",
   distributorType: "",
+  uuid: "",
   hashedUUID: "",
   dialog: "nothing",
   transactionHash: "",
