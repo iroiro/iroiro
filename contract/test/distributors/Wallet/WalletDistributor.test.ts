@@ -233,7 +233,6 @@ describe("WalletDistributor", () => {
           assert.fail();
         }
         expect(claimEvent.args.distributionId).to.equal(1);
-        expect(claimEvent.args.index).to.equal(1);
         expect(claimEvent.args.account).to.equal(
           "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1"
         );
