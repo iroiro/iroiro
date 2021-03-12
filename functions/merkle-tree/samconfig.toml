@@ -3,7 +3,7 @@ version = 0.1
 [default.deploy]
 [default.deploy.parameters]
 stack_name = "merkle-tree"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-d1o3rciscfi9"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1gkyvr7vvv54i"
 s3_prefix = "merkle-tree"
 region = "ap-northeast-1"
 confirm_changeset = true

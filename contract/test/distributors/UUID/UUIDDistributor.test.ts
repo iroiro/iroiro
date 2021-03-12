@@ -33,19 +33,49 @@ describe("UUIDDistributor", () => {
   let abctoken: Contract;
   let xyztoken: Contract;
 
-  const merkleRoot =
-    "0xf23c8c7ccd32b230dde25eafaaa8c65d04d06752ffaa703679bb7c51bd5ea1b7";
-  const hashed =
-    "041b769bafce143707f137e560e08fd8314aba4387c7395c77ca469387cc49d5";
-  const proof = [
-    "0x43df09a07430861558b98b57c672b7d384c6b0520f3476dd43a036381952835e",
-    "0x9bbb68c9cb0f1a27d0dfbb72c8405916c9c9705a4e13638ba302f03744d017ae",
-    "0x6987dd0087df9f37c25e608f6c3e2261008f488a242a5668439cd0a0ecff294f",
-    "0x97a8aeffb1810ea9b0763462e3de9cc590313a79482e1dd042510d9802c524a9",
-    "0x8dffa9de166ba1657468dc20c42287c2057b550f56dc0de9e4f99a3274893560",
-    "0xefd22e1ab98750f9d285a6a0a4c251de668878db2d5c824630f4f763494e0b2e",
-    "0x04b1625747fc935af80ed33fc9f8410b4a7aa57c0e6b24beb892b80890ff9778",
+  const mockInput = [
+    "23d6ba35-35bf-4de3-b21c-957504a645b1",
+    "6ccbe73b-2166-4109-816a-193c9dde9a14",
+    "71feb404-7871-4f30-b869-7d68c99f188b",
   ];
+  const mockMerkleTree = {
+    merkleRoot:
+      "0x2a51c4e310ddb4e1fd866e8415c8743d7655721fe168155076871c98037ed1ff",
+    tokenTotal: "0x012c",
+    claims: {
+      "0x1cca01e19858aa423f2195b7e5d071436f19a0cd0c1bf853e18e0ebf78328e5d": {
+        index: 0,
+        amount: "0x64",
+        proof: [
+          "0x5bcd09b3e27740228428fef76fe6a0cda6528609a2c583c8cf51ab9a8b03522f",
+          "0xc52f202dd78377baaf0a0d1ed257c295da33e30de58dd2cea148cdd7eac8c190",
+        ],
+      },
+      "0x6a6453940381804fa6671a1f1cd3f295f83d751339ed0d8930654d4cdfa5ad75": {
+        index: 1,
+        amount: "0x64",
+        proof: [
+          "0x566d3ede60236821802327d27979078b22f77cb745c2d8d337905be977e6d40d",
+          "0xc52f202dd78377baaf0a0d1ed257c295da33e30de58dd2cea148cdd7eac8c190",
+        ],
+      },
+      "0x9ca955ecc2d281be4ed5348b0f7a79b263afd8b58d1cf5dbf34e8f53c5443184": {
+        index: 2,
+        amount: "0x64",
+        proof: [
+          "0x43052188a102c41a682a3ea69904f75106268b6775919c86fd31b9ee24b501bc",
+        ],
+      },
+    },
+  };
+  const merkleRoot = mockMerkleTree.merkleRoot;
+  const uuid = "23d6ba35-35bf-4de3-b21c-957504a645b1";
+  const hashed =
+    "0x1cca01e19858aa423f2195b7e5d071436f19a0cd0c1bf853e18e0ebf78328e5d";
+  const proof =
+    mockMerkleTree.claims[
+      "0x1cca01e19858aa423f2195b7e5d071436f19a0cd0c1bf853e18e0ebf78328e5d"
+    ].proof;
   const merkleTreeCid = "merkle tree cid";
   const campaignInfoCid = "campaign info cid";
 
@@ -213,13 +243,13 @@ describe("UUIDDistributor", () => {
 
     describe("active campaign", () => {
       it("claim", async () => {
-        await distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
+        await distributor.claim(1, 0, uuid, BigNumber.from(100), proof);
       });
 
       it("emits event", async () => {
         const transaction = await distributor
           .connect(alice)
-          .claim(1, 1, hashed, BigNumber.from(100), proof);
+          .claim(1, 0, uuid, BigNumber.from(100), proof);
         const receipt = await transaction.wait();
         if (receipt.events === undefined) {
           assert.fail();
@@ -231,14 +261,13 @@ describe("UUIDDistributor", () => {
           assert.fail();
         }
         expect(claimEvent.args.distributionId).to.equal(1);
-        expect(claimEvent.args.index).to.equal(1);
         expect(claimEvent.args.account).to.equal(await alice.getAddress());
         expect(claimEvent.args.amount).to.equal(100);
       });
 
       it("revert if index is invalid", async () => {
         await expect(
-          distributor.claim(1, 2, hashed, BigNumber.from(100), proof)
+          distributor.claim(1, 1, uuid, BigNumber.from(100), proof)
         ).to.be.revertedWith("MerkleDistributor: Invalid proof.");
       });
 
@@ -246,7 +275,7 @@ describe("UUIDDistributor", () => {
         await expect(
           distributor.claim(
             1,
-            1,
+            0,
             "00a89857cb180be7b0cc2a6db58b35e69a4c54aa7990bda230f527595e280285",
             BigNumber.from(100),
             proof
@@ -258,15 +287,7 @@ describe("UUIDDistributor", () => {
         await expect(
           distributor
             .connect(alice)
-            .claim(1, 1, hashed, BigNumber.from(10), [
-              "0xb2edb7e841c03b8394638ba04b3bd2e9769b0d29586a4d476bf71d84e1612b46",
-              "0x0f2293d2199b068a92bd8359ac7f189a4ac49c6aaefcfefdbd3b24fae3ffc198",
-              "0x6bea169605062ad96694d33c2918b3a12ffae68cb4a2238921f37e37e2640c0b",
-              "0x356bdf6769a352b886c6f54b3e003a35e0ec7de615121d9544c3bdc5779f457d",
-              "0xf8cb76a9be4588036a88209807d0293ca1a0d7dd100c1bfac881bdb8fa6302c5",
-              "0xb13a9406568e667caa70cc8b271c9ada0ff7b8ce4ebe5e6889e07632db66809e",
-              "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
-            ])
+            .claim(1, 0, uuid, BigNumber.from(10), proof)
         ).to.be.revertedWith("MerkleDistributor: Invalid proof.");
       });
 
@@ -274,12 +295,7 @@ describe("UUIDDistributor", () => {
         await expect(
           distributor
             .connect(alice)
-            .claim(1, 1, hashed, BigNumber.from(100), [
-              "0x0f2293d2199b068a92bd8359ac7f189a4ac49c6aaefcfefdbd3b24fae3ffc198",
-              "0x6bea169605062ad96694d33c2918b3a12ffae68cb4a2238921f37e37e2640c0b",
-              "0x356bdf6769a352b886c6f54b3e003a35e0ec7de615121d9544c3bdc5779f457d",
-              "0xf8cb76a9be4588036a88209807d0293ca1a0d7dd100c1bfac881bdb8fa6302c5",
-              "0xb13a9406568e667caa70cc8b271c9ada0ff7b8ce4ebe5e6889e07632db66809e",
+            .claim(1, 0, uuid, BigNumber.from(100), [
               "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
             ])
         ).to.be.revertedWith("MerkleDistributor: Invalid proof.");
@@ -314,7 +330,7 @@ describe("UUIDDistributor", () => {
         ).to.equal("0");
         await distributor
           .connect(alice)
-          .claim(1, 1, hashed, BigNumber.from(100), proof);
+          .claim(1, 0, uuid, BigNumber.from(100), proof);
         expect(
           (await abctoken.balanceOf(distributor.address)).toString()
         ).to.equal("0");
@@ -354,31 +370,31 @@ describe("UUIDDistributor", () => {
       });
 
       it("claim use each campaign token", async () => {
-        await distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
-        await distributor.claim(2, 1, hashed, BigNumber.from(100), proof);
+        await distributor.claim(1, 0, uuid, BigNumber.from(100), proof);
+        await distributor.claim(2, 0, uuid, BigNumber.from(100), proof);
       });
 
       it("decrease remaining map", async () => {
-        await distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
+        await distributor.claim(1, 0, uuid, BigNumber.from(100), proof);
         expect(await distributor.remainingAmount("1")).to.equal(0);
         expect(await distributor.remainingAmount("2")).to.equal(100);
-        await distributor.claim(2, 1, hashed, BigNumber.from(100), proof);
+        await distributor.claim(2, 0, uuid, BigNumber.from(100), proof);
         expect(await distributor.remainingAmount("1")).to.equal(0);
         expect(await distributor.remainingAmount("2")).to.equal(0);
       });
 
       it("claim does not use other campaign's tokens", async () => {
-        await distributor.claim(1, 1, hashed, BigNumber.from(100), proof);
+        await distributor.claim(1, 0, uuid, BigNumber.from(100), proof);
         await expect(
-          distributor.claim(1, 2, hashed, BigNumber.from(100), [
-            "0xd77db87087a1cd0a89b7eb04e0c180dbca03f46b1aed7618dd8c1520ed20969e",
-            "0x1aa7eb3923684d4f0213dcf513ed8a529cdf8f0fb89901a3dc0ed1a883e30460",
-            "0x3bbb656f8ba0de770b2c6743036f7e1c6e9b4f51813d07d396bd308b97a01d67",
-            "0xdcfc4ba455ccfc71da6d8d97e2e4ce6205a172176133e612c115d623d9dc4592",
-            "0x9446c03efafeb100f8d8546268672a191df7ff9d270e5f8aa9b74a38716252d2",
-            "0xb13a9406568e667caa70cc8b271c9ada0ff7b8ce4ebe5e6889e07632db66809e",
-            "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
-          ])
+          distributor.claim(
+            1,
+            1,
+            mockInput[1],
+            BigNumber.from(100),
+            mockMerkleTree.claims[
+              "0x6a6453940381804fa6671a1f1cd3f295f83d751339ed0d8930654d4cdfa5ad75"
+            ].proof
+          )
         ).to.be.revertedWith("MerkleDistributor: Insufficient token.");
       });
     });

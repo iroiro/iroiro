@@ -79,7 +79,7 @@ interface IMerkleDistributorManagerInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
-    "Claimed(uint64,uint256,address,uint256)": EventFragment;
+    "Claimed(uint64,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
@@ -381,17 +381,11 @@ export class IMerkleDistributorManager extends Contract {
   filters: {
     Claimed(
       distributionId: BigNumberish | null,
-      index: null,
       account: string | null,
       amount: null
     ): TypedEventFilter<
-      [BigNumber, BigNumber, string, BigNumber],
-      {
-        distributionId: BigNumber;
-        index: BigNumber;
-        account: string;
-        amount: BigNumber;
-      }
+      [BigNumber, string, BigNumber],
+      { distributionId: BigNumber; account: string; amount: BigNumber }
     >;
   };
 

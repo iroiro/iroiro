@@ -23,7 +23,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_WALLETDISTRIBUTOR ?? "",
     distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
     distributorMetadata: {
-      name: "Wallet Address Distributor",
+      name: "Wallet Address",
       description: "To distribute tokens to a list of addresses that you have.",
     },
     type: "wallet",
@@ -34,7 +34,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR ?? "",
     distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
-      name: "URL Distributor",
+      name: "URL",
       description: "To distribute tokens with a unique URL per user.",
     },
     type: "uuid",
@@ -45,7 +45,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR ?? "",
     distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
-      name: "Email Distributor",
+      name: "Email",
       description:
         "To distribute tokens to a list of Email addresses that you have.",
     },
@@ -75,10 +75,10 @@ const distributors: Distributor[] = [
 export const getDistributorType = (type: string): string => {
   switch (type) {
     case "wallet":
-      return "Wallet Address Distributor";
+      return "Wallet Address";
     case "uuid":
     case "email":
-      return "URL/Email Distributor";
+      return "URL/Email";
     default:
       return "";
   }

@@ -44,7 +44,7 @@ const WaitingProcessDialog: React.FC<WaitingProcessDialogProps> = ({
           state.distributorType === "uuid"
         ) {
           return [
-            "If you leave from page, you lost campaign information for fans.",
+            "If you leave from a page, you lost campaign information for fans.",
             "And it could take time if Ethereum network is congested.",
           ];
         }

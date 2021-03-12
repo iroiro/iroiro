@@ -40,7 +40,6 @@ export interface WalletTokenClaimCardProps {
   readonly merkleTreeCid: string;
   readonly distributorAddress: string;
   readonly distributorType: DistributorTypes | string;
-  readonly hashedUUID: string;
   readonly state: CampaignDetailState;
 }
 
@@ -55,7 +54,6 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
   merkleTreeCid,
   distributorAddress,
   distributorType,
-  hashedUUID,
   state,
 }) => {
   const { library } = useWeb3React();
@@ -78,7 +76,8 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
           distributorAddress,
           campaignId,
           merkleTreeCid,
-          hashedUUID
+          state.uuid,
+          state.hashedUUID
         );
         break;
     }
@@ -100,9 +99,9 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
     // TODO After approving finished, switch request button to enable
   }, [dispatch, library]);
 
-  let text = "We are sorry but you can not claim token.";
+  let text = "We are sorry but you can not claim tokens.";
   if (isClaimable) {
-    text = "You can claim token.";
+    text = "You can claim tokens.";
   }
   if (isClaimed) {
     switch (distributorType) {

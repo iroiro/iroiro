@@ -25,6 +25,7 @@ export type Account = {
 
 export type Campaign = {
   __typename?: 'Campaign';
+  /** Equals to: <distributorAddress>-<campaignId> */
   id: Scalars['ID'];
   distributor: Distributor;
   token: Scalars['String'];
@@ -48,7 +49,7 @@ export type CheckRequestsCondition = {
 
 export type Claim = {
   __typename?: 'Claim';
-  /**  Equals to: <distributorAddress>-<campaignId>-<accountAddress> */
+  /** Equals to: <distributorAddress>-<campaignId>-<accountAddress> */
   id: Scalars['ID'];
   account: Account;
   campaign: Campaign;

@@ -9,7 +9,7 @@
     "solhint": "solhint ./contracts/**/*.sol",
     "lint": "yarn solhint",
     "coverage": "npx hardhat coverage",
-    "migrate:local": "npx truffle migrate --reset --network local",
+    "migrate:local": "npx hardhat run --network localhost scripts/deploy.js",
     "migrate:rinkeby": "npx truffle migrate --reset --network rinkeby",
     "migrate:kovan": "npx truffle migrate --reset --network kovan",
     "migrate:live": "npx truffle migrate --network live",
@@ -44,7 +44,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@iroiro/merkle-distributor": "1.2.16",
+    "@iroiro/merkle-distributor": "1.3.0",
     "@openzeppelin/contracts": "^3.4.1",
     "hardhat-typechain": "^0.3.5",
     "ts-generator": "^0.1.1",

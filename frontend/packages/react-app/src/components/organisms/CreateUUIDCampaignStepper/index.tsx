@@ -86,7 +86,7 @@ const CreateUUIDCampaignStepper = ({
       >
         <Step>
           <StepLabel>
-            Fill in Token address that you want to distribute
+            Fill in the token address that you want to distribute
           </StepLabel>
           <StepContent>
             <InputTokenAddressStep
