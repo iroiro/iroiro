@@ -44,6 +44,7 @@ import {
   IPFS_PINNING_API,
   MERKLE_ROOT_API_START,
   MERKLE_ROOT_API_DESCRIBE,
+  MERKLE_ROOT_EXECUTION_ARN,
 } from "../../utils/const";
 import { BigNumber } from "ethers";
 import { isAddress } from "ethers/lib/utils";
@@ -279,8 +280,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
       const data = JSON.stringify({
         input: `{\"cid\": \"${recipientsCid}\",\"amount\": ${amount}}`,
         name: `${account}-${Date.now()}`,
-        stateMachineArn:
-          "arn:aws:states:ap-northeast-1:179855544942:stateMachine:MerkleTreeStateMachine-LhKmb5ybYQV3",
+        stateMachineArn: MERKLE_ROOT_EXECUTION_ARN,
       });
       const response = await postMakeProof({ data: data });
       merkletreeDispatch({
