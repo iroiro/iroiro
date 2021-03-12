@@ -20,7 +20,7 @@ import {
   getDefaultProvider,
   Provider,
 } from "@ethersproject/providers";
-import { utils, Signer, BigNumber } from "ethers";
+import { utils, Signer, BigNumber, ethers } from "ethers";
 import { TokenBasic } from "../interfaces";
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
 import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
@@ -271,6 +271,7 @@ export const uuidClaim = async (
   distributorAddress: string,
   campaignId: string,
   merkleTreeCid: string,
+  uuid: string,
   hashedUUID: string
 ): Promise<ContractTransaction | undefined> => {
   if (!library) {
@@ -286,7 +287,7 @@ export const uuidClaim = async (
   );
   const data = await response.json();
   return distributor.functions
-    .claim(campaignId, data.index, hashedUUID, data.amount, data.proof)
+    .claim(campaignId, data.index, uuid, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {
       return transaction;
     })

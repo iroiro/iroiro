@@ -26,7 +26,7 @@ dataSources:
           handler: handleUpdateDistributorInfo
         - event: CreateCampaign(indexed uint64,indexed address,indexed address,string,string)
           handler: handleCreateCampaign
-        - event: Claimed(indexed uint64,uint256,indexed address,uint256)
+        - event: Claimed(indexed uint64,indexed address,uint256)
           handler: handleClaimed
       file: ./src/distributors/wallet-distributor.ts
 
@@ -52,6 +52,6 @@ dataSources:
           handler: handleUpdateDistributorInfo
         - event: CreateCampaign(indexed uint64,indexed address,indexed address,string,string)
           handler: handleCreateCampaign
-        - event: Claimed(indexed uint64,uint256,indexed address,uint256)
+        - event: Claimed(indexed uint64,indexed address,uint256)
           handler: handleClaimed
       file: ./src/distributors/uuid-distributor.ts

@@ -57,6 +57,7 @@ Wallet.args = {
     now: new Date(1606780800000),
     distributorAddress: "",
     distributorType: "wallet",
+    uuid: "",
     hashedUUID: "",
     dialog: "nothing",
     transactionHash: "",
@@ -73,6 +74,8 @@ UUID.args = {
     now: new Date(1606780800000),
     distributorAddress: "",
     distributorType: "uuid",
+
+    uuid: "",
     hashedUUID: "",
     dialog: "nothing",
     transactionHash: "",

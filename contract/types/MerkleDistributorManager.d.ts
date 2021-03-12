@@ -85,7 +85,7 @@ interface MerkleDistributorManagerInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
 
   events: {
-    "Claimed(uint64,uint256,address,uint256)": EventFragment;
+    "Claimed(uint64,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
@@ -441,17 +441,11 @@ export class MerkleDistributorManager extends Contract {
   filters: {
     Claimed(
       distributionId: BigNumberish | null,
-      index: null,
       account: string | null,
       amount: null
     ): TypedEventFilter<
-      [BigNumber, BigNumber, string, BigNumber],
-      {
-        distributionId: BigNumber;
-        index: BigNumber;
-        account: string;
-        amount: BigNumber;
-      }
+      [BigNumber, string, BigNumber],
+      { distributionId: BigNumber; account: string; amount: BigNumber }
     >;
   };
 

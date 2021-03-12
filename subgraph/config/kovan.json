@@ -1,7 +1,7 @@
 {
   "network": "kovan",
-  "walletDistributorAddress": "0x85399fD7FDC409710aB5F1d6aff8A5CF1B68AA21",
-  "blockNumberWalletDistributorDeployed": "23843778",
-  "uuidDistributorAddress": "0x2bc33Da1A1866d92a2f045E4Ed63921802061C34",
-  "blockNumberUuidDistributorDeployed": "23843783"
+  "walletDistributorAddress": "0xE98dB5131B7fC7aB3BcEbb5093cd904308707E20",
+  "blockNumberWalletDistributorDeployed": "23874853",
+  "uuidDistributorAddress": "0x4DAFcf19A5DEF888e5D64A9577bcF883e3e9d405",
+  "blockNumberUuidDistributorDeployed": "23874859"
 }

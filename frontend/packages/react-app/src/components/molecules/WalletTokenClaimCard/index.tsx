@@ -40,7 +40,6 @@ export interface WalletTokenClaimCardProps {
   readonly merkleTreeCid: string;
   readonly distributorAddress: string;
   readonly distributorType: DistributorTypes | string;
-  readonly hashedUUID: string;
   readonly state: CampaignDetailState;
 }
 
@@ -55,7 +54,6 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
   merkleTreeCid,
   distributorAddress,
   distributorType,
-  hashedUUID,
   state,
 }) => {
   const { library } = useWeb3React();
@@ -78,7 +76,8 @@ const WalletTokenClaimCard: React.FC<WalletTokenClaimCardProps> = ({
           distributorAddress,
           campaignId,
           merkleTreeCid,
-          hashedUUID
+          state.uuid,
+          state.hashedUUID
         );
         break;
     }

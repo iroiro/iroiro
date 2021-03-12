@@ -67,6 +67,10 @@ const TokenCampaignDetailPage: React.FC<
   );
 
   useEffect(() => {
+    dispatch({ type: "uuid:set", payload: { uuid } });
+  }, [uuid]);
+
+  useEffect(() => {
     dispatch({ type: "hashedUUID:set", payload: { hashedUUID } });
   }, [hashedUUID]);
 

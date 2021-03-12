@@ -59,7 +59,6 @@ const WalletCampaignDetailPanel: React.FC<WalletCampaignDetailPanelProps> = ({
       merkleTreeCid={state.campaign.merkleTreeCid}
       distributorAddress={state.distributorAddress}
       distributorType={state.distributorType}
-      hashedUUID={state.hashedUUID}
       state={state}
     />
   ) : (
