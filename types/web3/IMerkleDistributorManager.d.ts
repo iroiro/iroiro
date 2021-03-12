@@ -23,13 +23,11 @@ interface EventOptions {
 
 export type Claimed = ContractEventLog<{
   distributionId: string;
-  index: string;
   account: string;
   amount: string;
   0: string;
   1: string;
   2: string;
-  3: string;
 }>;
 
 export interface IMerkleDistributorManager extends BaseContract {
