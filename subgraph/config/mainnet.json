@@ -1,7 +1,7 @@
 {
   "network": "mainnet",
-  "walletDistributorAddress": "",
-  "blockNumberWalletDistributorDeployed": "",
-  "uuidDistributorAddress": "",
-  "blockNumberUuidDistributorDeployed": ""
+  "walletDistributorAddress": "0x689E325B55ceAd95C23cbD0e4B3a6d6ebfaF8Fa7",
+  "blockNumberWalletDistributorDeployed": "12041378",
+  "uuidDistributorAddress": "0xfa35371B5d5CC2a196358Bb9943e62E904478f86",
+  "blockNumberUuidDistributorDeployed": "12041461"
 }
