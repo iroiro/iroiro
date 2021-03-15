@@ -16,7 +16,8 @@ The naming convention of the contract is as follows:
 
 ### Mainnet
 
-To be deployed soon...
+- UUIDDistributor: 0xfa35371B5d5CC2a196358Bb9943e62E904478f86
+- WalletDistributor: 0x689e325b55cead95c23cbd0e4b3a6d6ebfaf8fa7
 
 ### Rinkeby
 
