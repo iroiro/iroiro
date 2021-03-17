@@ -18,7 +18,8 @@ type Campaign @entity {
   "Equals to: <distributorAddress>-<campaignId>"
   id: ID!
   distributor: Distributor!
-  token: String!
+  token: String
+  # nft: String # nft token id is same as campaignId(treeId). Future implementation.
   "Campaign creator not only token creator"
   creator: Creator!
   campaignInfoCid: String
@@ -33,7 +34,8 @@ type Claim @entity {
   id: ID!
   account: Account!
   campaign: Campaign!
-  token: String!
+  token: String
+  nft: String
   amount: BigInt
 }
 

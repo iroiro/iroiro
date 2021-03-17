@@ -55,3 +55,57 @@ dataSources:
         - event: Claimed(indexed uint64,indexed address,uint256)
           handler: handleClaimed
       file: ./src/distributors/uuid-distributor.ts
+
+  - kind: ethereum/contract
+    name: WalletNFTDistributor
+    network: {{network}}
+    source:
+      address: "{{walletNftDistributorAddress}}"
+      abi: WalletNFTDistributor
+      startBlock: {{blockNumberWalletNftDistributorDeployed}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Campaign
+        - Claim
+        - Distributor
+      abis:
+        - name: WalletNFTDistributor
+          file: ../contract/build/contracts/WalletNFTDistributor.json
+      eventHandlers:
+        - event: UpdateDistributorInfo(string)
+          handler: handleUpdateDistributorInfo
+        - event: CreateCampaign(indexed uint64,indexed address,string,string,string,uint32)
+          handler: handleCreateCampaign
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+      file: ./src/distributors/wallet-nft-distributor.ts
+
+  - kind: ethereum/contract
+    name: UUIDNFTDistributor
+    network: {{network}}
+    source:
+      address: "{{uuidNftDistributorAddress}}"
+      abi: UUIDNFTDistributor
+      startBlock: {{blockNumberUuidNftDistributorDeployed}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Campaign
+        - Claim
+        - Distributor
+      abis:
+        - name: UUIDNFTDistributor
+          file: ../contract/build/contracts/UUIDNFTDistributor.json
+      eventHandlers:
+        - event: UpdateDistributorInfo(string)
+          handler: handleUpdateDistributorInfo
+        - event: CreateCampaign(indexed uint64,indexed address,string,string,string,uint32)
+          handler: handleCreateCampaign
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+      file: ./src/distributors/uuid-nft-distributor.ts
