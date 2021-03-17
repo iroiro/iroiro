@@ -30,8 +30,7 @@ contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
         address indexed creator,
         string merkleTreeCid,
         string campaignInfoCid,
-        string nftMetadataCid,
-        uint32 amount
+        string nftMetadataCid
     );
 
     constructor(
@@ -45,8 +44,7 @@ contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
         bytes32 merkleRoot,
         string memory merkleTreeCid,
         string memory campaignInfoCid,
-        string memory nftMetadataCid,
-        uint32 amount // nft mint cap
+        string memory nftMetadataCid
     ) virtual external {}
 
     function setURI(string calldata newUri) external onlyOwner {
