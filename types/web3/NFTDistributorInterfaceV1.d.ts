@@ -35,13 +35,11 @@ export type CreateCampaign = ContractEventLog<{
   merkleTreeCid: string;
   campaignInfoCid: string;
   nftMetadataCid: string;
-  amount: string;
   0: string;
   1: string;
   2: string;
   3: string;
   4: string;
-  5: string;
 }>;
 export type OwnershipTransferred = ContractEventLog<{
   previousOwner: string;
@@ -177,8 +175,7 @@ export interface NFTDistributorInterfaceV1 extends BaseContract {
       merkleRoot: string | number[],
       merkleTreeCid: string,
       campaignInfoCid: string,
-      nftMetadataCid: string,
-      amount: number | string | BN
+      nftMetadataCid: string
     ): NonPayableTransactionObject<void>;
 
     setURI(newUri: string): NonPayableTransactionObject<void>;

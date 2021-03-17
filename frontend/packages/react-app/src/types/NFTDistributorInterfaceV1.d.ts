@@ -34,7 +34,7 @@ interface NFTDistributorInterfaceV1Interface extends ethers.utils.Interface {
     "supportsInterface(bytes4)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
-    "createCampaign(bytes32,string,string,string,uint32)": FunctionFragment;
+    "createCampaign(bytes32,string,string,string)": FunctionFragment;
     "setURI(string)": FunctionFragment;
     "updateDistributorInfo(string)": FunctionFragment;
   };
@@ -79,7 +79,7 @@ interface NFTDistributorInterfaceV1Interface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "uri", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "createCampaign",
-    values: [BytesLike, string, string, string, BigNumberish]
+    values: [BytesLike, string, string, string]
   ): string;
   encodeFunctionData(functionFragment: "setURI", values: [string]): string;
   encodeFunctionData(
@@ -134,7 +134,7 @@ interface NFTDistributorInterfaceV1Interface extends ethers.utils.Interface {
 
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
-    "CreateCampaign(uint64,address,string,string,string,uint32)": EventFragment;
+    "CreateCampaign(uint64,address,string,string,string)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "TransferBatch(address,address,address,uint256[],uint256[])": EventFragment;
     "TransferSingle(address,address,address,uint256,uint256)": EventFragment;
@@ -385,16 +385,14 @@ export class NFTDistributorInterfaceV1 extends Contract {
       merkleTreeCid: string,
       campaignInfoCid: string,
       nftMetadataCid: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createCampaign(bytes32,string,string,string,uint32)"(
+    "createCampaign(bytes32,string,string,string)"(
       merkleRoot: BytesLike,
       merkleTreeCid: string,
       campaignInfoCid: string,
       nftMetadataCid: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -606,16 +604,14 @@ export class NFTDistributorInterfaceV1 extends Contract {
     merkleTreeCid: string,
     campaignInfoCid: string,
     nftMetadataCid: string,
-    amount: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createCampaign(bytes32,string,string,string,uint32)"(
+  "createCampaign(bytes32,string,string,string)"(
     merkleRoot: BytesLike,
     merkleTreeCid: string,
     campaignInfoCid: string,
     nftMetadataCid: string,
-    amount: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -827,16 +823,14 @@ export class NFTDistributorInterfaceV1 extends Contract {
       merkleTreeCid: string,
       campaignInfoCid: string,
       nftMetadataCid: string,
-      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createCampaign(bytes32,string,string,string,uint32)"(
+    "createCampaign(bytes32,string,string,string)"(
       merkleRoot: BytesLike,
       merkleTreeCid: string,
       campaignInfoCid: string,
       nftMetadataCid: string,
-      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -870,17 +864,15 @@ export class NFTDistributorInterfaceV1 extends Contract {
       creator: string | null,
       merkleTreeCid: null,
       campaignInfoCid: null,
-      nftMetadataCid: null,
-      amount: null
+      nftMetadataCid: null
     ): TypedEventFilter<
-      [BigNumber, string, string, string, string, number],
+      [BigNumber, string, string, string, string],
       {
         treeId: BigNumber;
         creator: string;
         merkleTreeCid: string;
         campaignInfoCid: string;
         nftMetadataCid: string;
-        amount: number;
       }
     >;
 
@@ -1127,16 +1119,14 @@ export class NFTDistributorInterfaceV1 extends Contract {
       merkleTreeCid: string,
       campaignInfoCid: string,
       nftMetadataCid: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createCampaign(bytes32,string,string,string,uint32)"(
+    "createCampaign(bytes32,string,string,string)"(
       merkleRoot: BytesLike,
       merkleTreeCid: string,
       campaignInfoCid: string,
       nftMetadataCid: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -1349,16 +1339,14 @@ export class NFTDistributorInterfaceV1 extends Contract {
       merkleTreeCid: string,
       campaignInfoCid: string,
       nftMetadataCid: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createCampaign(bytes32,string,string,string,uint32)"(
+    "createCampaign(bytes32,string,string,string)"(
       merkleRoot: BytesLike,
       merkleTreeCid: string,
       campaignInfoCid: string,
       nftMetadataCid: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
