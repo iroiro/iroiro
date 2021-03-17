@@ -19,7 +19,6 @@ import { assert, expect } from "chai";
 import {
   BigNumber,
   constants,
-  Contract,
   ContractFactory,
   ContractTransaction,
   Signer,
@@ -138,7 +137,13 @@ describe("UUIDNFTDistributor", () => {
     beforeEach(async () => {
       await distributor.createCampaign(
         merkleRoot,
-
+        merkleTreeCid,
+        campaignInfoCid,
+        nftMetadataCid,
+        100
+      );
+      await distributor.createCampaign(
+        merkleRoot,
         merkleTreeCid,
         campaignInfoCid,
         nftMetadataCid,
@@ -148,6 +153,15 @@ describe("UUIDNFTDistributor", () => {
 
     it("claim", async () => {
       await distributor.claim(1, 0, uuid, BigNumber.from(100), proof);
+    });
+
+    it("mint and transfer to account", async () => {
+      await distributor
+        .connect(alice)
+        .claim(1, 0, uuid, BigNumber.from(100), proof);
+      expect(
+        (await distributor.balanceOf(await alice.getAddress(), 1)).toNumber()
+      ).to.equal(100);
     });
 
     it("emits event", async () => {
@@ -169,6 +183,43 @@ describe("UUIDNFTDistributor", () => {
       expect(transferEvent.args.id).to.equal(1);
       expect(transferEvent.args.to).to.equal(await alice.getAddress());
       expect(transferEvent.args.value).to.equal(100);
+    });
+
+    it("mint and transfer to proper account on multiple distribution", async () => {
+      await distributor
+        .connect(alice)
+        .claim(1, 0, uuid, BigNumber.from(100), proof);
+      expect(
+        (await distributor.balanceOf(await alice.getAddress(), 1)).toNumber()
+      ).to.equal(100);
+      await distributor.claim(
+        1,
+        1,
+        "6ccbe73b-2166-4109-816a-193c9dde9a14",
+        BigNumber.from(100),
+        [
+          "0x566d3ede60236821802327d27979078b22f77cb745c2d8d337905be977e6d40d",
+          "0xc52f202dd78377baaf0a0d1ed257c295da33e30de58dd2cea148cdd7eac8c190",
+        ]
+      );
+      expect(
+        (await distributor.balanceOf(await owner.getAddress(), 1)).toNumber()
+      ).to.equal(100);
+      await distributor
+        .connect(alice)
+        .claim(2, 0, uuid, BigNumber.from(100), proof);
+      expect(
+        (await distributor.balanceOf(await alice.getAddress(), 2)).toNumber()
+      ).to.equal(100);
+    });
+
+    it("revert if already claimed", async () => {
+      await distributor
+        .connect(alice)
+        .claim(1, 0, uuid, BigNumber.from(100), proof);
+      await expect(
+        distributor.connect(alice).claim(1, 0, uuid, BigNumber.from(100), proof)
+      ).to.be.revertedWith("MerkleTree: Already proven.");
     });
 
     it("revert if index is invalid", async () => {

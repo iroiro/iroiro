@@ -16,13 +16,7 @@
  */
 
 import { assert, expect } from "chai";
-import {
-  BigNumber,
-  constants,
-  Contract,
-  ContractTransaction,
-  Signer,
-} from "ethers";
+import { BigNumber, constants, ContractTransaction, Signer } from "ethers";
 import { ethers } from "hardhat";
 import { WalletNFTDistributor } from "../../../types";
 
@@ -107,6 +101,13 @@ describe("WalletNFTDistributor", () => {
         nftMetadataCid,
         100
       );
+      await distributor.createCampaign(
+        merkleRoot,
+        merkleTreeCid,
+        campaignInfoCid,
+        nftMetadataCid,
+        200
+      );
     });
 
     it("success", async () => {
@@ -117,6 +118,26 @@ describe("WalletNFTDistributor", () => {
         BigNumber.from(100),
         proof
       );
+    });
+
+    it("mint and transfer to account", async () => {
+      await distributor
+        .connect(alice)
+        .claim(
+          1,
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          BigNumber.from(100),
+          proof
+        );
+      expect(
+        (
+          await distributor.balanceOf(
+            "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+            1
+          )
+        ).toNumber()
+      ).to.equals(100);
     });
 
     it("emits event", async () => {
@@ -146,6 +167,91 @@ describe("WalletNFTDistributor", () => {
         "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1"
       );
       expect(transferEvent.args.value).to.equal(100);
+    });
+
+    it("mint and transfer to proper account on multiple distribution", async () => {
+      await distributor
+        .connect(alice)
+        .claim(
+          1,
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          BigNumber.from(100),
+          proof
+        );
+      expect(
+        (
+          await distributor.balanceOf(
+            "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+            1
+          )
+        ).toNumber()
+      ).to.equals(100);
+      await distributor
+        .connect(alice)
+        .claim(
+          1,
+          2,
+          "0x0350D208F3D94Af84724e437fAa7ebe5A3C35aC7",
+          BigNumber.from(100),
+          [
+            "0xd77db87087a1cd0a89b7eb04e0c180dbca03f46b1aed7618dd8c1520ed20969e",
+            "0x1aa7eb3923684d4f0213dcf513ed8a529cdf8f0fb89901a3dc0ed1a883e30460",
+            "0x3bbb656f8ba0de770b2c6743036f7e1c6e9b4f51813d07d396bd308b97a01d67",
+            "0xdcfc4ba455ccfc71da6d8d97e2e4ce6205a172176133e612c115d623d9dc4592",
+            "0x9446c03efafeb100f8d8546268672a191df7ff9d270e5f8aa9b74a38716252d2",
+            "0xb13a9406568e667caa70cc8b271c9ada0ff7b8ce4ebe5e6889e07632db66809e",
+            "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
+          ]
+        );
+      expect(
+        (
+          await distributor.balanceOf(
+            "0x0350D208F3D94Af84724e437fAa7ebe5A3C35aC7",
+            1
+          )
+        ).toNumber()
+      ).to.equals(100);
+      await distributor
+        .connect(alice)
+        .claim(
+          2,
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          BigNumber.from(100),
+          proof
+        );
+      expect(
+        (
+          await distributor.balanceOf(
+            "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+            2
+          )
+        ).toNumber()
+      ).to.equals(100);
+    });
+
+    it("revert if already claimed", async () => {
+      await distributor
+        .connect(alice)
+        .claim(
+          1,
+          1,
+          "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+          BigNumber.from(100),
+          proof
+        );
+      await expect(
+        distributor
+          .connect(alice)
+          .claim(
+            1,
+            1,
+            "0x01dC7F8C928CeA27D8fF928363111c291bEB20b1",
+            BigNumber.from(100),
+            proof
+          )
+      ).to.be.revertedWith("MerkleTree: Already proven.");
     });
 
     it("revert if index is invalid", async () => {
