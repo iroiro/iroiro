@@ -58,8 +58,7 @@ describe("WalletNFTDistributor", () => {
           merkleRoot,
           merkleTreeCid,
           campaignInfoCid,
-          nftMetadataCid,
-          100
+          nftMetadataCid
         );
       });
 
@@ -87,7 +86,6 @@ describe("WalletNFTDistributor", () => {
         expect(claimEvent.args.merkleTreeCid).to.equal(merkleTreeCid);
         expect(claimEvent.args.campaignInfoCid).to.equal(campaignInfoCid);
         expect(claimEvent.args.nftMetadataCid).to.equal(nftMetadataCid);
-        expect(claimEvent.args.amount).to.equal(100);
       });
     });
   });
@@ -98,15 +96,13 @@ describe("WalletNFTDistributor", () => {
         merkleRoot,
         merkleTreeCid,
         campaignInfoCid,
-        nftMetadataCid,
-        100
+        nftMetadataCid
       );
       await distributor.createCampaign(
         merkleRoot,
         merkleTreeCid,
         campaignInfoCid,
-        nftMetadataCid,
-        200
+        nftMetadataCid
       );
     });
 
