@@ -32,10 +32,10 @@ const web3 = new Web3(
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
 
 exports.handler = async (event, context) => {
-  const body = JSON.parse(event.body);
-  console.debug("request body: ", body);
-  const treeId = body.treeId;
-  const distributorAddress = body.distributorAddress;
+  const queryStringParameters = event.queryStringParameters;
+  console.debug("request body: ", queryStringParameters);
+  const treeId = queryStringParameters.treeId;
+  const distributorAddress = queryStringParameters.distributorAddress;
 
   let metadataCid;
   try {

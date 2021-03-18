@@ -6,8 +6,10 @@ const expect = chai.expect;
 describe("Tests index", function () {
   it("WalletNFTDistributor: verifies successful response", async () => {
     const event = {
-      body:
-        '{\n    "treeId": "1",\n    "distributorAddress": "0x4346ef74D361b8C04cbB5116EE2b004A0b699994"\n  }',
+      queryStringParameters: {
+        treeId: "1",
+        distributorAddress: "0x4346ef74D361b8C04cbB5116EE2b004A0b699994",
+      },
     };
     const result = await app.handler(event);
 
@@ -31,8 +33,10 @@ describe("Tests index", function () {
 
   it("UUIDNFTDistributor: verifies successful response", async () => {
     const event = {
-      body:
-        '{\n    "treeId": "1",\n    "distributorAddress": "0xE87c4F77a4291218bE3c30ecE5Db53fF23140151"\n  }',
+      queryStringParameters: {
+        treeId: "1",
+        distributorAddress: "0x4346ef74D361b8C04cbB5116EE2b004A0b699994",
+      },
     };
     const result = await app.handler(event);
 
