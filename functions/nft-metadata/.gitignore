@@ -49,7 +49,7 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
-hello-world/build/Release
+src/build/Release
 
 # Dependency directories
 node_modules/
@@ -74,7 +74,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-hello-world/.env
+src/.env
 
 
 ### OSX ###
