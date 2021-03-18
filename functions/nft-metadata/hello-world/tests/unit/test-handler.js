@@ -17,18 +17,17 @@ describe("Tests index", function () {
 
     expect(result).to.be.an("object");
     expect(result.statusCode).to.equal(200);
-    expect(result.body).to.be.an("object");
+    expect(result.body).to.be.an("string");
 
-    expect(result.body.description).to.be.equal(
+    const body = JSON.parse(result.body);
+    expect(body.description).to.be.equal(
       "Friendly OpenSea Creature that enjoys long swims in the ocean."
     );
-    expect(result.body.external_url).to.be.equal(
-      "https://openseacreatures.io/3"
-    );
-    expect(result.body.image).to.be.equal(
+    expect(body.external_url).to.be.equal("https://openseacreatures.io/3");
+    expect(body.image).to.be.equal(
       "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png"
     );
-    expect(result.body.name).to.be.equal("Dave Starbelly");
+    expect(body.name).to.be.equal("Dave Starbelly");
   });
 
   it("UUIDNFTDistributor: verifies successful response", async () => {
@@ -44,17 +43,16 @@ describe("Tests index", function () {
 
     expect(result).to.be.an("object");
     expect(result.statusCode).to.equal(200);
-    expect(result.body).to.be.an("object");
+    expect(result.body).to.be.an("string");
 
-    expect(result.body.description).to.be.equal(
+    const body = JSON.parse(result.body);
+    expect(body.description).to.be.equal(
       "Friendly OpenSea Creature that enjoys long swims in the ocean."
     );
-    expect(result.body.external_url).to.be.equal(
-      "https://openseacreatures.io/3"
-    );
-    expect(result.body.image).to.be.equal(
+    expect(body.external_url).to.be.equal("https://openseacreatures.io/3");
+    expect(body.image).to.be.equal(
       "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png"
     );
-    expect(result.body.name).to.be.equal("Dave Starbelly");
+    expect(body.name).to.be.equal("Dave Starbelly");
   });
 });

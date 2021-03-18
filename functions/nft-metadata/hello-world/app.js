@@ -17,6 +17,8 @@
 
 const ipfsClient = require("ipfs-http-client");
 const Web3 = require("web3");
+const fetch = require("node-fetch");
+
 let response;
 
 const WalletDistributorContract = require("./build/contracts/WalletNFTDistributor.json");
@@ -28,7 +30,6 @@ const uuidDistributorAddress = process.env.UUID_NFT_DISTRIBUTOR_ADDRESS;
 const web3 = new Web3(
   new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER)
 );
-
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
 
 exports.handler = async (event, context) => {
@@ -63,13 +64,18 @@ exports.handler = async (event, context) => {
 
   let metadata;
   try {
-    metadata = await getFile(metadataCid);
+    const url = `https://gateway.pinata.cloud/ipfs/${metadataCid}`;
+    console.log("IPFS URL:", url);
+    const response = await fetch(url);
+    console.log("IPFS response: ", response);
+    metadata = await response.json();
+    console.log("metadata: ", metadata);
   } catch (error) {
-    console.error("Failed to get user addresses file. ", error);
+    console.error("Failed to get metadata.", error);
     response = {
       statusCode: 500,
       body: JSON.stringify({
-        error: "Failed to get user addresses file.",
+        error: "Failed to get metadata.",
       }),
     };
     return response;
@@ -77,7 +83,7 @@ exports.handler = async (event, context) => {
 
   response = {
     statusCode: 200,
-    body: metadata,
+    body: JSON.stringify(metadata),
   };
   return response;
 };
