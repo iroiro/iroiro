@@ -100,6 +100,12 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
               }
             />
           )}
+          <MenuButton
+            title="⏳"
+            description="Coming soon"
+            color="creator"
+            disabled={true}
+          />
         </MenuButtonWrapper>
         <Box mt={6}>
           <CampaignListTable

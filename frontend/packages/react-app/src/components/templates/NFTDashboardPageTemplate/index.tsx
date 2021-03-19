@@ -100,6 +100,12 @@ const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
               }
             />
           )}
+          <MenuButton
+            title="⏳"
+            description="Coming soon"
+            color="creator"
+            disabled={true}
+          />
         </MenuButtonWrapper>
         <Box mt={6}>
           <CampaignListTable
