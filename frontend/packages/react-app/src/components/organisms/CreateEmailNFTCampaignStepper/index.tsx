@@ -41,8 +41,6 @@ import {
 } from "../../../theme/commonStyles";
 
 export interface CreateEmailNFTCampaignStepperProps {
-  readonly tokenInfo: AccountToken;
-  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly emailState: EmailState;
@@ -50,8 +48,6 @@ export interface CreateEmailNFTCampaignStepperProps {
 }
 
 const CreateEmailNFTCampaignStepper = ({
-  tokenInfo,
-  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   emailState,
@@ -61,14 +57,14 @@ const CreateEmailNFTCampaignStepper = ({
   const urlList = useMemo(() => {
     const list = emailState.rawTargets.map(
       (uuid) =>
-        `${window.location.origin}${window.location.pathname}#/explore/${tokenInfo.token?.tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
+        `${window.location.origin}${
+          window.location.pathname
+        }#/explore/${"mock"}/distributors/${
+          emailState.distributorAddress
+        }/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
     );
     return list;
-  }, [
-    emailState,
-    distributorFormState.createdCampaignId,
-    tokenInfo.token?.tokenAddress,
-  ]);
+  }, [emailState, distributorFormState.createdCampaignId]);
 
   const emailUrlPair = useMemo(() => {
     return emailState.emailList.map((email, index) => {
@@ -114,7 +110,7 @@ const CreateEmailNFTCampaignStepper = ({
                 }
                 onClick={() => {
                   emailDispatch({ type: "targets:generate" });
-                  handleStepChange(2);
+                  handleStepChange(1);
                 }}
               >
                 Next

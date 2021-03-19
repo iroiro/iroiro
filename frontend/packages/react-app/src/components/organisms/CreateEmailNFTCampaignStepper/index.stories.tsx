@@ -41,7 +41,6 @@ const Template: Story<CreateEmailNFTCampaignStepperProps> = (args) => (
 
 export const Step1 = Template.bind({});
 Step1.args = {
-  tokenInfo,
   emailState: {
     ...emailState,
     quantity: "100",

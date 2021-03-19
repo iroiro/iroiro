@@ -15,10 +15,10 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useEffect, useReducer, useCallback, useState } from "react";
+import * as React from "react";
+import { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
-import CreateUUIDNFTCampaignPageTemplate from "../templates/CreateUUIDNFTCampaignPageTemaplate";
 import { createUUIDNFTCampaign } from "../../utils/web3";
 import {
   distributorFormReducer,
@@ -28,6 +28,7 @@ import {
   merkletreeReducer,
   merkltreeInitialState,
 } from "../../reducers/merkletree";
+
 import IpfsHttpClient from "ipfs-http-client";
 import useAxios from "axios-hooks";
 import {
@@ -37,17 +38,18 @@ import {
   MERKLE_ROOT_EXECUTION_ARN,
   NFT_DISTRIBUTION_AMOUNT,
 } from "../../utils/const";
-import { uuidInitialState, uuidReducer } from "../../reducers/uuid";
+import { emailInitialState, emailReducer } from "../../reducers/email";
+import CreateEmailNFTCampaignPageTemplate from "../templates/CreateEmailNFTCampaignPageTemaplate";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
-interface CreateUUIDNFTCampaignPageProps {
+interface CreateEmailNFTCampaignPageProps {
   readonly props: RouteComponentProps;
   readonly distributorAddress: string;
 }
 
-const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
+const CreateEmailNFTCampaignPage: React.FC<CreateEmailNFTCampaignPageProps> = ({
   props,
   distributorAddress,
 }) => {
@@ -56,10 +58,13 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
     distributorFormReducer,
     {
       ...distributorFormInitialState,
-      distributorType: "uuid-nft",
+      distributorType: "email-nft",
     }
   );
-  const [uuidState, uuidDispatch] = useReducer(uuidReducer, uuidInitialState);
+  const [emailState, emailDispatch] = useReducer(
+    emailReducer,
+    emailInitialState
+  );
   const [merkletreeState, merkletreeDispatch] = useReducer(
     merkletreeReducer,
     merkltreeInitialState
@@ -91,13 +96,13 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
   );
 
   useEffect(() => {
-    uuidDispatch({
+    emailDispatch({
       type: "distributorAddress:set",
       payload: {
         distributorAddress,
       },
     });
-  }, [distributorAddress, uuidDispatch]);
+  }, [distributorAddress, emailDispatch]);
 
   const uploadJsonIpfs = useCallback(
     async (data, type) => {
@@ -114,13 +119,7 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
   );
 
   const deployCampaign = useCallback(
-    async (
-      library,
-      merkleRoot,
-      campaignInfoCid,
-      recipientsCid,
-      merkleTreeCid
-    ) => {
+    async (library, merkleRoot, campaignInfoCid, merkleTreeCid) => {
       distributorFormDispatch({
         type: "campaign:deploy",
         payload: { requestDeployCampaign: false },
@@ -150,7 +149,7 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
             if (campaignCreatedEvent === undefined) {
               return;
             }
-            const campaignId: string = campaignCreatedEvent.args?.treeId.toString();
+            const campaignId: string = campaignCreatedEvent.args?.distributionId.toString();
             distributorFormDispatch({
               type: "createdCampaignId:set",
               payload: { campaignId },
@@ -231,7 +230,7 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!uuidState.moveToCampaignPage) {
+    if (!emailState.moveToCampaignPage) {
       return;
     }
     props.history.push(
@@ -240,7 +239,7 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
     );
   }, [
     props.history,
-    uuidState.moveToCampaignPage,
+    emailState.moveToCampaignPage,
     distributorFormState.createdCampaignId,
     distributorFormState.tokenAddress,
     distributorAddress,
@@ -256,8 +255,8 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
         };
 
         const targets = {
-          targets: uuidState.targets,
-          type: uuidState.type,
+          targets: emailState.targets,
+          type: emailState.type,
         };
 
         await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
@@ -283,9 +282,8 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
-      !uuidState.isValidQuantity
+      !emailState.isValidQuantity
     ) {
-      console.info("cancel merkle proof creation");
       return;
     }
 
@@ -315,7 +313,6 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
           library,
           merkletreeState.merkleRoot,
           campaignInfoCid,
-          recipientsCid,
           merkletreeState.merkleTreeCid
         );
         return;
@@ -325,14 +322,14 @@ const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
   }, [merkletreeState]);
 
   return (
-    <CreateUUIDNFTCampaignPageTemplate
+    <CreateEmailNFTCampaignPageTemplate
       active={active}
       distributorFormDispatch={distributorFormDispatch}
       distributorFormState={distributorFormState}
-      uuidState={uuidState}
-      uuidDispatch={uuidDispatch}
+      emailState={emailState}
+      emailDispatch={emailDispatch}
     />
   );
 };
 
-export default CreateUUIDNFTCampaignPage;
+export default CreateEmailNFTCampaignPage;

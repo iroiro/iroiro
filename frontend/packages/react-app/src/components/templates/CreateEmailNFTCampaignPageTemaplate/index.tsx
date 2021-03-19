@@ -32,9 +32,6 @@ import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 
 export interface CreateEmailNFTCampaignPageTemplateProps {
   readonly active: boolean;
-  readonly tokenAddress: string;
-  readonly tokenInfo: AccountToken;
-  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly emailState: EmailState;
@@ -43,8 +40,6 @@ export interface CreateEmailNFTCampaignPageTemplateProps {
 
 const CreateEmailNFTCampaignPageTemplate: React.FC<CreateEmailNFTCampaignPageTemplateProps> = ({
   active,
-  tokenInfo,
-  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   emailState,
@@ -64,8 +59,6 @@ const CreateEmailNFTCampaignPageTemplate: React.FC<CreateEmailNFTCampaignPageTem
             </Box>
             <WaitingProcessDialog state={distributorFormState} />
             <CreateEmailNFTCampaignStepper
-              tokenInfo={tokenInfo}
-              tokenDispatch={tokenDispatch}
               distributorFormState={distributorFormState}
               distributorFormDispatch={distributorFormDispatch}
               emailState={emailState}

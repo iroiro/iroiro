@@ -21,7 +21,7 @@ import { BrowserRouter } from "react-router-dom";
 import CreateUUIDNFTCampaignStepper, {
   CreateUUIDNFTCampaignStepperProps,
 } from ".";
-import { distributorFormState, tokenInfo } from "../../../utils/mockData";
+import { distributorFormState } from "../../../utils/mockData";
 import { uuidInitialState } from "../../../reducers/uuid";
 
 export default {
