@@ -42,11 +42,20 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
   const walletDistributor = distributors.find(
     (distributor) => distributor.type === "wallet"
   );
+  const walletNFTDistributor = distributors.find(
+    (distributor) => distributor.type === "wallet-nft"
+  );
   const urlDistributor = distributors.find(
     (distributor) => distributor.type === "uuid"
   );
+  const urlNFTDistributor = distributors.find(
+    (distributor) => distributor.type === "uuid-nft"
+  );
   const emailDistributor = distributors.find(
     (distributor) => distributor.type === "email"
+  );
+  const emailNFTDistributor = distributors.find(
+    (distributor) => distributor.type === "email-nft"
   );
 
   return (
@@ -72,6 +81,21 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
               }
             />
           )}
+          {walletNFTDistributor !== undefined && (
+            <MenuButton
+              key={`${walletNFTDistributor.id}-${walletNFTDistributor.type}`}
+              title={walletNFTDistributor.distributorMetadata.name}
+              description={walletNFTDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${walletNFTDistributor.id}/${walletNFTDistributor.type}`
+                )
+              }
+            />
+          )}
+        </MenuButtonWrapper>
+        <MenuButtonWrapper>
           {urlDistributor !== undefined && (
             <MenuButton
               key={`${urlDistributor.id}-${urlDistributor.type}`}
@@ -81,6 +105,19 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
               onClick={() =>
                 history.push(
                   `/dashboard/distributors/${urlDistributor.id}/${urlDistributor.type}`
+                )
+              }
+            />
+          )}
+          {urlNFTDistributor !== undefined && (
+            <MenuButton
+              key={`${urlNFTDistributor.id}-${urlNFTDistributor.type}`}
+              title={urlNFTDistributor.distributorMetadata.name}
+              description={urlNFTDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${urlNFTDistributor.id}/${urlNFTDistributor.type}`
                 )
               }
             />
@@ -100,12 +137,19 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
               }
             />
           )}
-          <MenuButton
-            title="⏳"
-            description="Coming soon"
-            color="creator"
-            disabled={true}
-          />
+          {emailNFTDistributor !== undefined && (
+            <MenuButton
+              key={`${emailNFTDistributor.id}-${emailNFTDistributor.type}`}
+              title={emailNFTDistributor.distributorMetadata.name}
+              description={emailNFTDistributor.distributorMetadata.description}
+              color="creator"
+              onClick={() =>
+                history.push(
+                  `/dashboard/distributors/${emailNFTDistributor.id}/${emailNFTDistributor.type}`
+                )
+              }
+            />
+          )}
         </MenuButtonWrapper>
         <Box mt={6}>
           <CampaignListTable

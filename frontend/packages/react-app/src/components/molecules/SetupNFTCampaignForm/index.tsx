@@ -15,8 +15,19 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
-import { Box, FormControl, TextField } from "@material-ui/core";
+import * as React from "react";
+import {
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  FormControl,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import "date-fns";
 import {
@@ -24,12 +35,12 @@ import {
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
 
-export interface SetupCampaignFormProps {
+export interface SetupNFTCampaignFormProps {
   readonly distributorFormState: createCampaignState;
-  distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
+  readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
 }
 
-const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
+const SetupNFTCampaignForm: React.FC<SetupNFTCampaignFormProps> = ({
   distributorFormDispatch,
   distributorFormState,
 }) => (
@@ -41,7 +52,7 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
             fullWidth
             type="text"
             required
-            label="Campaign Name"
+            label="Token Name"
             color="secondary"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               distributorFormDispatch({
@@ -75,8 +86,29 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
           >{`${distributorFormState.campaignDescription.length}/500`}</FormHelperText>
         </Box>
       </FormControl>
+      <Card>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            image="https://images.unsplash.com/photo-1508610048659-a06b669e3321"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {distributorFormState.campaignName}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {distributorFormState.campaignDescription}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button variant="contained" size="small" color="secondary">
+            Upload image
+          </Button>
+        </CardActions>
+      </Card>
     </Box>
   </Box>
 );
 
-export default SetupCampaignForm;
+export default SetupNFTCampaignForm;

@@ -15,13 +15,22 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-// This address points to a contract deployed on Ethereum Mainnet,
-// Goerli, Kovan, Rinkeby and Ropsten. Replace it with your smart contracts.
-const addresses = {
-  WalletDistributor: process.env.REACT_APP_CONTRACT_WALLETDISTRIBUTOR,
-  UUIDDistributor: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR,
-  WalletNFTDistributor: process.env.REACT_APP_CONTRACT_WALLETNFTDISTRIBUTOR,
-  UUIDNFTDistributor: process.env.REACT_APP_CONTRACT_UUIDNFTDISTRIBUTOR,
-};
+import * as React from "react";
+import { Story, Meta } from "@storybook/react/types-6-0";
+import { BrowserRouter } from "react-router-dom";
+import SetupNFTCampaignForm, { SetupNFTCampaignFormProps } from "./index";
+import { distributorFormState } from "../../../utils/mockData";
 
-export default addresses;
+export default {
+  title: "Molecules/SetupNFTCampaignForm",
+  component: SetupNFTCampaignForm,
+} as Meta;
+
+const Template: Story<SetupNFTCampaignFormProps> = (args) => (
+  <BrowserRouter>
+    <SetupNFTCampaignForm {...args} />
+  </BrowserRouter>
+);
+
+export const Default = Template.bind({});
+Default.args = { distributorFormState: distributorFormState };

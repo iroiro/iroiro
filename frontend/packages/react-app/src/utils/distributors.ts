@@ -23,47 +23,70 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_WALLETDISTRIBUTOR ?? "",
     distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
     distributorMetadata: {
-      name: "Wallet Address",
-      description: "To distribute tokens to a list of addresses that you have.",
+      name: "Wallet Address(ERC20)",
+      description:
+        "To distribute ERC20 tokens to a list of addresses that you have.",
     },
     type: "wallet",
     version: "",
     disabled: false,
   },
   {
+    id: process.env.REACT_APP_CONTRACT_WALLETNFTDISTRIBUTOR ?? "",
+    distributorCid: "QmXKRJGq5iR7Km5Pz7yEtj8nHesuSFZo2omfWxXVCF3pJU",
+    distributorMetadata: {
+      name: "Wallet Address(NFT)",
+      description: "To distribute NFT to a list of addresses that you have.",
+    },
+    type: "wallet-nft",
+    version: "",
+    disabled: false,
+  },
+  {
     id: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR ?? "",
     distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
-      name: "URL",
-      description: "To distribute tokens with a unique URL per user.",
+      name: "URL(ERC20)",
+      description: "To distribute ERC20 tokens with a unique URL per user.",
     },
     type: "uuid",
     version: "",
     disabled: false,
   },
   {
+    id: process.env.REACT_APP_CONTRACT_UUIDNFTDISTRIBUTOR ?? "",
+    distributorCid: "QmbHWRsKbxVFQ8fC7JbS1E7fuax1tLAgVKs2VzrkpB1Tvj",
+    distributorMetadata: {
+      name: "URL(NFT)",
+      description: "To distribute NFT with a unique URL per user.",
+    },
+    type: "uuid-nft",
+    version: "",
+    disabled: false,
+  },
+  {
     id: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR ?? "",
     distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
-      name: "Email",
+      name: "Email(ERC20)",
       description:
-        "To distribute tokens to a list of Email addresses that you have.",
+        "To distribute ERC20 tokens to a list of Email addresses that you have.",
     },
     type: "email",
     version: "",
     disabled: false,
   },
   {
-    id: process.env.REACT_APP_CONTRACT_CCTWALLETDISTRIBUTOR ?? "",
-    distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
+    id: process.env.REACT_APP_CONTRACT_UUIDNFTDISTRIBUTOR ?? "",
+    distributorCid: "QmbHWRsKbxVFQ8fC7JbS1E7fuax1tLAgVKs2VzrkpB1Tvj",
     distributorMetadata: {
-      name: "Audius Followers Distributor",
+      name: "Email(NFT)",
       description:
-        "This distributor enables creators to distributes tokens for their followers on Auduis.",
+        "To distribute NFT to a list of Email addresses that you have.",
     },
-    type: "audius",
+    type: "email-nft",
     version: "",
-    disabled: true,
+    disabled: false,
   },
 ].map((dist) => {
   return {
