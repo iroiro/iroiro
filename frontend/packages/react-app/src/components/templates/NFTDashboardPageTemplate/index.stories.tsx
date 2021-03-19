@@ -18,58 +18,46 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import CreateEmailNFTCampaignPageTemplate, {
-  CreateEmailNFTCampaignPageTemplateProps,
+import NFTDashboardPageTemplate, {
+  NFTDashboardPageTemplateProps,
 } from "./index";
 import {
-  distributorFormState,
-  emailState,
-  tokenInfo,
+  campaignsState,
+  creatorTokenList,
+  mockTokenState,
 } from "../../../utils/mockData";
 
 export default {
-  title: "Templates/CreateEmailNFTCampaignPageTemplate",
-  component: CreateEmailNFTCampaignPageTemplate,
+  title: "Templates/NFTDashboardPageTemplate",
+  component: NFTDashboardPageTemplate,
 } as Meta;
 
-const Template: Story<CreateEmailNFTCampaignPageTemplateProps> = (args) => (
+const Template: Story<NFTDashboardPageTemplateProps> = (args) => (
   <BrowserRouter>
-    <CreateEmailNFTCampaignPageTemplate {...args} />
+    <NFTDashboardPageTemplate {...args} />
   </BrowserRouter>
 );
 
-export const Step1 = Template.bind({});
-Step1.args = {
+export const Default = Template.bind({});
+Default.args = {
+  campaignsState: campaignsState,
   active: true,
-  tokenInfo: tokenInfo,
-  emailState: {
-    ...emailState,
-    quantity: "100",
-    isValidQuantity: true,
-  },
-  distributorFormState: {
-    ...distributorFormState,
-    distributorType: "email-nft",
-    step: 0,
+  tokenState: {
+    ...mockTokenState,
+    tokens: creatorTokenList,
   },
 };
 
-export const Step2 = Template.bind({});
-Step2.args = {
-  ...Step1.args,
-  distributorFormState: {
-    ...distributorFormState,
-    ...Step1.args.distributorFormState,
-    step: 1,
-  },
+export const NoCampaign = Template.bind({});
+NoCampaign.args = {
+  campaignsState: { campaigns: [] },
+  active: true,
+  tokenState: mockTokenState,
 };
 
-export const Step3 = Template.bind({});
-Step3.args = {
-  ...Step1.args,
-  distributorFormState: {
-    ...distributorFormState,
-    ...Step1.args.distributorFormState,
-    step: 2,
-  },
+export const NoConnect = Template.bind({});
+NoConnect.args = {
+  campaignsState: { campaigns: [] },
+  active: false,
+  tokenState: mockTokenState,
 };

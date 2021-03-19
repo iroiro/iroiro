@@ -25,9 +25,8 @@ import {
   TokenListState,
   WalletList,
   Campaigns,
-  DistributorTypes,
 } from "../interfaces";
-import { createCampaignState, DialogStatus } from "../reducers/distributorForm";
+import { createCampaignState } from "../reducers/distributorForm";
 import { AudiusState } from "../reducers/audius";
 import { EmailState } from "../reducers/email";
 import { TokenOption } from "../components/atoms/SelectTokenInput";
@@ -60,7 +59,7 @@ export const campaign: CampaignInfo = {
     name: "Audiusフォロワーさん向けトークン配布キャンペーン！",
     description:
       "Audiusアカウントのフォロワーの方へトークンを配布します。手順はXXX...",
-    image: "https://example.com/campaignimage.jpg",
+    image: "https://images.unsplash.com/photo-1508610048659-a06b669e3321",
   },
   distributor: distributor,
   claimed: 10,

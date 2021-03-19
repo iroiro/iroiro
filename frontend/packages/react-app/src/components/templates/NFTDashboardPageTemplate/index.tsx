@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
+import * as React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { Campaigns } from "../../../interfaces";
 import MenuButton from "../../atoms/MenuButton";
@@ -27,26 +27,26 @@ import distributors from "../../../utils/distributors";
 import { useHistory } from "react-router-dom";
 import { TokenState } from "../../../reducers/tokenContext";
 
-export interface DashboardPageTemplateProps {
+export interface NFTDashboardPageTemplateProps {
   readonly campaignsState: Campaigns;
   readonly tokenState: TokenState;
   active: boolean;
 }
 
-const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
+const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
   campaignsState,
   active,
   tokenState,
 }) => {
   const history = useHistory();
   const walletDistributor = distributors.find(
-    (distributor) => distributor.type === "wallet"
+    (distributor) => distributor.type === "wallet-nft"
   );
   const urlDistributor = distributors.find(
-    (distributor) => distributor.type === "uuid"
+    (distributor) => distributor.type === "uuid-nft"
   );
   const emailDistributor = distributors.find(
-    (distributor) => distributor.type === "email"
+    (distributor) => distributor.type === "email-nft"
   );
 
   return (
@@ -129,4 +129,4 @@ const MenuButtonWrapper = styled.div`
   }
 `;
 
-export default DashboardPageTemplate;
+export default NFTDashboardPageTemplate;

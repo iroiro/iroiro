@@ -23,7 +23,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_WALLETDISTRIBUTOR ?? "",
     distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
     distributorMetadata: {
-      name: "Wallet Address(ERC20)",
+      name: "Wallet Address",
       description:
         "To distribute ERC20 tokens to a list of addresses that you have.",
     },
@@ -35,7 +35,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_WALLETNFTDISTRIBUTOR ?? "",
     distributorCid: "QmXKRJGq5iR7Km5Pz7yEtj8nHesuSFZo2omfWxXVCF3pJU",
     distributorMetadata: {
-      name: "Wallet Address(NFT)",
+      name: "Wallet Address",
       description: "To distribute NFT to a list of addresses that you have.",
     },
     type: "wallet-nft",
@@ -46,7 +46,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR ?? "",
     distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
-      name: "URL(ERC20)",
+      name: "URL",
       description: "To distribute ERC20 tokens with a unique URL per user.",
     },
     type: "uuid",
@@ -57,7 +57,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_UUIDNFTDISTRIBUTOR ?? "",
     distributorCid: "QmbHWRsKbxVFQ8fC7JbS1E7fuax1tLAgVKs2VzrkpB1Tvj",
     distributorMetadata: {
-      name: "URL(NFT)",
+      name: "URL",
       description: "To distribute NFT with a unique URL per user.",
     },
     type: "uuid-nft",
@@ -68,7 +68,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR ?? "",
     distributorCid: "Qma51KJaSdehSWv7JZUzyib7U2pz6JttUNA2wTETn3dbCY",
     distributorMetadata: {
-      name: "Email(ERC20)",
+      name: "Email",
       description:
         "To distribute ERC20 tokens to a list of Email addresses that you have.",
     },
@@ -80,7 +80,7 @@ const distributors: Distributor[] = [
     id: process.env.REACT_APP_CONTRACT_UUIDNFTDISTRIBUTOR ?? "",
     distributorCid: "QmbHWRsKbxVFQ8fC7JbS1E7fuax1tLAgVKs2VzrkpB1Tvj",
     distributorMetadata: {
-      name: "Email(NFT)",
+      name: "Email",
       description:
         "To distribute NFT to a list of Email addresses that you have.",
     },

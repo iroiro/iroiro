@@ -18,8 +18,6 @@
 import React from "react";
 import styled from "styled-components";
 import MenuButton from "../../atoms/MenuButton";
-import { AppFooter } from "../../molecules/AppFooter";
-import AppHeader from "../../molecules/AppHeader";
 import { useHistory } from "react-router-dom";
 import { useCallback } from "react";
 import SelectTokenModal from "../../organisms/SelectTokenModal";
@@ -41,16 +39,32 @@ const TopPageTemplate = () => {
         <ButtonWrapper>
           <div style={{ marginBottom: 16 }}>
             <MenuButton
-              title="DISTRIBUTION"
+              title="TOKEN DISTRIBUTION"
               description="You can create a token distribution campaign. Let's set the tokens to be distributed and create a campaign."
               color="creator"
               onClick={handleDistributionButtonClick}
             />
           </div>
+          <div style={{ marginBottom: 16 }}>
+            <MenuButton
+              title="NFT DISTRIBUTION"
+              description="You can create a NFT distribution campaign. Let's set the NFT to be distributed and create a campaign."
+              color="creator"
+              onClick={handleDistributionButtonClick}
+            />
+          </div>
+          <div style={{ marginBottom: 16 }}>
+            <MenuButton
+              title="TOKEN EXPLORE"
+              description="Check the status of the tokens you have been distributed and information on the campaign."
+              color="user"
+              onClick={handleExploreButtonClick}
+            />
+          </div>
           <div>
             <MenuButton
-              title="EXPLORE"
-              description="Check the status of the tokens you have been distributed and information on the campaign."
+              title="NFT EXPLORE"
+              description="Check the status of the NFTs you have been distributed and information on the campaign."
               color="user"
               onClick={handleExploreButtonClick}
             />
