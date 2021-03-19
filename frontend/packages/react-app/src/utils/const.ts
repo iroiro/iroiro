@@ -25,3 +25,4 @@ export const MERKLE_ROOT_API_DESCRIBE =
   "https://qonk7ycnn8.execute-api.ap-northeast-1.amazonaws.com/alpha/describe-execution";
 export const MERKLE_PROOF_API =
   "https://iroiro-wallet-campaign-merkle-proofs.s3-ap-northeast-1.amazonaws.com";
+export const NFT_DISTRIBUTION_AMOUNT = "1";

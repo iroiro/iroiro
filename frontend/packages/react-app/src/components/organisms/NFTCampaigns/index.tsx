@@ -89,7 +89,11 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
             <Grid container spacing={3}>
               {filteredCampaigns.map((campaign) => (
                 <Grid key={campaign.id} item xs={12} sm={4}>
-                  <NFTTokenCampaignCard campaign={campaign} />
+                  <NFTTokenCampaignCard
+                    name={campaign.campaignMetadata.name}
+                    description={campaign.campaignMetadata.description}
+                    image={campaign.campaignMetadata.image}
+                  />
                 </Grid>
               ))}
             </Grid>

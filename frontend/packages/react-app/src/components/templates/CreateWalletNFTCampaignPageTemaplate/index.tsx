@@ -17,7 +17,6 @@
 
 import * as React from "react";
 import { Box, Typography } from "@material-ui/core";
-import { AccountToken } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
@@ -26,15 +25,12 @@ import {
 import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import { WalletList } from "../../../interfaces";
 import AppFrame from "../../organisms/AppFrame";
-import { ACTIONS } from "../../../reducers/token";
 import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 import { StyledStepperWrapper } from "../../../theme/commonStyles";
-import CreateWalletAddressNFTCampaignStepper from "../../organisms/CreateWalletAddressNFTCampaignStepper";
+import CreateWalletAddressNFTCampaignStepper from "../../organisms/CreateWalletNFTCampaignStepper";
 
 export interface CreateWalletNFTCampaignPageTemplateProps {
   readonly active: boolean;
-  readonly tokenInfo: AccountToken;
-  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly walletListState: WalletList;
@@ -43,8 +39,6 @@ export interface CreateWalletNFTCampaignPageTemplateProps {
 
 const CreateWalletNFTCampaignPageTemplate: React.FC<CreateWalletNFTCampaignPageTemplateProps> = ({
   active,
-  tokenInfo,
-  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   walletListState,
@@ -61,7 +55,7 @@ const CreateWalletNFTCampaignPageTemplate: React.FC<CreateWalletNFTCampaignPageT
           <StyledStepperWrapper variant="outlined">
             <Box p={1}>
               <Typography variant={"h3"}>
-                Wallet NFT Address Campaign
+                NFT Campaign with Wallet Address
               </Typography>
             </Box>
             <WaitingProcessDialog state={distributorFormState} />

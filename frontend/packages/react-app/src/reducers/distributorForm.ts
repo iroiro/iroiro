@@ -52,6 +52,8 @@ export interface createCampaignState {
   approveAmount: string;
   campaignName: string;
   campaignDescription: string;
+  campaignImageFile?: string;
+  campaignImagePreview: string;
   approveRequest: boolean;
   requestDeployCampaign: boolean;
   createdCampaignId: string;
@@ -113,6 +115,8 @@ export const distributorFormInitialState: createCampaignState = {
   approveAmount: "0",
   campaignName: "",
   campaignDescription: "",
+  campaignImageFile: undefined,
+  campaignImagePreview: "",
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignId: "",

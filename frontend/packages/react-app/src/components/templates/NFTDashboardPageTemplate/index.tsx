@@ -67,7 +67,7 @@ const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
               color="creator"
               onClick={() =>
                 history.push(
-                  `/dashboard/distributors/${walletDistributor.id}/${walletDistributor.type}`
+                  `/dashboard/nft/distributors/${walletDistributor.id}/${walletDistributor.type}`
                 )
               }
             />
@@ -80,7 +80,7 @@ const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
               color="creator"
               onClick={() =>
                 history.push(
-                  `/dashboard/distributors/${urlDistributor.id}/${urlDistributor.type}`
+                  `/dashboard/nft/distributors/${urlDistributor.id}/${urlDistributor.type}`
                 )
               }
             />
@@ -95,7 +95,7 @@ const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
               color="creator"
               onClick={() =>
                 history.push(
-                  `/dashboard/distributors/${emailDistributor.id}/${emailDistributor.type}`
+                  `/dashboard/nft/distributors/${emailDistributor.id}/${emailDistributor.type}`
                 )
               }
             />

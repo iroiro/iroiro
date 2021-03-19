@@ -33,6 +33,9 @@ import { initialValue, tokenReducer } from "./reducers/tokenContext";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
 import CreateEmailCampaignPage from "./components/pages/CreateEmailCampaignPage";
 import TopPageTemplate from "./components/templates/TopPageTemplate";
+import NFTDashboardPage from "./components/pages/NFTDashboardPage";
+import CreateWalletNFTCampaignPageTemplate from "./components/templates/CreateWalletNFTCampaignPageTemaplate";
+import CreateWalletNFTCampaignPage from "./components/pages/CreateWalletNFTCampaignPage";
 
 const App: React.FC = () => {
   return (
@@ -43,23 +46,24 @@ const App: React.FC = () => {
             <Switch>
               <Route exact path="/" component={TopPageTemplate} />
               {/* For Creator */}
-              <Route exact path="/dashboard" component={DashboardPage} />
+              <Route exact path="/dashboard/token" component={DashboardPage} />
+              <Route exact path="/dashboard/nft" component={NFTDashboardPage} />
               <Route
                 exact
-                path="/dashboard/:tokenAddress"
+                path="/dashboard/token/:tokenAddress"
                 component={ExternalTokenDetailPage}
               />
               <Route
                 exact
-                path="/dashboard/:tokenAddress/distributors"
+                path="/dashboard/token/:tokenAddress/distributors"
                 component={SelectDistributorsPage}
               />
               {distributors.map((distributor) => {
                 if (distributor.disabled) {
                   return;
                 }
-                const path = `/dashboard/distributors/${distributor.id}/${distributor.type}`;
                 if (distributor.type === "wallet") {
+                  const path = `/dashboard/token/distributors/${distributor.id}/${distributor.type}`;
                   return (
                     <Route
                       key={distributor.id}
@@ -74,7 +78,24 @@ const App: React.FC = () => {
                     />
                   );
                 }
+                if (distributor.type === "wallet-nft") {
+                  const path = `/dashboard/nft/distributors/${distributor.id}/${distributor.type}`;
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateWalletNFTCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
                 if (distributor.type === "uuid") {
+                  const path = `/dashboard/token/distributors/${distributor.id}/${distributor.type}`;
                   return (
                     <Route
                       key={distributor.id}
@@ -90,6 +111,7 @@ const App: React.FC = () => {
                   );
                 }
                 if (distributor.type === "email") {
+                  const path = `/dashboard/token/distributors/${distributor.id}/${distributor.type}`;
                   return (
                     <Route
                       key={distributor.id}

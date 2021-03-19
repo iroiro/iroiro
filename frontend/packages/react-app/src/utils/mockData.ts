@@ -248,6 +248,8 @@ export const distributorFormState: createCampaignState = {
   approveAmount: "10000",
   campaignName: "URL Campaign",
   campaignDescription: "This is a campaign.",
+  campaignImageFile: undefined,
+  campaignImagePreview: "",
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignId: "",

@@ -34,5 +34,7 @@ const Template: Story<NFTCampaignCardProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  campaign: campaign,
+  name: campaign.campaignMetadata.name,
+  description: campaign.campaignMetadata.description,
+  image: campaign.campaignMetadata.image,
 };

@@ -27,12 +27,10 @@ import AppFrame from "../../organisms/AppFrame";
 const TopPageTemplate = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
-  const handleDistributionButtonClick = useCallback(() => {
-    history.push("/dashboard");
-  }, []);
   const handleExploreButtonClick = useCallback(() => {
     setOpen(true);
   }, []);
+
   return (
     <>
       <AppFrame>
@@ -42,7 +40,7 @@ const TopPageTemplate = () => {
               title="TOKEN DISTRIBUTION"
               description="You can create a token distribution campaign. Let's set the tokens to be distributed and create a campaign."
               color="creator"
-              onClick={handleDistributionButtonClick}
+              onClick={() => history.push("/dashboard/token")}
             />
           </div>
           <div style={{ marginBottom: 16 }}>
@@ -50,7 +48,7 @@ const TopPageTemplate = () => {
               title="NFT DISTRIBUTION"
               description="You can create a NFT distribution campaign. Let's set the NFT to be distributed and create a campaign."
               color="creator"
-              onClick={handleDistributionButtonClick}
+              onClick={() => history.push("/dashboard/nft")}
             />
           </div>
           <div style={{ marginBottom: 16 }}>
@@ -66,7 +64,7 @@ const TopPageTemplate = () => {
               title="NFT EXPLORE"
               description="Check the status of the NFTs you have been distributed and information on the campaign."
               color="user"
-              onClick={handleExploreButtonClick}
+              onClick={() => history.push("/explore/token")}
             />
           </div>
         </ButtonWrapper>

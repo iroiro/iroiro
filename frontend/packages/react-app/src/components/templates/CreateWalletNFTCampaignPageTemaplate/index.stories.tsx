@@ -41,7 +41,6 @@ const Template: Story<CreateWalletNFTCampaignPageTemplateProps> = (args) => (
 export const Step1 = Template.bind({});
 Step1.args = {
   active: true,
-  tokenInfo: tokenInfo,
   distributorFormState: {
     ...distributorFormState,
     distributorType: "wallet-nft",

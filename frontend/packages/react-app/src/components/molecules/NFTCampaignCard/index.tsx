@@ -20,93 +20,52 @@ import {
   Card,
   CardContent,
   Typography,
-  Box,
   CardActionArea,
   CardMedia,
   CardActions,
-  Button,
 } from "@material-ui/core";
-import { CampaignInfo } from "../../../interfaces";
-import { useHistory } from "react-router-dom";
-import theme from "../../../theme/mui-theme";
-import styled from "styled-components";
 
 export interface NFTCampaignCardProps {
-  readonly campaign: CampaignInfo;
+  readonly image: string;
+  readonly name: string;
+  readonly description: string;
+  readonly onClickActionArea?: () => void;
+  readonly button?: JSX.Element;
 }
 
-const NFTCampaignCard: React.FC<NFTCampaignCardProps> = ({ campaign }) => {
-  const pair = campaign.id.split("-");
-  const history = useHistory();
-  const onClickDetail = () => {
-    history.push(
-      `/explore/${"test"}/distributors/${pair[0]}/campaigns/${pair[1]}`
-    );
-  };
+const NFTCampaignCard: React.FC<NFTCampaignCardProps> = ({
+  image,
+  name,
+  description,
+  onClickActionArea,
+  button,
+}) => {
+  const contents = (
+    <>
+      {image !== "" && <CardMedia component="img" image={image} />}
+      {(name !== "" || description !== "") && (
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {description}
+          </Typography>
+        </CardContent>
+      )}
+    </>
+  );
 
   return (
     <Card>
-      <CardActionArea>
-        <CardMedia component="img" image={campaign.campaignMetadata.image} />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {campaign.campaignMetadata.name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {campaign.campaignMetadata.description}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Detail
-        </Button>
-      </CardActions>
-    </Card>
-  );
-
-  return (
-    <Card
-      key={campaign.id}
-      style={{ marginTop: "12px", borderColor: theme.palette.primary.main }}
-      variant="outlined"
-      onClick={onClickDetail}
-    >
-      <CardActionArea>
-        <CardContent>
-          <div>
-            <Box display="flex" justifyContent="space-between" mb={2}>
-              <Title variant="h4">{campaign.campaignMetadata.name}</Title>
-            </Box>
-            <Box>
-              {campaign.campaignMetadata &&
-              campaign.campaignMetadata.description !== "" ? (
-                <Description>
-                  {campaign.campaignMetadata.description}
-                </Description>
-              ) : (
-                <Typography>-</Typography>
-              )}
-            </Box>
-          </div>
-        </CardContent>
-      </CardActionArea>
+      {onClickActionArea !== undefined ? (
+        <CardActionArea onClick={onClickActionArea}>{contents}</CardActionArea>
+      ) : (
+        <>{contents}</>
+      )}
+      <CardActions>{button}</CardActions>
     </Card>
   );
 };
-
-const Title = styled(Typography)`
-  color: ${theme.palette.primary.main};
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-const Description = styled.p`
-  font-size: 1rem;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-`;
 
 export default NFTCampaignCard;

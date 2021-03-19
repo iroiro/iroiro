@@ -23,7 +23,6 @@ import { useEffect, useState } from "react";
 import distributors, { getDistributorType } from "../../../utils/distributors";
 import styled from "styled-components";
 import NFTTokenCampaignCard from "../../molecules/NFTCampaignCard";
-import { tokenInformationState } from "../../../utils/mockData";
 
 export interface NFTCampaignDetailProps {
   readonly campaign: CampaignInfo;
@@ -44,7 +43,11 @@ const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
     <Wrapper>
       <Grid container justify="center">
         <Grid xs={12} sm={4}>
-          <NFTTokenCampaignCard campaign={campaign} />
+          <NFTTokenCampaignCard
+            name={campaign.campaignMetadata.name}
+            description={campaign.campaignMetadata.description}
+            image={campaign.campaignMetadata.image}
+          />
         </Grid>
       </Grid>
       <Box display="flex" justifyContent="start" alignItems="baseline">

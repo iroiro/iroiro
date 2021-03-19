@@ -18,23 +18,19 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import CreateWalletAddressNFTCampaignStepper, {
-  CreateWalletAddressNFTCampaignStepperProps,
+import CreateWalletNFTCampaignStepper, {
+  CreateWalletNFTCampaignStepperProps,
 } from ".";
-import {
-  distributorFormState,
-  tokenInfo,
-  walletListState,
-} from "../../../utils/mockData";
+import { distributorFormState, walletListState } from "../../../utils/mockData";
 
 export default {
-  title: "Organisms/CreateWalletAddressNFTCampaignStepper",
-  component: CreateWalletAddressNFTCampaignStepper,
+  title: "Organisms/CreateWalletNFTCampaignStepper",
+  component: CreateWalletNFTCampaignStepper,
 } as Meta;
 
-const Template: Story<CreateWalletAddressNFTCampaignStepperProps> = (args) => (
+const Template: Story<CreateWalletNFTCampaignStepperProps> = (args) => (
   <BrowserRouter>
-    <CreateWalletAddressNFTCampaignStepper {...args} />
+    <CreateWalletNFTCampaignStepper {...args} />
   </BrowserRouter>
 );
 

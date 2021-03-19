@@ -31,19 +31,19 @@ import { WALLET_ACTIONS } from "../../../reducers/wallet";
 import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
 import { StyledStepperButton, StyleStepper } from "../../../theme/commonStyles";
 
-export interface CreateWalletAddressNFTCampaignStepperProps {
+export interface CreateWalletNFTCampaignStepperProps {
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly walletListState: WalletList;
   readonly walletDispatch: React.Dispatch<WALLET_ACTIONS>;
 }
 
-const CreateWalletAddressNFTCampaignStepper = ({
+const CreateWalletNFTCampaignStepper = ({
   distributorFormState,
   distributorFormDispatch,
   walletListState,
   walletDispatch,
-}: CreateWalletAddressNFTCampaignStepperProps) => {
+}: CreateWalletNFTCampaignStepperProps) => {
   const handleStepChange = (stepNumber: number) => {
     distributorFormDispatch({
       type: "step:set",
@@ -67,9 +67,6 @@ const CreateWalletAddressNFTCampaignStepper = ({
               />
             </div>
             <div>
-              <StyledStepperButton onClick={() => handleStepChange(0)}>
-                Back
-              </StyledStepperButton>
               <StyledStepperButton
                 variant="contained"
                 color="secondary"
@@ -78,7 +75,7 @@ const CreateWalletAddressNFTCampaignStepper = ({
                   walletListState.targets.length === 0 ||
                   upperLimit < walletListState.targets.length
                 }
-                onClick={() => handleStepChange(2)}
+                onClick={() => handleStepChange(1)}
               >
                 Next
               </StyledStepperButton>
@@ -100,4 +97,4 @@ const CreateWalletAddressNFTCampaignStepper = ({
   );
 };
 
-export default CreateWalletAddressNFTCampaignStepper;
+export default CreateWalletNFTCampaignStepper;
