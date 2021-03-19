@@ -36,8 +36,8 @@ import { MERKLE_PROOF_API } from "../utils/const";
 import {
   WalletDistributor__factory,
   IMerkleDistributorManager__factory,
-  WalletNFTDistributor,
   WalletNFTDistributor__factory,
+  UUIDNFTDistributor__factory,
 } from "../types";
 
 export const getTokenInfo = async (
@@ -258,6 +258,28 @@ export const createUUIDCampaign = async (
       campaignInfoCid,
       allowance
     )
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
+export const createUUIDNFTCampaign = async (
+  library: Web3Provider | undefined,
+  merkleRoot: string,
+  nftMetadataCid: string,
+  merkleTreeCid: string
+): Promise<ContractTransaction | undefined> => {
+  if (library === undefined) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const distributor = UUIDNFTDistributor__factory.connect(
+    addresses.UUIDNFTDistributor,
+    signer
+  );
+
+  return distributor
+    .createCampaign(merkleRoot, merkleTreeCid, nftMetadataCid, nftMetadataCid)
     .then((transaction: ContractTransaction) => {
       return transaction;
     });

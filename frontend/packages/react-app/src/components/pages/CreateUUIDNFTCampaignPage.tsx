@@ -15,23 +15,19 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import * as React from "react";
-import { useEffect, useReducer, useCallback, useState } from "react";
+import React, { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
-import CreateWalletNFTCampaignPageTemplate from "../templates/CreateWalletNFTCampaignPageTemaplate";
-import { createWalletNFTCampaign } from "../../utils/web3";
+import CreateUUIDNFTCampaignPageTemplate from "../templates/CreateUUIDNFTCampaignPageTemaplate";
+import { createUUIDNFTCampaign } from "../../utils/web3";
 import {
   distributorFormReducer,
   distributorFormInitialState,
 } from "../../reducers/distributorForm";
-import { walletReducer, walletInitialState } from "../../reducers/wallet";
 import {
   merkletreeReducer,
   merkltreeInitialState,
 } from "../../reducers/merkletree";
-import { WalletList } from "../../interfaces";
-
 import IpfsHttpClient from "ipfs-http-client";
 import useAxios from "axios-hooks";
 import {
@@ -39,19 +35,18 @@ import {
   MERKLE_ROOT_API_START,
   MERKLE_ROOT_API_DESCRIBE,
   MERKLE_ROOT_EXECUTION_ARN,
-  NFT_DISTRIBUTION_AMOUNT,
 } from "../../utils/const";
-import { BigNumber } from "ethers";
+import { uuidInitialState, uuidReducer } from "../../reducers/uuid";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
 
-interface CreateWalletNFTCampaignPageProps {
+interface CreateUUIDNFTCampaignPageProps {
   readonly props: RouteComponentProps;
   readonly distributorAddress: string;
 }
 
-const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = ({
+const CreateUUIDNFTCampaignPage: React.FC<CreateUUIDNFTCampaignPageProps> = ({
   props,
   distributorAddress,
 }) => {
@@ -60,13 +55,10 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
     distributorFormReducer,
     {
       ...distributorFormInitialState,
-      distributorType: "wallet-nft",
+      distributorType: "uuid-nft",
     }
   );
-  const [walletListState, walletListDispatch] = useReducer(
-    walletReducer,
-    walletInitialState
-  );
+  const [uuidState, uuidDispatch] = useReducer(uuidReducer, uuidInitialState);
   const [merkletreeState, merkletreeDispatch] = useReducer(
     merkletreeReducer,
     merkltreeInitialState
@@ -97,6 +89,15 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
     { manual: true }
   );
 
+  useEffect(() => {
+    uuidDispatch({
+      type: "distributorAddress:set",
+      payload: {
+        distributorAddress,
+      },
+    });
+  }, [distributorAddress, uuidDispatch]);
+
   const uploadJsonIpfs = useCallback(
     async (data, type) => {
       const { path } = await ipfs.add(JSON.stringify(data));
@@ -112,7 +113,13 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
   );
 
   const deployCampaign = useCallback(
-    async (library, merkleRoot, campaignInfoCid, merkleTreeCid) => {
+    async (
+      library,
+      merkleRoot,
+      campaignInfoCid,
+      recipientsCid,
+      merkleTreeCid
+    ) => {
       distributorFormDispatch({
         type: "campaign:deploy",
         payload: { requestDeployCampaign: false },
@@ -122,13 +129,7 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
         payload: { dialog: "creating-campaign" },
       });
 
-      createWalletNFTCampaign(
-        library,
-        merkleRoot,
-        distributorFormState.tokenAddress,
-        campaignInfoCid,
-        merkleTreeCid
-      )
+      createUUIDNFTCampaign(library, merkleRoot, campaignInfoCid, merkleTreeCid)
         .then(async (transaction) => {
           if (transaction === undefined) {
             return;
@@ -148,11 +149,15 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
             if (campaignCreatedEvent === undefined) {
               return;
             }
-            const distributionId: BigNumber = campaignCreatedEvent.args?.treeId;
-            props.history.push(
-              `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
-                `/campaigns/${distributionId.toString()}`
-            );
+            const campaignId: string = campaignCreatedEvent.args?.treeId.toString();
+            distributorFormDispatch({
+              type: "createdCampaignId:set",
+              payload: { campaignId },
+            });
+            distributorFormDispatch({
+              type: "step:set",
+              payload: { stepNo: 4 },
+            });
           });
         })
         .catch((error) => {
@@ -168,7 +173,7 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
           });
         });
     },
-    [props.history, distributorFormState.tokenAddress, distributorAddress]
+    [props.history, distributorFormState.tokenAddress]
   );
 
   const makeMerkleProof = useCallback(
@@ -225,6 +230,22 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
   }, []);
 
   useEffect(() => {
+    if (!uuidState.moveToCampaignPage) {
+      return;
+    }
+    props.history.push(
+      `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
+        `/campaigns/${distributorFormState.createdCampaignId}`
+    );
+  }, [
+    props.history,
+    uuidState.moveToCampaignPage,
+    distributorFormState.createdCampaignId,
+    distributorFormState.tokenAddress,
+    distributorAddress,
+  ]);
+
+  useEffect(() => {
     const f = async () => {
       if (distributorFormState.requestDeployCampaign) {
         const campaignInfo = {
@@ -233,13 +254,13 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
           name: distributorFormState.campaignName,
         };
 
-        const addresses = {
-          targets: walletListState.targets,
-          type: walletListState.type,
+        const targets = {
+          targets: uuidState.targets,
+          type: uuidState.type,
         };
 
         await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
-        await uploadJsonIpfs(addresses, "recipientsCid");
+        await uploadJsonIpfs(targets, "recipientsCid");
       }
     };
     f();
@@ -261,12 +282,13 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
     if (
       campaignInfoCid === "" ||
       recipientsCid === "" ||
-      walletListState.targets.length === 0
+      !uuidState.isValidQuantity
     ) {
+      console.info("cancel merkle proof creation");
       return;
     }
 
-    makeMerkleProof(NFT_DISTRIBUTION_AMOUNT, recipientsCid, account);
+    makeMerkleProof(uuidState.quantity, recipientsCid, account);
   }, [distributorFormState, campaignInfoCid, recipientsCid]);
 
   useEffect(() => {
@@ -292,6 +314,7 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
           library,
           merkletreeState.merkleRoot,
           campaignInfoCid,
+          recipientsCid,
           merkletreeState.merkleTreeCid
         );
         return;
@@ -300,52 +323,15 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
     f();
   }, [merkletreeState]);
 
-  useEffect(() => {
-    if (walletListState.filelist === null) {
-      return;
-    }
-    const file = walletListState.filelist[0];
-    const reader = new FileReader();
-    let walletList: WalletList;
-    reader.onloadend = () => {
-      if (reader.result?.toString() === undefined) {
-        return;
-      }
-      walletList = JSON.parse(reader.result?.toString());
-      if (Object.keys(walletList).indexOf("targets") === -1) {
-        walletListDispatch({
-          type: "fileformat:set",
-          payload: { status: false },
-        });
-        return;
-      }
-      if (!Array.isArray(walletList.targets)) {
-        walletListDispatch({
-          type: "fileformat:set",
-          payload: { status: false },
-        });
-        return;
-      }
-
-      walletListDispatch({
-        type: "walletlist:set",
-        payload: { targets: walletList.targets },
-      });
-    };
-    reader.readAsText(file);
-  }, [walletListState]);
-
   return (
-    <>
-      <CreateWalletNFTCampaignPageTemplate
-        active={active}
-        distributorFormDispatch={distributorFormDispatch}
-        distributorFormState={distributorFormState}
-        walletDispatch={walletListDispatch}
-        walletListState={walletListState}
-      />
-    </>
+    <CreateUUIDNFTCampaignPageTemplate
+      active={active}
+      distributorFormDispatch={distributorFormDispatch}
+      distributorFormState={distributorFormState}
+      uuidState={uuidState}
+      uuidDispatch={uuidDispatch}
+    />
   );
 };
 
-export default CreateWalletNFTCampaignPage;
+export default CreateUUIDNFTCampaignPage;

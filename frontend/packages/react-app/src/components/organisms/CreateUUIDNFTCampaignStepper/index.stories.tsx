@@ -38,7 +38,6 @@ const Template: Story<CreateUUIDNFTCampaignStepperProps> = (args) => (
 export const StepOne = Template.bind({});
 StepOne.args = {
   uuidState: uuidInitialState,
-  tokenInfo,
   distributorFormState: {
     ...distributorFormState,
     distributorType: "uuid-nft",

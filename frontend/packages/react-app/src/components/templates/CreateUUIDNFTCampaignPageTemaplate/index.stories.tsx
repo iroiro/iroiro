@@ -38,7 +38,6 @@ const Template: Story<CreateUUIDNFTCampaignPageTemplateProps> = (args) => (
 export const Step1 = Template.bind({});
 Step1.args = {
   active: true,
-  tokenInfo: tokenInfo,
   uuidState: {
     ...uuidInitialState,
     quantity: 100,

@@ -34,8 +34,8 @@ import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplat
 import CreateEmailCampaignPage from "./components/pages/CreateEmailCampaignPage";
 import TopPageTemplate from "./components/templates/TopPageTemplate";
 import NFTDashboardPage from "./components/pages/NFTDashboardPage";
-import CreateWalletNFTCampaignPageTemplate from "./components/templates/CreateWalletNFTCampaignPageTemaplate";
 import CreateWalletNFTCampaignPage from "./components/pages/CreateWalletNFTCampaignPage";
+import CreateUUIDNFTCampaignPage from "./components/pages/CreateUUIDNFTCampaignPage";
 
 const App: React.FC = () => {
   return (
@@ -103,6 +103,22 @@ const App: React.FC = () => {
                       path={path}
                       render={(props) => (
                         <CreateUUIDCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
+                if (distributor.type === "uuid-nft") {
+                  const path = `/dashboard/nft/distributors/${distributor.id}/${distributor.type}`;
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateUUIDNFTCampaignPage
                           distributorAddress={distributor.id}
                           props={props}
                         />

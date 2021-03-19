@@ -20,7 +20,6 @@ import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
 import Step from "@material-ui/core/Step";
 import { upperLimit } from "../WalletDistributionTargets";
-import { AccountToken } from "../../../interfaces";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
@@ -30,7 +29,6 @@ import UUIDDistributionTargets from "../UUIDDistributionTargets";
 import { Box, Typography } from "@material-ui/core";
 import CopyToClipboard from "react-copy-to-clipboard";
 import theme from "../../../theme/mui-theme";
-import { ACTIONS } from "../../../reducers/token";
 import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
 import {
   StartCampaignButton,
@@ -39,8 +37,6 @@ import {
 } from "../../../theme/commonStyles";
 
 export interface CreateUUIDNFTCampaignStepperProps {
-  readonly tokenInfo: AccountToken;
-  readonly tokenDispatch: React.Dispatch<ACTIONS>;
   readonly distributorFormState: createCampaignState;
   readonly distributorFormDispatch: React.Dispatch<DISTRIBUTOR_ACTIONS>;
   readonly uuidState: UUIDState;
@@ -48,8 +44,6 @@ export interface CreateUUIDNFTCampaignStepperProps {
 }
 
 const CreateUUIDNFTCampaignStepper = ({
-  tokenInfo,
-  tokenDispatch,
   distributorFormState,
   distributorFormDispatch,
   uuidState,
@@ -62,15 +56,15 @@ const CreateUUIDNFTCampaignStepper = ({
     const list = uuidState.rawTargets
       .map(
         (uuid) =>
-          `${window.location.origin}${window.location.pathname}#/explore/${
-            tokenInfo.token?.tokenAddress ?? ""
-          }/distributors/${uuidState.distributorAddress}/campaigns/${
-            distributorFormState.createdCampaignId
-          }?uuid=${uuid}`
+          `${window.location.origin}${
+            window.location.pathname
+          }#/explore/${"mock"}/distributors/${
+            uuidState.distributorAddress
+          }/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
       )
       .join("\n");
     return list;
-  }, [uuidState, distributorFormState, tokenInfo]);
+  }, [uuidState, distributorFormState]);
 
   const handleStepChange = (stepNumber: number) => {
     distributorFormDispatch({
@@ -107,7 +101,7 @@ const CreateUUIDNFTCampaignStepper = ({
                 }
                 onClick={() => {
                   uuidDispatch({ type: "targets:generate" });
-                  handleStepChange(2);
+                  handleStepChange(1);
                 }}
               >
                 Next
