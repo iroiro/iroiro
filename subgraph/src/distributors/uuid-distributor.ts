@@ -103,7 +103,7 @@ export function handleClaimed(event: ClaimedEvent): void {
     claim = new Claim(claimId);
   }
   claim.account = accountId;
-  claim.campaign = event.params.distributionId.toString();
+  claim.campaign = campaignId;
   let distributorContract = UUIDDistributor.bind(event.address);
   let callToken = distributorContract.try_token(distributionId);
   if (callToken.reverted) {
