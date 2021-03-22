@@ -15,15 +15,24 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-export const IPFS_PINNING_API =
-  "https://rf0xlqny1b.execute-api.ap-northeast-1.amazonaws.com/Prod/pinning/pinByHash";
-export const MERKLE_ROOT_EXECUTION_ARN =
-  "arn:aws:states:ap-northeast-1:179855544942:stateMachine:MerkleTreeStateMachine-u91rcI6fnEBJ";
-export const MERKLE_ROOT_API_START =
-  "https://qonk7ycnn8.execute-api.ap-northeast-1.amazonaws.com/alpha/start-execution";
-export const MERKLE_ROOT_API_DESCRIBE =
-  "https://qonk7ycnn8.execute-api.ap-northeast-1.amazonaws.com/alpha/describe-execution";
-export const MERKLE_PROOF_API =
-  "https://iroiro-wallet-campaign-merkle-proofs.s3-ap-northeast-1.amazonaws.com";
-export const NFT_DISTRIBUTION_AMOUNT = "1";
-export const NFT_DISPLAY_AMOUNT = 9;
+import * as React from "react";
+import { Story, Meta } from "@storybook/react/types-6-0";
+import { BrowserRouter } from "react-router-dom";
+import { tokenInformationState } from "../../../utils/mockData";
+import { NFTHistoryTemplate, NFTHistoryTemplateProps } from "./index";
+
+export default {
+  title: "Templates/NFTHistoryTemplate",
+  component: NFTHistoryTemplate,
+} as Meta;
+
+const Template: Story<NFTHistoryTemplateProps> = (args) => (
+  <BrowserRouter>
+    <NFTHistoryTemplate {...args} />
+  </BrowserRouter>
+);
+
+export const Default = Template.bind({});
+Default.args = {
+  state: tokenInformationState,
+};

@@ -20,39 +20,48 @@ import { useEffect, useReducer } from "react";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { useWeb3React } from "@web3-react/core";
 import { RouteComponentProps } from "react-router-dom";
-import { GET_CAMPAIGNS } from "../../graphql/subgraph";
+import { GET_USER_CLAIMED_CAMPAIGNS } from "../../graphql/subgraph";
 import { CampaignInfo, CampaignMetadata } from "../../interfaces";
 import {
   initialState,
   tokenCampaignsReducer,
 } from "../../reducers/tokenCampaigns";
-import { NFTCampaignsTemplate } from "../templates/NFTCampaignsPageTemplate";
-import { NFT_DISPLAY_AMOUNT } from "../../utils/const";
+import { NFTHistoryTemplate } from "../templates/NFTHistoryPageTemplate";
 
 const NFTCampaignsPage: React.FC<
   RouteComponentProps<{
     tokenAddress: string;
   }>
 > = (props) => {
-  const { library } = useWeb3React();
+  const { active, library } = useWeb3React();
   const [state, dispatch] = useReducer(tokenCampaignsReducer, initialState);
-  const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
-
-  useEffect(() => {
-    getCampaigns({
-      variables: {
-        token: null,
-        first: NFT_DISPLAY_AMOUNT,
-      },
-    });
-  }, [getCampaigns]);
+  const [getUserClaimedCampaigns, { data }] = useLazyQuery(
+    GET_USER_CLAIMED_CAMPAIGNS
+  );
 
   useEffect(() => {
     const f = async () => {
-      if (campaignData === undefined) {
+      if (!active) {
         return;
       }
-      const rawCampaigns = campaignData.campaigns;
+      const address = await library.getSigner().getAddress();
+      getUserClaimedCampaigns({
+        variables: {
+          account: address.toLowerCase(),
+          token: null,
+        },
+      });
+    };
+    f();
+  }, [active, library, getUserClaimedCampaigns]);
+
+  useEffect(() => {
+    const f = async () => {
+      if (data === undefined) {
+        return;
+      }
+      const rawCampaigns = data.claims.map((claim: any) => claim.campaign);
+      console.debug(rawCampaigns);
       const campaigns: CampaignInfo[] = await Promise.all(
         rawCampaigns.map(async (rawCampaign: CampaignInfo) => {
           const cid = rawCampaign.campaignInfoCid;
@@ -73,9 +82,9 @@ const NFTCampaignsPage: React.FC<
       });
     };
     f();
-  }, [campaignData]);
+  }, [data]);
 
-  return <NFTCampaignsTemplate state={state} />;
+  return <NFTHistoryTemplate state={state} library={library} />;
 };
 
 export default NFTCampaignsPage;

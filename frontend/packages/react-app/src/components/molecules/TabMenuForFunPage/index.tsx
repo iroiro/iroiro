@@ -110,14 +110,14 @@ export const TabMenuForFunPage: React.FC<TabMenuForFunPageProps> = ({
   );
 };
 
-const SPMenuWrapper = styled.div`
+export const SPMenuWrapper = styled.div`
   display: none;
   ${theme.breakpoints.down(600)} {
     display: block;
   }
 `;
 
-const TabWrapper = styled.div`
+export const TabWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -129,7 +129,7 @@ const TabWrapper = styled.div`
   }
 `;
 
-const tabStyle = css`
+export const tabStyle = css`
   border-radius: 8px 8px 0 0;
   box-sizing: border-box;
   width: 20%;
@@ -150,14 +150,14 @@ const tabStyle = css`
   }
 `;
 
-const Tab = styled.div<{ current: boolean }>`
+export const Tab = styled.div<{ current: boolean }>`
   ${tabStyle}
   color: ${(props) => (props.current ? "#D06689" : "#000")};
   height: ${(props) => (props.current ? "40px" : "35px")};
   font-weight: ${(props) => (props.current ? "bold" : "300")};
 `;
 
-const DisabledTab = styled.div`
+export const DisabledTab = styled.div`
   ${tabStyle}
   color: #c4c4c4;
   cursor: inherit;

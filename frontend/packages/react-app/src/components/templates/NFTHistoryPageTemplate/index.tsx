@@ -20,19 +20,31 @@ import { TokenCampaignsState } from "../../../reducers/tokenCampaigns";
 import AppFrame from "../../organisms/AppFrame";
 import NFTCampaigns from "../../organisms/NFTCampaigns";
 import { NFTTabMenuForFunPage } from "../../molecules/NFTTabMenuForFunPage";
+import ConnectModal from "../../organisms/ConnectModal";
+import { Web3Provider } from "@ethersproject/providers";
+import { useEffect, useState } from "react";
 
-export interface NFTCampaignsTemplateProps {
-  state: TokenCampaignsState;
+export interface NFTHistoryTemplateProps {
+  readonly library: Web3Provider | undefined;
+  readonly state: TokenCampaignsState;
 }
 
-export const NFTCampaignsTemplate: React.FC<NFTCampaignsTemplateProps> = ({
+export const NFTHistoryTemplate: React.FC<NFTHistoryTemplateProps> = ({
+  library,
   state,
 }) => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(library === undefined);
+  }, [library]);
+
   return (
     <>
       <AppFrame>
-        <NFTTabMenuForFunPage current={"campaigns"} />
+        <NFTTabMenuForFunPage current={"userHistory"} />
         <NFTCampaigns campaigns={state.campaigns} />
+        <ConnectModal open={open} onClose={() => setOpen(false)} />
       </AppFrame>
     </>
   );

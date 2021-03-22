@@ -16,23 +16,15 @@
  */
 
 import * as React from "react";
-import {
-  Grid,
-  Typography,
-  Box,
-  TextField,
-  InputAdornment,
-} from "@material-ui/core";
+import { Grid, Typography, Box } from "@material-ui/core";
 import { CampaignInfo } from "../../../interfaces";
-import { useEffect, useState } from "react";
-import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import NFTTokenCampaignCard from "../../molecules/NFTCampaignCard";
 import { useHistory } from "react-router-dom";
 
 export interface NFTCampaignsProps {
-  campaigns: CampaignInfo[];
+  readonly campaigns: CampaignInfo[];
 }
 
 export const getImageURLFromIPFSHash = (image: string): string => {
@@ -42,46 +34,11 @@ export const getImageURLFromIPFSHash = (image: string): string => {
 };
 const NFTCampaigns: React.FC<NFTCampaignsProps> = ({ campaigns }) => {
   const history = useHistory();
-  const [filteredCampaigns, setFilteredCampaigns] = useState(campaigns);
-  const [searchText, setSearchText] = useState("");
-  useEffect(() => {
-    setFilteredCampaigns(campaigns);
-  }, [campaigns]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-    if (e.target.value === "") {
-      setFilteredCampaigns(campaigns);
-    } else {
-      const filter = campaigns.filter((campaign) => {
-        console.debug(campaign.creator.id, e.target.value);
-        return (
-          campaign.creator.id.toLowerCase() === e.target.value.toLowerCase()
-        );
-      });
-      setFilteredCampaigns(filter);
-    }
-  };
 
   return (
     <Wrapper>
-      <SearchWrapper>
-        <TextField
-          label="Search by Creator Address"
-          value={searchText}
-          onChange={handleChange}
-          style={{ width: "100%" }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchRoundedIcon color="primary" />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </SearchWrapper>
       <Grid container>
-        {filteredCampaigns.length === 0 ? (
+        {campaigns.length === 0 ? (
           <Box mt={4}>
             <Box p={8} textAlign="center">
               <Typography>No campaigns.</Typography>
@@ -90,7 +47,7 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({ campaigns }) => {
         ) : (
           <StyledBox>
             <Grid container spacing={3}>
-              {filteredCampaigns.map((campaign) => {
+              {campaigns.map((campaign) => {
                 const image = getImageURLFromIPFSHash(
                   campaign.campaignMetadata.image
                 );
@@ -118,17 +75,10 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({ campaigns }) => {
   );
 };
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   background-color: #fff;
   ${theme.breakpoints.down(760)} {
     margin: 0 -26px;
-  }
-`;
-
-const SearchWrapper = styled.div`
-  padding: 32px 32px 0;
-  ${theme.breakpoints.down(600)} {
-    padding: 32px 8px 0;
   }
 `;
 

@@ -39,6 +39,7 @@ import CreateUUIDNFTCampaignPage from "./components/pages/CreateUUIDNFTCampaignP
 import CreateEmailNFTCampaignPage from "./components/pages/CreateEmailNFTCampaignPage";
 import NFTCampaignsPage from "./components/pages/NFTCampaignsPage";
 import NFTCampaignDetailPage from "./components/pages/NFTCampaignDetailPage";
+import NFTHistoryPage from "./components/pages/NFTHistoryPage";
 
 const App: React.FC = () => {
   return (
@@ -202,7 +203,7 @@ const App: React.FC = () => {
                 path="/explore/nft/distributors/:distributorAddress/campaigns/:campaignId"
                 component={NFTCampaignDetailPage}
               />
-              <Route path="/explore/nft/history" component={TokenHistoryPage} />
+              <Route path="/explore/nft/history" component={NFTHistoryPage} />
               <Route component={NotFoundPageTemplate} />
             </Switch>
           </TokenProvider>
