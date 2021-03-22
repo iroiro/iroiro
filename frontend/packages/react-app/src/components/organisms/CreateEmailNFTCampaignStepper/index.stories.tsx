@@ -21,11 +21,7 @@ import { BrowserRouter } from "react-router-dom";
 import CreateEmailNFTCampaignStepper, {
   CreateEmailNFTCampaignStepperProps,
 } from ".";
-import {
-  distributorFormState,
-  emailState,
-  tokenInfo,
-} from "../../../utils/mockData";
+import { distributorFormState, emailState } from "../../../utils/mockData";
 import { v4 as uuidv4 } from "uuid";
 
 export default {

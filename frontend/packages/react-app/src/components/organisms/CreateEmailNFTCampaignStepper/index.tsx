@@ -21,7 +21,6 @@ import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
 import Step from "@material-ui/core/Step";
 import { upperLimit } from "../WalletDistributionTargets";
-import { AccountToken } from "../../../interfaces";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
@@ -32,7 +31,6 @@ import theme from "../../../theme/mui-theme";
 import { EmailState, EMAIL_ACTIONS } from "../../../reducers/email";
 import UploadEmailCsvPane from "../UploadEmailCsvPane";
 import { CSVLink } from "react-csv";
-import { ACTIONS } from "../../../reducers/token";
 import StartCampaignStep from "../../molecules/steps/StartCampaignStep";
 import {
   StartCampaignButton,

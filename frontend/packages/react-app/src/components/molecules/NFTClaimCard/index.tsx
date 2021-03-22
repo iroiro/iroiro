@@ -19,12 +19,7 @@ import * as React from "react";
 import { Button, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { Dispatch, useCallback } from "react";
-import {
-  uuidClaim,
-  uuidNFTClaim,
-  walletClaim,
-  walletNFTClaim,
-} from "../../../utils/web3";
+import { uuidNFTClaim, walletNFTClaim } from "../../../utils/web3";
 import {
   CampaignDetailAction,
   CampaignDetailState,

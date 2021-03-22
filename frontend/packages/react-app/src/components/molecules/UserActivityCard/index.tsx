@@ -16,7 +16,7 @@
  */
 
 import * as React from "react";
-import { Card, CardContent, Typography, Box } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import { Activity, TokenBasic } from "../../../interfaces";
 import { getBalanceDevidedByDecimals } from "../../../utils/web3";
 
