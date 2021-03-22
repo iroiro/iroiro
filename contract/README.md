@@ -29,3 +29,5 @@ The naming convention of the contract is as follows:
 
 - UUIDDistributor: 0x4DAFcf19A5DEF888e5D64A9577bcF883e3e9d405
 - WalletDistributor: 0xE98dB5131B7fC7aB3BcEbb5093cd904308707E20
+- UUIDNFTDistributor: 0x33Ff39EB8E1F89d226a4915206A04c95312c0DAA 
+- WalletNFTDistributor: 0xf6619b4bb8BdAB7d40181762b5B9AFD1cD440a15
