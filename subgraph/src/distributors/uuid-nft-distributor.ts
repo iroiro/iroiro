@@ -64,7 +64,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   campaign.distributor = event.address.toHexString();
   campaign.creator = event.params.creator.toHexString();
   campaign.claimedNum = new BigInt(0);
-  campaign.campaignInfoCid = event.params.campaignInfoCid;
+  campaign.campaignInfoCid = event.params.nftMetadataCid;
   campaign.merkleTreeCid = event.params.merkleTreeCid;
   let merkleRoot = distributorContract.try_merkleRoot(event.params.treeId);
   if (merkleRoot.reverted) {
