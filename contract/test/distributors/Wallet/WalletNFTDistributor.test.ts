@@ -37,7 +37,6 @@ describe("WalletNFTDistributor", () => {
     "0x3f10ffaf7f1fed0a776fe6b06f4e4a0562ea6996baa71ae99a1a78ff5af467dd",
   ];
   const merkleTreeCid = "merkle tree cid";
-  const campaignInfoCid = "campaign info cid";
   const nftMetadataCid = "nft metadata cid";
 
   beforeEach(async () => {
@@ -57,7 +56,6 @@ describe("WalletNFTDistributor", () => {
         transaction = await distributor.createCampaign(
           merkleRoot,
           merkleTreeCid,
-          campaignInfoCid,
           nftMetadataCid
         );
       });
@@ -84,7 +82,6 @@ describe("WalletNFTDistributor", () => {
         expect(claimEvent.args.treeId).to.equal("1");
         expect(claimEvent.args.creator).to.equal(await owner.getAddress());
         expect(claimEvent.args.merkleTreeCid).to.equal(merkleTreeCid);
-        expect(claimEvent.args.campaignInfoCid).to.equal(campaignInfoCid);
         expect(claimEvent.args.nftMetadataCid).to.equal(nftMetadataCid);
       });
     });
@@ -95,13 +92,11 @@ describe("WalletNFTDistributor", () => {
       await distributor.createCampaign(
         merkleRoot,
         merkleTreeCid,
-        campaignInfoCid,
         nftMetadataCid
       );
       await distributor.createCampaign(
         merkleRoot,
         merkleTreeCid,
-        campaignInfoCid,
         nftMetadataCid
       );
     });
