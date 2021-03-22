@@ -27,6 +27,7 @@ type Campaign @entity {
   merkleRoot: Bytes
   claimedNum: BigInt
   claims: [Claim!]! @derivedFrom(field: "campaign")
+  createdAt: BigInt!
 }
 
 type Claim @entity {
@@ -37,6 +38,7 @@ type Claim @entity {
   token: String
   nft: String
   amount: BigInt
+  createdAt: BigInt!
 }
 
 # TODO Add token schema
