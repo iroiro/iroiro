@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "iroiro-nft-metadata-kovan"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1gkyvr7vvv54i"
+s3_prefix = "iroiro-nft-metadata-kovan"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
