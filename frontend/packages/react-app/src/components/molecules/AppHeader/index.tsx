@@ -40,20 +40,34 @@ const AppHeader: React.FC = () => {
 
   const Menu = (
     <>
-      <LinkButton
-        m={1}
-        path="/dashboard"
-        text="Distribution"
-        color={"secondary"}
-      />
+      <Box>
+        <LinkButton
+          m={1}
+          path="/dashboard/token"
+          text="Token Distribution"
+          color={"secondary"}
+        />
+        <LinkButton
+          m={1}
+          path="/dashboard/nft"
+          text="NFT Distribution"
+          color={"secondary"}
+        />
+      </Box>
       <Box mr={1}>
         <Button
           style={{ textDecoration: "none" }}
           color="primary"
           onClick={() => setOpen(true)}
         >
-          Explore
+          Explore Tokens
         </Button>
+        <LinkButton
+          m={1}
+          path="/explore/nft/campaigns"
+          text="Explore NFTs"
+          color={"primary"}
+        />
       </Box>
       <WalletButtonBox mr={1}>
         <WalletButton />

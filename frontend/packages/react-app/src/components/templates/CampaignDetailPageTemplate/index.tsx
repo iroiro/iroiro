@@ -23,10 +23,9 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  Grid,
 } from "@material-ui/core";
 import CampaignDetail from "../../organisms/CampaignDetail";
-import { AccountToken } from "../../../interfaces";
+import { AccountToken, DistributorTypes } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
@@ -34,8 +33,6 @@ import theme from "../../../theme/mui-theme";
 import AssignmentRoundedIcon from "@material-ui/icons/AssignmentRounded";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSnackbar } from "notistack";
-import NFTCampaignCard from "../../molecules/NFTCampaignCard";
-import { getImageURLFromIPFSHash } from "../../organisms/NFTCampaigns";
 
 export interface CampaignInfoProps {
   readonly tokenInfo: AccountToken;
@@ -45,6 +42,27 @@ export interface CampaignInfoProps {
   readonly tokenAddress: string;
   readonly distributorAddress: string;
 }
+
+export const getCampaignURL = (
+  hasPrefix: boolean,
+  distributorType: DistributorTypes,
+  distributorAddress: string,
+  campaignId: string,
+  tokenAddress?: string
+): string => {
+  const prefix = hasPrefix
+    ? `${window.location.origin}${window.location.pathname}#`
+    : "";
+  const path = () => {
+    switch (distributorType) {
+      case "wallet":
+        return `/explore/token/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`;
+      case "wallet-nft":
+        return `/explore/nft/distributors/${distributorAddress}/campaigns/${campaignId}`;
+    }
+  };
+  return `${prefix}${path()}`;
+};
 
 export const campaignNames: { [type: string]: string } = {
   wallet: "Wallet Address Campaign",
@@ -79,7 +97,8 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
               campaignData={campaignData}
               distributorType={distributorType}
             />
-            {distributorType === "wallet-nft" && (
+            {(distributorType === "wallet-nft" ||
+              distributorType === "wallet") && (
               <Box mt={4}>
                 <Typography
                   variant="subtitle2"
@@ -88,14 +107,26 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
                   Campaign page URL
                 </Typography>
                 <TextField
-                  value={`${window.location.origin}${window.location.pathname}#/explore/nft/distributors/${distributorAddress}/campaigns/${campaignId}`}
+                  value={getCampaignURL(
+                    true,
+                    distributorType,
+                    distributorAddress,
+                    campaignId,
+                    tokenAddress
+                  )}
                   fullWidth
                   disabled
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <CopyToClipboard
-                          text={`${window.location.origin}${window.location.pathname}#/explore/nft/distributors/${distributorAddress}/campaigns/${campaignId}`}
+                          text={getCampaignURL(
+                            true,
+                            distributorType,
+                            distributorAddress,
+                            campaignId,
+                            tokenAddress
+                          )}
                         >
                           <IconButton onClick={handleClickClipboard}>
                             <AssignmentRoundedIcon />
