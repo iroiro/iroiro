@@ -22,7 +22,6 @@ import {
   CampaignDetailAction,
   CampaignDetailState,
 } from "../../../reducers/campaignDetail";
-import { TabMenuForFunPage } from "../../molecules/TabMenuForFunPage";
 import { useMemo } from "react";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
@@ -34,16 +33,12 @@ export interface NFTCampaignsDetailTemplateProps {
   readonly active: boolean;
   readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
-  readonly claimAmount: string;
-  readonly tokenAddress: string;
 }
 
 export const NFTCampaignsDetailTemplate: React.FC<NFTCampaignsDetailTemplateProps> = ({
   active,
   state,
   dispatch,
-  tokenAddress,
-  claimAmount,
 }) => {
   const CampaignDetailPanel = useMemo(() => {
     switch (state.distributorType) {
@@ -54,7 +49,6 @@ export const NFTCampaignsDetailTemplate: React.FC<NFTCampaignsDetailTemplateProp
             active={active}
             state={state}
             dispatch={dispatch}
-            claimAmount={claimAmount}
           />
         );
     }
@@ -76,7 +70,6 @@ export const NFTCampaignsDetailTemplate: React.FC<NFTCampaignsDetailTemplateProp
   return (
     <>
       <AppFrame>
-        <TabMenuForFunPage current={"campaigns"} tokenAddress={tokenAddress} />
         <WaitingProcessDialog state={state} />
         <Wrapper>
           {state.campaign !== null &&

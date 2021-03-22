@@ -79,7 +79,7 @@ export const GET_ACCOUNT_TOKEN = gql`
 `;
 
 export const GET_CAMPAIGNS = gql`
-  query getCampaigns($token: String!) {
+  query getCampaigns($token: String) {
     campaigns(where: { token: $token }) {
       id
       token
@@ -141,6 +141,7 @@ export const GET_CAMPAIGNS_BY_CREATOR_AND_TOKEN = gql`
 export const GET_CAMPAIGN = gql`
   query getCampaign($id: ID!) {
     campaign(id: $id) {
+      id
       token
       distributor {
         id

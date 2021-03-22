@@ -35,15 +35,15 @@ export const TabMenuForFunPage: React.FC<TabMenuForFunPageProps> = ({
   const history = useHistory();
   const [tabValue, setTabValue] = useState(current);
   const handleTokenTopClick = () => {
-    history.push(`/explore/${tokenAddress}`);
+    history.push(`/explore/token/${tokenAddress}`);
   };
 
   const handleCampaignsClick = () => {
-    history.push(`/explore/${tokenAddress}/campaigns`);
+    history.push(`/explore/token/${tokenAddress}/campaigns`);
   };
 
   const handleUserHistoryClick = () => {
-    history.push(`/explore/${tokenAddress}/history`);
+    history.push(`/explore/token/${tokenAddress}/history`);
   };
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -57,13 +57,13 @@ export const TabMenuForFunPage: React.FC<TabMenuForFunPageProps> = ({
 
     switch (tabValue) {
       case "tokenTop":
-        history.push(`/explore/${tokenAddress}`);
+        history.push(`/explore/token/${tokenAddress}`);
         break;
       case "campaigns":
-        history.push(`/explore/${tokenAddress}/campaigns`);
+        history.push(`/explore/token/${tokenAddress}/campaigns`);
         break;
       case "userHistory":
-        history.push(`/explore/${tokenAddress}/history`);
+        history.push(`/explore/token/${tokenAddress}/history`);
         break;
       default:
         return;

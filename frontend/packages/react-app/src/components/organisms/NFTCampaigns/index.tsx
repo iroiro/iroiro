@@ -29,16 +29,19 @@ import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import NFTTokenCampaignCard from "../../molecules/NFTCampaignCard";
+import { useHistory } from "react-router-dom";
 
 export interface NFTCampaignsProps {
   campaigns: CampaignInfo[];
-  tokenAddress: string;
 }
 
-const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
-  campaigns,
-  tokenAddress,
-}) => {
+export const getImageURLFromIPFSHash = (image: string): string => {
+  return image.startsWith("ipfs://")
+    ? `https://gateway.pinata.cloud/ipfs/${image.split("ipfs://")[1]}`
+    : "";
+};
+const NFTCampaigns: React.FC<NFTCampaignsProps> = ({ campaigns }) => {
+  const history = useHistory();
   const [filteredCampaigns, setFilteredCampaigns] = useState(campaigns);
   const [searchText, setSearchText] = useState("");
   useEffect(() => {
@@ -87,15 +90,26 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
         ) : (
           <StyledBox>
             <Grid container spacing={3}>
-              {filteredCampaigns.map((campaign) => (
-                <Grid key={campaign.id} item xs={12} sm={4}>
-                  <NFTTokenCampaignCard
-                    name={campaign.campaignMetadata.name}
-                    description={campaign.campaignMetadata.description}
-                    image={campaign.campaignMetadata.image}
-                  />
-                </Grid>
-              ))}
+              {filteredCampaigns.map((campaign) => {
+                const image = getImageURLFromIPFSHash(
+                  campaign.campaignMetadata.image
+                );
+                const pair = campaign.id.split("-");
+                return (
+                  <Grid key={campaign.id} item xs={12} sm={4}>
+                    <NFTTokenCampaignCard
+                      name={campaign.campaignMetadata.name}
+                      description={campaign.campaignMetadata.description}
+                      image={image}
+                      onClickActionArea={() =>
+                        history.push(
+                          `/explore/nft/distributors/${pair[0]}/campaigns/${pair[1]}`
+                        )
+                      }
+                    />
+                  </Grid>
+                );
+              })}
             </Grid>
           </StyledBox>
         )}

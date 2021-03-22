@@ -19,7 +19,12 @@ import * as React from "react";
 import { Button, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { Dispatch, useCallback } from "react";
-import { uuidClaim, walletClaim } from "../../../utils/web3";
+import {
+  uuidClaim,
+  uuidNFTClaim,
+  walletClaim,
+  walletNFTClaim,
+} from "../../../utils/web3";
 import {
   CampaignDetailAction,
   CampaignDetailState,
@@ -55,16 +60,16 @@ const NFTClaimCard: React.FC<NFTClaimCardProps> = ({
     dispatch({ type: "dialog:set", payload: { dialog: "claim" } });
     let transaction;
     switch (distributorType) {
-      case "wallet":
-        transaction = await walletClaim(
+      case "wallet-nft":
+        transaction = await walletNFTClaim(
           library,
           distributorAddress,
           campaignId,
           merkleTreeCid
         );
         break;
-      case "uuid":
-        transaction = await uuidClaim(
+      case "uuid-nft":
+        transaction = await uuidNFTClaim(
           library,
           distributorAddress,
           campaignId,

@@ -64,7 +64,7 @@ const TopPageTemplate = () => {
               title="NFT EXPLORE"
               description="Check the status of the NFTs you have been distributed and information on the campaign."
               color="user"
-              onClick={() => history.push("/explore/token")}
+              onClick={() => history.push("/explore/nft/campaigns")}
             />
           </div>
         </ButtonWrapper>

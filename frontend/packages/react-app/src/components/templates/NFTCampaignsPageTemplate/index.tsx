@@ -16,24 +16,21 @@
  */
 
 import * as React from "react";
-import TokenCampaigns from "../../organisms/TokenCampaigns";
 import { TokenCampaignsState } from "../../../reducers/tokenCampaigns";
 import AppFrame from "../../organisms/AppFrame";
 import NFTCampaigns from "../../organisms/NFTCampaigns";
 
 export interface NFTCampaignsTemplateProps {
   state: TokenCampaignsState;
-  tokenAddress: string;
 }
 
 export const NFTCampaignsTemplate: React.FC<NFTCampaignsTemplateProps> = ({
   state,
-  tokenAddress,
 }) => {
   return (
     <>
       <AppFrame>
-        <NFTCampaigns campaigns={state.campaigns} tokenAddress={tokenAddress} />
+        <NFTCampaigns campaigns={state.campaigns} />
       </AppFrame>
     </>
   );

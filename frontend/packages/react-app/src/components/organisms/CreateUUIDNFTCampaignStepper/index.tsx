@@ -56,11 +56,7 @@ const CreateUUIDNFTCampaignStepper = ({
     const list = uuidState.rawTargets
       .map(
         (uuid) =>
-          `${window.location.origin}${
-            window.location.pathname
-          }#/explore/${"mock"}/distributors/${
-            uuidState.distributorAddress
-          }/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
+          `${window.location.origin}${window.location.pathname}#/explore/nft/distributors/${uuidState.distributorAddress}/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
       )
       .join("\n");
     return list;

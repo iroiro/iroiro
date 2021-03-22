@@ -57,11 +57,7 @@ const CreateEmailNFTCampaignStepper = ({
   const urlList = useMemo(() => {
     const list = emailState.rawTargets.map(
       (uuid) =>
-        `${window.location.origin}${
-          window.location.pathname
-        }#/explore/${"mock"}/distributors/${
-          emailState.distributorAddress
-        }/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
+        `${window.location.origin}${window.location.pathname}#/explore/nft/distributors/${emailState.distributorAddress}/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
     );
     return list;
   }, [emailState, distributorFormState.createdCampaignId]);

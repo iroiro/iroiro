@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import distributors, { getDistributorType } from "../../../utils/distributors";
 import styled from "styled-components";
 import NFTTokenCampaignCard from "../../molecules/NFTCampaignCard";
+import { getImageURLFromIPFSHash } from "../NFTCampaigns";
 
 export interface NFTCampaignDetailProps {
   readonly campaign: CampaignInfo;
@@ -46,7 +47,7 @@ const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
           <NFTTokenCampaignCard
             name={campaign.campaignMetadata.name}
             description={campaign.campaignMetadata.description}
-            image={campaign.campaignMetadata.image}
+            image={getImageURLFromIPFSHash(campaign.campaignMetadata.image)}
           />
         </Grid>
       </Grid>

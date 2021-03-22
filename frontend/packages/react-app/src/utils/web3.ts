@@ -305,6 +305,39 @@ export const walletClaim = async (
     `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddressLow}.json`
   );
   const data = await response.json();
+
+  return distributor.functions
+    .claim(campaignId, data.index, walletAddress, data.amount, data.proof)
+    .then((transaction) => {
+      return transaction;
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+};
+
+export const walletNFTClaim = async (
+  library: Web3Provider | undefined,
+  distributorAddress: string,
+  campaignId: string,
+  merkleTreeCid: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const distributor = WalletNFTDistributor__factory.connect(
+    distributorAddress,
+    signer
+  );
+  const walletAddress = await signer.getAddress();
+  const walletAddressLow = walletAddress.toLowerCase();
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddressLow}.json`
+  );
+  const data = await response.json();
+
   return distributor.functions
     .claim(campaignId, data.index, walletAddress, data.amount, data.proof)
     .then((transaction) => {
@@ -336,6 +369,39 @@ export const uuidClaim = async (
     `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`
   );
   const data = await response.json();
+
+  return distributor.functions
+    .claim(campaignId, data.index, uuid, data.amount, data.proof)
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+};
+
+export const uuidNFTClaim = async (
+  library: Web3Provider | undefined,
+  distributorAddress: string,
+  campaignId: string,
+  merkleTreeCid: string,
+  uuid: string,
+  hashedUUID: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const distributor = UUIDNFTDistributor__factory.connect(
+    distributorAddress,
+    signer
+  );
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`
+  );
+  const data = await response.json();
+
   return distributor.functions
     .claim(campaignId, data.index, uuid, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {

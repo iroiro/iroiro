@@ -37,6 +37,8 @@ import NFTDashboardPage from "./components/pages/NFTDashboardPage";
 import CreateWalletNFTCampaignPage from "./components/pages/CreateWalletNFTCampaignPage";
 import CreateUUIDNFTCampaignPage from "./components/pages/CreateUUIDNFTCampaignPage";
 import CreateEmailNFTCampaignPage from "./components/pages/CreateEmailNFTCampaignPage";
+import NFTCampaignsPage from "./components/pages/NFTCampaignsPage";
+import NFTCampaignDetailPage from "./components/pages/NFTCampaignDetailPage";
 
 const App: React.FC = () => {
   return (
@@ -172,25 +174,35 @@ const App: React.FC = () => {
                 component={CampaignDetailPage}
               />
               {/* For Fan */}
-              <Route exact path="/explore" component={ExplorePage} />
+              <Route exact path="/explore/token" component={ExplorePage} />
               <Route
                 exact
-                path="/explore/:tokenAddress"
+                path="/explore/token/:tokenAddress"
                 component={ExplorePage}
               />
               <Route
                 exact
-                path="/explore/:tokenAddress/campaigns"
+                path="/explore/token/:tokenAddress/campaigns"
                 component={TokenCampaignsPage}
               />
               <Route
-                path="/explore/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
+                path="/explore/token/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
                 component={TokenCampaignDetailPage}
               />
               <Route
-                path="/explore/:tokenAddress/history"
+                path="/explore/token/:tokenAddress/history"
                 component={TokenHistoryPage}
               />
+              <Route
+                exact
+                path="/explore/nft/campaigns"
+                component={NFTCampaignsPage}
+              />
+              <Route
+                path="/explore/nft/distributors/:distributorAddress/campaigns/:campaignId"
+                component={NFTCampaignDetailPage}
+              />
+              <Route path="/explore/nft/history" component={TokenHistoryPage} />
               <Route component={NotFoundPageTemplate} />
             </Switch>
           </TokenProvider>

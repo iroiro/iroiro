@@ -108,7 +108,7 @@ const SelectTokenModal: React.FC<SelectTokenModalProps> = ({
       return;
     }
 
-    history.push(`/explore/${value.tokenAddress}`);
+    history.push(`/explore/token/${value.tokenAddress}`);
     onCloseModal();
     setValue({
       tokenName: "",

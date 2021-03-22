@@ -22,7 +22,6 @@ import {
   CampaignDetailState,
   CampaignDetailAction,
 } from "../../../reducers/campaignDetail";
-import { useTokenContext } from "../../../context/token";
 import WalletConnect from "../WalletConnect";
 import WalletNFTClaimCard from "../../molecules/NFTClaimCard";
 import NFTCampaignDetail from "../NFTCampaignDetail";
@@ -31,7 +30,6 @@ export interface WalletNFTCampaignDetailPanelProps {
   readonly active: boolean;
   readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
-  readonly claimAmount: string;
 }
 
 // TODO: Add waiting transactions
@@ -40,7 +38,6 @@ const WalletNFTCampaignDetailPanel: React.FC<WalletNFTCampaignDetailPanelProps> 
   state,
   dispatch,
 }) => {
-  const { state: tokenState } = useTokenContext();
   if (state.campaign === null) {
     return null;
   }
