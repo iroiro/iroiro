@@ -2,6 +2,10 @@
   "network": "kovan",
   "walletDistributorAddress": "0xE98dB5131B7fC7aB3BcEbb5093cd904308707E20",
   "blockNumberWalletDistributorDeployed": "23874853",
+  "walletNftDistributorAddress": "0xf6619b4bb8BdAB7d40181762b5B9AFD1cD440a15",
+  "blockNumberWalletNftDistributorDeployed": "23960215",
   "uuidDistributorAddress": "0x4DAFcf19A5DEF888e5D64A9577bcF883e3e9d405",
-  "blockNumberUuidDistributorDeployed": "23874859"
+  "blockNumberUuidDistributorDeployed": "23874859",
+  "uuidNftDistributorAddress": "0x33Ff39EB8E1F89d226a4915206A04c95312c0DAA",
+  "blockNumberUuidNftDistributorDeployed": "23960221"
 }
