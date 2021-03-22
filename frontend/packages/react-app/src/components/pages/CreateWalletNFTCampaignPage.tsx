@@ -158,7 +158,7 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
             }
             const distributionId: BigNumber = campaignCreatedEvent.args?.treeId;
             props.history.push(
-              `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
+              `/dashboard/nft/distributors/${distributorAddress}` +
                 `/campaigns/${distributionId.toString()}`
             );
           });

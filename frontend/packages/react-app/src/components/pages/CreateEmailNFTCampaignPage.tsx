@@ -242,7 +242,7 @@ const CreateEmailNFTCampaignPage: React.FC<CreateEmailNFTCampaignPageProps> = ({
       return;
     }
     props.history.push(
-      `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
+      `/dashboard/nft/distributors/${distributorAddress}` +
         `/campaigns/${distributorFormState.createdCampaignId}`
     );
   }, [
