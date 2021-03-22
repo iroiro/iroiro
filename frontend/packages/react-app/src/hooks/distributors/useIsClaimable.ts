@@ -111,7 +111,6 @@ export const useIsClaimable = (
           BigNumber.from(campaignId),
           null,
           null,
-          null,
           null
         )
       );
@@ -201,7 +200,6 @@ export const useIsClaimable = (
       const events = await distributor.queryFilter(
         distributor.filters.CreateCampaign(
           BigNumber.from(campaignId),
-          null,
           null,
           null,
           null

@@ -222,14 +222,11 @@ export const createWalletNFTCampaign = async (
     signer
   );
 
-  return (
-    distributor
-      // TODO remove noneed arg
-      .createCampaign(merkleRoot, merkleTreeCid, nftMetadataCid, nftMetadataCid)
-      .then((transaction: ContractTransaction) => {
-        return transaction;
-      })
-  );
+  return distributor
+    .createCampaign(merkleRoot, merkleTreeCid, nftMetadataCid)
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
 };
 
 // TODO move as custom hooks
@@ -279,7 +276,7 @@ export const createUUIDNFTCampaign = async (
   );
 
   return distributor
-    .createCampaign(merkleRoot, merkleTreeCid, nftMetadataCid, nftMetadataCid)
+    .createCampaign(merkleRoot, merkleTreeCid, nftMetadataCid)
     .then((transaction: ContractTransaction) => {
       return transaction;
     });
