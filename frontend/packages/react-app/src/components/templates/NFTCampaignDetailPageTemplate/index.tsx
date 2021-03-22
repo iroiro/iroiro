@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
+import * as React from "react";
 import {
   Box,
   Typography,
@@ -23,7 +23,6 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  Grid,
 } from "@material-ui/core";
 import CampaignDetail from "../../organisms/CampaignDetail";
 import { AccountToken } from "../../../interfaces";
@@ -34,10 +33,9 @@ import theme from "../../../theme/mui-theme";
 import AssignmentRoundedIcon from "@material-ui/icons/AssignmentRounded";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSnackbar } from "notistack";
-import NFTCampaignCard from "../../molecules/NFTCampaignCard";
-import { getImageURLFromIPFSHash } from "../../organisms/NFTCampaigns";
+import { campaignNames } from "../CampaignDetailPageTemplate";
 
-export interface CampaignInfoProps {
+export interface NFTCampaignDetailPageTemplateProps {
   readonly tokenInfo: AccountToken;
   readonly campaignData: CampaignData;
   readonly distributorType: string;
@@ -46,14 +44,7 @@ export interface CampaignInfoProps {
   readonly distributorAddress: string;
 }
 
-export const campaignNames: { [type: string]: string } = {
-  wallet: "Wallet Address Campaign",
-  "wallet-nft": "Wallet Address Campaign",
-  uuid: "URL/Email Campaign",
-  "uuid-nft": "URL/Email Campaign",
-};
-
-const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
+const NFTCampaignDetailPageTemplate: React.FC<NFTCampaignDetailPageTemplateProps> = ({
   campaignData,
   distributorType,
   campaignId,
@@ -88,14 +79,14 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
                   Campaign page URL
                 </Typography>
                 <TextField
-                  value={`${window.location.origin}${window.location.pathname}#/explore/nft/distributors/${distributorAddress}/campaigns/${campaignId}`}
+                  value={`${window.location.origin}${window.location.pathname}#/explore/token/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
                   fullWidth
                   disabled
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <CopyToClipboard
-                          text={`${window.location.origin}${window.location.pathname}#/explore/nft/distributors/${distributorAddress}/campaigns/${campaignId}`}
+                          text={`${window.location.origin}${window.location.pathname}#/explore/token/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
                         >
                           <IconButton onClick={handleClickClipboard}>
                             <AssignmentRoundedIcon />
@@ -128,4 +119,4 @@ const TypeWrapper = styled.div`
   }
 `;
 
-export default CampaignDetailPageTemplate;
+export default NFTCampaignDetailPageTemplate;

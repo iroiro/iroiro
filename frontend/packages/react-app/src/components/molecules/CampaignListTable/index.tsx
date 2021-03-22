@@ -163,7 +163,7 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                       {"campaignMetadata" in campaign ? (
                         <TableCell>
                           <Link
-                            to={`/dashboard/${campaign.token}/distributors/${pair[0]}/campaigns/${pair[1]}`}
+                            to={`/dashboard/token/${campaign.token}/distributors/${pair[0]}/campaigns/${pair[1]}`}
                             style={{ textDecoration: "none", color: "#48C5D5" }}
                           >
                             <Typography variant={"body2"}>

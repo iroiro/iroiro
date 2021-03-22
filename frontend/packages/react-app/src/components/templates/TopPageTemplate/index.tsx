@@ -24,7 +24,7 @@ import { useState } from "react";
 import AppFrame from "../../organisms/AppFrame";
 import { MenuButtonWrapper } from "../DashboardPageTemplate";
 
-const TopPageTemplate = () => {
+const TopPageTemplate: React.FC = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const handleExploreButtonClick = useCallback(() => {

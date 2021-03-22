@@ -16,51 +16,79 @@
  */
 
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import { CampaignData } from "../../../reducers/campaign";
 import Item from "../../molecules/Item";
+import NFTCampaignCard from "../../molecules/NFTCampaignCard";
+import { getImageURLFromIPFSHash } from "../NFTCampaigns";
+import { DistributorTypes } from "../../../interfaces";
 
 export interface CampaignDetailProps {
   readonly campaignData: CampaignData;
+  readonly distributorType: DistributorTypes | string;
 }
 
-const CampaignDetail: React.FC<CampaignDetailProps> = ({ campaignData }) => {
+const CampaignDetail: React.FC<CampaignDetailProps> = ({
+  campaignData,
+  distributorType,
+}) => {
   return (
     <>
+      {(distributorType === "wallet-nft" || distributorType === "uuid-nft") &&
+        campaignData !== undefined &&
+        campaignData.campaign.campaignMetadata !== undefined && (
+          <Grid container justify="center">
+            <Grid xs={12} sm={4}>
+              <NFTCampaignCard
+                name={campaignData.campaign.campaignMetadata.name}
+                description={campaignData.campaign.campaignMetadata.description}
+                image={getImageURLFromIPFSHash(
+                  campaignData.campaign.campaignMetadata.image
+                )}
+              />
+            </Grid>
+          </Grid>
+        )}
       {campaignData !== undefined && (
         <Box>
-          <Box
-            display="flex"
-            style={{ alignItems: "center", justifyContent: "left" }}
-          >
-            {"campaignMetadata" in campaignData.campaign && (
-              <Item
-                title="Campaign Name"
-                text={campaignData.campaign.campaignMetadata.name}
-              />
-            )}
-          </Box>
+          {(distributorType === "wallet" || distributorType === "uuid") && (
+            <>
+              <Box
+                display="flex"
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                {"campaignMetadata" in campaignData.campaign && (
+                  <Item
+                    title="Campaign Name"
+                    text={campaignData.campaign.campaignMetadata.name}
+                  />
+                )}
+              </Box>
+              <Box
+                display="flex"
+                mt={4}
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                {"campaignMetadata" in campaignData.campaign && (
+                  <Item
+                    title="Campaign Description"
+                    text={campaignData.campaign.campaignMetadata.description}
+                  />
+                )}
+              </Box>
+            </>
+          )}
           <Box
             display="flex"
             mt={4}
             style={{ alignItems: "center", justifyContent: "left" }}
           >
-            {"campaignMetadata" in campaignData.campaign && (
+            {(distributorType === "wallet" || distributorType === "uuid") && (
               <Item
-                title="Campaign Description"
-                text={campaignData.campaign.campaignMetadata.description}
+                title="Campaign tokens balance"
+                text={campaignData.depositTokens}
               />
             )}
-          </Box>
-          <Box
-            display="flex"
-            mt={4}
-            style={{ alignItems: "center", justifyContent: "left" }}
-          >
-            <Item
-              title="Campaign tokens balance"
-              text={campaignData.depositTokens}
-            />
             <Item
               title="Claimed Number"
               text={String(campaignData.campaign.claimedNum)}
