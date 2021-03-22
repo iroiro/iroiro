@@ -34,8 +34,44 @@ const SetupNFTCampaignForm: React.FC<SetupNFTCampaignFormProps> = ({
   distributorFormDispatch,
   distributorFormState,
 }) => {
-  // TODO add uploading image logic
-  const button = <Button>Upload Image</Button>;
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const campaignImageFile = e.target.files![0];
+    const campaignImagePreview = URL.createObjectURL(campaignImageFile);
+    distributorFormDispatch({
+      type: "campaignImageFile:set",
+      payload: {
+        campaignImageFile,
+      },
+    });
+    distributorFormDispatch({
+      type: "campaignImagePreview:set",
+      payload: {
+        campaignImagePreview,
+      },
+    });
+  };
+
+  const button = (
+    <div>
+      <input
+        accept="image/*"
+        id="button-file"
+        type="file"
+        style={{ display: "none" }}
+        onChange={handleImageUpload}
+      />
+      <label htmlFor="button-file">
+        <Button
+          variant="contained"
+          disableElevation
+          component="span"
+          color="secondary"
+        >
+          Select Image
+        </Button>
+      </label>
+    </div>
+  );
 
   return (
     <Box>

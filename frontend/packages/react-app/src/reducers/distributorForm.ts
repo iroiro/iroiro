@@ -31,6 +31,11 @@ export type DISTRIBUTOR_ACTIONS =
       type: "campaignDescription:set";
       payload: { campaignDescription: string };
     }
+  | { type: "campaignImageFile:set"; payload: { campaignImageFile: File } }
+  | {
+      type: "campaignImagePreview:set";
+      payload: { campaignImagePreview: string };
+    }
   | { type: "token:approve"; payload: { approveRequest: boolean } }
   | {
       type: "campaign:deploy";
@@ -52,7 +57,7 @@ export interface createCampaignState {
   approveAmount: string;
   campaignName: string;
   campaignDescription: string;
-  campaignImageFile?: string;
+  campaignImageFile?: File;
   campaignImagePreview: string;
   approveRequest: boolean;
   requestDeployCampaign: boolean;
@@ -85,6 +90,15 @@ export const distributorFormReducer = (
       return {
         ...state,
         campaignDescription: action.payload.campaignDescription,
+      };
+    }
+    case "campaignImageFile:set": {
+      return { ...state, campaignImageFile: action.payload.campaignImageFile };
+    }
+    case "campaignImagePreview:set": {
+      return {
+        ...state,
+        campaignImagePreview: action.payload.campaignImagePreview,
       };
     }
     case "token:approve": {

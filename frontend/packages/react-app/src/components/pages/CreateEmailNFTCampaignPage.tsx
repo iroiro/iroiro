@@ -71,6 +71,7 @@ const CreateEmailNFTCampaignPage: React.FC<CreateEmailNFTCampaignPageProps> = ({
   );
   const [recipientsCid, setRecipientsCid] = useState("");
   const [campaignInfoCid, setCampaignInfoCid] = useState("");
+  const [nftImageCid, setNftImageCid] = useState("");
   const [{ error: pinningError }, postPinning] = useAxios(
     {
       url: IPFS_PINNING_API,
@@ -104,15 +105,22 @@ const CreateEmailNFTCampaignPage: React.FC<CreateEmailNFTCampaignPageProps> = ({
     });
   }, [distributorAddress, emailDispatch]);
 
-  const uploadJsonIpfs = useCallback(
-    async (data, type) => {
-      const { path } = await ipfs.add(JSON.stringify(data));
+  const uploadToIpfs = useCallback(
+    async (
+      rawData,
+      type: "campaignInfoCid" | "recipientsCid" | "nftImageCid"
+    ) => {
+      const data = type === "nftImageCid" ? rawData : JSON.stringify(rawData);
+      const { path } = await ipfs.add(data);
       await postPinning({ data: { hashToPin: path } });
       if (type === "campaignInfoCid") {
         setCampaignInfoCid(path);
       }
       if (type === "recipientsCid") {
         setRecipientsCid(path);
+      }
+      if (type === "nftImageCid") {
+        setNftImageCid(path);
       }
     },
     [postPinning]
@@ -149,14 +157,14 @@ const CreateEmailNFTCampaignPage: React.FC<CreateEmailNFTCampaignPageProps> = ({
             if (campaignCreatedEvent === undefined) {
               return;
             }
-            const campaignId: string = campaignCreatedEvent.args?.distributionId.toString();
+            const campaignId: string = campaignCreatedEvent.args?.treeId.toString();
             distributorFormDispatch({
               type: "createdCampaignId:set",
               payload: { campaignId },
             });
             distributorFormDispatch({
               type: "step:set",
-              payload: { stepNo: 4 },
+              payload: { stepNo: 2 },
             });
           });
         })
@@ -247,10 +255,29 @@ const CreateEmailNFTCampaignPage: React.FC<CreateEmailNFTCampaignPageProps> = ({
 
   useEffect(() => {
     const f = async () => {
+      if (
+        !distributorFormState.requestDeployCampaign ||
+        distributorFormState.campaignImageFile === undefined
+      ) {
+        return;
+      }
+      await uploadToIpfs(distributorFormState.campaignImageFile, "nftImageCid");
+    };
+    f();
+  }, [
+    distributorFormState.requestDeployCampaign,
+    distributorFormState.campaignImageFile,
+  ]);
+
+  useEffect(() => {
+    const f = async () => {
+      if (nftImageCid === "") {
+        return;
+      }
       if (distributorFormState.requestDeployCampaign) {
         const campaignInfo = {
           description: distributorFormState.campaignDescription,
-          image: "",
+          image: `ipfs://${nftImageCid}`,
           name: distributorFormState.campaignName,
         };
 
@@ -259,12 +286,12 @@ const CreateEmailNFTCampaignPage: React.FC<CreateEmailNFTCampaignPageProps> = ({
           type: emailState.type,
         };
 
-        await uploadJsonIpfs(campaignInfo, "campaignInfoCid");
-        await uploadJsonIpfs(targets, "recipientsCid");
+        await uploadToIpfs(campaignInfo, "campaignInfoCid");
+        await uploadToIpfs(targets, "recipientsCid");
       }
     };
     f();
-  }, [library, distributorFormState]);
+  }, [library, distributorFormState, nftImageCid]);
 
   useEffect(() => {
     if (!distributorFormState.requestDeployCampaign) {

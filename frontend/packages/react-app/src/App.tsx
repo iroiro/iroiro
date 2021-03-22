@@ -59,6 +59,7 @@ const App: React.FC = () => {
                 path="/dashboard/token/:tokenAddress/distributors"
                 component={SelectDistributorsPage}
               />
+              {/* TODO Remove repetition */}
               {distributors.map((distributor) => {
                 if (distributor.disabled) {
                   return;
@@ -165,7 +166,6 @@ const App: React.FC = () => {
                 path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
                 component={CampaignDetailPage}
               />
-
               {/* For Fan */}
               <Route exact path="/explore" component={ExplorePage} />
               <Route
