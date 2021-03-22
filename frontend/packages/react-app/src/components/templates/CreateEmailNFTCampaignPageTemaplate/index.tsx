@@ -53,7 +53,7 @@ const CreateEmailNFTCampaignPageTemplate: React.FC<CreateEmailNFTCampaignPageTem
         <Box maxWidth={640} style={{ margin: "auto" }}>
           <StyledStepperWrapper variant="outlined">
             <Box my={1}>
-              <Typography variant={"h3"}>Email Campaign</Typography>
+              <Typography variant={"h3"}>NFT Campaign with Email</Typography>
             </Box>
             <WaitingProcessDialog state={distributorFormState} />
             <CreateEmailNFTCampaignStepper
