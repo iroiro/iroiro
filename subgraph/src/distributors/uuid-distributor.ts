@@ -67,6 +67,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   campaign.claimedNum = new BigInt(0);
   campaign.campaignInfoCid = event.params.campaignInfoCid;
   campaign.merkleTreeCid = event.params.merkleTreeCid;
+  campaign.createdAt = event.block.timestamp;
   let merkleRoot = distributorContract.try_merkleRoot(
     event.params.distributionId
   );
@@ -111,6 +112,7 @@ export function handleClaimed(event: ClaimedEvent): void {
     claim.token = callToken.value.toHexString();
   }
   claim.amount = event.params.amount;
+  claim.createdAt = event.block.timestamp;
 
   campaign.save();
   account.save();
