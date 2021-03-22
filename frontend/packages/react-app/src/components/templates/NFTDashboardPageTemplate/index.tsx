@@ -19,12 +19,11 @@ import * as React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { Campaigns } from "../../../interfaces";
 import MenuButton from "../../atoms/MenuButton";
-import styled from "styled-components";
-import theme from "../../../theme/mui-theme";
 import AppFrame from "../../organisms/AppFrame";
 import distributors from "../../../utils/distributors";
 import { useHistory } from "react-router-dom";
 import NFTCampaignListTable from "../../molecules/NFTCampaignListTable";
+import { MenuButtonWrapper } from "../DashboardPageTemplate";
 
 export interface NFTDashboardPageTemplateProps {
   readonly campaignsState: Campaigns;
@@ -114,21 +113,5 @@ const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
     </>
   );
 };
-
-const MenuButtonWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  & > div {
-    width: 49.5%;
-    ${theme.breakpoints.down(600)} {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-  }
-  ${theme.breakpoints.down(600)} {
-    display: block;
-  }
-`;
 
 export default NFTDashboardPageTemplate;

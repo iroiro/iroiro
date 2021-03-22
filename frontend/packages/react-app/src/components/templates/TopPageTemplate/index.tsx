@@ -16,13 +16,13 @@
  */
 
 import React from "react";
-import styled from "styled-components";
 import MenuButton from "../../atoms/MenuButton";
 import { useHistory } from "react-router-dom";
 import { useCallback } from "react";
 import SelectTokenModal from "../../organisms/SelectTokenModal";
 import { useState } from "react";
 import AppFrame from "../../organisms/AppFrame";
+import { MenuButtonWrapper } from "../DashboardPageTemplate";
 
 const TopPageTemplate = () => {
   const history = useHistory();
@@ -34,7 +34,7 @@ const TopPageTemplate = () => {
   return (
     <>
       <AppFrame>
-        <ButtonWrapper>
+        <MenuButtonWrapper>
           <div style={{ marginBottom: 16 }}>
             <MenuButton
               title="TOKEN DISTRIBUTION"
@@ -51,6 +51,8 @@ const TopPageTemplate = () => {
               onClick={() => history.push("/dashboard/nft")}
             />
           </div>
+        </MenuButtonWrapper>
+        <MenuButtonWrapper>
           <div style={{ marginBottom: 16 }}>
             <MenuButton
               title="TOKEN EXPLORE"
@@ -67,7 +69,7 @@ const TopPageTemplate = () => {
               onClick={() => history.push("/explore/nft/campaigns")}
             />
           </div>
-        </ButtonWrapper>
+        </MenuButtonWrapper>
       </AppFrame>
       <SelectTokenModal
         open={open}
@@ -78,11 +80,5 @@ const TopPageTemplate = () => {
     </>
   );
 };
-
-const ButtonWrapper = styled.div`
-  max-width: 390px;
-  margin: 0 auto 32px;
-  padding-top: 4%;
-`;
 
 export default TopPageTemplate;

@@ -119,7 +119,7 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
   );
 };
 
-const MenuButtonWrapper = styled.div`
+export const MenuButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
