@@ -109,8 +109,7 @@ export function handleTransferSingle(event: TransferSingle): void {
     claim = new Claim(claimId);
   }
   claim.account = accountId;
-  claim.  claim.campaign = campaignId;
-  = event.params.id.toString();
+  claim.campaign = campaignId;
   claim.nft = distributionId.toString();
   claim.amount = event.params.value;
   claim.createdAt = event.block.timestamp;
