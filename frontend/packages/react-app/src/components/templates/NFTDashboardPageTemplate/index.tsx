@@ -21,22 +21,19 @@ import { Campaigns } from "../../../interfaces";
 import MenuButton from "../../atoms/MenuButton";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
-import CampaignListTable from "../../molecules/CampaignListTable";
 import AppFrame from "../../organisms/AppFrame";
 import distributors from "../../../utils/distributors";
 import { useHistory } from "react-router-dom";
-import { TokenState } from "../../../reducers/tokenContext";
+import NFTCampaignListTable from "../../molecules/NFTCampaignListTable";
 
 export interface NFTDashboardPageTemplateProps {
   readonly campaignsState: Campaigns;
-  readonly tokenState: TokenState;
-  active: boolean;
+  readonly active: boolean;
 }
 
 const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
   campaignsState,
   active,
-  tokenState,
 }) => {
   const history = useHistory();
   const walletDistributor = distributors.find(
@@ -108,10 +105,9 @@ const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
           />
         </MenuButtonWrapper>
         <Box mt={6}>
-          <CampaignListTable
+          <NFTCampaignListTable
             campaignsState={campaignsState}
             walletConnect={active}
-            tokenState={tokenState}
           />
         </Box>
       </AppFrame>

@@ -163,7 +163,12 @@ const App: React.FC = () => {
               })}
               <Route
                 exact
-                path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
+                path="/dashboard/token/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
+                component={CampaignDetailPage}
+              />
+              <Route
+                exact
+                path="/dashboard/nft/distributors/:distributorAddress/campaigns/:campaignId"
                 component={CampaignDetailPage}
               />
               {/* For Fan */}

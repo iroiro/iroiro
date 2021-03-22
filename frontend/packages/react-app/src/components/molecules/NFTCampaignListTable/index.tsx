@@ -28,80 +28,21 @@ import {
   Box,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { CampaignInfo, Campaigns } from "../../../interfaces";
-import distributors, { getDistributorType } from "../../../utils/distributors";
+import { Campaigns } from "../../../interfaces";
 import WalletButton from "../../atoms/WalletButton";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
-import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
-import { useMemo, useState } from "react";
-import { useEffect } from "react";
-import { TokenState } from "../../../reducers/tokenContext";
+import { DistributorName } from "../CampaignListTable";
 
-interface DistributorProps {
-  campaign: CampaignInfo;
-}
-
-export function DistributorName(props: DistributorProps) {
-  const { campaign } = props;
-  const result = distributors.find(
-    (distributor) =>
-      distributor.id.toLowerCase() === campaign.distributor.id.toLowerCase()
-  );
-
-  return <Typography>{getDistributorType(result?.type ?? "")}</Typography>;
-}
-
-export interface CampaignListTableProps {
+export interface NFTCampaignListTableProps {
   campaignsState: Campaigns;
   walletConnect: boolean;
-  tokenState: TokenState;
 }
 
-const CampaignListTable: React.FC<CampaignListTableProps> = ({
+const NFTCampaignListTable: React.FC<NFTCampaignListTableProps> = ({
   campaignsState,
   walletConnect,
-  tokenState,
 }) => {
-  const [value, setValue] = useState<TokenOption>({
-    tokenName: "",
-    tokenAddress: "",
-  });
-
-  const [displayedList, setDisplayedList] = useState(campaignsState.campaigns);
-  const tokenOptions = useMemo(() => {
-    const campaignTokenList = campaignsState.campaigns
-      .map((campaign) => campaign.token as string) // TODO fix type
-      .filter((elem, index, self) => self.indexOf(elem) === index); // distinct
-    return tokenState.tokens.filter((tokenOption) =>
-      campaignTokenList.includes(tokenOption.tokenAddress)
-    );
-  }, [tokenState.tokens, campaignsState.campaigns]);
-
-  useEffect(() => {
-    if (campaignsState.campaigns.length == 0) {
-      return;
-    }
-    if (value === null) {
-      setDisplayedList(campaignsState.campaigns);
-      return;
-    }
-
-    if (value.tokenName === "") {
-      setDisplayedList(campaignsState.campaigns);
-      return;
-    }
-
-    const filteredList = campaignsState.campaigns.filter((campaign) => {
-      return (
-        // TODO remove type assertion
-        (campaign.token as string).toLowerCase() ===
-        value.tokenAddress.toLowerCase()
-      );
-    });
-    setDisplayedList(filteredList);
-  }, [value, campaignsState.campaigns]);
-
   return (
     <>
       <TitleWrapper
@@ -111,23 +52,6 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
         mb={2}
       >
         <TableTitle variant={"h4"}>Your Campaigns</TableTitle>
-        {walletConnect && displayedList.length > 0 && (
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <SelectTokenInput
-              label={
-                tokenOptions.length === 0
-                  ? "Please Wait...⏳"
-                  : "Filtered by Token"
-              }
-              options={tokenOptions}
-              value={value}
-              onChange={(value: TokenOption) => setValue(value)}
-              disabled={tokenOptions.length === 0}
-              small
-              color="creator"
-            />
-          </div>
-        )}
       </TitleWrapper>
       <Paper variant="outlined">
         <TableContainer>
@@ -135,7 +59,6 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>Token</TableCell>
                 <TableCell>Distribution with</TableCell>
               </TableRow>
             </TableHead>
@@ -155,15 +78,15 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                 </TableRow>
               )}
               {walletConnect &&
-                displayedList.length > 0 &&
-                displayedList.map((campaign, index) => {
+                campaignsState.campaigns.length > 0 &&
+                campaignsState.campaigns.map((campaign, index) => {
                   const pair = campaign.id.split("-");
                   return (
                     <TableRow key={campaign.id + index}>
                       {"campaignMetadata" in campaign ? (
                         <TableCell>
                           <Link
-                            to={`/dashboard/${campaign.token}/distributors/${pair[0]}/campaigns/${pair[1]}`}
+                            to={`/dashboard/nft/distributors/${pair[0]}/campaigns/${pair[1]}`}
                             style={{ textDecoration: "none", color: "#48C5D5" }}
                           >
                             <Typography variant={"body2"}>
@@ -175,19 +98,12 @@ const CampaignListTable: React.FC<CampaignListTableProps> = ({
                         <TableCell>loading...</TableCell>
                       )}
                       <TableCell>
-                        {tokenOptions.find(
-                          (creatorOption) =>
-                            creatorOption.tokenAddress.toLowerCase() ===
-                            campaign.token
-                        )?.tokenName ?? "..."}
-                      </TableCell>
-                      <TableCell>
                         <DistributorName campaign={campaign} />
                       </TableCell>
                     </TableRow>
                   );
                 })}
-              {walletConnect && displayedList.length === 0 && (
+              {walletConnect && campaignsState.campaigns.length === 0 && (
                 <TableRow>
                   <TableCell
                     colSpan={5}
@@ -224,4 +140,4 @@ const TableTitle = styled(Typography)`
   }
 `;
 
-export default CampaignListTable;
+export default NFTCampaignListTable;

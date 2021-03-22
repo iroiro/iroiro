@@ -18,40 +18,34 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import NFTDashboardPageTemplate, {
-  NFTDashboardPageTemplateProps,
-} from "./index";
-import {
-  campaignsState,
-  creatorTokenList,
-  mockTokenState,
-} from "../../../utils/mockData";
+import NFTCampaignListTable, { NFTCampaignListTableProps } from "./index";
+import { campaignsState, mockTokenState } from "../../../utils/mockData";
 
 export default {
-  title: "Templates/NFTDashboardPageTemplate",
-  component: NFTDashboardPageTemplate,
+  title: "Molecules/NFTCampaignListTable",
+  component: NFTCampaignListTable,
 } as Meta;
 
-const Template: Story<NFTDashboardPageTemplateProps> = (args) => (
+const Template: Story<NFTCampaignListTableProps> = (args) => (
   <BrowserRouter>
-    <NFTDashboardPageTemplate {...args} />
+    <NFTCampaignListTable {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
   campaignsState: campaignsState,
-  active: true,
+  walletConnect: true,
 };
 
 export const NoCampaign = Template.bind({});
 NoCampaign.args = {
   campaignsState: { campaigns: [] },
-  active: true,
+  walletConnect: true,
 };
 
 export const NoConnect = Template.bind({});
 NoConnect.args = {
   campaignsState: { campaigns: [] },
-  active: false,
+  walletConnect: false,
 };

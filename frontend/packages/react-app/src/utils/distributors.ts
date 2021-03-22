@@ -98,9 +98,12 @@ const distributors: Distributor[] = [
 export const getDistributorType = (type: string): string => {
   switch (type) {
     case "wallet":
+    case "wallet-nft":
       return "Wallet Address";
     case "uuid":
+    case "uuid-nft":
     case "email":
+    case "email-nft":
       return "URL/Email";
     default:
       return "";

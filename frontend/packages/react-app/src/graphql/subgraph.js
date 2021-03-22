@@ -98,9 +98,21 @@ export const GET_CAMPAIGNS = gql`
 
 export const GET_CAMPAIGNS_BY_CREATOR = gql`
   query getCampaignsByCreator($creator: ID!) {
-    campaigns(where: { creator: $creator }) {
+    campaigns(where: { creator: $creator, token_not: null }) {
       id
       token
+      distributor {
+        id
+      }
+      campaignInfoCid
+    }
+  }
+`;
+
+export const GET_NFT_CAMPAIGNS_BY_CREATOR = gql`
+  query getNFTCampaignsByCreator($creator: ID!) {
+    campaigns(where: { creator: $creator, token: null }) {
+      id
       distributor {
         id
       }
@@ -181,7 +193,7 @@ export const GET_CLAIM = gql`
 
 export const GET_TOKEN_LIST = gql`
   {
-    campaigns {
+    campaigns(where: { token_not: null }) {
       token
     }
   }

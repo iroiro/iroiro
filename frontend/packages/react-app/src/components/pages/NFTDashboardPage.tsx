@@ -16,34 +16,25 @@
  */
 
 import * as React from "react";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import { useWeb3React } from "@web3-react/core";
 import {
   campaignsInitialState,
   campaignsReducer,
 } from "../../reducers/campaigns";
 import { useLazyQuery } from "@apollo/react-hooks";
-import {
-  GET_CAMPAIGNS_BY_CREATOR,
-  GET_TOKEN_LIST,
-} from "../../graphql/subgraph";
-import { getTokenInfo } from "../../utils/web3";
-import { useTokenContext } from "../../context/token";
-import { TokenBasic } from "../../interfaces";
+import { GET_NFT_CAMPAIGNS_BY_CREATOR } from "../../graphql/subgraph";
 import NFTDashboardPageTemplate from "../templates/NFTDashboardPageTemplate";
 
 const NFTDashboardPage: React.FC = () => {
   const { active, library, account } = useWeb3React();
-  const { state: tokenState, dispatch: tokenDispatch } = useTokenContext();
   const [campaignsState, campaignDispatch] = useReducer(
     campaignsReducer,
     campaignsInitialState
   );
   const [getCampaignsByCreator, { data }] = useLazyQuery(
-    GET_CAMPAIGNS_BY_CREATOR
+    GET_NFT_CAMPAIGNS_BY_CREATOR
   );
-  const [getTokenList, { data: tokenData }] = useLazyQuery(GET_TOKEN_LIST);
-  const [tokenList, setTokenList] = useState([]);
 
   const getCampaignMetadata = useCallback(async (campaigns) => {
     for (let i = 0; i < campaigns.length; i++) {
@@ -77,52 +68,6 @@ const NFTDashboardPage: React.FC = () => {
     }
   }, [data]);
 
-  // TODO: Duplicated. Extract as a custom hooks
-  React.useEffect(() => {
-    if (tokenState.tokens.length === 0) {
-      getTokenList();
-    }
-  }, [tokenState.tokens]);
-
-  React.useEffect(() => {
-    if (tokenData === undefined) {
-      return;
-    }
-
-    const tokens = tokenData.campaigns.map((data: any) => {
-      return data.token;
-    });
-
-    setTokenList(Array.from(new Set(tokens)));
-  }, [tokenData]);
-
-  React.useEffect(() => {
-    if (tokenList.length === 0) {
-      return;
-    }
-    if (tokenState.tokens.length !== 0) {
-      return;
-    }
-
-    const f = async () => {
-      const tokenBasicInfoList = tokenList.map(
-        async (token) => await getTokenInfo(library, token as string)
-      );
-      return Promise.all(tokenBasicInfoList);
-    };
-
-    f().then((tokenBasicInfoList) => {
-      tokenDispatch({
-        type: "tokenBasicInfoList:set",
-        payload: {
-          tokenBasicInfoList: tokenBasicInfoList.filter(
-            (token) => token !== undefined
-          ) as TokenBasic[],
-        },
-      });
-    });
-  }, [campaignsState.campaigns]);
-
   useEffect(() => {
     if (campaignsState.campaigns.length > 0) {
       if (campaignsState.campaigns[0].campaignMetadata) {
@@ -133,11 +78,7 @@ const NFTDashboardPage: React.FC = () => {
   }, [campaignsState, getCampaignMetadata]);
 
   return (
-    <NFTDashboardPageTemplate
-      campaignsState={campaignsState}
-      tokenState={tokenState}
-      active={active}
-    />
+    <NFTDashboardPageTemplate campaignsState={campaignsState} active={active} />
   );
 };
 

@@ -20,7 +20,7 @@ import {
   getDefaultProvider,
   Provider,
 } from "@ethersproject/providers";
-import { utils, Signer, BigNumber, ethers } from "ethers";
+import { utils, Signer, BigNumber } from "ethers";
 import { TokenBasic } from "../interfaces";
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
 import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
