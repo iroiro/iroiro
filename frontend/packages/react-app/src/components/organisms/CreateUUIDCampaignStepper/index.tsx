@@ -62,7 +62,9 @@ const CreateUUIDCampaignStepper = ({
     const list = uuidState.rawTargets
       .map(
         (uuid) =>
-          `${window.location.origin}${window.location.pathname}#/explore/${
+          `${window.location.origin}${
+            window.location.pathname
+          }#/explore/token/${
             tokenInfo.token?.tokenAddress ?? ""
           }/distributors/${uuidState.distributorAddress}/campaigns/${
             distributorFormState.createdCampaignId

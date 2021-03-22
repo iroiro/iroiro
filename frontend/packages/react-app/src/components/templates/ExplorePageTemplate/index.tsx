@@ -16,9 +16,6 @@
  */
 
 import React from "react";
-import { Box } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
-import { AppFooter } from "../../molecules/AppFooter";
 import TokenInfoBar from "../../molecules/TokenInfoBar";
 import MenuButton from "../../atoms/MenuButton";
 import styled from "styled-components";

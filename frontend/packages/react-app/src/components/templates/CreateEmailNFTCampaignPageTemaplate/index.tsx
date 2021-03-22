@@ -16,8 +16,7 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Paper } from "@material-ui/core";
-import { AccountToken } from "../../../interfaces";
+import { Box, Typography } from "@material-ui/core";
 import WalletConnect from "../../organisms/WalletConnect";
 import {
   createCampaignState,
@@ -26,7 +25,6 @@ import {
 import { EMAIL_ACTIONS, EmailState } from "../../../reducers/email";
 import CreateEmailNFTCampaignStepper from "../../organisms/CreateEmailNFTCampaignStepper";
 import AppFrame from "../../organisms/AppFrame";
-import { ACTIONS } from "../../../reducers/token";
 import { StyledStepperWrapper } from "../../../theme/commonStyles";
 import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 

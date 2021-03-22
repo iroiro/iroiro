@@ -80,14 +80,14 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
                   Campaign page URL
                 </Typography>
                 <TextField
-                  value={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
+                  value={`${window.location.origin}${window.location.pathname}#/explore/token/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
                   fullWidth
                   disabled
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <CopyToClipboard
-                          text={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
+                          text={`${window.location.origin}${window.location.pathname}#/explore/token/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
                         >
                           <IconButton onClick={handleClickClipboard}>
                             <AssignmentRoundedIcon />

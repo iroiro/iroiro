@@ -62,7 +62,7 @@ const CreateEmailCampaignStepper = ({
   const urlList = useMemo(() => {
     const list = emailState.rawTargets.map(
       (uuid) =>
-        `${window.location.origin}${window.location.pathname}#/explore/${tokenInfo.token?.tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
+        `${window.location.origin}${window.location.pathname}#/explore/token/${tokenInfo.token?.tokenAddress}/distributors/${emailState.distributorAddress}/campaigns/${distributorFormState.createdCampaignId}?uuid=${uuid}`
     );
     return list;
   }, [

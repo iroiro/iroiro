@@ -30,33 +30,6 @@ export interface MenuButtonProps {
 const MenuButton = ({ disabled = false, ...props }) => {
   const color = props.color === "creator" ? "#70C2D2" : "#D06689";
 
-  const Title = styled.p`
-    position: relative;
-    padding-bottom: 18px;
-    margin-bottom: 18px;
-    font-size: 1.125rem;
-    font-weight: bold;
-    color: ${disabled ? "#A7A7A7" : color};
-
-    &::after {
-      content: "";
-      width: 30px;
-      border-bottom: 1px solid ${disabled ? "#A7A7A7" : color};
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  `;
-
-  const Frame = styled.div`
-    cursor: ${disabled ? "inherit" : "pointer"};
-    background-color: #fff;
-    border-radius: 6px;
-    padding: 14px;
-    text-align: center;
-  `;
-
   return (
     <Card
       onClick={props.onClick}
@@ -64,8 +37,10 @@ const MenuButton = ({ disabled = false, ...props }) => {
       style={{ border: `1px solid ${disabled ? "#E0E0E0" : color}` }}
     >
       <CardActionArea disabled={disabled} style={{ height: "100%" }}>
-        <Frame>
-          <Title>{props.title}</Title>
+        <Frame disabled={disabled}>
+          <Title disabled={disabled} color={color}>
+            {props.title}
+          </Title>
           <p style={{ color: disabled ? "#A7A7A7" : "#000" }}>
             {props.description}
           </p>
@@ -74,5 +49,42 @@ const MenuButton = ({ disabled = false, ...props }) => {
     </Card>
   );
 };
+
+interface TitleProps {
+  readonly disabled: boolean;
+  readonly color: string;
+}
+
+const Title = styled.p<TitleProps>`
+  position: relative;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: ${(props) => (props.disabled ? "#A7A7A7" : props.color)};
+
+  &::after {
+    content: "";
+    width: 30px;
+    border-bottom: 1px solid
+      ${(props) => (props.disabled ? "#A7A7A7" : props.color)};
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+`;
+
+interface FrameProps {
+  readonly disabled: boolean;
+}
+
+const Frame = styled.div<FrameProps>`
+  cursor: ${(props) => (props.disabled ? "inherit" : "pointer")};
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 14px;
+  text-align: center;
+`;
 
 export default MenuButton;
