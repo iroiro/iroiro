@@ -38,7 +38,7 @@ const CampaignDetail: React.FC<CampaignDetailProps> = ({
         campaignData !== undefined &&
         campaignData.campaign.campaignMetadata !== undefined && (
           <Grid container justify="center">
-            <Grid xs={12} sm={4}>
+            <Grid xs={12} sm={4} item>
               <NFTCampaignCard
                 name={campaignData.campaign.campaignMetadata.name}
                 description={campaignData.campaign.campaignMetadata.description}

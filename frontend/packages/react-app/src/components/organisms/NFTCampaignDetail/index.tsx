@@ -43,7 +43,7 @@ const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
   return (
     <Wrapper>
       <Grid container justify="center">
-        <Grid xs={12} sm={4}>
+        <Grid xs={12} sm={4} item>
           <NFTTokenCampaignCard
             name={campaign.campaignMetadata.name}
             description={campaign.campaignMetadata.description}
