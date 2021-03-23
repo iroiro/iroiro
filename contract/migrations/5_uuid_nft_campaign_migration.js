@@ -19,10 +19,10 @@ const UUIDNFTDistributor = artifacts.require("UUIDNFTDistributor");
 
 const distributorInfoCid = "QmbHWRsKbxVFQ8fC7JbS1E7fuax1tLAgVKs2VzrkpB1Tvj";
 
-module.exports = async (deployer) => {
+module.exports = async (deployer, network) => {
   await deployer.deploy(
     UUIDNFTDistributor,
     distributorInfoCid,
-    "https://example.com/{id}" // TODO update
+    `https://3bmbxw6b58.execute-api.ap-northeast-1.amazonaws.com/Prod/api/${network}/wallet/{id}`
   );
 };
