@@ -18,28 +18,28 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import CampaignDetail, { CampaignDetailProps } from "./index";
-import { campaign } from "../../../utils/mockData";
+import CampaignDetailCreatorPageTemplate, {
+  CampaignDetailCreatorPageTemplateProps,
+} from "./index";
+import { campaign, tokenInfo } from "../../../utils/mockData";
 
 export default {
-  title: "Organisms/CampaignDetail",
-  component: CampaignDetail,
+  title: "Templates/CampaignDetailCreatorPageTemplate",
+  component: CampaignDetailCreatorPageTemplate,
 } as Meta;
 
-const Template: Story<CampaignDetailProps> = (args) => (
+const Template: Story<CampaignDetailCreatorPageTemplateProps> = (args) => (
   <BrowserRouter>
-    <CampaignDetail {...args} />
+    <CampaignDetailCreatorPageTemplate {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
+  tokenInfo: tokenInfo,
   campaignData: {
     campaign,
-    isCancelRequest: false,
-    isRefundRequest: false,
-    canRefund: false,
-    canCancel: false,
     depositTokens: "100000",
   },
+  distributorType: "audius",
 };

@@ -25,6 +25,7 @@ import {
 import { tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
 import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import { initialState } from "../../../reducers/campaignDetail";
 
 export default {
   title: "Templates/TokenCampaignDetailTemplate",
@@ -50,34 +51,17 @@ const Template: Story<TokenCampaignsDetailTemplateProps> = (args) => (
 export const Wallet = Template.bind({});
 Wallet.args = {
   state: {
+    ...initialState,
     campaign: tokenInformationState.campaigns[0],
-    campaignId: "",
-    isCampaignClaimable: true,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
     distributorType: "wallet",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };
 
 export const UUID = Template.bind({});
 UUID.args = {
   state: {
+    ...initialState,
     campaign: tokenInformationState.campaigns[0],
-    campaignId: "",
-    isCampaignClaimable: true,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
     distributorType: "uuid",
-
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };

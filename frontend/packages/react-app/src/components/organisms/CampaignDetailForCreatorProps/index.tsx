@@ -22,13 +22,14 @@ import Item from "../../molecules/Item";
 import NFTCampaignCard from "../../molecules/NFTCampaignCard";
 import { getImageURLFromIPFSHash } from "../NFTCampaigns";
 import { DistributorTypes } from "../../../interfaces";
+import EtherscanLink from "../../atoms/EtherscanLink";
 
-export interface CampaignDetailProps {
+export interface CampaignDetailForCreatorProps {
   readonly campaignData: CampaignData;
   readonly distributorType: DistributorTypes | string;
 }
 
-const CampaignDetail: React.FC<CampaignDetailProps> = ({
+const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
   campaignData,
   distributorType,
 }) => {
@@ -89,9 +90,36 @@ const CampaignDetail: React.FC<CampaignDetailProps> = ({
                 text={campaignData.depositTokens}
               />
             )}
+            {(distributorType === "wallet-nft" ||
+              distributorType === "uuid-nft") && (
+              <Item
+                title="Token ID"
+                text={campaignData.campaign.id.split("-")[1]}
+              />
+            )}
             <Item
               title="Claimed Number"
               text={String(campaignData.campaign.claimedNum)}
+            />
+          </Box>
+          <Box
+            display="flex"
+            mt={4}
+            style={{ alignItems: "center", justifyContent: "left" }}
+          >
+            <Item
+              title="NFT Contract Address"
+              text={campaignData.campaign.distributor.id}
+            />
+          </Box>
+          <Box
+            display="flex"
+            style={{ alignItems: "center", justifyContent: "left" }}
+          >
+            <EtherscanLink
+              type="contract"
+              addressOrTxHash={campaignData.campaign.distributor.id}
+              small={true}
             />
           </Box>
         </Box>
@@ -100,4 +128,4 @@ const CampaignDetail: React.FC<CampaignDetailProps> = ({
   );
 };
 
-export default CampaignDetail;
+export default CampaignDetailForCreator;

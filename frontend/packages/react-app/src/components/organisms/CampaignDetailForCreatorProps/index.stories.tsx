@@ -18,32 +18,26 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import NFTCampaignDetailPageTemplate, {
-  NFTCampaignDetailPageTemplateProps,
+import CampaignDetailForCreator, {
+  CampaignDetailForCreatorProps,
 } from "./index";
-import { campaign, tokenInfo } from "../../../utils/mockData";
+import { campaign } from "../../../utils/mockData";
 
 export default {
-  title: "Templates/NFTCampaignDetailPageTemaplate",
-  component: NFTCampaignDetailPageTemplate,
+  title: "Organisms/CampaignDetailForCreator",
+  component: CampaignDetailForCreator,
 } as Meta;
 
-const Template: Story<NFTCampaignDetailPageTemplateProps> = (args) => (
+const Template: Story<CampaignDetailForCreatorProps> = (args) => (
   <BrowserRouter>
-    <NFTCampaignDetailPageTemplate {...args} />
+    <CampaignDetailForCreator {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  tokenInfo: tokenInfo,
   campaignData: {
     campaign,
-    isCancelRequest: false,
-    isRefundRequest: false,
-    canRefund: false,
-    canCancel: false,
     depositTokens: "100000",
   },
-  distributorType: "audius",
 };

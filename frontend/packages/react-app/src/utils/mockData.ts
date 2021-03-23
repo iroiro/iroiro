@@ -391,7 +391,7 @@ export const campaignDetailState: CampaignDetailState = {
   campaignId: "",
   isCampaignClaimable: false,
   isCampaignClaimed: false,
-  now: new Date(1577836800000),
+  isOnlyView: false,
   distributorAddress: "",
   distributorType: "",
   uuid: "",

@@ -24,7 +24,7 @@ import {
   InputAdornment,
   TextField,
 } from "@material-ui/core";
-import CampaignDetail from "../../organisms/CampaignDetail";
+import CampaignDetailForCreator from "../../organisms/CampaignDetailForCreatorProps";
 import { AccountToken, DistributorTypes } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
 import AppFrame from "../../organisms/AppFrame";
@@ -34,7 +34,7 @@ import AssignmentRoundedIcon from "@material-ui/icons/AssignmentRounded";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSnackbar } from "notistack";
 
-export interface CampaignInfoProps {
+export interface CampaignDetailCreatorPageTemplateProps {
   readonly tokenInfo: AccountToken;
   readonly campaignData: CampaignData;
   readonly distributorType: string;
@@ -71,7 +71,7 @@ export const campaignNames: { [type: string]: string } = {
   "uuid-nft": "URL/Email Campaign",
 };
 
-const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
+const CampaignDetailCreatorPageTemplate: React.FC<CampaignDetailCreatorPageTemplateProps> = ({
   campaignData,
   distributorType,
   campaignId,
@@ -93,7 +93,7 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
             </Typography>
           </TypeWrapper>
           <Wrapper>
-            <CampaignDetail
+            <CampaignDetailForCreator
               campaignData={campaignData}
               distributorType={distributorType}
             />
@@ -159,4 +159,4 @@ const TypeWrapper = styled.div`
   }
 `;
 
-export default CampaignDetailPageTemplate;
+export default CampaignDetailCreatorPageTemplate;

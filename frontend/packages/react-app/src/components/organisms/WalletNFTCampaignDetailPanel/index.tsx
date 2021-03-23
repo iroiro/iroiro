@@ -61,9 +61,11 @@ const WalletNFTCampaignDetailPanel: React.FC<WalletNFTCampaignDetailPanelProps> 
   return (
     <div>
       <NFTCampaignDetail campaign={state.campaign} />
-      <Box mt={2} pb={2} style={{ borderTop: "2px solid #f8f8f8" }}>
-        {child}
-      </Box>
+      {!state.isOnlyView && (
+        <Box mt={2} pb={2} style={{ borderTop: "2px solid #f8f8f8" }}>
+          {child}
+        </Box>
+      )}
     </div>
   );
 };

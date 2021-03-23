@@ -15,10 +15,9 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import * as React from "react";
-import { useEffect, useReducer, useCallback, useState } from "react";
+import React, { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import NFTCampaignCreatorDetailPageTemplate from "../templates/NFTCampaignDetailPageTemplate";
+import CampaignDetailCreatorPageTemplate from "../templates/CampaignDetailCreatorPageTemplate";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import { GET_CAMPAIGN } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
@@ -28,7 +27,7 @@ import { useWeb3React } from "@web3-react/core";
 import { CampaignInfo } from "../../interfaces";
 import distributors from "../../utils/distributors";
 
-const NFTCampaignCreatorDetailPage: React.FC<
+const CampaignDetailCreatorPage: React.FC<
   RouteComponentProps<{
     tokenAddress: string;
     distributorAddress: string;
@@ -48,8 +47,6 @@ const NFTCampaignCreatorDetailPage: React.FC<
     campaignReducer,
     campaignInitialState
   );
-
-  console.debug(campaignState);
 
   const [distributor, setDistributor] = useState("");
   const [distributorType, setDistributorType] = useState("");
@@ -129,7 +126,7 @@ const NFTCampaignCreatorDetailPage: React.FC<
 
   return (
     <>
-      <NFTCampaignCreatorDetailPageTemplate
+      <CampaignDetailCreatorPageTemplate
         tokenInfo={tokenState}
         campaignData={campaignState}
         distributorType={distributorType}
@@ -141,4 +138,4 @@ const NFTCampaignCreatorDetailPage: React.FC<
   );
 };
 
-export default NFTCampaignCreatorDetailPage;
+export default CampaignDetailCreatorPage;

@@ -47,6 +47,8 @@ const AppHeader: React.FC = () => {
           text="Token Distribution"
           color={"secondary"}
         />
+      </Box>
+      <Box mr={1}>
         <LinkButton
           m={1}
           path="/dashboard/nft"
@@ -62,6 +64,8 @@ const AppHeader: React.FC = () => {
         >
           Explore Tokens
         </Button>
+      </Box>
+      <Box mr={1}>
         <LinkButton
           m={1}
           path="/explore/nft/campaigns"
@@ -104,7 +108,7 @@ const AppHeader: React.FC = () => {
           </IconButton>
         </IconBox>
 
-        <SpMenuWrapper style={{ paddingBottom: show ? 180 : 0 }}>
+        <SpMenuWrapper style={{ paddingBottom: show ? 220 : 0 }}>
           <SpMenuBox style={{ opacity: show ? 1 : 0 }}>{Menu}</SpMenuBox>
         </SpMenuWrapper>
 

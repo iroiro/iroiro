@@ -25,6 +25,7 @@ import { useHistory } from "react-router-dom";
 
 export interface NFTCampaignsProps {
   readonly campaigns: CampaignInfo[];
+  readonly isOnlyView?: boolean;
 }
 
 export const getImageURLFromIPFSHash = (image: string): string => {
@@ -32,7 +33,10 @@ export const getImageURLFromIPFSHash = (image: string): string => {
     ? `https://gateway.pinata.cloud/ipfs/${image.split("ipfs://")[1]}`
     : "";
 };
-const NFTCampaigns: React.FC<NFTCampaignsProps> = ({ campaigns }) => {
+const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
+  campaigns,
+  isOnlyView,
+}) => {
   const history = useHistory();
 
   return (
@@ -52,6 +56,7 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({ campaigns }) => {
                   campaign.campaignMetadata.image
                 );
                 const pair = campaign.id.split("-");
+                const viewParam = isOnlyView === true ? "?isOnlyView" : "";
                 return (
                   <Grid key={campaign.id} item xs={12} sm={4}>
                     <NFTTokenCampaignCard
@@ -60,7 +65,7 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({ campaigns }) => {
                       image={image}
                       onClickActionArea={() =>
                         history.push(
-                          `/explore/nft/distributors/${pair[0]}/campaigns/${pair[1]}`
+                          `/explore/nft/distributors/${pair[0]}/campaigns/${pair[1]}${viewParam}`
                         )
                       }
                     />

@@ -23,7 +23,7 @@ export interface CampaignDetailState {
   campaignId: string;
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
-  now: Date;
+  isOnlyView: boolean;
   distributorAddress: string;
   distributorType: DistributorTypes | string;
   uuid: string;
@@ -208,7 +208,7 @@ export const initialState: CampaignDetailState = {
   campaignId: "",
   isCampaignClaimable: false,
   isCampaignClaimed: false,
-  now: new Date(),
+  isOnlyView: false,
   distributorAddress: "",
   distributorType: "",
   uuid: "",

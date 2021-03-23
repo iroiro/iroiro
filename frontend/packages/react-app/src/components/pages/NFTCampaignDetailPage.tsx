@@ -19,7 +19,7 @@ import * as React from "react";
 import { useEffect, useReducer } from "react";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { useWeb3React } from "@web3-react/core";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useLocation } from "react-router-dom";
 import { GET_CAMPAIGN, GET_CLAIM } from "../../graphql/subgraph";
 import { useIsClaimable } from "../../hooks/distributors/useIsClaimable";
 import { CampaignInfo, CampaignMetadata, Claim } from "../../interfaces";
@@ -40,9 +40,11 @@ const NFTCampaignDetailPage: React.FC<
 > = (props) => {
   const campaignId = props.match.params.campaignId;
   const distributorAddress = props.match.params.distributorAddress;
+  const params = new URLSearchParams(useLocation().search);
 
   const [state, dispatch] = useReducer(campaignDetailReducer, {
     ...initialState,
+    isOnlyView: params.has("isOnlyView"),
     distributorAddress,
   });
   const [getCampaign, { data: campaignData }] = useLazyQuery(GET_CAMPAIGN);

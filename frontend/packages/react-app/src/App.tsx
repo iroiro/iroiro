@@ -21,7 +21,7 @@ import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
 import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
 import SelectDistributorsPage from "./components/pages/SelectDistributorsPage";
-import CampaignDetailPage from "./components/pages/CampaignDetailPage";
+import CampaignDetailCreatorPage from "./components/pages/CampaignDetailCreatorPage";
 import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
 import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
 import TokenHistoryPage from "./components/pages/TokenHistoryPage";
@@ -167,12 +167,12 @@ const App: React.FC = () => {
               <Route
                 exact
                 path="/dashboard/token/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
-                component={CampaignDetailPage}
+                component={CampaignDetailCreatorPage}
               />
               <Route
                 exact
                 path="/dashboard/nft/distributors/:distributorAddress/campaigns/:campaignId"
-                component={CampaignDetailPage}
+                component={CampaignDetailCreatorPage}
               />
               {/* For Fan */}
               <Route exact path="/explore/token" component={ExplorePage} />

@@ -24,6 +24,7 @@ import WalletNFTCampaignDetailPanel, {
 import { campaign, tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
 import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import { initialState } from "../../../reducers/campaignDetail";
 
 export default {
   title: "Organisms/WalletNFTCampaignDetailPanel",
@@ -50,17 +51,8 @@ export const Default = Template.bind({});
 Default.args = {
   active: true,
   state: {
+    ...initialState,
     campaign: campaign,
-    campaignId: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };
 
@@ -70,21 +62,23 @@ IsWalletNotConnected.args = {
   active: false,
 };
 
+export const IsOnlyView = Template.bind({});
+IsOnlyView.args = {
+  ...Default.args,
+  state: {
+    ...initialState,
+    ...Default.args.state,
+    isOnlyView: true,
+  },
+};
+
 export const IsClaimable = Template.bind({});
 IsClaimable.args = {
   ...Default.args,
   state: {
-    campaign: campaign,
-    campaignId: "",
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
+    ...initialState,
+    ...Default.args.state,
     isCampaignClaimable: true,
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };
 
@@ -92,17 +86,8 @@ export const IsNotClaimable = Template.bind({});
 IsNotClaimable.args = {
   active: true,
   state: {
-    campaign: campaign,
-    campaignId: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
+    ...initialState,
+    ...Default.args.state,
   },
 };
 
@@ -110,16 +95,9 @@ export const IsClaimed = Template.bind({});
 IsClaimed.args = {
   active: true,
   state: {
-    campaign: campaign,
-    campaignId: "",
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
+    ...initialState,
+    ...Default.args.state,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };

@@ -24,6 +24,7 @@ import WalletCampaignDetailPanel, {
 import { campaign, tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
 import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import { initialState } from "../../../reducers/campaignDetail";
 
 export default {
   title: "Organisms/WalletCampaignDetailPanel",
@@ -46,20 +47,12 @@ const Template: Story<WalletCampaignDetailPanelProps> = (args) => (
   </BrowserRouter>
 );
 
-export const IsNotStarted = Template.bind({});
-IsNotStarted.args = {
+export const Default = Template.bind({});
+Default.args = {
+  active: true,
   state: {
+    ...initialState,
     campaign: campaign,
-    campaignId: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1577836800000),
-    distributorAddress: "",
-    distributorType: "",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };
 
@@ -67,71 +60,8 @@ export const IsWalletNotConnected = Template.bind({});
 IsWalletNotConnected.args = {
   active: false,
   state: {
-    campaign: campaign,
-    campaignId: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
-  },
-};
-
-export const NotLoggedIn = Template.bind({});
-NotLoggedIn.args = {
-  active: true,
-  state: {
-    campaign: campaign,
-    campaignId: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
-  },
-};
-
-export const Default = Template.bind({});
-Default.args = {
-  active: true,
-  state: {
-    campaign: campaign,
-    campaignId: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
-  },
-};
-
-export const Requested = Template.bind({});
-Requested.args = {
-  active: true,
-  state: {
-    campaign: campaign,
-    campaignId: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
+    ...initialState,
+    ...Default.args,
   },
 };
 
@@ -139,17 +69,9 @@ export const IsClaimable = Template.bind({});
 IsClaimable.args = {
   active: true,
   state: {
-    campaign: campaign,
-    campaignId: "",
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
+    ...initialState,
+    ...Default.args,
     isCampaignClaimable: true,
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };
 
@@ -157,17 +79,8 @@ export const IsNotClaimable = Template.bind({});
 IsNotClaimable.args = {
   active: true,
   state: {
-    campaign: campaign,
-    campaignId: "",
-    isCampaignClaimable: false,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
+    ...initialState,
+    ...Default.args,
   },
 };
 
@@ -175,34 +88,9 @@ export const IsClaimed = Template.bind({});
 IsClaimed.args = {
   active: true,
   state: {
-    campaign: campaign,
-    campaignId: "",
-    now: new Date(1606780800000),
-    distributorAddress: "",
-    distributorType: "",
+    ...initialState,
+    ...Default.args,
     isCampaignClaimable: true,
     isCampaignClaimed: true,
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
-  },
-};
-
-export const IsEnded = Template.bind({});
-IsEnded.args = {
-  active: true,
-  state: {
-    campaign: campaign,
-    campaignId: "",
-    now: new Date(1708780800000),
-    distributorAddress: "",
-    distributorType: "",
-    isCampaignClaimable: true,
-    isCampaignClaimed: true,
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };

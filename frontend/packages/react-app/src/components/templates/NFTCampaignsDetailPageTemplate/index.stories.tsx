@@ -25,6 +25,7 @@ import {
 import { tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
 import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import { initialState } from "../../../reducers/campaignDetail";
 
 export default {
   title: "Templates/NFTCampaignsDetailTemplate",
@@ -50,33 +51,27 @@ const Template: Story<NFTCampaignsDetailTemplateProps> = (args) => (
 export const Wallet = Template.bind({});
 Wallet.args = {
   state: {
+    ...initialState,
     campaign: tokenInformationState.campaigns[0],
-    campaignId: "",
-    isCampaignClaimable: true,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
     distributorType: "wallet-nft",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
   },
 };
 
 export const UUID = Template.bind({});
 UUID.args = {
   state: {
+    ...initialState,
     campaign: tokenInformationState.campaigns[0],
-    campaignId: "",
-    isCampaignClaimable: true,
-    isCampaignClaimed: false,
-    now: new Date(1606780800000),
-    distributorAddress: "",
     distributorType: "uuid-nft",
-    uuid: "",
-    hashedUUID: "",
-    dialog: "nothing",
-    transactionHash: "",
+  },
+};
+
+export const OnlyView = Template.bind({});
+OnlyView.args = {
+  state: {
+    ...initialState,
+    campaign: tokenInformationState.campaigns[0],
+    distributorType: "wallet-nft",
+    isOnlyView: true,
   },
 };

@@ -24,6 +24,8 @@ import distributors, { getDistributorType } from "../../../utils/distributors";
 import styled from "styled-components";
 import NFTTokenCampaignCard from "../../molecules/NFTCampaignCard";
 import { getImageURLFromIPFSHash } from "../NFTCampaigns";
+import Item from "../../molecules/Item";
+import EtherscanLink from "../../atoms/EtherscanLink";
 
 export interface NFTCampaignDetailProps {
   readonly campaign: CampaignInfo;
@@ -51,7 +53,37 @@ const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
           />
         </Grid>
       </Grid>
-      <Box display="flex" justifyContent="start" alignItems="baseline">
+      <Box display="flex" justifyContent="start" alignItems="baseline" mt={2}>
+        <Typography variant="caption" style={{ color: "#797979" }}>
+          Token ID:
+        </Typography>
+        <Typography variant="body1" style={{ paddingLeft: 8 }}>
+          {campaign.id !== "" ? campaign.id.split("-")[1] : ""}
+        </Typography>
+      </Box>
+      <Box
+        display="flex"
+        mt={4}
+        style={{ alignItems: "center", justifyContent: "left" }}
+      >
+        <Typography variant="caption" style={{ color: "#797979" }}>
+          NFT Contract Address
+        </Typography>
+        <Typography variant="body1" style={{ paddingLeft: 8 }}>
+          {campaign.distributor.id}
+        </Typography>
+      </Box>
+      <Box
+        display="flex"
+        style={{ alignItems: "center", justifyContent: "left" }}
+      >
+        <EtherscanLink
+          type="contract"
+          addressOrTxHash={campaign.distributor.id}
+          small={true}
+        />
+      </Box>
+      <Box display="flex" justifyContent="start" alignItems="baseline" mt={2}>
         <Typography variant="caption" style={{ color: "#797979" }}>
           Distributor Type:
         </Typography>
