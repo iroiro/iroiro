@@ -41,41 +41,39 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
 
   return (
     <Wrapper>
-      <Grid container>
-        {campaigns.length === 0 ? (
-          <Box mt={4}>
-            <Box p={8} textAlign="center">
-              <Typography>No campaigns.</Typography>
-            </Box>
+      {campaigns.length === 0 ? (
+        <Box mt={4}>
+          <Box p={8} textAlign="center">
+            <Typography>No campaigns.</Typography>
           </Box>
-        ) : (
-          <StyledBox>
-            <Grid container spacing={3}>
-              {campaigns.map((campaign) => {
-                const image = getImageURLFromIPFSHash(
-                  campaign.campaignMetadata.image
-                );
-                const pair = campaign.id.split("-");
-                const viewParam = isOnlyView === true ? "?isOnlyView" : "";
-                return (
-                  <Grid key={campaign.id} item xs={12} sm={4}>
-                    <NFTTokenCampaignCard
-                      name={campaign.campaignMetadata.name}
-                      description={campaign.campaignMetadata.description}
-                      image={image}
-                      onClickActionArea={() =>
-                        history.push(
-                          `/explore/nft/distributors/${pair[0]}/campaigns/${pair[1]}${viewParam}`
-                        )
-                      }
-                    />
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </StyledBox>
-        )}
-      </Grid>
+        </Box>
+      ) : (
+        <StyledBox>
+          <Grid container spacing={3}>
+            {campaigns.map((campaign) => {
+              const image = getImageURLFromIPFSHash(
+                campaign.campaignMetadata.image
+              );
+              const pair = campaign.id.split("-");
+              const viewParam = isOnlyView === true ? "?isOnlyView" : "";
+              return (
+                <Grid key={campaign.id} item xs={12} sm={4}>
+                  <NFTTokenCampaignCard
+                    name={campaign.campaignMetadata.name}
+                    description={campaign.campaignMetadata.description}
+                    image={image}
+                    onClickActionArea={() =>
+                      history.push(
+                        `/explore/nft/distributors/${pair[0]}/campaigns/${pair[1]}${viewParam}`
+                      )
+                    }
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </StyledBox>
+      )}
     </Wrapper>
   );
 };
