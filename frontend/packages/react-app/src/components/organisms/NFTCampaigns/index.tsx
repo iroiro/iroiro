@@ -41,15 +41,16 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
 
   return (
     <Wrapper>
-      {campaigns.length === 0 ? (
-        <Box mt={4}>
-          <Box p={8} textAlign="center">
-            <Typography>No campaigns.</Typography>
+      {/*<Grid container>*/}
+      <Grid container>
+        {campaigns.length === 0 ? (
+          <Box mt={4}>
+            <Box p={8} textAlign="center">
+              <Typography>No campaigns.</Typography>
+            </Box>
           </Box>
-        </Box>
-      ) : (
-        <StyledBox>
-          <Grid container spacing={3}>
+        ) : (
+          <>
             {campaigns.map((campaign) => {
               const image = getImageURLFromIPFSHash(
                 campaign.campaignMetadata.image
@@ -58,22 +59,24 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
               const viewParam = isOnlyView === true ? "?isOnlyView" : "";
               return (
                 <Grid key={campaign.id} item xs={12} sm={4}>
-                  <NFTTokenCampaignCard
-                    name={campaign.campaignMetadata.name}
-                    description={campaign.campaignMetadata.description}
-                    image={image}
-                    onClickActionArea={() =>
-                      history.push(
-                        `/explore/nft/distributors/${pair[0]}/campaigns/${pair[1]}${viewParam}`
-                      )
-                    }
-                  />
+                  <StyledBox>
+                    <NFTTokenCampaignCard
+                      name={campaign.campaignMetadata.name}
+                      description={campaign.campaignMetadata.description}
+                      image={image}
+                      onClickActionArea={() =>
+                        history.push(
+                          `/explore/nft/distributors/${pair[0]}/campaigns/${pair[1]}${viewParam}`
+                        )
+                      }
+                    />
+                  </StyledBox>
                 </Grid>
               );
             })}
-          </Grid>
-        </StyledBox>
-      )}
+          </>
+        )}
+      </Grid>
     </Wrapper>
   );
 };

@@ -28,6 +28,7 @@ import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
 import WalletNFTCampaignDetailPanel from "../../organisms/WalletNFTCampaignDetailPanel";
+import { NFTTabMenuForFunPage } from "../../molecules/NFTTabMenuForFunPage";
 
 export interface NFTCampaignsDetailTemplateProps {
   readonly active: boolean;
@@ -70,6 +71,7 @@ export const NFTCampaignsDetailTemplate: React.FC<NFTCampaignsDetailTemplateProp
   return (
     <>
       <AppFrame>
+        <NFTTabMenuForFunPage current={"userHistory"} />
         <WaitingProcessDialog state={state} />
         <Wrapper>
           {state.campaign !== null &&
