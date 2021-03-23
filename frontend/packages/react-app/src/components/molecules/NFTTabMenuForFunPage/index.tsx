@@ -23,8 +23,10 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { SPMenuWrapper, Tab, TabWrapper } from "../TabMenuForFunPage";
 
+export type NFTTabType = "campaigns" | "userHistory";
+
 export interface NFTTabMenuForFunPageProps {
-  current: "campaigns" | "userHistory";
+  current: NFTTabType;
 }
 
 export const NFTTabMenuForFunPage: React.FC<NFTTabMenuForFunPageProps> = ({

@@ -32,7 +32,7 @@ export const NFTCampaignsTemplate: React.FC<NFTCampaignsTemplateProps> = ({
     <>
       <AppFrame>
         <NFTTabMenuForFunPage current={"campaigns"} />
-        <NFTCampaigns campaigns={state.campaigns} />
+        <NFTCampaigns campaigns={state.campaigns} currentTab="campaigns" />
       </AppFrame>
     </>
   );

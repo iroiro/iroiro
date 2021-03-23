@@ -31,6 +31,7 @@ import distributors from "../../utils/distributors";
 import { ethers } from "ethers";
 import { NFTCampaignsDetailTemplate } from "../templates/NFTCampaignsDetailPageTemplate";
 import { useTokenContext } from "../../context/token";
+import { NFTTabType } from "../molecules/NFTTabMenuForFunPage";
 
 const NFTCampaignDetailPage: React.FC<
   RouteComponentProps<{
@@ -45,6 +46,7 @@ const NFTCampaignDetailPage: React.FC<
   const [state, dispatch] = useReducer(campaignDetailReducer, {
     ...initialState,
     isOnlyView: params.has("isOnlyView"),
+    currentTab: (params?.get("currentTab") as NFTTabType) ?? "campaigns",
     distributorAddress,
   });
   const [getCampaign, { data: campaignData }] = useLazyQuery(GET_CAMPAIGN);

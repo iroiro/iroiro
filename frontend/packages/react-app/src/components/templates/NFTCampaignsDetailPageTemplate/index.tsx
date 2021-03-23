@@ -71,7 +71,7 @@ export const NFTCampaignsDetailTemplate: React.FC<NFTCampaignsDetailTemplateProp
   return (
     <>
       <AppFrame>
-        <NFTTabMenuForFunPage current={"userHistory"} />
+        <NFTTabMenuForFunPage current={state.currentTab} />
         <WaitingProcessDialog state={state} />
         <Wrapper>
           {state.campaign !== null &&

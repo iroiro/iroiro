@@ -17,6 +17,7 @@
 
 import { CampaignInfo, Claim, DistributorTypes } from "../interfaces";
 import { DialogStatus } from "./distributorForm";
+import { NFTTabType } from "../components/molecules/NFTTabMenuForFunPage";
 
 export interface CampaignDetailState {
   campaign: CampaignInfo | null;
@@ -24,6 +25,7 @@ export interface CampaignDetailState {
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
   isOnlyView: boolean;
+  currentTab: NFTTabType;
   distributorAddress: string;
   distributorType: DistributorTypes | string;
   uuid: string;
@@ -209,6 +211,7 @@ export const initialState: CampaignDetailState = {
   isCampaignClaimable: false,
   isCampaignClaimed: false,
   isOnlyView: false,
+  currentTab: "campaigns",
   distributorAddress: "",
   distributorType: "",
   uuid: "",

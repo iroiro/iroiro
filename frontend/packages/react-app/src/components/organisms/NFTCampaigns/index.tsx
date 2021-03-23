@@ -22,10 +22,12 @@ import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import NFTTokenCampaignCard from "../../molecules/NFTCampaignCard";
 import { useHistory } from "react-router-dom";
+import { NFTTabType } from "../../molecules/NFTTabMenuForFunPage";
 
 export interface NFTCampaignsProps {
   readonly campaigns: CampaignInfo[];
   readonly isOnlyView?: boolean;
+  readonly currentTab: NFTTabType;
 }
 
 export const getImageURLFromIPFSHash = (image: string): string => {
@@ -33,9 +35,11 @@ export const getImageURLFromIPFSHash = (image: string): string => {
     ? `https://gateway.pinata.cloud/ipfs/${image.split("ipfs://")[1]}`
     : "";
 };
+
 const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
   campaigns,
   isOnlyView,
+  currentTab,
 }) => {
   const history = useHistory();
 
@@ -56,7 +60,10 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
                 campaign.campaignMetadata.image
               );
               const pair = campaign.id.split("-");
-              const viewParam = isOnlyView === true ? "?isOnlyView" : "";
+              const params: string[] = [`currentTab=${currentTab}`];
+              if (isOnlyView) {
+                params.push("isOnlyView");
+              }
               return (
                 <Grid key={campaign.id} item xs={12} sm={4}>
                   <StyledBox>
@@ -66,7 +73,9 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
                       image={image}
                       onClickActionArea={() =>
                         history.push(
-                          `/explore/nft/distributors/${pair[0]}/campaigns/${pair[1]}${viewParam}`
+                          `/explore/nft/distributors/${pair[0]}/campaigns/${
+                            pair[1]
+                          }?${params.join("&")}`
                         )
                       }
                     />
