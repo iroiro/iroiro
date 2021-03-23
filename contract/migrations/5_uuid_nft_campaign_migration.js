@@ -23,6 +23,6 @@ module.exports = async (deployer, network) => {
   await deployer.deploy(
     UUIDNFTDistributor,
     distributorInfoCid,
-    `https://3bmbxw6b58.execute-api.ap-northeast-1.amazonaws.com/Prod/api/${network}/wallet/{id}`
+    `https://3bmbxw6b58.execute-api.ap-northeast-1.amazonaws.com/Prod/api/${network}/uuid/{id}`
   );
 };
