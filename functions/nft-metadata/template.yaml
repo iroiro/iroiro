@@ -11,9 +11,7 @@ Globals:
     Timeout: 30
     Environment:
       Variables:
-        HTTP_PROVIDER: ""
-        WALLET_NFT_DISTRIBUTOR_ADDRESS: ""
-        UUID_NFT_DISTRIBUTOR_ADDRESS: ""
+        KOVAN_HTTP_PROVIDER: ""
 
 Resources:
   NFTMetadataFunction:
@@ -26,7 +24,7 @@ Resources:
         NFTMetadata:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /api
+            Path: /api/{network}/{distributor}/{tokenId}
             Method: get
 
 Outputs:

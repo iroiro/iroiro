@@ -21,34 +21,59 @@ const fetch = require("node-fetch");
 
 let response;
 
+const networks = {
+  // mainnet: {},
+  // rinkeby: {},
+  kovan: {
+    provider: process.env.KOVAN_HTTP_PROVIDER,
+    uuid: "0x9BaeDB90b0B938731b74B8ba9efFA9C8142B1d80",
+    wallet: "0x931155Dd49192CdA6cA6Fcc72E44b470a02b81CB",
+  },
+  // xdai: {},
+  // matic: {},
+  // bsc: {},
+};
+
+const buildExternalURL = (network, distributorAddress, tokenId) =>
+  `https://${
+    network === "mainnet" ? "app" : network
+  }.iroiro.social/#/explore/nft/distributors/${distributorAddress}/campaigns/${tokenId}`;
+
 const WalletDistributorContract = require("./build/contracts/WalletNFTDistributor.json");
 const UUIDDistributorContract = require("./build/contracts/UUIDNFTDistributor.json");
 const walletDistributorInterface = WalletDistributorContract.abi;
 const uuidDistributorInterface = UUIDDistributorContract.abi;
-const walletDistributorAddress = process.env.WALLET_NFT_DISTRIBUTOR_ADDRESS;
-const uuidDistributorAddress = process.env.UUID_NFT_DISTRIBUTOR_ADDRESS;
-const web3 = new Web3(
-  new Web3.providers.HttpProvider(process.env.HTTP_PROVIDER)
-);
 const ipfs = ipfsClient("https://gateway.pinata.cloud/");
 
 exports.handler = async (event, context) => {
-  const queryStringParameters = event.queryStringParameters;
-  console.debug("request body: ", queryStringParameters);
-  const treeId = queryStringParameters.treeId;
-  const distributorAddress = queryStringParameters.distributorAddress;
+  console.debug("Path parameters: ", event.pathParameters);
+  const tokenId = event.pathParameters.tokenId;
+  const network = event.pathParameters.network;
+  const distributor = event.pathParameters.distributor;
+  const networkInfo = networks[network];
+  if (networkInfo === undefined) {
+    response = {
+      statusCode: 401,
+      body: JSON.stringify({
+        error: "Invalid network",
+      }),
+    };
+    return response;
+  }
+  const provider = networkInfo.provider;
+  const distributorAddress = networkInfo[distributor];
+  const web3 = new Web3(new Web3.providers.HttpProvider(provider));
 
   let metadataCid;
   try {
-    const distributor = new web3.eth.Contract(
-      distributorAddress.toLowerCase() ===
-      walletDistributorAddress.toLowerCase()
+    const contract = new web3.eth.Contract(
+      distributor === "wallet"
         ? walletDistributorInterface
         : uuidDistributorInterface,
       distributorAddress
     );
-    const events = await distributor.getPastEvents("CreateCampaign", {
-      filter: { treeId },
+    const events = await contract.getPastEvents("CreateCampaign", {
+      filter: { treeId: tokenId },
       fromBlock: 0,
     });
     console.log("Found events: ", events);
@@ -69,6 +94,11 @@ exports.handler = async (event, context) => {
     const response = await fetch(url);
     console.log("IPFS response: ", response);
     metadata = await response.json();
+    metadata.external_url = buildExternalURL(
+      network,
+      distributorAddress,
+      tokenId
+    );
     console.log("metadata: ", metadata);
   } catch (error) {
     console.error("Failed to get metadata.", error);
