@@ -28,14 +28,12 @@ contract UUIDNFTDistributor is NFTDistributorInterfaceV1, StringMerkleTreeManage
     function createCampaign(
         bytes32 merkleRoot,
         string memory merkleTreeCid,
-        string memory campaignInfoCid,
         string memory nftMetadataCid
     ) external override {
         emit CreateCampaign(
             nextTreeId,
             msg.sender,
             merkleTreeCid,
-            campaignInfoCid,
             nftMetadataCid
         );
 

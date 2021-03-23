@@ -67,6 +67,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   campaign.claimedNum = new BigInt(0);
   campaign.campaignInfoCid = event.params.campaignInfoCid;
   campaign.merkleTreeCid = event.params.merkleTreeCid;
+  campaign.createdAt = event.block.timestamp;
   let merkleRoot = distributorContract.try_merkleRoot(
     event.params.distributionId
   );
@@ -102,7 +103,7 @@ export function handleClaimed(event: ClaimedEvent): void {
     claim = new Claim(claimId);
   }
   claim.account = accountId;
-  claim.campaign = event.params.distributionId.toString();
+  claim.campaign = campaignId;
   let distributorContract = WalletDistributor.bind(event.address);
   let callToken = distributorContract.try_token(distributionId);
   if (callToken.reverted) {
@@ -111,6 +112,7 @@ export function handleClaimed(event: ClaimedEvent): void {
     claim.token = callToken.value.toHexString();
   }
   claim.amount = event.params.amount;
+  claim.createdAt = event.block.timestamp;
 
   campaign.save();
   account.save();

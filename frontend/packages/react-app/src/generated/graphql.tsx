@@ -36,6 +36,7 @@ export type Campaign = {
   merkleRoot?: Maybe<Scalars['Bytes']>;
   claimedNum?: Maybe<Scalars['BigInt']>;
   claims: Array<Claim>;
+  createdAt: Scalars['BigInt'];
 };
 
 export type CampaignsCondition = {
@@ -56,6 +57,7 @@ export type Claim = {
   token?: Maybe<Scalars['String']>;
   nft?: Maybe<Scalars['String']>;
   amount?: Maybe<Scalars['BigInt']>;
+  createdAt: Scalars['BigInt'];
 };
 
 export type Creator = {

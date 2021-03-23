@@ -64,8 +64,9 @@ export function handleCreateCampaign(event: CreateCampaign): void {
   campaign.distributor = event.address.toHexString();
   campaign.creator = event.params.creator.toHexString();
   campaign.claimedNum = new BigInt(0);
-  campaign.campaignInfoCid = event.params.campaignInfoCid;
+  campaign.campaignInfoCid = event.params.nftMetadataCid;
   campaign.merkleTreeCid = event.params.merkleTreeCid;
+  campaign.createdAt = event.block.timestamp;
   let merkleRoot = distributorContract.try_merkleRoot(event.params.treeId);
   if (merkleRoot.reverted) {
     log.warning("Merkle root not found. Campaign: {}", [campaignId]);
@@ -108,9 +109,10 @@ export function handleTransferSingle(event: TransferSingle): void {
     claim = new Claim(claimId);
   }
   claim.account = accountId;
-  claim.campaign = event.params.id.toString();
+  claim.campaign = campaignId;
   claim.nft = distributionId.toString();
   claim.amount = event.params.value;
+  claim.createdAt = event.block.timestamp;
 
   campaign.save();
   account.save();
