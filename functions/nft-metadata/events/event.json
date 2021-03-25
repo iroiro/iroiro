@@ -10,7 +10,9 @@
     "distributorAddress": "0x4346ef74D361b8C04cbB5116EE2b004A0b699994"
   },
   "pathParameters": {
-    "proxy": "/path/to/resource"
+    "tokenId": "1",
+    "network": "kovan",
+    "distributor": "uuid"
   },
   "stageVariables": {
     "baz": "qux"

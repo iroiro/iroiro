@@ -6,9 +6,10 @@ const expect = chai.expect;
 describe("Tests index", function () {
   it("WalletNFTDistributor: verifies successful response", async () => {
     const event = {
-      queryStringParameters: {
-        treeId: "1",
-        distributorAddress: "0x4346ef74D361b8C04cbB5116EE2b004A0b699994",
+      pathParameters: {
+        tokenId: "1",
+        network: "kovan",
+        distributor: "wallet",
       },
     };
     const result = await app.handler(event);
@@ -20,21 +21,18 @@ describe("Tests index", function () {
     expect(result.body).to.be.an("string");
 
     const body = JSON.parse(result.body);
-    expect(body.description).to.be.equal(
-      "Friendly OpenSea Creature that enjoys long swims in the ocean."
+    expect(body.name).to.be.equal("nft wallet campaign 03221756");
+    expect(body.external_url).to.be.equal(
+      "https://kovan.iroiro.social/#/explore/nft/distributors/0x931155Dd49192CdA6cA6Fcc72E44b470a02b81CB/campaigns/1"
     );
-    expect(body.external_url).to.be.equal("https://openseacreatures.io/3");
-    expect(body.image).to.be.equal(
-      "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png"
-    );
-    expect(body.name).to.be.equal("Dave Starbelly");
   });
 
   it("UUIDNFTDistributor: verifies successful response", async () => {
     const event = {
-      queryStringParameters: {
-        treeId: "1",
-        distributorAddress: "0x4346ef74D361b8C04cbB5116EE2b004A0b699994",
+      pathParameters: {
+        tokenId: "1",
+        network: "kovan",
+        distributor: "uuid",
       },
     };
     const result = await app.handler(event);
@@ -46,13 +44,29 @@ describe("Tests index", function () {
     expect(result.body).to.be.an("string");
 
     const body = JSON.parse(result.body);
-    expect(body.description).to.be.equal(
-      "Friendly OpenSea Creature that enjoys long swims in the ocean."
+    expect(body.name).to.be.equal("nft url campaign 03221800");
+    expect(body.external_url).to.be.equal(
+      "https://kovan.iroiro.social/#/explore/nft/distributors/0x9BaeDB90b0B938731b74B8ba9efFA9C8142B1d80/campaigns/1'"
     );
-    expect(body.external_url).to.be.equal("https://openseacreatures.io/3");
-    expect(body.image).to.be.equal(
-      "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png"
-    );
-    expect(body.name).to.be.equal("Dave Starbelly");
+  });
+
+  it("Returns 401 on invalid network", async () => {
+    const event = {
+      pathParameters: {
+        tokenId: "1",
+        network: "invalid",
+        distributor: "uuid",
+      },
+    };
+    const result = await app.handler(event);
+
+    console.debug(result);
+
+    expect(result).to.be.an("object");
+    expect(result.statusCode).to.equal(401);
+    expect(result.body).to.be.an("string");
+
+    const body = JSON.parse(result.body);
+    expect(body.error).to.be.equal("Invalid network");
   });
 });
