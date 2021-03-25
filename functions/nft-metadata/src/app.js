@@ -23,7 +23,11 @@ let response;
 
 const networks = {
   // mainnet: {},
-  // rinkeby: {},
+  rinkeby: {
+    provider: process.env.RINKEBY_HTTP_PROVIDER,
+    uuid: "0x5b0CE8D5A4B24deFba71992E233BA94e8F308eF9",
+    wallet: "0x43D922A226Fc46400Ea7DE3AB83AE0D7C07988F6",
+  },
   kovan: {
     provider: process.env.KOVAN_HTTP_PROVIDER,
     uuid: "0x9BaeDB90b0B938731b74B8ba9efFA9C8142B1d80",
@@ -52,6 +56,7 @@ exports.handler = async (event, context) => {
   const distributor = event.pathParameters.distributor;
   const networkInfo = networks[network];
   if (networkInfo === undefined) {
+    console.log("No network found. Given network: ", network);
     response = {
       statusCode: 401,
       body: JSON.stringify({

@@ -11,7 +11,12 @@ Globals:
     Timeout: 30
     Environment:
       Variables:
+        MAINNET_HTTP_PROVIDER: ""
+        RINKEBY_HTTP_PROVIDER: ""
         KOVAN_HTTP_PROVIDER: ""
+        XDAI_HTTP_PROVIDER: ""
+        BSC_HTTP_PROVIDER: ""
+        MATIC_HTTP_PROVIDER: ""
 
 Resources:
   NFTMetadataFunction:
