@@ -25,12 +25,12 @@ let response;
 const networks = {
   // mainnet: {},
   rinkeby: {
-    provider: process.env.RINKEBY_HTTP_PROVIDER,
+    provider: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
     uuid: "0x5b0CE8D5A4B24deFba71992E233BA94e8F308eF9",
     wallet: "0x43D922A226Fc46400Ea7DE3AB83AE0D7C07988F6",
   },
   kovan: {
-    provider: process.env.KOVAN_HTTP_PROVIDER,
+    provider: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
     uuid: "0x9BaeDB90b0B938731b74B8ba9efFA9C8142B1d80",
     wallet: "0x931155Dd49192CdA6cA6Fcc72E44b470a02b81CB",
   },
