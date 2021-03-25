@@ -23,11 +23,15 @@ let response;
 
 const networks = {
   // mainnet: {},
-  // rinkeby: {},
+  rinkeby: {
+    provider: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+    uuid: "0x371bC9B804939FBbB20E4C2c745f1d4D73413B3E",
+    wallet: "0x8A0a72A75a83fE3BE14b87E37E27Acf87E424c06",
+  },
   kovan: {
-    provider: process.env.KOVAN_HTTP_PROVIDER,
-    uuid: "0x9BaeDB90b0B938731b74B8ba9efFA9C8142B1d80",
-    wallet: "0x931155Dd49192CdA6cA6Fcc72E44b470a02b81CB",
+    provider: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+    uuid: "0x74c1E1A347A86eC33e1bf5C65FCC3D75E1c74DaC",
+    wallet: "0xe0d08121788B9a276cc4074B7B78Da130230222d",
   },
   // xdai: {},
   // matic: {},
