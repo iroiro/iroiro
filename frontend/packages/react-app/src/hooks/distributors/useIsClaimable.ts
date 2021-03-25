@@ -21,7 +21,9 @@ import { MERKLE_PROOF_API } from "../../utils/const";
 import { StringClaim } from "@iroiro/merkle-distributor";
 import {
   UUIDDistributor__factory,
+  UUIDNFTDistributor__factory,
   WalletDistributor__factory,
+  WalletNFTDistributor__factory,
 } from "../../types";
 import { BigNumber } from "ethers";
 
@@ -43,6 +45,7 @@ export const useIsClaimable = (
   const [error, setError] = useState<any | undefined>();
 
   useEffect(() => {
+    // TODO merge each check state
     const checkWalletState = async () => {
       if (!library || distributorAddress === "" || campaignId === "") {
         setError("Invalid arguments.");
@@ -83,6 +86,52 @@ export const useIsClaimable = (
         return;
       }
       const [isClaimed] = await distributor.functions.isClaimed(
+        campaignId,
+        claim.index
+      );
+      setIsClaimable(!isClaimed);
+      setClaimableAmount(claim.amount);
+    };
+
+    const checkWalletNFTState = async () => {
+      if (!library || distributorAddress === "" || campaignId === "") {
+        setError("Invalid arguments.");
+        return;
+      }
+      setLoading(true);
+      setError(undefined);
+      const signer = library.getSigner();
+      const walletAddress = (await signer.getAddress()).toLowerCase();
+      const distributor = WalletNFTDistributor__factory.connect(
+        distributorAddress,
+        signer
+      );
+      const events = await distributor.queryFilter(
+        distributor.filters.CreateCampaign(
+          BigNumber.from(campaignId),
+          null,
+          null,
+          null
+        )
+      );
+      const event = events.find(
+        (event) => event.args.treeId.toString() === campaignId
+      );
+      if (event === undefined) {
+        setError("Event not found.");
+        setLoading(false);
+        return;
+      }
+      const merkleTreeCid = event.args.merkleTreeCid;
+      const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddress}.json`;
+      const response = await fetch(url);
+      const claim = (await response.json()) as StringClaim;
+      setLoading(false);
+      if (claim === undefined) {
+        setIsClaimable(false);
+        return;
+      }
+      const [isClaimed] = await distributor.functions.isProven(
         campaignId,
         claim.index
       );
@@ -136,12 +185,63 @@ export const useIsClaimable = (
       setClaimableAmount(claim.amount);
     };
 
+    const checkUUIDNFTState = async () => {
+      if (!library || campaignId === "" || hashedUUID === undefined) {
+        setError("Invalid arguments.");
+        return;
+      }
+      setLoading(true);
+      setError(undefined);
+      const signer = library.getSigner();
+      const distributor = UUIDNFTDistributor__factory.connect(
+        distributorAddress,
+        signer
+      );
+      const events = await distributor.queryFilter(
+        distributor.filters.CreateCampaign(
+          BigNumber.from(campaignId),
+          null,
+          null,
+          null
+        )
+      );
+      const event = events.find(
+        (event) => event.args.treeId.toString() === campaignId
+      );
+      if (event === undefined) {
+        setError("Event not found.");
+        setLoading(false);
+        return;
+      }
+      const merkleTreeCid = event.args.merkleTreeCid;
+      const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`;
+      const response = await fetch(url);
+      const claim = (await response.json()) as StringClaim;
+      setLoading(false);
+      if (claim === undefined) {
+        setIsClaimable(false);
+        return;
+      }
+      const [isClaimed] = await distributor.functions.isProven(
+        campaignId,
+        claim.index
+      );
+      setIsClaimable(!isClaimed);
+      setClaimableAmount(claim.amount);
+    };
+
     switch (distributorType) {
       case "wallet":
         checkWalletState();
         break;
+      case "wallet-nft":
+        checkWalletNFTState();
+        break;
       case "uuid":
         checkUUIDState();
+        break;
+      case "uuid-nft":
+        checkUUIDNFTState();
         break;
     }
   }, [library, campaignId]);

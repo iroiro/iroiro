@@ -67,7 +67,7 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
               color="creator"
               onClick={() =>
                 history.push(
-                  `/dashboard/distributors/${walletDistributor.id}/${walletDistributor.type}`
+                  `/dashboard/token/distributors/${walletDistributor.id}/${walletDistributor.type}`
                 )
               }
             />
@@ -80,7 +80,7 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
               color="creator"
               onClick={() =>
                 history.push(
-                  `/dashboard/distributors/${urlDistributor.id}/${urlDistributor.type}`
+                  `/dashboard/token/distributors/${urlDistributor.id}/${urlDistributor.type}`
                 )
               }
             />
@@ -95,7 +95,7 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
               color="creator"
               onClick={() =>
                 history.push(
-                  `/dashboard/distributors/${emailDistributor.id}/${emailDistributor.type}`
+                  `/dashboard/token/distributors/${emailDistributor.id}/${emailDistributor.type}`
                 )
               }
             />
@@ -119,7 +119,7 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
   );
 };
 
-const MenuButtonWrapper = styled.div`
+export const MenuButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;

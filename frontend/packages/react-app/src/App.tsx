@@ -21,7 +21,7 @@ import ExplorePage from "./components/pages/ExplorePage";
 import DashboardPage from "./components/pages/DashboardPage";
 import ExternalTokenDetailPage from "./components/pages/ExternalTokenDetailPage";
 import SelectDistributorsPage from "./components/pages/SelectDistributorsPage";
-import CampaignDetailPage from "./components/pages/CampaignDetailPage";
+import CampaignDetailCreatorPage from "./components/pages/CampaignDetailCreatorPage";
 import TokenCampaignsPage from "./components/pages/TokenCampaignsPage";
 import TokenCampaignDetailPage from "./components/pages/TokenCampaignDetailPage";
 import TokenHistoryPage from "./components/pages/TokenHistoryPage";
@@ -33,6 +33,13 @@ import { initialValue, tokenReducer } from "./reducers/tokenContext";
 import { NotFoundPageTemplate } from "./components/templates/NotFoundPageTemplate";
 import CreateEmailCampaignPage from "./components/pages/CreateEmailCampaignPage";
 import TopPageTemplate from "./components/templates/TopPageTemplate";
+import NFTDashboardPage from "./components/pages/NFTDashboardPage";
+import CreateWalletNFTCampaignPage from "./components/pages/CreateWalletNFTCampaignPage";
+import CreateUUIDNFTCampaignPage from "./components/pages/CreateUUIDNFTCampaignPage";
+import CreateEmailNFTCampaignPage from "./components/pages/CreateEmailNFTCampaignPage";
+import NFTCampaignsPage from "./components/pages/NFTCampaignsPage";
+import NFTCampaignDetailPage from "./components/pages/NFTCampaignDetailPage";
+import NFTHistoryPage from "./components/pages/NFTHistoryPage";
 
 const App: React.FC = () => {
   return (
@@ -43,23 +50,25 @@ const App: React.FC = () => {
             <Switch>
               <Route exact path="/" component={TopPageTemplate} />
               {/* For Creator */}
-              <Route exact path="/dashboard" component={DashboardPage} />
+              <Route exact path="/dashboard/token" component={DashboardPage} />
+              <Route exact path="/dashboard/nft" component={NFTDashboardPage} />
               <Route
                 exact
-                path="/dashboard/:tokenAddress"
+                path="/dashboard/token/:tokenAddress"
                 component={ExternalTokenDetailPage}
               />
               <Route
                 exact
-                path="/dashboard/:tokenAddress/distributors"
+                path="/dashboard/token/:tokenAddress/distributors"
                 component={SelectDistributorsPage}
               />
+              {/* TODO Remove repetition */}
               {distributors.map((distributor) => {
                 if (distributor.disabled) {
                   return;
                 }
-                const path = `/dashboard/distributors/${distributor.id}/${distributor.type}`;
                 if (distributor.type === "wallet") {
+                  const path = `/dashboard/token/distributors/${distributor.id}/${distributor.type}`;
                   return (
                     <Route
                       key={distributor.id}
@@ -74,7 +83,24 @@ const App: React.FC = () => {
                     />
                   );
                 }
+                if (distributor.type === "wallet-nft") {
+                  const path = `/dashboard/nft/distributors/${distributor.id}/${distributor.type}`;
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateWalletNFTCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
                 if (distributor.type === "uuid") {
+                  const path = `/dashboard/token/distributors/${distributor.id}/${distributor.type}`;
                   return (
                     <Route
                       key={distributor.id}
@@ -89,7 +115,24 @@ const App: React.FC = () => {
                     />
                   );
                 }
+                if (distributor.type === "uuid-nft") {
+                  const path = `/dashboard/nft/distributors/${distributor.id}/${distributor.type}`;
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateUUIDNFTCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
                 if (distributor.type === "email") {
+                  const path = `/dashboard/token/distributors/${distributor.id}/${distributor.type}`;
                   return (
                     <Route
                       key={distributor.id}
@@ -104,33 +147,63 @@ const App: React.FC = () => {
                     />
                   );
                 }
+                if (distributor.type === "email-nft") {
+                  const path = `/dashboard/nft/distributors/${distributor.id}/${distributor.type}`;
+                  return (
+                    <Route
+                      key={distributor.id}
+                      exact
+                      path={path}
+                      render={(props) => (
+                        <CreateEmailNFTCampaignPage
+                          distributorAddress={distributor.id}
+                          props={props}
+                        />
+                      )}
+                    />
+                  );
+                }
               })}
               <Route
                 exact
-                path="/dashboard/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
-                component={CampaignDetailPage}
+                path="/dashboard/token/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
+                component={CampaignDetailCreatorPage}
               />
-
-              {/* For Fan */}
-              <Route exact path="/explore" component={ExplorePage} />
               <Route
                 exact
-                path="/explore/:tokenAddress"
+                path="/dashboard/nft/distributors/:distributorAddress/campaigns/:campaignId"
+                component={CampaignDetailCreatorPage}
+              />
+              {/* For Fan */}
+              <Route exact path="/explore/token" component={ExplorePage} />
+              <Route
+                exact
+                path="/explore/token/:tokenAddress"
                 component={ExplorePage}
               />
               <Route
                 exact
-                path="/explore/:tokenAddress/campaigns"
+                path="/explore/token/:tokenAddress/campaigns"
                 component={TokenCampaignsPage}
               />
               <Route
-                path="/explore/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
+                path="/explore/token/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
                 component={TokenCampaignDetailPage}
               />
               <Route
-                path="/explore/:tokenAddress/history"
+                path="/explore/token/:tokenAddress/history"
                 component={TokenHistoryPage}
               />
+              <Route
+                exact
+                path="/explore/nft/campaigns"
+                component={NFTCampaignsPage}
+              />
+              <Route
+                path="/explore/nft/distributors/:distributorAddress/campaigns/:campaignId"
+                component={NFTCampaignDetailPage}
+              />
+              <Route path="/explore/nft/history" component={NFTHistoryPage} />
               <Route component={NotFoundPageTemplate} />
             </Switch>
           </TokenProvider>

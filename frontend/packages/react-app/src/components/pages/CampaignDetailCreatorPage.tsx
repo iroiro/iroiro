@@ -17,7 +17,7 @@
 
 import React, { useEffect, useReducer, useCallback, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import CampaignDetailPageTemplate from "../templates/CampaignDetailPageTemplate";
+import CampaignDetailCreatorPageTemplate from "../templates/CampaignDetailCreatorPageTemplate";
 import { tokenReducer, tokenInitialState } from "../../reducers/token";
 import { GET_CAMPAIGN } from "../../graphql/subgraph";
 import { useLazyQuery } from "@apollo/react-hooks";
@@ -27,7 +27,7 @@ import { useWeb3React } from "@web3-react/core";
 import { CampaignInfo } from "../../interfaces";
 import distributors from "../../utils/distributors";
 
-const CampaignDetailPage: React.FC<
+const CampaignDetailCreatorPage: React.FC<
   RouteComponentProps<{
     tokenAddress: string;
     distributorAddress: string;
@@ -126,7 +126,7 @@ const CampaignDetailPage: React.FC<
 
   return (
     <>
-      <CampaignDetailPageTemplate
+      <CampaignDetailCreatorPageTemplate
         tokenInfo={tokenState}
         campaignData={campaignState}
         distributorType={distributorType}
@@ -138,4 +138,4 @@ const CampaignDetailPage: React.FC<
   );
 };
 
-export default CampaignDetailPage;
+export default CampaignDetailCreatorPage;

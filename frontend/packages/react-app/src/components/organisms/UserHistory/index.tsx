@@ -18,7 +18,6 @@
 import * as React from "react";
 import { Grid } from "@material-ui/core";
 import UserActivities from "../UserActivities";
-import BalanceHistoryChart from "../../molecules/BalanceHistoryChart";
 import { TokenHistoryState } from "../../../reducers/tokenHistory";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";

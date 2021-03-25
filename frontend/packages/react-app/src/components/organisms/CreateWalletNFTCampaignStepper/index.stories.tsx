@@ -18,30 +18,38 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import DistributionTargetList, { TargetsProps } from "./index";
-import { audiusState } from "../../../utils/mockData";
+import CreateWalletNFTCampaignStepper, {
+  CreateWalletNFTCampaignStepperProps,
+} from ".";
+import { distributorFormState, walletListState } from "../../../utils/mockData";
 
 export default {
-  title: "Molecules/DistributionTargetList",
-  component: DistributionTargetList,
+  title: "Organisms/CreateWalletNFTCampaignStepper",
+  component: CreateWalletNFTCampaignStepper,
 } as Meta;
 
-const Template: Story<TargetsProps> = (args) => (
+const Template: Story<CreateWalletNFTCampaignStepperProps> = (args) => (
   <BrowserRouter>
-    <DistributionTargetList {...args} />
+    <CreateWalletNFTCampaignStepper {...args} />
   </BrowserRouter>
 );
 
-export const Default = Template.bind({});
-Default.args = {
-  audiusState,
+export const StepOne = Template.bind({});
+StepOne.args = {
+  walletListState,
+  distributorFormState: {
+    ...distributorFormState,
+    distributorType: "wallet-nft",
+    step: 0,
+  },
 };
 
-export const NoTarget = Template.bind({});
-NoTarget.args = {
-  audiusState: {
-    ...audiusState,
-    progress: 20,
-    followers: [],
+export const StepTwo = Template.bind({});
+StepTwo.args = {
+  ...StepOne.args,
+  distributorFormState: {
+    ...distributorFormState,
+    ...StepOne.args.distributorFormState,
+    step: 1,
   },
 };

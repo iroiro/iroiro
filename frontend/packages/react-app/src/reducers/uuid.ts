@@ -18,10 +18,6 @@
 import { ethers } from "ethers";
 import { v4 as uuidv4 } from "uuid";
 
-const upperLimit = Number.parseInt(
-  process.env?.REACT_APP_TARGETS_UPPER_LIMIT ?? "0"
-);
-
 export type UUID_ACTIONS =
   | {
       type: "quantity:set";

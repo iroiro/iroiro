@@ -19,18 +19,10 @@ import React from "react";
 import { Box, FormControl, TextField } from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
-import styled from "styled-components";
-import theme from "../../../theme/mui-theme";
 
 export interface SetupCampaignFormProps {
   readonly distributorFormState: createCampaignState;
@@ -86,14 +78,5 @@ const SetupCampaignForm: React.FC<SetupCampaignFormProps> = ({
     </Box>
   </Box>
 );
-
-const DateInputWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  ${theme.breakpoints.down(600)} {
-    display: block;
-  }
-`;
 
 export default SetupCampaignForm;

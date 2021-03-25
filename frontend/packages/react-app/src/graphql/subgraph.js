@@ -78,9 +78,15 @@ export const GET_ACCOUNT_TOKEN = gql`
   }
 `;
 
+// TODO add pagination
 export const GET_CAMPAIGNS = gql`
-  query getCampaigns($token: String!) {
-    campaigns(where: { token: $token }) {
+  query getCampaigns($token: String, $first: Int) {
+    campaigns(
+      where: { token: $token }
+      first: $first
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
       id
       token
       distributor {
@@ -96,11 +102,47 @@ export const GET_CAMPAIGNS = gql`
   }
 `;
 
+export const GET_USER_CLAIMED_CAMPAIGNS = gql`
+  query getUserClaimedCampaigns($account: String!, $token: String) {
+    claims(
+      where: { account: $account, token: $token }
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
+      campaign {
+        id
+        token
+        distributor {
+          id
+        }
+        campaignInfoCid
+        merkleRoot
+        merkleTreeCid
+        creator {
+          id
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CAMPAIGNS_BY_CREATOR = gql`
   query getCampaignsByCreator($creator: ID!) {
-    campaigns(where: { creator: $creator }) {
+    campaigns(where: { creator: $creator, token_not: null }) {
       id
       token
+      distributor {
+        id
+      }
+      campaignInfoCid
+    }
+  }
+`;
+
+export const GET_NFT_CAMPAIGNS_BY_CREATOR = gql`
+  query getNFTCampaignsByCreator($creator: ID!) {
+    campaigns(where: { creator: $creator, token: null }) {
+      id
       distributor {
         id
       }
@@ -129,6 +171,7 @@ export const GET_CAMPAIGNS_BY_CREATOR_AND_TOKEN = gql`
 export const GET_CAMPAIGN = gql`
   query getCampaign($id: ID!) {
     campaign(id: $id) {
+      id
       token
       distributor {
         id
@@ -181,7 +224,7 @@ export const GET_CLAIM = gql`
 
 export const GET_TOKEN_LIST = gql`
   {
-    campaigns {
+    campaigns(where: { token_not: null }) {
       token
     }
   }

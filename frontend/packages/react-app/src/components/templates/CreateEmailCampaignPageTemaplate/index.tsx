@@ -16,7 +16,7 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Paper } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { AccountToken } from "../../../interfaces";
 import WalletConnect from "../../organisms/WalletConnect";
 import {

@@ -40,20 +40,38 @@ const AppHeader: React.FC = () => {
 
   const Menu = (
     <>
-      <LinkButton
-        m={1}
-        path="/dashboard"
-        text="Distribution"
-        color={"secondary"}
-      />
+      <Box>
+        <LinkButton
+          m={1}
+          path="/dashboard/token"
+          text="Token Distribution"
+          color={"secondary"}
+        />
+      </Box>
+      <Box mr={1}>
+        <LinkButton
+          m={1}
+          path="/dashboard/nft"
+          text="NFT Distribution"
+          color={"secondary"}
+        />
+      </Box>
       <Box mr={1}>
         <Button
           style={{ textDecoration: "none" }}
           color="primary"
           onClick={() => setOpen(true)}
         >
-          Explore
+          Explore Tokens
         </Button>
+      </Box>
+      <Box mr={1}>
+        <LinkButton
+          m={1}
+          path="/explore/nft/campaigns"
+          text="Explore NFTs"
+          color={"primary"}
+        />
       </Box>
       <WalletButtonBox mr={1}>
         <WalletButton />
@@ -90,7 +108,7 @@ const AppHeader: React.FC = () => {
           </IconButton>
         </IconBox>
 
-        <SpMenuWrapper style={{ paddingBottom: show ? 180 : 0 }}>
+        <SpMenuWrapper style={{ paddingBottom: show ? 220 : 0 }}>
           <SpMenuBox style={{ opacity: show ? 1 : 0 }}>{Menu}</SpMenuBox>
         </SpMenuWrapper>
 

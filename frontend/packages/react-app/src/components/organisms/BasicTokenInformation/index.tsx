@@ -16,7 +16,6 @@
  */
 
 import * as React from "react";
-import { TokenInformationState } from "../../../interfaces";
 import {
   Card,
   CardContent,

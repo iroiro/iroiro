@@ -175,4 +175,10 @@ export interface WalletList {
   fileformat: boolean;
 }
 
-export type DistributorTypes = "audius" | "wallet" | "uuid" | "email";
+export type DistributorTypes =
+  | "wallet"
+  | "wallet-nft"
+  | "uuid"
+  | "uuid-nft"
+  | "email"
+  | "email-nft";

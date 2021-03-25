@@ -16,9 +16,6 @@
  */
 
 import React from "react";
-import { Box } from "@material-ui/core";
-import AppHeader from "../../molecules/AppHeader";
-import { AppFooter } from "../../molecules/AppFooter";
 import TokenInfoBar from "../../molecules/TokenInfoBar";
 import MenuButton from "../../atoms/MenuButton";
 import styled from "styled-components";
@@ -36,10 +33,10 @@ const ExplorePageTemplate: React.FC<ExplorePageTemplateProps> = ({
 }: ExplorePageTemplateProps) => {
   const history = useHistory();
   const handleCampaignsClick = useCallback(() => {
-    history.push(`/explore/${tokenAddress}/campaigns`);
+    history.push(`/explore/token/${tokenAddress}/campaigns`);
   }, [history, tokenAddress]);
   const handleUserHistoryClick = useCallback(() => {
-    history.push(`/explore/${tokenAddress}/history`);
+    history.push(`/explore/token/${tokenAddress}/history`);
   }, [history, tokenAddress]);
   return (
     <>

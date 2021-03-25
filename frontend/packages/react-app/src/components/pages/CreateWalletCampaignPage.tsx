@@ -244,7 +244,7 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
             const distributionId: BigNumber =
               campaignCreatedEvent.args?.distributionId;
             props.history.push(
-              `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
+              `/dashboard/token/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
                 `/campaigns/${distributionId.toString()}`
             );
           });

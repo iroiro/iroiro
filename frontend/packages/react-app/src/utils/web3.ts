@@ -20,7 +20,7 @@ import {
   getDefaultProvider,
   Provider,
 } from "@ethersproject/providers";
-import { utils, Signer, BigNumber, ethers } from "ethers";
+import { utils, Signer, BigNumber } from "ethers";
 import { TokenBasic } from "../interfaces";
 import { ERC20__factory as ERC20Factory } from "../types/factories/ERC20__factory";
 import { ERC20Mock__factory as ERC20MockFactory } from "../types/factories/ERC20Mock__factory";
@@ -36,6 +36,8 @@ import { MERKLE_PROOF_API } from "../utils/const";
 import {
   WalletDistributor__factory,
   IMerkleDistributorManager__factory,
+  WalletNFTDistributor__factory,
+  UUIDNFTDistributor__factory,
 } from "../types";
 
 export const getTokenInfo = async (
@@ -204,6 +206,29 @@ export const createWalletCampaign = async (
     });
 };
 
+export const createWalletNFTCampaign = async (
+  library: Web3Provider | undefined,
+  merkleRoot: string,
+  tokenAddress: string,
+  nftMetadataCid: string,
+  merkleTreeCid: string
+): Promise<ContractTransaction | undefined> => {
+  if (library === undefined) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const distributor = WalletNFTDistributor__factory.connect(
+    addresses.WalletNFTDistributor,
+    signer
+  );
+
+  return distributor
+    .createCampaign(merkleRoot, merkleTreeCid, nftMetadataCid)
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
 // TODO move as custom hooks
 export const createUUIDCampaign = async (
   library: Web3Provider | undefined,
@@ -235,6 +260,28 @@ export const createUUIDCampaign = async (
     });
 };
 
+export const createUUIDNFTCampaign = async (
+  library: Web3Provider | undefined,
+  merkleRoot: string,
+  nftMetadataCid: string,
+  merkleTreeCid: string
+): Promise<ContractTransaction | undefined> => {
+  if (library === undefined) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const distributor = UUIDNFTDistributor__factory.connect(
+    addresses.UUIDNFTDistributor,
+    signer
+  );
+
+  return distributor
+    .createCampaign(merkleRoot, merkleTreeCid, nftMetadataCid)
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    });
+};
+
 export const walletClaim = async (
   library: Web3Provider | undefined,
   distributorAddress: string,
@@ -255,6 +302,39 @@ export const walletClaim = async (
     `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddressLow}.json`
   );
   const data = await response.json();
+
+  return distributor.functions
+    .claim(campaignId, data.index, walletAddress, data.amount, data.proof)
+    .then((transaction) => {
+      return transaction;
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+};
+
+export const walletNFTClaim = async (
+  library: Web3Provider | undefined,
+  distributorAddress: string,
+  campaignId: string,
+  merkleTreeCid: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const distributor = WalletNFTDistributor__factory.connect(
+    distributorAddress,
+    signer
+  );
+  const walletAddress = await signer.getAddress();
+  const walletAddressLow = walletAddress.toLowerCase();
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddressLow}.json`
+  );
+  const data = await response.json();
+
   return distributor.functions
     .claim(campaignId, data.index, walletAddress, data.amount, data.proof)
     .then((transaction) => {
@@ -286,6 +366,39 @@ export const uuidClaim = async (
     `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`
   );
   const data = await response.json();
+
+  return distributor.functions
+    .claim(campaignId, data.index, uuid, data.amount, data.proof)
+    .then((transaction: ContractTransaction) => {
+      return transaction;
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+};
+
+export const uuidNFTClaim = async (
+  library: Web3Provider | undefined,
+  distributorAddress: string,
+  campaignId: string,
+  merkleTreeCid: string,
+  uuid: string,
+  hashedUUID: string
+): Promise<ContractTransaction | undefined> => {
+  if (!library) {
+    return undefined;
+  }
+  const signer = library.getSigner();
+  const distributor = UUIDNFTDistributor__factory.connect(
+    distributorAddress,
+    signer
+  );
+  const response = await fetch(
+    `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`
+  );
+  const data = await response.json();
+
   return distributor.functions
     .claim(campaignId, data.index, uuid, data.amount, data.proof)
     .then((transaction: ContractTransaction) => {

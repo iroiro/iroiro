@@ -41,7 +41,7 @@ const TokenCampaignCard: React.FC<TokenCampaignCardProps> = ({
   const history = useHistory();
   const onClickDetail = () => {
     history.push(
-      `/explore/${tokenAddress}/distributors/${pair[0]}/campaigns/${pair[1]}`
+      `/explore/token/${tokenAddress}/distributors/${pair[0]}/campaigns/${pair[1]}`
     );
   };
 

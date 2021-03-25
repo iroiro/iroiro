@@ -24,8 +24,8 @@ import {
   InputAdornment,
   TextField,
 } from "@material-ui/core";
-import CampaignDetail from "../../organisms/CampaignDetail";
-import { AccountToken } from "../../../interfaces";
+import CampaignDetailForCreator from "../../organisms/CampaignDetailForCreatorProps";
+import { AccountToken, DistributorTypes } from "../../../interfaces";
 import { CampaignData } from "../../../reducers/campaign";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
@@ -34,7 +34,7 @@ import AssignmentRoundedIcon from "@material-ui/icons/AssignmentRounded";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSnackbar } from "notistack";
 
-export interface CampaignInfoProps {
+export interface CampaignDetailCreatorPageTemplateProps {
   readonly tokenInfo: AccountToken;
   readonly campaignData: CampaignData;
   readonly distributorType: string;
@@ -43,12 +43,35 @@ export interface CampaignInfoProps {
   readonly distributorAddress: string;
 }
 
-const campaignNames: { [type: string]: string } = {
-  wallet: "Wallet Address Campaign",
-  uuid: "URL/Email Campaign",
+export const getCampaignURL = (
+  hasPrefix: boolean,
+  distributorType: DistributorTypes,
+  distributorAddress: string,
+  campaignId: string,
+  tokenAddress?: string
+): string => {
+  const prefix = hasPrefix
+    ? `${window.location.origin}${window.location.pathname}#`
+    : "";
+  const path = () => {
+    switch (distributorType) {
+      case "wallet":
+        return `/explore/token/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`;
+      case "wallet-nft":
+        return `/explore/nft/distributors/${distributorAddress}/campaigns/${campaignId}`;
+    }
+  };
+  return `${prefix}${path()}`;
 };
 
-const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
+export const campaignNames: { [type: string]: string } = {
+  wallet: "Wallet Address Campaign",
+  "wallet-nft": "Wallet Address Campaign",
+  uuid: "URL/Email Campaign",
+  "uuid-nft": "URL/Email Campaign",
+};
+
+const CampaignDetailCreatorPageTemplate: React.FC<CampaignDetailCreatorPageTemplateProps> = ({
   campaignData,
   distributorType,
   campaignId,
@@ -70,8 +93,12 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
             </Typography>
           </TypeWrapper>
           <Wrapper>
-            <CampaignDetail campaignData={campaignData} />
-            {distributorType === "wallet" && (
+            <CampaignDetailForCreator
+              campaignData={campaignData}
+              distributorType={distributorType}
+            />
+            {(distributorType === "wallet-nft" ||
+              distributorType === "wallet") && (
               <Box mt={4}>
                 <Typography
                   variant="subtitle2"
@@ -80,14 +107,26 @@ const CampaignDetailPageTemplate: React.FC<CampaignInfoProps> = ({
                   Campaign page URL
                 </Typography>
                 <TextField
-                  value={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
+                  value={getCampaignURL(
+                    true,
+                    distributorType,
+                    distributorAddress,
+                    campaignId,
+                    tokenAddress
+                  )}
                   fullWidth
                   disabled
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <CopyToClipboard
-                          text={`${window.location.origin}${window.location.pathname}#/explore/${tokenAddress}/distributors/${distributorAddress}/campaigns/${campaignId}`}
+                          text={getCampaignURL(
+                            true,
+                            distributorType,
+                            distributorAddress,
+                            campaignId,
+                            tokenAddress
+                          )}
                         >
                           <IconButton onClick={handleClickClipboard}>
                             <AssignmentRoundedIcon />
@@ -120,4 +159,4 @@ const TypeWrapper = styled.div`
   }
 `;
 
-export default CampaignDetailPageTemplate;
+export default CampaignDetailCreatorPageTemplate;

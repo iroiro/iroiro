@@ -21,7 +21,7 @@ import { Link, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 
-type AddressTypes = "user" | "token" | "tx";
+type AddressTypes = "user" | "token" | "tx" | "contract";
 
 export interface EtherscanLinkProps {
   readonly type: AddressTypes;
@@ -47,6 +47,8 @@ const EtherscanLink: React.FC<EtherscanLinkProps> = ({
     switch (type) {
       case "user":
         return `${baseUrl}token/${additionalTokenAddress}?a=${addressOrTxHash}`;
+      case "contract":
+        return `${baseUrl}address/${addressOrTxHash}`;
       case "token":
         return `${baseUrl}token/${addressOrTxHash}`;
       case "tx":

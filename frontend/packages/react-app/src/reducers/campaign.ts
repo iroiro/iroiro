@@ -33,14 +33,6 @@ export type ACTIONS =
       payload: { data: CampaignMetadata };
     }
   | {
-      type: "campaign:cancel";
-      payload: { data: boolean };
-    }
-  | {
-      type: "campaign:refund";
-      payload: { data: boolean };
-    }
-  | {
       type: "status:update";
       payload: { data: number };
     }
@@ -51,10 +43,6 @@ export type ACTIONS =
 
 export interface CampaignData {
   campaign: CampaignInfo;
-  isCancelRequest: boolean;
-  isRefundRequest: boolean;
-  canRefund: boolean;
-  canCancel: boolean;
   depositTokens: string;
 }
 
@@ -67,18 +55,12 @@ export const campaignReducer = (
       return {
         ...state,
         campaign: action.payload.data.campaign,
-        canRefund: action.payload.data.canRefund,
-        canCancel: action.payload.data.canCancel,
       };
     case "campaignMetadata:set":
       return {
         ...state,
         campaign: { ...state.campaign, campaignMetadata: action.payload.data },
       };
-    case "campaign:cancel":
-      return { ...state, isCancelRequest: action.payload.data };
-    case "campaign:refund":
-      return { ...state, isRefundRequest: action.payload.data };
     case "depositToken:set":
       return { ...state, depositTokens: action.payload.data };
     default:
@@ -130,9 +112,5 @@ export const campaignInitialState: CampaignData = {
     merkleRoot: "",
     merkleTreeCid: "",
   },
-  isCancelRequest: false,
-  isRefundRequest: false,
-  canRefund: false,
-  canCancel: false,
   depositTokens: "0",
 };
