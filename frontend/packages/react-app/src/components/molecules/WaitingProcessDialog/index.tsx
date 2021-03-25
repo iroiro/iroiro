@@ -41,7 +41,9 @@ const WaitingProcessDialog: React.FC<WaitingProcessDialogProps> = ({
       case "creating-campaign":
         if (
           state.distributorType === "email" ||
-          state.distributorType === "uuid"
+          state.distributorType === "email-nft" ||
+          state.distributorType === "uuid" ||
+          state.distributorType === "uuid-nft"
         ) {
           return [
             "If you leave from a page, you lost campaign information for fans.",

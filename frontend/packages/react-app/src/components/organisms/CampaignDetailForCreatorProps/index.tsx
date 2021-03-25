@@ -108,7 +108,7 @@ const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
             style={{ alignItems: "center", justifyContent: "left" }}
           >
             <Item
-              title="NFT Contract Address"
+              title="Contract Address"
               text={campaignData.campaign.distributor.id}
             />
           </Box>
