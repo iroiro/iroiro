@@ -30,6 +30,56 @@ module.exports = {
       port: 7545,
       network_id: "*",
     },
+    bsc: {
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.PRIVATE_KEY,
+          process.env.BSC_RPC_URL
+        );
+      },
+      network_id: 56,
+      skipDryRun: true,
+    },
+    tbsc: {
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.PRIVATE_KEY,
+          process.env.TBSC_RPC_URL
+        );
+      },
+      network_id: 97,
+      skipDryRun: true,
+    },
+    matic: {
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.PRIVATE_KEY,
+          process.env.MATIC_RPC_URL
+        );
+      },
+      network_id: 137,
+      skipDryRun: true,
+    },
+    mumbai: {
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.PRIVATE_KEY,
+          process.env.MUMBAI_RPC_URL
+        );
+      },
+      network_id: 80001,
+      skipDryRun: true,
+    },
+    xdai: {
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.PRIVATE_KEY,
+          process.env.XDAI_RPC_URL
+        );
+      },
+      network_id: 100,
+      skipDryRun: true,
+    },
     rinkeby: {
       provider: () => {
         return new HDWalletProvider(
@@ -78,10 +128,8 @@ module.exports = {
   mocha: {
     timeout: 10000,
   },
-  plugins: [
-    "truffle-plugin-verify"
-  ],
+  plugins: ["truffle-plugin-verify"],
   api_keys: {
-    etherscan: process.env.ETHERSCAN_API_KEY
-  }
+    etherscan: process.env.ETHERSCAN_API_KEY,
+  },
 };
