@@ -18,6 +18,7 @@
 const ipfsClient = require("ipfs-http-client");
 const Web3 = require("web3");
 const fetch = require("node-fetch");
+const ipfsPath = "https://cloudflare-ipfs.com/ipfs/";
 
 let response;
 
@@ -99,6 +100,7 @@ exports.handler = async (event, context) => {
     const response = await fetch(url);
     console.log("IPFS response: ", response);
     metadata = await response.json();
+    metadata.image = metadata.image.replace("ipfs://", ipfsPath);
     metadata.external_url = buildExternalURL(
       network,
       distributorAddress,

@@ -3,6 +3,7 @@
 const app = require("../../app.js");
 const chai = require("chai");
 const expect = chai.expect;
+
 describe("Tests index", function () {
   it("WalletNFTDistributor: verifies successful response", async () => {
     const event = {
@@ -22,6 +23,9 @@ describe("Tests index", function () {
 
     const body = JSON.parse(result.body);
     expect(body.name).to.be.equal("nft wallet campaign 03221756");
+    expect(body.image).to.be.equal(
+      "https://cloudflare-ipfs.com/ipfs/QmWxQQEHjQvDDneU1SVFKfpbXW6bfAenfZcWg16Chn5mPs"
+    );
     expect(body.external_url).to.be.equal(
       "https://kovan.iroiro.social/#/explore/nft/distributors/0x931155Dd49192CdA6cA6Fcc72E44b470a02b81CB/campaigns/1"
     );
@@ -45,6 +49,9 @@ describe("Tests index", function () {
 
     const body = JSON.parse(result.body);
     expect(body.name).to.be.equal("nft url campaign 03221800");
+    expect(body.image).to.be.equal(
+      "https://cloudflare-ipfs.com/ipfs/QmNZrkY6KZYS8Pzha26sDWC6WJxQHJhcmKpbxXwSAjYewW"
+    );
     expect(body.external_url).to.be.equal(
       "https://kovan.iroiro.social/#/explore/nft/distributors/0x9BaeDB90b0B938731b74B8ba9efFA9C8142B1d80/campaigns/1"
     );
@@ -68,6 +75,9 @@ describe("Tests index", function () {
 
     const body = JSON.parse(result.body);
     expect(body.name).to.be.equal("NFT campaign 03251116");
+    expect(body.image).to.be.equal(
+      "https://cloudflare-ipfs.com/ipfs/Qmbv8zJv7qHxa52Qab1FA29ra9kiCEqJcxM2cjLAX8rpTG"
+    );
     expect(body.external_url).to.be.equal(
       "https://rinkeby.iroiro.social/#/explore/nft/distributors/0x43D922A226Fc46400Ea7DE3AB83AE0D7C07988F6/campaigns/1"
     );
@@ -91,6 +101,9 @@ describe("Tests index", function () {
 
     const body = JSON.parse(result.body);
     expect(body.name).to.be.equal("NFT url campaign 03251117");
+    expect(body.image).to.be.equal(
+      "https://cloudflare-ipfs.com/ipfs/QmfMcGasZpxF9di2zYpuDjRgEWUfb3RTa9AxMATzq8Qpdw"
+    );
     expect(body.external_url).to.be.equal(
       "https://rinkeby.iroiro.social/#/explore/nft/distributors/0x5b0CE8D5A4B24deFba71992E233BA94e8F308eF9/campaigns/1"
     );
