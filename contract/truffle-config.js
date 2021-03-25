@@ -74,7 +74,7 @@ module.exports = {
       provider: () => {
         return new HDWalletProvider(
           process.env.PRIVATE_KEY,
-          "https://rpc.xdaichain.com/"
+          process.env.XDAI_RPC_URL
         );
       },
       network_id: 100,
