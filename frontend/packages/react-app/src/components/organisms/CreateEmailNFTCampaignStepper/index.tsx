@@ -90,9 +90,6 @@ const CreateEmailNFTCampaignStepper = ({
               />
             </div>
             <Box mt={5}>
-              <StyledStepperButton onClick={() => handleStepChange(0)}>
-                Back
-              </StyledStepperButton>
               <StyledStepperButton
                 variant="contained"
                 color="secondary"

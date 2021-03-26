@@ -26,6 +26,7 @@ import { tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
 import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
 import { initialState } from "../../../reducers/campaignDetail";
+import { ethers } from "ethers";
 
 export default {
   title: "Templates/NFTCampaignsDetailTemplate",
@@ -52,6 +53,7 @@ export const Wallet = Template.bind({});
 Wallet.args = {
   state: {
     ...initialState,
+    distributorAddress: ethers.constants.AddressZero,
     campaign: tokenInformationState.campaigns[0],
     distributorType: "wallet-nft",
   },
@@ -61,6 +63,7 @@ export const UUID = Template.bind({});
 UUID.args = {
   state: {
     ...initialState,
+    distributorAddress: ethers.constants.AddressZero,
     campaign: tokenInformationState.campaigns[0],
     distributorType: "uuid-nft",
   },
@@ -70,6 +73,7 @@ export const OnlyView = Template.bind({});
 OnlyView.args = {
   state: {
     ...initialState,
+    distributorAddress: ethers.constants.AddressZero,
     campaign: tokenInformationState.campaigns[0],
     distributorType: "wallet-nft",
     isOnlyView: true,
