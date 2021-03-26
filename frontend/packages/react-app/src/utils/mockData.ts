@@ -27,7 +27,6 @@ import {
   Campaigns,
 } from "../interfaces";
 import { createCampaignState } from "../reducers/distributorForm";
-import { AudiusState } from "../reducers/audius";
 import { EmailState } from "../reducers/email";
 import { TokenOption } from "../components/atoms/SelectTokenInput";
 import { TokenState } from "../reducers/tokenContext";
@@ -256,42 +255,7 @@ export const distributorFormState: createCampaignState = {
   tokenAddress: "0x9AF70Ab10f94fEAF59B00B2cC20C7AE57e21954e",
   distributorType: "",
   dialog: "nothing",
-  isEndDatePast: false,
-};
-
-export const audiusTarget: Target = {
-  handle: "handlename",
-  wallet: "0x0000000000000000000000000000000000000000",
-};
-
-export const audiusState: AudiusState = {
-  email: "sample@example.com",
-  password: "samplepassword",
-  followers: [
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-    audiusTarget,
-  ],
-  followersCount: 10000,
-  isSignin: true,
-  requestSignin: true,
-  libs: {},
-  user: {},
-  isRequestFollowers: false,
-  isRequestSignout: false,
-  progress: 0,
+  isAbleToStartCampaign: false,
 };
 
 export const walletListState: WalletList = {

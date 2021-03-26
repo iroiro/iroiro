@@ -68,10 +68,7 @@ const StartCampaignStep = ({
               payload: { dialog: "waiting-api" },
             });
           }}
-          disabled={
-            distributorFormState.campaignName === "" ||
-            distributorFormState.isEndDatePast
-          }
+          disabled={!distributorFormState.isAbleToStartCampaign}
         >
           Start Campaign
         </Button>
