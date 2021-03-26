@@ -25,6 +25,9 @@ const OldCampaignDetailCreatorPage: React.FC<
     campaignId: string;
   }>
 > = (props) => {
+  if (props.match.params.tokenAddress === "nft") {
+    return null;
+  }
   return (
     <Redirect
       to={{
