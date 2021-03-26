@@ -192,11 +192,6 @@ const App: React.FC = () => {
                 component={TokenCampaignDetailPage}
               />
               <Route
-                exact
-                path="/explore/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
-                component={OldCampaignDetailCreatorPage}
-              />
-              <Route
                 path="/explore/token/:tokenAddress/history"
                 component={TokenHistoryPage}
               />
@@ -208,6 +203,11 @@ const App: React.FC = () => {
               <Route
                 path="/explore/nft/distributors/:distributorAddress/campaigns/:campaignId"
                 component={NFTCampaignDetailPage}
+              />
+              <Route
+                exact
+                path="/explore/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
+                component={OldCampaignDetailCreatorPage}
               />
               <Route path="/explore/nft/history" component={NFTHistoryPage} />
               <Route component={NotFoundPageTemplate} />
