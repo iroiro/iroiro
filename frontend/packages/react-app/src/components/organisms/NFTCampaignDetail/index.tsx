@@ -69,9 +69,14 @@ const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
         <Typography variant="caption" style={{ color: "#797979" }}>
           NFT Contract Address
         </Typography>
-        <Typography variant="body1" style={{ paddingLeft: 8 }}>
+        <Box
+          component="div"
+          textOverflow="ellipsis"
+          overflow="hidden"
+          style={{ paddingLeft: 0 }}
+        >
           {campaign.distributor.id}
-        </Typography>
+        </Box>
       </Box>
       <Box
         display="flex"

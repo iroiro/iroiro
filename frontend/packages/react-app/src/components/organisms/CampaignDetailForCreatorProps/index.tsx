@@ -106,6 +106,7 @@ const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
             display="flex"
             mt={4}
             style={{ alignItems: "center", justifyContent: "left" }}
+            overflow="hidden"
           >
             <Item
               title="Contract Address"
