@@ -19,8 +19,13 @@ pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
+    using Strings for uint256;
+
+    string private _uri;
+
     event UpdateDistributorInfo(
         string cid
     );
@@ -35,8 +40,13 @@ contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
     constructor(
         string memory distributorInfoCid,
         string memory uri
-    ) ERC1155(uri) {
+    ) ERC1155("") {
+        _uri = uri;
         emit UpdateDistributorInfo(distributorInfoCid);
+    }
+
+    function uri(uint256 tokenId) external view override returns (string memory) {
+        return string(abi.encodePacked(_uri, tokenId.toString()));
     }
 
     function createCampaign(
@@ -46,7 +56,7 @@ contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
     ) virtual external {}
 
     function setURI(string calldata newUri) external onlyOwner {
-        _setURI(newUri);
+        _uri = newUri;
     }
 
     function updateDistributorInfo(string calldata distributorInfoCid) external onlyOwner {

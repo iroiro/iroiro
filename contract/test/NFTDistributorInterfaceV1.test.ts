@@ -32,7 +32,7 @@ describe("NFTDistributorInterfaceV1", () => {
     [owner, alice] = await ethers.getSigners();
     distributor = (await Distributor.deploy(
       "distributor info cid",
-      "https://example.com/{id}"
+      "https://example.com/"
     )) as NFTDistributorInterfaceV1;
   });
 
@@ -50,7 +50,7 @@ describe("NFTDistributorInterfaceV1", () => {
   });
 
   it("has a token uri", async () => {
-    expect(await distributor.uri(1)).to.equals("https://example.com/{id}");
+    expect(await distributor.uri(1)).to.equals("https://example.com/1");
   });
 
   it("create campaign do nothing", async () => {
@@ -91,7 +91,7 @@ describe("NFTDistributorInterfaceV1", () => {
 
   describe("setURI", () => {
     beforeEach(async () => {
-      await distributor.setURI("https://example.com/updated/{id}");
+      await distributor.setURI("https://example.com/updated/");
     });
 
     it("only owner", async () => {
@@ -103,7 +103,7 @@ describe("NFTDistributorInterfaceV1", () => {
 
     it("update uri", async () => {
       expect(await distributor.uri(1)).to.equals(
-        "https://example.com/updated/{id}"
+        "https://example.com/updated/1"
       );
     });
   });
