@@ -40,6 +40,7 @@ import CreateEmailNFTCampaignPage from "./components/pages/CreateEmailNFTCampaig
 import NFTCampaignsPage from "./components/pages/NFTCampaignsPage";
 import NFTCampaignDetailPage from "./components/pages/NFTCampaignDetailPage";
 import NFTHistoryPage from "./components/pages/NFTHistoryPage";
+import OldCampaignDetailCreatorPage from "./components/pages/OldCampaignDetailCreatorPage";
 
 const App: React.FC = () => {
   return (
@@ -189,6 +190,11 @@ const App: React.FC = () => {
               <Route
                 path="/explore/token/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
                 component={TokenCampaignDetailPage}
+              />
+              <Route
+                exact
+                path="/explore/:tokenAddress/distributors/:distributorAddress/campaigns/:campaignId"
+                component={OldCampaignDetailCreatorPage}
               />
               <Route
                 path="/explore/token/:tokenAddress/history"
