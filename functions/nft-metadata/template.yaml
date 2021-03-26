@@ -11,7 +11,8 @@ Globals:
     Timeout: 30
     Environment:
       Variables:
-        KOVAN_HTTP_PROVIDER: ""
+        INFURA_PROJECT_ID: ""
+        MATIC_APP_ID: ""
 
 Resources:
   NFTMetadataFunction:

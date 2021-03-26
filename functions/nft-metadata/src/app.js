@@ -18,14 +18,19 @@
 const ipfsClient = require("ipfs-http-client");
 const Web3 = require("web3");
 const fetch = require("node-fetch");
+const ipfsPath = "https://cloudflare-ipfs.com/ipfs/";
 
 let response;
 
 const networks = {
   // mainnet: {},
-  // rinkeby: {},
+  rinkeby: {
+    provider: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+    uuid: "0x5b0CE8D5A4B24deFba71992E233BA94e8F308eF9",
+    wallet: "0x43D922A226Fc46400Ea7DE3AB83AE0D7C07988F6",
+  },
   kovan: {
-    provider: process.env.KOVAN_HTTP_PROVIDER,
+    provider: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
     uuid: "0x9BaeDB90b0B938731b74B8ba9efFA9C8142B1d80",
     wallet: "0x931155Dd49192CdA6cA6Fcc72E44b470a02b81CB",
   },
@@ -52,6 +57,7 @@ exports.handler = async (event, context) => {
   const distributor = event.pathParameters.distributor;
   const networkInfo = networks[network];
   if (networkInfo === undefined) {
+    console.log("No network found. Given network: ", network);
     response = {
       statusCode: 401,
       body: JSON.stringify({
@@ -94,6 +100,7 @@ exports.handler = async (event, context) => {
     const response = await fetch(url);
     console.log("IPFS response: ", response);
     metadata = await response.json();
+    metadata.image = metadata.image.replace("ipfs://", ipfsPath);
     metadata.external_url = buildExternalURL(
       network,
       distributorAddress,
