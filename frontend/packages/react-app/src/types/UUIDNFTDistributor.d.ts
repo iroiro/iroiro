@@ -27,12 +27,12 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
     "balanceOf(address,uint256)": FunctionFragment;
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
-    "isProven(uint64,uint256)": FunctionFragment;
-    "merkleRoot(uint64)": FunctionFragment;
-    "merkleRootMap(uint64)": FunctionFragment;
+    "isProven(uint256,uint256)": FunctionFragment;
+    "merkleRoot(uint256)": FunctionFragment;
+    "merkleRootMap(uint256)": FunctionFragment;
     "nextTreeId()": FunctionFragment;
     "owner()": FunctionFragment;
-    "proof(uint64,uint256,string,uint256,bytes32[])": FunctionFragment;
+    "proof(uint256,uint256,string,uint256,bytes32[])": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
@@ -43,7 +43,7 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
     "updateDistributorInfo(string)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
     "createCampaign(bytes32,string,string)": FunctionFragment;
-    "claim(uint64,uint256,string,uint256,bytes32[])": FunctionFragment;
+    "claim(uint256,uint256,string,bytes32[])": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addTree", values: [BytesLike]): string;
@@ -116,7 +116,7 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "claim",
-    values: [BigNumberish, BigNumberish, string, BigNumberish, BytesLike[]]
+    values: [BigNumberish, BigNumberish, string, BytesLike[]]
   ): string;
 
   decodeFunctionResult(functionFragment: "addTree", data: BytesLike): Result;
@@ -176,7 +176,7 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
 
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
-    "CreateCampaign(uint64,address,string,string)": EventFragment;
+    "CreateCampaign(uint256,address,string,string)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "TransferBatch(address,address,address,uint256[],uint256[])": EventFragment;
     "TransferSingle(address,address,address,uint256,uint256)": EventFragment;
@@ -307,7 +307,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    "isProven(uint64,uint256)"(
+    "isProven(uint256,uint256)"(
       treeId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
@@ -318,7 +318,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    "merkleRoot(uint64)"(
+    "merkleRoot(uint256)"(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
@@ -328,7 +328,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    "merkleRootMap(uint64)"(
+    "merkleRootMap(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
@@ -356,7 +356,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "proof(uint64,uint256,string,uint256,bytes32[])"(
+    "proof(uint256,uint256,string,uint256,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -441,10 +441,10 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    setURI(newUri: string, overrides?: Overrides): Promise<ContractTransaction>;
+    setURI(newURI: string, overrides?: Overrides): Promise<ContractTransaction>;
 
     "setURI(string)"(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -490,16 +490,10 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
@@ -521,16 +515,14 @@ export class UUIDNFTDistributor extends Contract {
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "claim(uint64,uint256,string,uint256,bytes32[])"(
+    "claim(uint256,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<ContractTransaction>;
@@ -606,7 +598,7 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  "isProven(uint64,uint256)"(
+  "isProven(uint256,uint256)"(
     treeId: BigNumberish,
     index: BigNumberish,
     overrides?: CallOverrides
@@ -614,14 +606,14 @@ export class UUIDNFTDistributor extends Contract {
 
   merkleRoot(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  "merkleRoot(uint64)"(
+  "merkleRoot(uint256)"(
     tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
   merkleRootMap(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  "merkleRootMap(uint64)"(
+  "merkleRootMap(uint256)"(
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
@@ -649,7 +641,7 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "proof(uint64,uint256,string,uint256,bytes32[])"(
+  "proof(uint256,uint256,string,uint256,bytes32[])"(
     treeId: BigNumberish,
     index: BigNumberish,
     target: string,
@@ -734,10 +726,10 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  setURI(newUri: string, overrides?: Overrides): Promise<ContractTransaction>;
+  setURI(newURI: string, overrides?: Overrides): Promise<ContractTransaction>;
 
   "setURI(string)"(
-    newUri: string,
+    newURI: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -783,16 +775,10 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
-  uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
   "uri(uint256)"(
-    arg0: BigNumberish,
+    tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
@@ -814,16 +800,14 @@ export class UUIDNFTDistributor extends Contract {
     treeId: BigNumberish,
     index: BigNumberish,
     target: string,
-    amount: BigNumberish,
     merkleProof: BytesLike[],
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "claim(uint64,uint256,string,uint256,bytes32[])"(
+  "claim(uint256,uint256,string,bytes32[])"(
     treeId: BigNumberish,
     index: BigNumberish,
     target: string,
-    amount: BigNumberish,
     merkleProof: BytesLike[],
     overrides?: Overrides
   ): Promise<ContractTransaction>;
@@ -896,7 +880,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "isProven(uint64,uint256)"(
+    "isProven(uint256,uint256)"(
       treeId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
@@ -907,7 +891,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    "merkleRoot(uint64)"(
+    "merkleRoot(uint256)"(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -917,7 +901,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    "merkleRootMap(uint64)"(
+    "merkleRootMap(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -945,7 +929,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "proof(uint64,uint256,string,uint256,bytes32[])"(
+    "proof(uint256,uint256,string,uint256,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -1030,9 +1014,9 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setURI(newUri: string, overrides?: CallOverrides): Promise<void>;
+    setURI(newURI: string, overrides?: CallOverrides): Promise<void>;
 
-    "setURI(string)"(newUri: string, overrides?: CallOverrides): Promise<void>;
+    "setURI(string)"(newURI: string, overrides?: CallOverrides): Promise<void>;
 
     /**
      * See {IERC165-supportsInterface}. Time complexity O(1), guaranteed to always use less than 30 000 gas.
@@ -1076,16 +1060,10 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -1107,16 +1085,14 @@ export class UUIDNFTDistributor extends Contract {
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "claim(uint64,uint256,string,uint256,bytes32[])"(
+    "claim(uint256,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1270,7 +1246,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "isProven(uint64,uint256)"(
+    "isProven(uint256,uint256)"(
       treeId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
@@ -1281,7 +1257,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "merkleRoot(uint64)"(
+    "merkleRoot(uint256)"(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1291,7 +1267,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "merkleRootMap(uint64)"(
+    "merkleRootMap(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1319,7 +1295,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "proof(uint64,uint256,string,uint256,bytes32[])"(
+    "proof(uint256,uint256,string,uint256,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -1404,9 +1380,9 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    setURI(newUri: string, overrides?: Overrides): Promise<BigNumber>;
+    setURI(newURI: string, overrides?: Overrides): Promise<BigNumber>;
 
-    "setURI(string)"(newUri: string, overrides?: Overrides): Promise<BigNumber>;
+    "setURI(string)"(newURI: string, overrides?: Overrides): Promise<BigNumber>;
 
     /**
      * See {IERC165-supportsInterface}. Time complexity O(1), guaranteed to always use less than 30 000 gas.
@@ -1450,16 +1426,10 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1481,16 +1451,14 @@ export class UUIDNFTDistributor extends Contract {
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "claim(uint64,uint256,string,uint256,bytes32[])"(
+    "claim(uint256,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<BigNumber>;
@@ -1567,7 +1535,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "isProven(uint64,uint256)"(
+    "isProven(uint256,uint256)"(
       treeId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
@@ -1578,7 +1546,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "merkleRoot(uint64)"(
+    "merkleRoot(uint256)"(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1588,7 +1556,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "merkleRootMap(uint64)"(
+    "merkleRootMap(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1616,7 +1584,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "proof(uint64,uint256,string,uint256,bytes32[])"(
+    "proof(uint256,uint256,string,uint256,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -1702,12 +1670,12 @@ export class UUIDNFTDistributor extends Contract {
     ): Promise<PopulatedTransaction>;
 
     setURI(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "setURI(string)"(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1753,19 +1721,13 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     uri(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1787,16 +1749,14 @@ export class UUIDNFTDistributor extends Contract {
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "claim(uint64,uint256,string,uint256,bytes32[])"(
+    "claim(uint256,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;

@@ -336,7 +336,7 @@ export const walletNFTClaim = async (
   const data = await response.json();
 
   return distributor.functions
-    .claim(campaignId, data.index, walletAddress, data.amount, data.proof)
+    .claim(campaignId, data.index, walletAddress, data.proof)
     .then((transaction) => {
       return transaction;
     })
@@ -400,7 +400,7 @@ export const uuidNFTClaim = async (
   const data = await response.json();
 
   return distributor.functions
-    .claim(campaignId, data.index, uuid, data.amount, data.proof)
+    .claim(campaignId, data.index, uuid, data.proof)
     .then((transaction: ContractTransaction) => {
       return transaction;
     })

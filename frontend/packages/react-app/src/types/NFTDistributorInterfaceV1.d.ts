@@ -134,7 +134,7 @@ interface NFTDistributorInterfaceV1Interface extends ethers.utils.Interface {
 
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
-    "CreateCampaign(uint64,address,string,string)": EventFragment;
+    "CreateCampaign(uint256,address,string,string)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "TransferBatch(address,address,address,uint256[],uint256[])": EventFragment;
     "TransferSingle(address,address,address,uint256,uint256)": EventFragment;
@@ -367,16 +367,10 @@ export class NFTDistributorInterfaceV1 extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
@@ -394,10 +388,10 @@ export class NFTDistributorInterfaceV1 extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    setURI(newUri: string, overrides?: Overrides): Promise<ContractTransaction>;
+    setURI(newURI: string, overrides?: Overrides): Promise<ContractTransaction>;
 
     "setURI(string)"(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -584,16 +578,10 @@ export class NFTDistributorInterfaceV1 extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
-  uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
   "uri(uint256)"(
-    arg0: BigNumberish,
+    tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
@@ -611,10 +599,10 @@ export class NFTDistributorInterfaceV1 extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  setURI(newUri: string, overrides?: Overrides): Promise<ContractTransaction>;
+  setURI(newURI: string, overrides?: Overrides): Promise<ContractTransaction>;
 
   "setURI(string)"(
-    newUri: string,
+    newURI: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -801,16 +789,10 @@ export class NFTDistributorInterfaceV1 extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -828,9 +810,9 @@ export class NFTDistributorInterfaceV1 extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setURI(newUri: string, overrides?: CallOverrides): Promise<void>;
+    setURI(newURI: string, overrides?: CallOverrides): Promise<void>;
 
-    "setURI(string)"(newUri: string, overrides?: CallOverrides): Promise<void>;
+    "setURI(string)"(newURI: string, overrides?: CallOverrides): Promise<void>;
 
     updateDistributorInfo(
       distributorInfoCid: string,
@@ -1093,16 +1075,10 @@ export class NFTDistributorInterfaceV1 extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1120,9 +1096,9 @@ export class NFTDistributorInterfaceV1 extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    setURI(newUri: string, overrides?: Overrides): Promise<BigNumber>;
+    setURI(newURI: string, overrides?: Overrides): Promise<BigNumber>;
 
-    "setURI(string)"(newUri: string, overrides?: Overrides): Promise<BigNumber>;
+    "setURI(string)"(newURI: string, overrides?: Overrides): Promise<BigNumber>;
 
     updateDistributorInfo(
       distributorInfoCid: string,
@@ -1308,19 +1284,13 @@ export class NFTDistributorInterfaceV1 extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     uri(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1339,12 +1309,12 @@ export class NFTDistributorInterfaceV1 extends Contract {
     ): Promise<PopulatedTransaction>;
 
     setURI(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "setURI(string)"(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 

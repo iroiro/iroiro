@@ -31,7 +31,7 @@ contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
     );
 
     event CreateCampaign(
-        uint64 indexed treeId, // same as tokenId
+        uint256 indexed treeId, // same as tokenId
         address indexed creator,
         string merkleTreeCid,
         string nftMetadataCid
@@ -55,8 +55,8 @@ contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
         string memory nftMetadataCid
     ) virtual external {}
 
-    function setURI(string calldata newUri) external onlyOwner {
-        _uri = newUri;
+    function setURI(string calldata newURI) external onlyOwner {
+        _uri = newURI;
     }
 
     function updateDistributorInfo(string calldata distributorInfoCid) external onlyOwner {

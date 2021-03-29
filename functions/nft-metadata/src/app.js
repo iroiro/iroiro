@@ -26,13 +26,13 @@ const networks = {
   // mainnet: {},
   rinkeby: {
     provider: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-    uuid: "0x371bC9B804939FBbB20E4C2c745f1d4D73413B3E",
-    wallet: "0x8A0a72A75a83fE3BE14b87E37E27Acf87E424c06",
+    uuid: "0x2c4C3b79De238553C56D71Aeb139C45bd340541B",
+    wallet: "0x5beB5460A47260690B46dC6d089cf668245E5C71",
   },
   kovan: {
     provider: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-    uuid: "0x74c1E1A347A86eC33e1bf5C65FCC3D75E1c74DaC",
-    wallet: "0xe0d08121788B9a276cc4074B7B78Da130230222d",
+    uuid: "0x248B013528D357F3a1b7a36b01a491d5A2D53858",
+    wallet: "0x24B76ECE6ab21a3786efB8E0F2d79153a94C2155",
   },
   // xdai: {},
   // matic: {},
