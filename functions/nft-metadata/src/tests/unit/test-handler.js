@@ -22,12 +22,11 @@ describe("Tests index", function () {
     expect(result.body).to.be.an("string");
 
     const body = JSON.parse(result.body);
-    expect(body.name).to.be.equal("nft wallet campaign 03221756");
-    expect(body.image).to.be.equal(
-      "https://cloudflare-ipfs.com/ipfs/QmWxQQEHjQvDDneU1SVFKfpbXW6bfAenfZcWg16Chn5mPs"
-    );
+    expect(body.name).to.be.a("string");
+    expect(body.image.startsWith("https://cloudflare-ipfs.com/ipfs/")).to.be;
+    expect(body.image.length).to.be.equal(79);
     expect(body.external_url).to.be.equal(
-      "https://kovan.iroiro.social/#/explore/nft/distributors/0x931155Dd49192CdA6cA6Fcc72E44b470a02b81CB/campaigns/1"
+      "https://kovan.iroiro.social/#/explore/nft/distributors/0xF455C338cecBC0fEe3E131B2Cfb04A76DBB79D88/campaigns/1"
     );
   });
 
@@ -48,12 +47,12 @@ describe("Tests index", function () {
     expect(result.body).to.be.an("string");
 
     const body = JSON.parse(result.body);
-    expect(body.name).to.be.equal("nft url campaign 03221800");
-    expect(body.image).to.be.equal(
-      "https://cloudflare-ipfs.com/ipfs/QmNZrkY6KZYS8Pzha26sDWC6WJxQHJhcmKpbxXwSAjYewW"
-    );
+    expect(body.name).to.be.an("string");
+    expect(body.image.startsWith("https://cloudflare-ipfs.com/ipfs/")).to.be
+      .true;
+    expect(body.image.length).to.be.equal(79);
     expect(body.external_url).to.be.equal(
-      "https://kovan.iroiro.social/#/explore/nft/distributors/0x9BaeDB90b0B938731b74B8ba9efFA9C8142B1d80/campaigns/1"
+      "https://kovan.iroiro.social/#/explore/nft/distributors/0x49f5C75184948dADa55e3Dc4cb354ea0775e0dbF/campaigns/1"
     );
   });
 
@@ -74,12 +73,12 @@ describe("Tests index", function () {
     expect(result.body).to.be.an("string");
 
     const body = JSON.parse(result.body);
-    expect(body.name).to.be.equal("NFT campaign 03251116");
-    expect(body.image).to.be.equal(
-      "https://cloudflare-ipfs.com/ipfs/Qmbv8zJv7qHxa52Qab1FA29ra9kiCEqJcxM2cjLAX8rpTG"
-    );
+    expect(body.name).to.be.a("string");
+    expect(body.image.startsWith("https://cloudflare-ipfs.com/ipfs/")).to.be
+      .true;
+    expect(body.image.length).to.be.equal(79);
     expect(body.external_url).to.be.equal(
-      "https://rinkeby.iroiro.social/#/explore/nft/distributors/0x43D922A226Fc46400Ea7DE3AB83AE0D7C07988F6/campaigns/1"
+      "https://rinkeby.iroiro.social/#/explore/nft/distributors/0xfb879fB06D3ebFA497c2897Dfd17a2078b50E442/campaigns/1"
     );
   });
 
@@ -100,12 +99,12 @@ describe("Tests index", function () {
     expect(result.body).to.be.an("string");
 
     const body = JSON.parse(result.body);
-    expect(body.name).to.be.equal("NFT url campaign 03251117");
-    expect(body.image).to.be.equal(
-      "https://cloudflare-ipfs.com/ipfs/QmfMcGasZpxF9di2zYpuDjRgEWUfb3RTa9AxMATzq8Qpdw"
-    );
+    expect(body.name).to.be.a("string");
+    expect(body.image.startsWith("https://cloudflare-ipfs.com/ipfs/")).to.be
+      .true;
+    expect(body.image.length).to.be.equal(79);
     expect(body.external_url).to.be.equal(
-      "https://rinkeby.iroiro.social/#/explore/nft/distributors/0x5b0CE8D5A4B24deFba71992E233BA94e8F308eF9/campaigns/1"
+      "https://rinkeby.iroiro.social/#/explore/nft/distributors/0x907B024D3E2493c224d4dCe7a3Bb578A46c5af7C/campaigns/1"
     );
   });
 

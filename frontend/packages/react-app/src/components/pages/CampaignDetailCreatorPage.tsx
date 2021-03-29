@@ -119,10 +119,14 @@ const CampaignDetailCreatorPage: React.FC<
   }, [data]);
 
   useEffect(() => {
-    if (library && campaignId !== "") {
-      getBalance(library, campaignId);
+    if (!library || campaignId === "") {
+      return;
     }
-  }, [library, campaignId, getBalance]);
+    if (distributorType !== "wallet" && distributorType !== "uuid") {
+      return;
+    }
+    getBalance(library, campaignId);
+  }, [library, campaignId, getBalance, distributorType]);
 
   return (
     <>
