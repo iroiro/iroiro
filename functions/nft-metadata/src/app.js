@@ -23,7 +23,11 @@ const ipfsPath = "https://cloudflare-ipfs.com/ipfs/";
 let response;
 
 const networks = {
-  // mainnet: {},
+  mainnet: {
+    provider: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+    uuid: "0x1807201aE03F634fBDB7898B4fFFF83d6DCB312E",
+    wallet: "0xB7c936b9A43844E4D7918FDc794c3078D432ba5a",
+  },
   rinkeby: {
     provider: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
     uuid: "0x907B024D3E2493c224d4dCe7a3Bb578A46c5af7C",

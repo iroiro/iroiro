@@ -116,7 +116,7 @@ module.exports = {
       // Necessary due to https://github.com/trufflesuite/truffle/issues/3008
       skipDryRun: true,
       timeoutBlocks: 500,
-      gas: 2000000,
+      gas: 4000000,
       gasPrice: 140000000000, // 140 gwei
     },
   },
