@@ -27,8 +27,8 @@ contract WalletNFTDistributor is NFTDistributorInterfaceV1, MerkleTreeManager {
 
     function createCampaign(
         bytes32 merkleRoot,
-        string memory merkleTreeCid,
-        string memory nftMetadataCid
+        string calldata merkleTreeCid,
+        string calldata nftMetadataCid
     ) external override {
         emit CreateCampaign(
             nextTreeId,
@@ -44,11 +44,11 @@ contract WalletNFTDistributor is NFTDistributorInterfaceV1, MerkleTreeManager {
         uint64 treeId,
         uint256 index,
         address account,
-        uint256 amount,
         bytes32[] calldata merkleProof
     ) virtual external {
-        require(proof(treeId, index, account, amount, merkleProof));
+        require(proof(treeId, index, account, 1, merkleProof));
 
-        _mint(account, uint256(treeId), amount, "");
+        // TODO check cast gas fee
+        _mint(account, uint256(treeId), 1, "");
     }
 }

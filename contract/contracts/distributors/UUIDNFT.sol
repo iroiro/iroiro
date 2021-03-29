@@ -27,8 +27,8 @@ contract UUIDNFTDistributor is NFTDistributorInterfaceV1, StringMerkleTreeManage
 
     function createCampaign(
         bytes32 merkleRoot,
-        string memory merkleTreeCid,
-        string memory nftMetadataCid
+        string calldata merkleTreeCid,
+        string calldata nftMetadataCid
     ) external override {
         emit CreateCampaign(
             nextTreeId,
@@ -44,11 +44,10 @@ contract UUIDNFTDistributor is NFTDistributorInterfaceV1, StringMerkleTreeManage
         uint64 treeId,
         uint256 index,
         string calldata target,
-        uint256 amount,
         bytes32[] calldata merkleProof
     ) virtual external {
-        require(proof(treeId, index, target, amount, merkleProof));
+        require(proof(treeId, index, target, 1, merkleProof));
 
-        _mint(msg.sender, uint256(treeId), amount, "");
+        _mint(msg.sender, uint256(treeId), 1, "");
     }
 }

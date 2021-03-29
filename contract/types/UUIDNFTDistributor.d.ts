@@ -43,7 +43,7 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
     "updateDistributorInfo(string)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
     "createCampaign(bytes32,string,string)": FunctionFragment;
-    "claim(uint64,uint256,string,uint256,bytes32[])": FunctionFragment;
+    "claim(uint64,uint256,string,bytes32[])": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addTree", values: [BytesLike]): string;
@@ -116,7 +116,7 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "claim",
-    values: [BigNumberish, BigNumberish, string, BigNumberish, BytesLike[]]
+    values: [BigNumberish, BigNumberish, string, BytesLike[]]
   ): string;
 
   decodeFunctionResult(functionFragment: "addTree", data: BytesLike): Result;
@@ -441,10 +441,10 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    setURI(newUri: string, overrides?: Overrides): Promise<ContractTransaction>;
+    setURI(newURI: string, overrides?: Overrides): Promise<ContractTransaction>;
 
     "setURI(string)"(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -490,16 +490,10 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
@@ -521,16 +515,14 @@ export class UUIDNFTDistributor extends Contract {
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "claim(uint64,uint256,string,uint256,bytes32[])"(
+    "claim(uint64,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<ContractTransaction>;
@@ -734,10 +726,10 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  setURI(newUri: string, overrides?: Overrides): Promise<ContractTransaction>;
+  setURI(newURI: string, overrides?: Overrides): Promise<ContractTransaction>;
 
   "setURI(string)"(
-    newUri: string,
+    newURI: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -783,16 +775,10 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
-  uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
   "uri(uint256)"(
-    arg0: BigNumberish,
+    tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
@@ -814,16 +800,14 @@ export class UUIDNFTDistributor extends Contract {
     treeId: BigNumberish,
     index: BigNumberish,
     target: string,
-    amount: BigNumberish,
     merkleProof: BytesLike[],
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "claim(uint64,uint256,string,uint256,bytes32[])"(
+  "claim(uint64,uint256,string,bytes32[])"(
     treeId: BigNumberish,
     index: BigNumberish,
     target: string,
-    amount: BigNumberish,
     merkleProof: BytesLike[],
     overrides?: Overrides
   ): Promise<ContractTransaction>;
@@ -1030,9 +1014,9 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setURI(newUri: string, overrides?: CallOverrides): Promise<void>;
+    setURI(newURI: string, overrides?: CallOverrides): Promise<void>;
 
-    "setURI(string)"(newUri: string, overrides?: CallOverrides): Promise<void>;
+    "setURI(string)"(newURI: string, overrides?: CallOverrides): Promise<void>;
 
     /**
      * See {IERC165-supportsInterface}. Time complexity O(1), guaranteed to always use less than 30 000 gas.
@@ -1076,16 +1060,10 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -1107,16 +1085,14 @@ export class UUIDNFTDistributor extends Contract {
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "claim(uint64,uint256,string,uint256,bytes32[])"(
+    "claim(uint64,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1404,9 +1380,9 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    setURI(newUri: string, overrides?: Overrides): Promise<BigNumber>;
+    setURI(newURI: string, overrides?: Overrides): Promise<BigNumber>;
 
-    "setURI(string)"(newUri: string, overrides?: Overrides): Promise<BigNumber>;
+    "setURI(string)"(newURI: string, overrides?: Overrides): Promise<BigNumber>;
 
     /**
      * See {IERC165-supportsInterface}. Time complexity O(1), guaranteed to always use less than 30 000 gas.
@@ -1450,16 +1426,10 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    uri(tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1481,16 +1451,14 @@ export class UUIDNFTDistributor extends Contract {
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "claim(uint64,uint256,string,uint256,bytes32[])"(
+    "claim(uint64,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<BigNumber>;
@@ -1702,12 +1670,12 @@ export class UUIDNFTDistributor extends Contract {
     ): Promise<PopulatedTransaction>;
 
     setURI(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "setURI(string)"(
-      newUri: string,
+      newURI: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1753,19 +1721,13 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     uri(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
     "uri(uint256)"(
-      arg0: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1787,16 +1749,14 @@ export class UUIDNFTDistributor extends Contract {
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "claim(uint64,uint256,string,uint256,bytes32[])"(
+    "claim(uint64,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
-      amount: BigNumberish,
       merkleProof: BytesLike[],
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;

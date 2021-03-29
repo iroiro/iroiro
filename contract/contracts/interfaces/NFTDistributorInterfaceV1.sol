@@ -55,8 +55,8 @@ contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
         string memory nftMetadataCid
     ) virtual external {}
 
-    function setURI(string calldata newUri) external onlyOwner {
-        _uri = newUri;
+    function setURI(string calldata newURI) external onlyOwner {
+        _uri = newURI;
     }
 
     function updateDistributorInfo(string calldata distributorInfoCid) external onlyOwner {

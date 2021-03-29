@@ -164,10 +164,7 @@ export interface NFTDistributorInterfaceV1 extends BaseContract {
      */
     transferOwnership(newOwner: string): NonPayableTransactionObject<void>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: number | string | BN): NonPayableTransactionObject<string>;
+    uri(tokenId: number | string | BN): NonPayableTransactionObject<string>;
 
     createCampaign(
       merkleRoot: string | number[],
@@ -175,7 +172,7 @@ export interface NFTDistributorInterfaceV1 extends BaseContract {
       nftMetadataCid: string
     ): NonPayableTransactionObject<void>;
 
-    setURI(newUri: string): NonPayableTransactionObject<void>;
+    setURI(newURI: string): NonPayableTransactionObject<void>;
 
     updateDistributorInfo(
       distributorInfoCid: string
