@@ -48,7 +48,6 @@ contract WalletNFTDistributor is NFTDistributorInterfaceV1, MerkleTreeManager {
     ) virtual external {
         require(proof(treeId, index, account, 1, merkleProof));
 
-        // TODO check cast gas fee
         _mint(account, uint256(treeId), 1, "");
     }
 }
