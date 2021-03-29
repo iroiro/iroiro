@@ -77,7 +77,7 @@ dataSources:
       eventHandlers:
         - event: UpdateDistributorInfo(string)
           handler: handleUpdateDistributorInfo
-        - event: CreateCampaign(indexed uint64,indexed address,string,string)
+        - event: CreateCampaign(indexed uint256,indexed address,string,string)
           handler: handleCreateCampaign
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
@@ -104,7 +104,7 @@ dataSources:
       eventHandlers:
         - event: UpdateDistributorInfo(string)
           handler: handleUpdateDistributorInfo
-        - event: CreateCampaign(indexed uint64,indexed address,string,string)
+        - event: CreateCampaign(indexed uint256,indexed address,string,string)
           handler: handleCreateCampaign
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle

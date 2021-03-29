@@ -2,10 +2,10 @@
   "network": "rinkeby",
   "walletDistributorAddress": "0xCb4F06081B7bD51d1203Acd66252179E10F4a638",
   "blockNumberWalletDistributorDeployed": "8218439",
-  "walletNftDistributorAddress": "0xd265fAaEE3e7B4b987dc1Cf67d2789d56f95Ba6E",
-  "blockNumberWalletNftDistributorDeployed": "8317536",
+  "walletNftDistributorAddress": "0x5beB5460A47260690B46dC6d089cf668245E5C71",
+  "blockNumberWalletNftDistributorDeployed": "8317710",
   "uuidDistributorAddress": "0xCe8Eac28F4264BC45Cc49BbD990533010414146e",
   "blockNumberUuidDistributorDeployed": "8218442",
-  "uuidNftDistributorAddress": "0x817c83Feb28Ef2138d93f3c0Ef0d38Aeb8bE80Be",
-  "blockNumberUuidNftDistributorDeployed": "8317538"
+  "uuidNftDistributorAddress": "0x2c4C3b79De238553C56D71Aeb139C45bd340541B",
+  "blockNumberUuidNftDistributorDeployed": "8317712"
 }

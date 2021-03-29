@@ -31,7 +31,7 @@ contract NFTDistributorInterfaceV1 is ERC1155, Ownable {
     );
 
     event CreateCampaign(
-        uint64 indexed treeId, // same as tokenId
+        uint256 indexed treeId, // same as tokenId
         address indexed creator,
         string merkleTreeCid,
         string nftMetadataCid

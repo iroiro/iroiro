@@ -41,13 +41,13 @@ contract UUIDNFTDistributor is NFTDistributorInterfaceV1, StringMerkleTreeManage
     }
 
     function claim(
-        uint64 treeId,
+        uint256 treeId,
         uint256 index,
         string calldata target,
         bytes32[] calldata merkleProof
     ) virtual external {
         require(proof(treeId, index, target, 1, merkleProof));
 
-        _mint(msg.sender, uint256(treeId), 1, "");
+        _mint(msg.sender, treeId, 1, "");
     }
 }

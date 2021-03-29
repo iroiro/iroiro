@@ -134,7 +134,7 @@ interface NFTDistributorInterfaceV1Interface extends ethers.utils.Interface {
 
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
-    "CreateCampaign(uint64,address,string,string)": EventFragment;
+    "CreateCampaign(uint256,address,string,string)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "TransferBatch(address,address,address,uint256[],uint256[])": EventFragment;
     "TransferSingle(address,address,address,uint256,uint256)": EventFragment;

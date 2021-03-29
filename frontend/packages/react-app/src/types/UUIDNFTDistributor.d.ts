@@ -27,12 +27,12 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
     "balanceOf(address,uint256)": FunctionFragment;
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
-    "isProven(uint64,uint256)": FunctionFragment;
-    "merkleRoot(uint64)": FunctionFragment;
-    "merkleRootMap(uint64)": FunctionFragment;
+    "isProven(uint256,uint256)": FunctionFragment;
+    "merkleRoot(uint256)": FunctionFragment;
+    "merkleRootMap(uint256)": FunctionFragment;
     "nextTreeId()": FunctionFragment;
     "owner()": FunctionFragment;
-    "proof(uint64,uint256,string,uint256,bytes32[])": FunctionFragment;
+    "proof(uint256,uint256,string,uint256,bytes32[])": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
@@ -43,7 +43,7 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
     "updateDistributorInfo(string)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
     "createCampaign(bytes32,string,string)": FunctionFragment;
-    "claim(uint64,uint256,string,bytes32[])": FunctionFragment;
+    "claim(uint256,uint256,string,bytes32[])": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addTree", values: [BytesLike]): string;
@@ -176,7 +176,7 @@ interface UUIDNFTDistributorInterface extends ethers.utils.Interface {
 
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
-    "CreateCampaign(uint64,address,string,string)": EventFragment;
+    "CreateCampaign(uint256,address,string,string)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "TransferBatch(address,address,address,uint256[],uint256[])": EventFragment;
     "TransferSingle(address,address,address,uint256,uint256)": EventFragment;
@@ -307,7 +307,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    "isProven(uint64,uint256)"(
+    "isProven(uint256,uint256)"(
       treeId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
@@ -318,7 +318,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    "merkleRoot(uint64)"(
+    "merkleRoot(uint256)"(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
@@ -328,7 +328,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    "merkleRootMap(uint64)"(
+    "merkleRootMap(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
@@ -356,7 +356,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "proof(uint64,uint256,string,uint256,bytes32[])"(
+    "proof(uint256,uint256,string,uint256,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -519,7 +519,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "claim(uint64,uint256,string,bytes32[])"(
+    "claim(uint256,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -598,7 +598,7 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  "isProven(uint64,uint256)"(
+  "isProven(uint256,uint256)"(
     treeId: BigNumberish,
     index: BigNumberish,
     overrides?: CallOverrides
@@ -606,14 +606,14 @@ export class UUIDNFTDistributor extends Contract {
 
   merkleRoot(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  "merkleRoot(uint64)"(
+  "merkleRoot(uint256)"(
     tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
   merkleRootMap(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  "merkleRootMap(uint64)"(
+  "merkleRootMap(uint256)"(
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
@@ -641,7 +641,7 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "proof(uint64,uint256,string,uint256,bytes32[])"(
+  "proof(uint256,uint256,string,uint256,bytes32[])"(
     treeId: BigNumberish,
     index: BigNumberish,
     target: string,
@@ -804,7 +804,7 @@ export class UUIDNFTDistributor extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "claim(uint64,uint256,string,bytes32[])"(
+  "claim(uint256,uint256,string,bytes32[])"(
     treeId: BigNumberish,
     index: BigNumberish,
     target: string,
@@ -880,7 +880,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "isProven(uint64,uint256)"(
+    "isProven(uint256,uint256)"(
       treeId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
@@ -891,7 +891,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    "merkleRoot(uint64)"(
+    "merkleRoot(uint256)"(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -901,7 +901,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    "merkleRootMap(uint64)"(
+    "merkleRootMap(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -929,7 +929,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "proof(uint64,uint256,string,uint256,bytes32[])"(
+    "proof(uint256,uint256,string,uint256,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -1089,7 +1089,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "claim(uint64,uint256,string,bytes32[])"(
+    "claim(uint256,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -1246,7 +1246,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "isProven(uint64,uint256)"(
+    "isProven(uint256,uint256)"(
       treeId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
@@ -1257,7 +1257,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "merkleRoot(uint64)"(
+    "merkleRoot(uint256)"(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1267,7 +1267,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "merkleRootMap(uint64)"(
+    "merkleRootMap(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1295,7 +1295,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "proof(uint64,uint256,string,uint256,bytes32[])"(
+    "proof(uint256,uint256,string,uint256,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -1455,7 +1455,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "claim(uint64,uint256,string,bytes32[])"(
+    "claim(uint256,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -1535,7 +1535,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "isProven(uint64,uint256)"(
+    "isProven(uint256,uint256)"(
       treeId: BigNumberish,
       index: BigNumberish,
       overrides?: CallOverrides
@@ -1546,7 +1546,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "merkleRoot(uint64)"(
+    "merkleRoot(uint256)"(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1556,7 +1556,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "merkleRootMap(uint64)"(
+    "merkleRootMap(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1584,7 +1584,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "proof(uint64,uint256,string,uint256,bytes32[])"(
+    "proof(uint256,uint256,string,uint256,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
@@ -1753,7 +1753,7 @@ export class UUIDNFTDistributor extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "claim(uint64,uint256,string,bytes32[])"(
+    "claim(uint256,uint256,string,bytes32[])"(
       treeId: BigNumberish,
       index: BigNumberish,
       target: string,
