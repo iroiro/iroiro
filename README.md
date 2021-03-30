@@ -11,9 +11,9 @@ We are working on developing protocols that can leverage Social Token with the g
 ## Resource
 
 - Interface: [app.iroiro.social](https://app.iroiro.social/)
-- Interface Rinekby Test Nework: [rinkeby.app.iroiro.social](https://rinkeby.app.iroiro.social/)
+- Interface Rinekby Test Nework: [rinkeby.iroiro.social](https://rinkeby.iroiro.social/)
 - Twitter: [@IroiroTokens](https://twitter.com/IroiroTokens/)
-- Discord: [Iroiro](https://discord.gg/5FHxWBXh)
+- Discord: [Iroiro](https://discord.gg/fhmPyp7U8c)
 - Blog: [Iroiro Social Token](https://medium.com/iroiro-social-token/)
 
 ## How to develop

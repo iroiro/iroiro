@@ -32,16 +32,14 @@ const LinkOutlineButton: React.FC<LinkOutlineButtonProps> = ({
   text,
   color,
 }) => (
-  <Box mr={m}>
-    <Button
-      component={Link}
-      to={path}
-      style={{ textDecoration: "none" }}
-      color={color}
-    >
-      {text}
-    </Button>
-  </Box>
+  <Button
+    component={Link}
+    to={path}
+    style={{ textDecoration: "none" }}
+    color={color}
+  >
+    {text}
+  </Button>
 );
 
 export default LinkOutlineButton;

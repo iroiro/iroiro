@@ -15,7 +15,6 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import IconButton from "@material-ui/core/IconButton";
 import Link from "@material-ui/core/Link";
 import * as React from "react";
 import styled from "styled-components";

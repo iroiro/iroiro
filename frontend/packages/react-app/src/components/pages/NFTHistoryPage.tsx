@@ -1,0 +1,90 @@
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
+import * as React from "react";
+import { useEffect, useReducer } from "react";
+import { useLazyQuery } from "@apollo/react-hooks";
+import { useWeb3React } from "@web3-react/core";
+import { RouteComponentProps } from "react-router-dom";
+import { GET_USER_CLAIMED_CAMPAIGNS } from "../../graphql/subgraph";
+import { CampaignInfo, CampaignMetadata } from "../../interfaces";
+import {
+  initialState,
+  tokenCampaignsReducer,
+} from "../../reducers/tokenCampaigns";
+import { NFTHistoryTemplate } from "../templates/NFTHistoryPageTemplate";
+
+const NFTCampaignsPage: React.FC<
+  RouteComponentProps<{
+    tokenAddress: string;
+  }>
+> = (props) => {
+  const { active, library } = useWeb3React();
+  const [state, dispatch] = useReducer(tokenCampaignsReducer, initialState);
+  const [getUserClaimedCampaigns, { data }] = useLazyQuery(
+    GET_USER_CLAIMED_CAMPAIGNS
+  );
+
+  useEffect(() => {
+    const f = async () => {
+      if (!active) {
+        return;
+      }
+      const address = await library.getSigner().getAddress();
+      getUserClaimedCampaigns({
+        variables: {
+          account: address.toLowerCase(),
+          token: null,
+        },
+      });
+    };
+    f();
+  }, [active, library, getUserClaimedCampaigns]);
+
+  useEffect(() => {
+    const f = async () => {
+      if (data === undefined) {
+        return;
+      }
+      const rawCampaigns = data.claims.map((claim: any) => claim.campaign);
+      console.debug(rawCampaigns);
+      const campaigns: CampaignInfo[] = await Promise.all(
+        rawCampaigns.map(async (rawCampaign: CampaignInfo) => {
+          const cid = rawCampaign.campaignInfoCid;
+          const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          const campaign: CampaignInfo = Object.assign<
+            CampaignInfo,
+            { campaignMetadata: CampaignMetadata }
+          >(rawCampaign, { campaignMetadata: data });
+          return campaign;
+        })
+      );
+
+      dispatch({
+        type: "campaigns:set",
+        payload: { campaigns: campaigns },
+      });
+    };
+    f();
+  }, [data]);
+
+  return <NFTHistoryTemplate state={state} library={library} />;
+};
+
+export default NFTCampaignsPage;

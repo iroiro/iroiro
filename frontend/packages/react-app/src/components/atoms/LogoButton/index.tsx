@@ -17,11 +17,11 @@
 
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import { createStyles, makeStyles } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     image: {
       width: 100,

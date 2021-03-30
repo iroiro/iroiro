@@ -18,7 +18,8 @@ type Campaign @entity {
   "Equals to: <distributorAddress>-<campaignId>"
   id: ID!
   distributor: Distributor!
-  token: String!
+  token: String
+  # nft: String # nft token id is same as campaignId(treeId). Future implementation.
   "Campaign creator not only token creator"
   creator: Creator!
   campaignInfoCid: String
@@ -26,6 +27,7 @@ type Campaign @entity {
   merkleRoot: Bytes
   claimedNum: BigInt
   claims: [Claim!]! @derivedFrom(field: "campaign")
+  createdAt: BigInt!
 }
 
 type Claim @entity {
@@ -33,8 +35,10 @@ type Claim @entity {
   id: ID!
   account: Account!
   campaign: Campaign!
-  token: String!
+  token: String
+  nft: String
   amount: BigInt
+  createdAt: BigInt!
 }
 
 # TODO Add token schema

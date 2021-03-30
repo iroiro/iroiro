@@ -17,13 +17,15 @@
 
 import { CampaignInfo, Claim, DistributorTypes } from "../interfaces";
 import { DialogStatus } from "./distributorForm";
+import { NFTTabType } from "../components/molecules/NFTTabMenuForFunPage";
 
 export interface CampaignDetailState {
   campaign: CampaignInfo | null;
   campaignId: string;
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
-  now: Date;
+  isOnlyView: boolean;
+  currentTab: NFTTabType;
   distributorAddress: string;
   distributorType: DistributorTypes | string;
   uuid: string;
@@ -208,7 +210,8 @@ export const initialState: CampaignDetailState = {
   campaignId: "",
   isCampaignClaimable: false,
   isCampaignClaimed: false,
-  now: new Date(),
+  isOnlyView: false,
+  currentTab: "campaigns",
   distributorAddress: "",
   distributorType: "",
   uuid: "",

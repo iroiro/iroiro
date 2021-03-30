@@ -16,7 +16,7 @@
  */
 
 import * as React from "react";
-import { Box, Card, Button, Modal } from "@material-ui/core";
+import { Box, Card, Modal } from "@material-ui/core";
 import SelectTokenInput, { TokenOption } from "../../atoms/SelectTokenInput";
 import { useTokenContext } from "../../../context/token";
 import { useEffect, useState } from "react";
@@ -108,7 +108,7 @@ const SelectTokenModal: React.FC<SelectTokenModalProps> = ({
       return;
     }
 
-    history.push(`/explore/${value.tokenAddress}`);
+    history.push(`/explore/token/${value.tokenAddress}`);
     onCloseModal();
     setValue({
       tokenName: "",

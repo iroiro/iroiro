@@ -15,13 +15,13 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-// This address points to a dummy ERC20 contract deployed on Ethereum Mainnet,
+// This address points to a contract deployed on Ethereum Mainnet,
 // Goerli, Kovan, Rinkeby and Ropsten. Replace it with your smart contracts.
 const addresses = {
-  Migrations: process.env.REACT_APP_CONTRACT_MIGRATIONS,
   WalletDistributor: process.env.REACT_APP_CONTRACT_WALLETDISTRIBUTOR,
   UUIDDistributor: process.env.REACT_APP_CONTRACT_UUIDDISTRIBUTOR,
-  CCTWalletDistributor: process.env.REACT_APP_CONTRACT_CCTWALLETDISTRIBUTOR,
+  WalletNFTDistributor: process.env.REACT_APP_CONTRACT_WALLETNFTDISTRIBUTOR,
+  UUIDNFTDistributor: process.env.REACT_APP_CONTRACT_UUIDNFTDISTRIBUTOR,
 };
 
 export default addresses;

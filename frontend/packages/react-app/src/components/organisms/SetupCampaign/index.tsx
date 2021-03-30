@@ -15,13 +15,14 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React from "react";
+import * as React from "react";
 import { Box } from "@material-ui/core";
 import SetupCampaignForm from "../../molecules/SetupCampaignForm";
 import {
   createCampaignState,
   DISTRIBUTOR_ACTIONS,
 } from "../../../reducers/distributorForm";
+import SetupNFTCampaignForm from "../../molecules/SetupNFTCampaignForm";
 
 export interface SetupCampaignFormProps {
   readonly distributorFormState: createCampaignState;
@@ -32,14 +33,30 @@ const SetupCampaign: React.FC<SetupCampaignFormProps> = ({
   distributorFormState,
   distributorFormDispatch,
 }) => {
+  const form = () => {
+    switch (distributorFormState.distributorType) {
+      case "wallet-nft":
+      case "uuid-nft":
+      case "email-nft":
+        return (
+          <SetupNFTCampaignForm
+            distributorFormDispatch={distributorFormDispatch}
+            distributorFormState={distributorFormState}
+          />
+        );
+      default:
+        return (
+          <SetupCampaignForm
+            distributorFormDispatch={distributorFormDispatch}
+            distributorFormState={distributorFormState}
+          />
+        );
+    }
+  };
+
   return (
     <Box mt={2}>
-      <Box>
-        <SetupCampaignForm
-          distributorFormDispatch={distributorFormDispatch}
-          distributorFormState={distributorFormState}
-        />
-      </Box>
+      <Box>{form}</Box>
     </Box>
   );
 };

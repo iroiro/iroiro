@@ -16,46 +16,60 @@
  */
 
 import React from "react";
-import styled from "styled-components";
 import MenuButton from "../../atoms/MenuButton";
-import { AppFooter } from "../../molecules/AppFooter";
-import AppHeader from "../../molecules/AppHeader";
 import { useHistory } from "react-router-dom";
 import { useCallback } from "react";
 import SelectTokenModal from "../../organisms/SelectTokenModal";
 import { useState } from "react";
 import AppFrame from "../../organisms/AppFrame";
+import { MenuButtonWrapper } from "../DashboardPageTemplate";
 
-const TopPageTemplate = () => {
+const TopPageTemplate: React.FC = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
-  const handleDistributionButtonClick = useCallback(() => {
-    history.push("/dashboard");
-  }, []);
   const handleExploreButtonClick = useCallback(() => {
     setOpen(true);
   }, []);
+
   return (
     <>
       <AppFrame>
-        <ButtonWrapper>
+        <MenuButtonWrapper>
           <div style={{ marginBottom: 16 }}>
             <MenuButton
-              title="DISTRIBUTION"
+              title="TOKEN DISTRIBUTION"
               description="You can create a token distribution campaign. Let's set the tokens to be distributed and create a campaign."
               color="creator"
-              onClick={handleDistributionButtonClick}
+              onClick={() => history.push("/dashboard/token")}
             />
           </div>
-          <div>
+          <div style={{ marginBottom: 16 }}>
             <MenuButton
-              title="EXPLORE"
+              title="NFT DISTRIBUTION"
+              description="You can create a NFT distribution campaign. Let's set the NFT to be distributed and create a campaign."
+              color="creator"
+              onClick={() => history.push("/dashboard/nft")}
+            />
+          </div>
+        </MenuButtonWrapper>
+        <MenuButtonWrapper>
+          <div style={{ marginBottom: 16 }}>
+            <MenuButton
+              title="TOKEN EXPLORE"
               description="Check the status of the tokens you have been distributed and information on the campaign."
               color="user"
               onClick={handleExploreButtonClick}
             />
           </div>
-        </ButtonWrapper>
+          <div>
+            <MenuButton
+              title="NFT EXPLORE"
+              description="Check the status of the NFTs you have been distributed and information on the campaign."
+              color="user"
+              onClick={() => history.push("/explore/nft/campaigns")}
+            />
+          </div>
+        </MenuButtonWrapper>
       </AppFrame>
       <SelectTokenModal
         open={open}
@@ -66,11 +80,5 @@ const TopPageTemplate = () => {
     </>
   );
 };
-
-const ButtonWrapper = styled.div`
-  max-width: 390px;
-  margin: 0 auto 32px;
-  padding-top: 4%;
-`;
 
 export default TopPageTemplate;

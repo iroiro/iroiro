@@ -15,7 +15,7 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import React, { useMemo } from "react";
+import React from "react";
 import { Box, Button, FormControl, Input, Typography } from "@material-ui/core";
 import {
   createCampaignState,
@@ -25,8 +25,7 @@ import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import { AccountToken } from "../../../interfaces";
 import TokenBalance from "../TokenBalance";
-import { BigNumber } from "ethers";
-import { getTotalApproveAmount, parseUnits } from "../../../utils/web3";
+import { getTotalApproveAmount } from "../../../utils/web3";
 import FormHelperText from "@material-ui/core/FormHelperText";
 
 export interface ApproveTokenFormProps {

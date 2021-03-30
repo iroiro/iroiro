@@ -28,7 +28,7 @@ export type Campaign = {
   /** Equals to: <distributorAddress>-<campaignId> */
   id: Scalars['ID'];
   distributor: Distributor;
-  token: Scalars['String'];
+  token?: Maybe<Scalars['String']>;
   /** Campaign creator not only token creator */
   creator: Creator;
   campaignInfoCid?: Maybe<Scalars['String']>;
@@ -36,6 +36,7 @@ export type Campaign = {
   merkleRoot?: Maybe<Scalars['Bytes']>;
   claimedNum?: Maybe<Scalars['BigInt']>;
   claims: Array<Claim>;
+  createdAt: Scalars['BigInt'];
 };
 
 export type CampaignsCondition = {
@@ -53,8 +54,10 @@ export type Claim = {
   id: Scalars['ID'];
   account: Account;
   campaign: Campaign;
-  token: Scalars['String'];
+  token?: Maybe<Scalars['String']>;
+  nft?: Maybe<Scalars['String']>;
   amount?: Maybe<Scalars['BigInt']>;
+  createdAt: Scalars['BigInt'];
 };
 
 export type Creator = {

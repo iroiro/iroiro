@@ -31,6 +31,11 @@ export type DISTRIBUTOR_ACTIONS =
       type: "campaignDescription:set";
       payload: { campaignDescription: string };
     }
+  | { type: "campaignImageFile:set"; payload: { campaignImageFile: File } }
+  | {
+      type: "campaignImagePreview:set";
+      payload: { campaignImagePreview: string };
+    }
   | { type: "token:approve"; payload: { approveRequest: boolean } }
   | {
       type: "campaign:deploy";
@@ -52,14 +57,35 @@ export interface createCampaignState {
   approveAmount: string;
   campaignName: string;
   campaignDescription: string;
+  campaignImageFile?: File;
+  campaignImagePreview: string;
   approveRequest: boolean;
   requestDeployCampaign: boolean;
   createdCampaignId: string;
   tokenAddress: string;
   distributorType: DistributorTypes | "";
   dialog: DialogStatus;
-  isEndDatePast: boolean;
+  isAbleToStartCampaign: boolean;
 }
+
+const judgeIsAbleToStartCampaign = (
+  distributorType: DistributorTypes | "",
+  campaignName: string,
+  campaignImageFile?: File
+): boolean => {
+  if (campaignName === "") {
+    return false;
+  }
+  switch (distributorType) {
+    case "wallet-nft":
+    case "uuid-nft":
+    case "email-nft": {
+      return campaignImageFile !== undefined;
+    }
+    default:
+      return true;
+  }
+};
 
 export const distributorFormReducer = (
   state: createCampaignState,
@@ -77,12 +103,43 @@ export const distributorFormReducer = (
       };
     }
     case "campaignName:set": {
-      return { ...state, campaignName: action.payload.campaignName };
+      const newState = {
+        ...state,
+        campaignName: action.payload.campaignName,
+      };
+      return {
+        ...newState,
+        isAbleToStartCampaign: judgeIsAbleToStartCampaign(
+          newState.distributorType,
+          newState.campaignName,
+          newState.campaignImageFile
+        ),
+      };
     }
     case "campaignDescription:set": {
       return {
         ...state,
         campaignDescription: action.payload.campaignDescription,
+      };
+    }
+    case "campaignImageFile:set": {
+      const newState = {
+        ...state,
+        campaignImageFile: action.payload.campaignImageFile,
+      };
+      return {
+        ...newState,
+        isAbleToStartCampaign: judgeIsAbleToStartCampaign(
+          newState.distributorType,
+          newState.campaignName,
+          newState.campaignImageFile
+        ),
+      };
+    }
+    case "campaignImagePreview:set": {
+      return {
+        ...state,
+        campaignImagePreview: action.payload.campaignImagePreview,
       };
     }
     case "token:approve": {
@@ -113,11 +170,13 @@ export const distributorFormInitialState: createCampaignState = {
   approveAmount: "0",
   campaignName: "",
   campaignDescription: "",
+  campaignImageFile: undefined,
+  campaignImagePreview: "",
   approveRequest: false,
   requestDeployCampaign: false,
   createdCampaignId: "",
   tokenAddress: "",
   distributorType: "",
   dialog: "nothing",
-  isEndDatePast: false,
+  isAbleToStartCampaign: false,
 };

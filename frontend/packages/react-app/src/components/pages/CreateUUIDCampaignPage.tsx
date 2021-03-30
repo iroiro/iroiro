@@ -340,7 +340,7 @@ const CreateUUIDCampaignPage: React.FC<CreateUUIDCampaignPageProps> = ({
       return;
     }
     props.history.push(
-      `/dashboard/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
+      `/dashboard/token/${distributorFormState.tokenAddress}/distributors/${distributorAddress}` +
         `/campaigns/${distributorFormState.createdCampaignId}`
     );
   }, [
