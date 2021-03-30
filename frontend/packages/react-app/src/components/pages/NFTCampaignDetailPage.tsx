@@ -40,7 +40,7 @@ const NFTCampaignDetailPage: React.FC<
   }>
 > = (props) => {
   const campaignId = props.match.params.campaignId;
-  const distributorAddress = props.match.params.distributorAddress;
+  const distributorAddress = props.match.params.distributorAddress.toLowerCase();
   const params = new URLSearchParams(useLocation().search);
 
   const [state, dispatch] = useReducer(campaignDetailReducer, {
