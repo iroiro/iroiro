@@ -23,6 +23,7 @@ import NFTCampaignCard from "../../molecules/NFTCampaignCard";
 import { getImageURLFromIPFSHash } from "../NFTCampaigns";
 import { DistributorTypes } from "../../../interfaces";
 import EtherscanLink from "../../atoms/EtherscanLink";
+import MarketplaceLink from "../../atoms/MarketplaceLink";
 
 export interface CampaignDetailForCreatorProps {
   readonly campaignData: CampaignData;
@@ -33,10 +34,16 @@ const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
   campaignData,
   distributorType,
 }) => {
+  // TODO extract network as context
+  const network = process.env?.REACT_APP_NETWORK ?? "mainnet";
+  const showMarketplace =
+    campaignData.campaign.claimedNum !== "0" &&
+    (distributorType === "wallet-nft" || distributorType === "uuid-nft") &&
+    (network === "mainnet" || network === "rinkeby");
+
   return (
     <>
       {(distributorType === "wallet-nft" || distributorType === "uuid-nft") &&
-        campaignData !== undefined &&
         campaignData.campaign.campaignMetadata !== undefined && (
           <Grid container justify="center">
             <Grid xs={12} sm={4} item>
@@ -50,7 +57,7 @@ const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
             </Grid>
           </Grid>
         )}
-      {campaignData !== undefined && (
+      {
         <Box>
           {(distributorType === "wallet" || distributorType === "uuid") && (
             <>
@@ -123,8 +130,44 @@ const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
               small={true}
             />
           </Box>
+          {showMarketplace && (
+            <>
+              <Box
+                display="flex"
+                mt={4}
+                style={{ alignItems: "center", justifyContent: "left" }}
+                overflow="hidden"
+              >
+                <Item title="Check in Marketplaces" text="" />
+              </Box>
+              <Box
+                display="flex"
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                <MarketplaceLink
+                  network={network}
+                  market="opensea"
+                  address={campaignData.campaign.distributor.id}
+                  campaignId={campaignData.campaign.id}
+                  small={true}
+                />
+              </Box>
+              <Box
+                display="flex"
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                <MarketplaceLink
+                  network={network}
+                  market="rarible"
+                  address={campaignData.campaign.distributor.id}
+                  campaignId={campaignData.campaign.id}
+                  small={true}
+                />
+              </Box>
+            </>
+          )}
         </Box>
-      )}
+      }
     </>
   );
 };

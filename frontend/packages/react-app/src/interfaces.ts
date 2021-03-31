@@ -20,6 +20,8 @@ import { Web3Provider } from "@ethersproject/providers";
 
 type RecipientsType = "address" | "keccak256";
 
+export type Network = "mainnet" | "rinkeby" | "kovan";
+
 export interface Recipients {
   readonly targets: string[];
   readonly type: RecipientsType | string; // TODO remove string
