@@ -26,14 +26,14 @@ import WalletConnect from "../WalletConnect";
 import WalletNFTClaimCard from "../../molecules/NFTClaimCard";
 import NFTCampaignDetail from "../NFTCampaignDetail";
 
-export interface WalletNFTCampaignDetailPanelProps {
+export interface NFTCampaignDetailPanelProps {
   readonly active: boolean;
   readonly state: CampaignDetailState;
   readonly dispatch: Dispatch<CampaignDetailAction>;
 }
 
 // TODO: Add waiting transactions
-const WalletNFTCampaignDetailPanel: React.FC<WalletNFTCampaignDetailPanelProps> = ({
+const NFTCampaignDetailPanel: React.FC<NFTCampaignDetailPanelProps> = ({
   active,
   state,
   dispatch,
@@ -61,7 +61,7 @@ const WalletNFTCampaignDetailPanel: React.FC<WalletNFTCampaignDetailPanelProps> 
   return (
     <div>
       <NFTCampaignDetail campaign={state.campaign} />
-      {!state.isOnlyView && (
+      {!state.isCampaignClaimable && state.isProofPresent ? null : (
         <Box mt={2} pb={2} style={{ borderTop: "2px solid #f8f8f8" }}>
           {child}
         </Box>
@@ -70,4 +70,4 @@ const WalletNFTCampaignDetailPanel: React.FC<WalletNFTCampaignDetailPanelProps> 
   );
 };
 
-export default WalletNFTCampaignDetailPanel;
+export default NFTCampaignDetailPanel;

@@ -45,7 +45,6 @@ const NFTCampaignDetailPage: React.FC<
 
   const [state, dispatch] = useReducer(campaignDetailReducer, {
     ...initialState,
-    isOnlyView: params.has("isOnlyView"),
     currentTab: (params?.get("currentTab") as NFTTabType) ?? "campaigns",
     distributorAddress,
   });
@@ -57,7 +56,7 @@ const NFTCampaignDetailPage: React.FC<
     new URLSearchParams(props.location.search)?.get("uuid") ?? "";
   const hashedUUID: string = ethers.utils.solidityKeccak256(["string"], [uuid]);
 
-  const { isClaimable } = useIsClaimable(
+  const { isClaimable, isProofPresent } = useIsClaimable(
     library,
     state?.campaignId ?? "",
     distributorAddress,
@@ -153,6 +152,12 @@ const NFTCampaignDetailPage: React.FC<
         isClaimable,
       },
     });
+    dispatch({
+      type: "isProofPresent:set",
+      payload: {
+        isProofPresent,
+      },
+    });
     if (state.distributorType !== "uuid") {
       return;
     }
@@ -165,7 +170,7 @@ const NFTCampaignDetailPage: React.FC<
         type: "isCampaignClaimed:setTrue",
       });
     }
-  }, [isClaimable, state.distributorType]);
+  }, [isClaimable, isProofPresent, state.distributorType]);
 
   useEffect(() => {
     if (

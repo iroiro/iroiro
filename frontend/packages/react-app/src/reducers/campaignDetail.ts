@@ -24,7 +24,7 @@ export interface CampaignDetailState {
   campaignId: string;
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
-  isOnlyView: boolean;
+  isProofPresent: boolean;
   currentTab: NFTTabType;
   distributorAddress: string;
   distributorType: DistributorTypes | string;
@@ -58,6 +58,12 @@ export type CampaignDetailAction =
     }
   | {
       type: "isCampaignClaimable:remove";
+    }
+  | {
+      type: "isProofPresent:set";
+      payload: {
+        isProofPresent: boolean;
+      };
     }
   | {
       type: "isCampaignClaimed:setTrue";
@@ -149,6 +155,12 @@ export const campaignDetailReducer = (
         isCampaignClaimed: true,
       };
     }
+    case "isProofPresent:set": {
+      return {
+        ...state,
+        isProofPresent: action.payload.isProofPresent,
+      };
+    }
     case "isCampaignClaimed:set": {
       if (!action.payload.claim) {
         return state;
@@ -210,7 +222,7 @@ export const initialState: CampaignDetailState = {
   campaignId: "",
   isCampaignClaimable: false,
   isCampaignClaimed: false,
-  isOnlyView: false,
+  isProofPresent: false,
   currentTab: "campaigns",
   distributorAddress: "",
   distributorType: "",

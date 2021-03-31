@@ -43,11 +43,7 @@ export const NFTHistoryTemplate: React.FC<NFTHistoryTemplateProps> = ({
     <>
       <AppFrame>
         <NFTTabMenuForFunPage current={"userHistory"} />
-        <NFTCampaigns
-          campaigns={state.campaigns}
-          isOnlyView={true}
-          currentTab="userHistory"
-        />
+        <NFTCampaigns campaigns={state.campaigns} currentTab="userHistory" />
         <ConnectModal open={open} onClose={() => setOpen(false)} />
       </AppFrame>
     </>
