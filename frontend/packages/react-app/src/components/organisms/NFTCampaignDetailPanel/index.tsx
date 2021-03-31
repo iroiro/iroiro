@@ -58,10 +58,14 @@ const NFTCampaignDetailPanel: React.FC<NFTCampaignDetailPanelProps> = ({
     <WalletConnect />
   );
 
+  console.debug(state);
+  console.debug(state.campaign.claims.length);
+  console.debug(state.campaign.claims.length !== 0);
+
   return (
     <div>
       <NFTCampaignDetail campaign={state.campaign} />
-      {!state.isCampaignClaimable && state.isProofPresent ? null : (
+      {state.campaign.claims.length === 0 && (
         <Box mt={2} pb={2} style={{ borderTop: "2px solid #f8f8f8" }}>
           {child}
         </Box>

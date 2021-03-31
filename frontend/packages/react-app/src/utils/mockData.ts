@@ -354,7 +354,6 @@ export const campaignDetailState: CampaignDetailState = {
   campaign: campaign,
   campaignId: "",
   isCampaignClaimable: false,
-  isProofPresent: false,
   isCampaignClaimed: false,
   currentTab: "campaigns",
   distributorAddress: "",

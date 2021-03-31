@@ -56,7 +56,7 @@ const NFTCampaignDetailPage: React.FC<
     new URLSearchParams(props.location.search)?.get("uuid") ?? "";
   const hashedUUID: string = ethers.utils.solidityKeccak256(["string"], [uuid]);
 
-  const { isClaimable, isProofPresent } = useIsClaimable(
+  const { isClaimable } = useIsClaimable(
     library,
     state?.campaignId ?? "",
     distributorAddress,
@@ -99,12 +99,20 @@ const NFTCampaignDetailPage: React.FC<
   }, [library, tokenStateDispatch]);
 
   useEffect(() => {
-    getCampaign({
-      variables: {
-        id: `${distributorAddress.toLowerCase()}-${campaignId}`,
-      },
-    });
-  }, [campaignId, getCampaign]);
+    const f = async () => {
+      if (library === undefined) {
+        console.debug("hoge");
+        return;
+      }
+      getCampaign({
+        variables: {
+          id: `${distributorAddress.toLowerCase()}-${campaignId}`,
+          account: (await library.getSigner().getAddress()).toLowerCase(),
+        },
+      });
+    };
+    f();
+  }, [campaignId, library, getCampaign]);
 
   useEffect(() => {
     const f = async () => {
@@ -152,12 +160,6 @@ const NFTCampaignDetailPage: React.FC<
         isClaimable,
       },
     });
-    dispatch({
-      type: "isProofPresent:set",
-      payload: {
-        isProofPresent,
-      },
-    });
     if (state.distributorType !== "uuid") {
       return;
     }
@@ -170,7 +172,7 @@ const NFTCampaignDetailPage: React.FC<
         type: "isCampaignClaimed:setTrue",
       });
     }
-  }, [isClaimable, isProofPresent, state.distributorType]);
+  }, [isClaimable, state.distributorType]);
 
   useEffect(() => {
     if (

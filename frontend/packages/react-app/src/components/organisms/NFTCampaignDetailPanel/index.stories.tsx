@@ -66,7 +66,6 @@ IsOnlyView.args = {
   state: {
     ...initialState,
     ...Default.args.state,
-    isProofPresent: true,
   },
 };
 
