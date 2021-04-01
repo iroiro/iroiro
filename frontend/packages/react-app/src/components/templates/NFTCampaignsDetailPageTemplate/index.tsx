@@ -27,7 +27,7 @@ import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
 import WaitingProcessDialog from "../../molecules/WaitingProcessDialog";
-import WalletNFTCampaignDetailPanel from "../../organisms/WalletNFTCampaignDetailPanel";
+import NFTCampaignDetailPanel from "../../organisms/NFTCampaignDetailPanel";
 import { NFTTabMenuForFunPage } from "../../molecules/NFTTabMenuForFunPage";
 
 export interface NFTCampaignsDetailTemplateProps {
@@ -46,7 +46,7 @@ export const NFTCampaignsDetailTemplate: React.FC<NFTCampaignsDetailTemplateProp
       case "wallet-nft":
       case "uuid-nft":
         return (
-          <WalletNFTCampaignDetailPanel
+          <NFTCampaignDetailPanel
             active={active}
             state={state}
             dispatch={dispatch}

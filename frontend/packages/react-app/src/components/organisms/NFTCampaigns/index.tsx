@@ -26,7 +26,6 @@ import { NFTTabType } from "../../molecules/NFTTabMenuForFunPage";
 
 export interface NFTCampaignsProps {
   readonly campaigns: CampaignInfo[];
-  readonly isOnlyView?: boolean;
   readonly currentTab: NFTTabType;
 }
 
@@ -38,7 +37,6 @@ export const getImageURLFromIPFSHash = (image: string): string => {
 
 const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
   campaigns,
-  isOnlyView,
   currentTab,
 }) => {
   const history = useHistory();
@@ -61,9 +59,6 @@ const NFTCampaigns: React.FC<NFTCampaignsProps> = ({
               );
               const pair = campaign.id.split("-");
               const params: string[] = [`currentTab=${currentTab}`];
-              if (isOnlyView) {
-                params.push("isOnlyView");
-              }
               return (
                 <Grid key={campaign.id} item xs={12} sm={4}>
                   <StyledBox>

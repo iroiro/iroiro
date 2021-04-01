@@ -76,6 +76,5 @@ OnlyView.args = {
     distributorAddress: ethers.constants.AddressZero,
     campaign: tokenInformationState.campaigns[0],
     distributorType: "wallet-nft",
-    isOnlyView: true,
   },
 };

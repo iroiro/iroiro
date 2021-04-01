@@ -24,7 +24,6 @@ export interface CampaignDetailState {
   campaignId: string;
   isCampaignClaimable: boolean;
   isCampaignClaimed: boolean;
-  isOnlyView: boolean;
   currentTab: NFTTabType;
   distributorAddress: string;
   distributorType: DistributorTypes | string;
@@ -210,7 +209,6 @@ export const initialState: CampaignDetailState = {
   campaignId: "",
   isCampaignClaimable: false,
   isCampaignClaimed: false,
-  isOnlyView: false,
   currentTab: "campaigns",
   distributorAddress: "",
   distributorType: "",

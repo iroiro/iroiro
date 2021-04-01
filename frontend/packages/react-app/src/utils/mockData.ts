@@ -39,7 +39,7 @@ export const campaignMetadata: CampaignMetadata = {
 };
 
 export const distributor: Distributor = {
-  id: process.env.REACT_APP_CONTRACT_CCTWALLETDISTRIBUTOR ?? "",
+  id: process.env.REACT_APP_CONTRACT_WALLETDISTRIBUTOR ?? "",
   distributorCid: "Qmf8C4mjVGgzxVzWcAevxCHZiCCUG38rxeDC7Byt5tsVoA",
   distributorMetadata: {
     name: "Audius Followers Distributor",
@@ -52,7 +52,7 @@ export const distributor: Distributor = {
 };
 
 export const campaign: CampaignInfo = {
-  id: "0xcc22b3199013627708d05fedf9b854bd7706a156",
+  id: "0xfb879fb06d3ebfa497c2897dfd17a2078b50e442-1",
   campaignInfoCid: "QmYdUkdEgQtn4viySEQie51JAwrC3xTyDqDbdWXWEwAz5J",
   campaignMetadata: {
     name: "Audiusフォロワーさん向けトークン配布キャンペーン！",
@@ -355,7 +355,6 @@ export const campaignDetailState: CampaignDetailState = {
   campaignId: "",
   isCampaignClaimable: false,
   isCampaignClaimed: false,
-  isOnlyView: false,
   currentTab: "campaigns",
   distributorAddress: "",
   distributorType: "",

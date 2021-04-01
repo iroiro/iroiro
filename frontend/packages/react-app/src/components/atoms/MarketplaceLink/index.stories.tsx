@@ -17,39 +17,43 @@
 
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
+import MarketplaceLink, { MarketplaceLinkProps } from "./index";
 import { BrowserRouter } from "react-router-dom";
-import CampaignDetailCreatorPageTemplate, {
-  CampaignDetailCreatorPageTemplateProps,
-} from "./index";
-import { campaign, tokenInfo } from "../../../utils/mockData";
 
 export default {
-  title: "Templates/CampaignDetailCreatorPageTemplate",
-  component: CampaignDetailCreatorPageTemplate,
+  title: "Atoms/MarketplaceLink",
+  component: MarketplaceLink,
 } as Meta;
 
-const Template: Story<CampaignDetailCreatorPageTemplateProps> = (args) => (
+const Template: Story<MarketplaceLinkProps> = (args) => (
   <BrowserRouter>
-    <CampaignDetailCreatorPageTemplate {...args} />
+    <MarketplaceLink {...args} />
   </BrowserRouter>
 );
 
-export const Wallet = Template.bind({});
-Wallet.args = {
-  tokenInfo: tokenInfo,
-  campaignData: {
-    campaign,
-    depositTokens: "100000",
-  },
-  distributorType: "wallet",
+export const MainnetOpensea = Template.bind({});
+MainnetOpensea.args = {
+  chainId: "1",
+  market: "opensea",
+  address: "0xb7c936b9a43844e4d7918fdc794c3078d432ba5a",
+  campaignId: "[address]-1",
 };
 
-export const WalletNFT = Template.bind({});
-WalletNFT.args = {
-  tokenInfo: tokenInfo,
-  campaignData: {
-    campaign,
-    depositTokens: "100000",
-  },
-  distributorType: "wallet-nft",
+export const MainnetRarible = Template.bind({});
+MainnetRarible.args = {
+  ...MainnetOpensea.args,
+  market: "rarible",
+};
+
+export const RinkebyOpensea = Template.bind({});
+RinkebyOpensea.args = {
+  ...MainnetOpensea.args,
+  chainId: "4",
+  address: "0xfb879fb06d3ebfa497c2897dfd17a2078b50e442",
+};
+
+export const RinkebyRarible = Template.bind({});
+RinkebyRarible.args = {
+  ...RinkebyOpensea.args,
+  market: "rarible",
 };

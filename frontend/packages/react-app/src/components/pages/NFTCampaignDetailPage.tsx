@@ -45,7 +45,6 @@ const NFTCampaignDetailPage: React.FC<
 
   const [state, dispatch] = useReducer(campaignDetailReducer, {
     ...initialState,
-    isOnlyView: params.has("isOnlyView"),
     currentTab: (params?.get("currentTab") as NFTTabType) ?? "campaigns",
     distributorAddress,
   });
@@ -100,12 +99,20 @@ const NFTCampaignDetailPage: React.FC<
   }, [library, tokenStateDispatch]);
 
   useEffect(() => {
-    getCampaign({
-      variables: {
-        id: `${distributorAddress.toLowerCase()}-${campaignId}`,
-      },
-    });
-  }, [campaignId, getCampaign]);
+    const f = async () => {
+      if (library === undefined) {
+        console.debug("hoge");
+        return;
+      }
+      getCampaign({
+        variables: {
+          id: `${distributorAddress.toLowerCase()}-${campaignId}`,
+          account: (await library.getSigner().getAddress()).toLowerCase(),
+        },
+      });
+    };
+    f();
+  }, [campaignId, library, getCampaign]);
 
   useEffect(() => {
     const f = async () => {

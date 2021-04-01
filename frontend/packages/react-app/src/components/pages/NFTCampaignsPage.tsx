@@ -18,7 +18,6 @@
 import * as React from "react";
 import { useEffect, useReducer } from "react";
 import { useLazyQuery } from "@apollo/react-hooks";
-import { useWeb3React } from "@web3-react/core";
 import { RouteComponentProps } from "react-router-dom";
 import { GET_CAMPAIGNS } from "../../graphql/subgraph";
 import { CampaignInfo, CampaignMetadata } from "../../interfaces";
@@ -34,7 +33,6 @@ const NFTCampaignsPage: React.FC<
     tokenAddress: string;
   }>
 > = (props) => {
-  const { library } = useWeb3React();
   const [state, dispatch] = useReducer(tokenCampaignsReducer, initialState);
   const [getCampaigns, { data: campaignData }] = useLazyQuery(GET_CAMPAIGNS);
 

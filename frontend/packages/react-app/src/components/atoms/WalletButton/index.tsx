@@ -20,6 +20,7 @@ import React, { useEffect, useState } from "react";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { injected } from "../../../utils/connectors";
 import WalletDialog from "../../molecules/WalletDialog";
+import Link from "@material-ui/core/Link";
 
 function ellipseAddress(address = "", width = 5): string {
   return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -31,6 +32,7 @@ const WalletButton: React.FC = () => {
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
   const [open, setOpen] = useState(false);
   const [network, setNetwork] = useState("");
+  const [appURL, setAppURL] = useState("");
 
   useEffect(() => {
     const { ethereum } = window;
@@ -73,12 +75,15 @@ const WalletButton: React.FC = () => {
   useEffect(() => {
     if (supportChainId === 1) {
       setNetwork("Mainnet");
+      setAppURL("https://app.iroiro.social");
     }
     if (supportChainId === 4) {
       setNetwork("Rinkeby test");
+      setAppURL("https://rinkeby.iroiro.social");
     }
     if (supportChainId === 42) {
       setNetwork("Kovan test");
+      setAppURL("https://kovan.iroiro.social");
     }
     if (supportChainId === 100) {
       setNetwork("xDAI");
@@ -129,6 +134,11 @@ const WalletButton: React.FC = () => {
               <Box mt={2}>
                 <Typography>
                   To access Ioriro, please switch to the {network} network.
+                </Typography>
+              </Box>
+              <Box mt={2}>
+                <Typography>
+                  Or you can access an <Link href={appURL}>{network} app</Link>.
                 </Typography>
               </Box>
             </Box>

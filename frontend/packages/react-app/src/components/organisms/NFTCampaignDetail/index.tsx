@@ -26,6 +26,7 @@ import NFTTokenCampaignCard from "../../molecules/NFTCampaignCard";
 import { getImageURLFromIPFSHash } from "../NFTCampaigns";
 import Item from "../../molecules/Item";
 import EtherscanLink from "../../atoms/EtherscanLink";
+import MarketplaceLink from "../../atoms/MarketplaceLink";
 
 export interface NFTCampaignDetailProps {
   readonly campaign: CampaignInfo;
@@ -33,6 +34,10 @@ export interface NFTCampaignDetailProps {
 
 const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
   const [distributorType, setDistributorType] = useState("");
+
+  const chainId = process.env?.REACT_APP_CHAIN_ID ?? "1";
+  const showMarketplace =
+    campaign.claimedNum !== "0" && (chainId === "1" || chainId === "4");
 
   useEffect(() => {
     const distributor = distributors.find(
@@ -88,6 +93,42 @@ const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
           small={true}
         />
       </Box>
+      {showMarketplace && (
+        <>
+          <Box
+            display="flex"
+            mt={4}
+            style={{ alignItems: "center", justifyContent: "left" }}
+            overflow="hidden"
+          >
+            <Item title="Check in Marketplaces" text="" />
+          </Box>
+          <Box
+            display="flex"
+            style={{ alignItems: "center", justifyContent: "left" }}
+          >
+            <MarketplaceLink
+              chainId={chainId}
+              market="opensea"
+              address={campaign.distributor.id}
+              campaignId={campaign.id}
+              small={true}
+            />
+          </Box>
+          <Box
+            display="flex"
+            style={{ alignItems: "center", justifyContent: "left" }}
+          >
+            <MarketplaceLink
+              chainId={chainId}
+              market="rarible"
+              address={campaign.distributor.id}
+              campaignId={campaign.id}
+              small={true}
+            />
+          </Box>
+        </>
+      )}
       <Box display="flex" justifyContent="start" alignItems="baseline" mt={2}>
         <Typography variant="caption" style={{ color: "#797979" }}>
           Distributor Type:
