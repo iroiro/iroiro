@@ -100,14 +100,14 @@ const NFTCampaignDetailPage: React.FC<
 
   useEffect(() => {
     const f = async () => {
-      if (library === undefined) {
-        console.debug("hoge");
-        return;
-      }
+      const account =
+        library === undefined
+          ? ""
+          : (await library.getSigner().getAddress()).toLowerCase();
       getCampaign({
         variables: {
           id: `${distributorAddress.toLowerCase()}-${campaignId}`,
-          account: (await library.getSigner().getAddress()).toLowerCase(),
+          account,
         },
       });
     };
