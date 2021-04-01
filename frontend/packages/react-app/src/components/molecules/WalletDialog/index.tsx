@@ -95,6 +95,9 @@ const WalletDialog: React.FC<WalletDialogProps> = ({
             {Object.keys(connectorsByName).map((name) => {
               // @ts-ignore
               const currentConnector = connectorsByName[name];
+              if (currentConnector === undefined) {
+                return null;
+              }
               const activating = currentConnector === activatingConnector;
               const connected = currentConnector === connector;
               const disabled =

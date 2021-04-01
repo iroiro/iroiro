@@ -59,6 +59,8 @@ module.exports = {
       },
       network_id: 137,
       skipDryRun: true,
+      gas: 4000000,
+      gasPrice: 1000000000, // 1 gwei
     },
     mumbai: {
       provider: () => {
@@ -79,6 +81,8 @@ module.exports = {
       },
       network_id: 100,
       skipDryRun: true,
+      gas: 4000000,
+      gasPrice: 1000000000, // 1 gwei
     },
     rinkeby: {
       provider: () => {

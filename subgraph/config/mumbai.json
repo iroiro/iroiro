@@ -1,0 +1,11 @@
+{
+  "network": "mumbai",
+  "walletDistributorAddress": "0x3aDd392148186cBcEB28eD494e21dd0F7B507E9A",
+  "blockNumberWalletDistributorDeployed": "12183945",
+  "walletNftDistributorAddress": "0x84AabF87DaeD8B9b61755A6De9b70d5Db1C2933B",
+  "blockNumberWalletNftDistributorDeployed": "12183964",
+  "uuidDistributorAddress": "0x8a770dB5c9Df816949ad2FFA0fF05ba8e04DAA07",
+  "blockNumberUuidDistributorDeployed": "12183953",
+  "uuidNftDistributorAddress": "0xf54E1950bF7001BE4F37aF81019aC79aCb87BC83",
+  "blockNumberUuidNftDistributorDeployed": "12183973"
+}

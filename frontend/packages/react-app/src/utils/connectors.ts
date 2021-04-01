@@ -22,7 +22,8 @@ import { PortisConnector } from "@web3-react/portis-connector";
 import { TorusConnector } from "@web3-react/torus-connector";
 
 const POLLING_INTERVAL = 12000;
-const chainId = Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "0");
+const chainId = Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "1");
+const isSupported = [1, 4, 42].includes(chainId);
 
 export const injected = new InjectedConnector({
   supportedChainIds: [chainId],
@@ -35,14 +36,18 @@ export const walletconnect = new WalletConnectConnector({
   pollingInterval: POLLING_INTERVAL,
 });
 
-export const fortmatic = new FortmaticConnector({
-  apiKey: process.env.REACT_APP_FORTMATIC_API_KEY as string,
-  chainId: chainId,
-});
+export const fortmatic = isSupported
+  ? new FortmaticConnector({
+      apiKey: process.env.REACT_APP_FORTMATIC_API_KEY as string,
+      chainId: chainId,
+    })
+  : undefined;
 
-export const portis = new PortisConnector({
-  dAppId: process.env.REACT_APP_PORTIS_DAPP_ID as string,
-  networks: [chainId],
-});
+export const portis = isSupported
+  ? new PortisConnector({
+      dAppId: process.env.REACT_APP_PORTIS_DAPP_ID as string,
+      networks: [chainId],
+    })
+  : undefined;
 
 export const torus = new TorusConnector({ chainId: chainId });

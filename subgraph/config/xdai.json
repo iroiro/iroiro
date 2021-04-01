@@ -1,0 +1,11 @@
+{
+  "network": "xdai",
+  "walletDistributorAddress": "0x39Fc5e0A9A78B600Cbc3deA15650489b3D17d5Df",
+  "blockNumberWalletDistributorDeployed": "15308816",
+  "walletNftDistributorAddress": "0xd3B5E45C14aaAc2367a0318B6c5546477d92b7C8",
+  "blockNumberWalletNftDistributorDeployed": "15308824",
+  "uuidDistributorAddress": "0xfE64535210089fBCA0e1f9DF6E3b42F8edd17174",
+  "blockNumberUuidDistributorDeployed": "15308819",
+  "uuidNftDistributorAddress": "0x9c9a4EDB9A8aB310269B78856c866461Cf4264C6",
+  "blockNumberUuidNftDistributorDeployed": "15308829"
+}

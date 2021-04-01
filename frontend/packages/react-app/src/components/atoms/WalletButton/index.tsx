@@ -80,6 +80,12 @@ const WalletButton: React.FC = () => {
     if (supportChainId === 42) {
       setNetwork("Kovan test");
     }
+    if (supportChainId === 100) {
+      setNetwork("xDAI");
+    }
+    if (supportChainId === 137) {
+      setNetwork("Matic");
+    }
   }, [supportChainId]);
 
   const handleClickOpen = () => {
