@@ -38,8 +38,16 @@ const networks = {
     uuid: "0x49f5C75184948dADa55e3Dc4cb354ea0775e0dbF",
     wallet: "0xF455C338cecBC0fEe3E131B2Cfb04A76DBB79D88",
   },
-  // xdai: {},
-  // matic: {},
+  xdai: {
+    provider: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+    uuid: "0x9c9a4EDB9A8aB310269B78856c866461Cf4264C6",
+    wallet: "0xd3B5E45C14aaAc2367a0318B6c5546477d92b7C8",
+  },
+  matic: {
+    provider: `https://rpc-mainnet.maticvigil.com/v1/${process.env.MATIC_APP_ID}`,
+    uuid: "0x68ACb2e9D5eC2E66168D36eF65f8469ddB333fb4",
+    wallet: "0xfE64535210089fBCA0e1f9DF6E3b42F8edd17174",
+  },
   // bsc: {},
 };
 

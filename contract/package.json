@@ -13,6 +13,8 @@
     "migrate:rinkeby": "npx truffle migrate --reset --network rinkeby",
     "migrate:kovan": "npx truffle migrate --reset --network kovan",
     "migrate:mumbai": "npx truffle migrate --reset --network mumbai",
+    "migrate:xdai": "npx truffle migrate --network xdai",
+    "migrate:matic": "npx truffle migrate --network matic",
     "migrate:mainnet": "npx truffle migrate --network mainnet",
     "test": "npx hardhat test",
     "format": "yarn prettier --write .",

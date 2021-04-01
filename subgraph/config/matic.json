@@ -1,0 +1,11 @@
+{
+  "network": "matic",
+  "walletDistributorAddress": "0x2afa02Ac8C38CAfBA52F1c5da20287E5891b3596",
+  "blockNumberWalletDistributorDeployed": "12724474",
+  "walletNftDistributorAddress": "0xfE64535210089fBCA0e1f9DF6E3b42F8edd17174",
+  "blockNumberWalletNftDistributorDeployed": "12724491",
+  "uuidDistributorAddress": "0x689E325B55ceAd95C23cbD0e4B3a6d6ebfaF8Fa7",
+  "blockNumberUuidDistributorDeployed": "12724479",
+  "uuidNftDistributorAddress": "0x68ACb2e9D5eC2E66168D36eF65f8469ddB333fb4",
+  "blockNumberUuidNftDistributorDeployed": "12724501"
+}
