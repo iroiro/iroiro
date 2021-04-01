@@ -33,7 +33,7 @@ const Template: Story<MarketplaceLinkProps> = (args) => (
 
 export const MainnetOpensea = Template.bind({});
 MainnetOpensea.args = {
-  network: "mainnet",
+  chainId: "1",
   market: "opensea",
   address: "0xb7c936b9a43844e4d7918fdc794c3078d432ba5a",
   campaignId: "[address]-1",
@@ -48,7 +48,7 @@ MainnetRarible.args = {
 export const RinkebyOpensea = Template.bind({});
 RinkebyOpensea.args = {
   ...MainnetOpensea.args,
-  network: "rinkeby",
+  chainId: "4",
   address: "0xfb879fb06d3ebfa497c2897dfd17a2078b50e442",
 };
 

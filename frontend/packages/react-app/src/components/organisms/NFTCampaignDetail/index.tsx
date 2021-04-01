@@ -35,10 +35,9 @@ export interface NFTCampaignDetailProps {
 const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
   const [distributorType, setDistributorType] = useState("");
 
-  const network = process.env?.REACT_APP_NETWORK ?? "mainnet";
+  const chainId = process.env?.REACT_APP_CHAIN_ID ?? "1";
   const showMarketplace =
-    campaign.claimedNum !== "0" &&
-    (network === "mainnet" || network === "rinkeby");
+    campaign.claimedNum !== "0" && (chainId === "1" || chainId === "4");
 
   useEffect(() => {
     const distributor = distributors.find(
@@ -109,7 +108,7 @@ const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
             style={{ alignItems: "center", justifyContent: "left" }}
           >
             <MarketplaceLink
-              network={network}
+              chainId={chainId}
               market="opensea"
               address={campaign.distributor.id}
               campaignId={campaign.id}
@@ -121,7 +120,7 @@ const NFTCampaignDetail: React.FC<NFTCampaignDetailProps> = ({ campaign }) => {
             style={{ alignItems: "center", justifyContent: "left" }}
           >
             <MarketplaceLink
-              network={network}
+              chainId={chainId}
               market="rarible"
               address={campaign.distributor.id}
               campaignId={campaign.id}

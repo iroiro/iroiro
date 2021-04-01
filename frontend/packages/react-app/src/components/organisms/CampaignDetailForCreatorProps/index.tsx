@@ -35,11 +35,11 @@ const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
   distributorType,
 }) => {
   // TODO extract network as context
-  const network = process.env?.REACT_APP_NETWORK ?? "mainnet";
+  const chainId = process.env?.REACT_APP_CHAIN_ID ?? "1";
   const showMarketplace =
     campaignData.campaign.claimedNum !== "0" &&
     (distributorType === "wallet-nft" || distributorType === "uuid-nft") &&
-    (network === "mainnet" || network === "rinkeby");
+    (chainId === "1" || chainId === "4");
 
   return (
     <>
@@ -145,7 +145,7 @@ const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
                 style={{ alignItems: "center", justifyContent: "left" }}
               >
                 <MarketplaceLink
-                  network={network}
+                  chainId={chainId}
                   market="opensea"
                   address={campaignData.campaign.distributor.id}
                   campaignId={campaignData.campaign.id}
@@ -157,7 +157,7 @@ const CampaignDetailForCreator: React.FC<CampaignDetailForCreatorProps> = ({
                 style={{ alignItems: "center", justifyContent: "left" }}
               >
                 <MarketplaceLink
-                  network={network}
+                  chainId={chainId}
                   market="rarible"
                   address={campaignData.campaign.distributor.id}
                   campaignId={campaignData.campaign.id}

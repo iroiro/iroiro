@@ -19,37 +19,36 @@ import * as React from "react";
 import { Link, Typography } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
-import { Network } from "../../../interfaces";
 
 type Market = "opensea" | "rarible";
 
 export interface MarketplaceLinkProps {
-  readonly network: Network | string;
+  readonly chainId: string;
   readonly market: Market;
   readonly address: string;
   readonly campaignId: string;
   readonly small?: boolean;
 }
 
-const baseURLs: { [network: string]: { opensea: string; rarible: string } } = {
-  mainnet: {
+const baseURLs: { [chainId: string]: { opensea: string; rarible: string } } = {
+  "1": {
     opensea: "https://opensea.io/",
     rarible: "https://rarible.com/",
   },
-  rinkeby: {
+  "4": {
     opensea: "https://testnets.opensea.io/",
     rarible: "https://rinkeby.rarible.com/",
   },
 };
 
 const MarketplaceLink: React.FC<MarketplaceLinkProps> = ({
-  network,
+  chainId,
   market,
   address,
   campaignId,
   small = false,
 }) => {
-  const baseUrl: string | undefined = baseURLs?.[network]?.[market];
+  const baseUrl: string | undefined = baseURLs?.[chainId]?.[market];
   if (baseUrl === undefined) {
     return null;
   }
