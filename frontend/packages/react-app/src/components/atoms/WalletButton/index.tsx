@@ -59,8 +59,6 @@ const WalletButton: React.FC = () => {
     }
   }, [error]);
 
-  console.debug(!error ? "" : error.toString());
-
   useEffect(() => {
     const { ethereum } = window;
     if (ethereum && ethereum.on && !active && !error) {
