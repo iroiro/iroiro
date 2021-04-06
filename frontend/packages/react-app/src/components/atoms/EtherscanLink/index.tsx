@@ -30,6 +30,54 @@ export interface EtherscanLinkProps {
   readonly small?: boolean;
 }
 
+const URLs: { [network: string]: { [type: string]: string } } = {
+  // mainnet
+  "1": {
+    site: "Etherscan",
+    user: "https://etherscan.io/token/{tokenAddress}?a={address}",
+    contract: "https://etherscan.io/address/{address}",
+    token: "https://etherscan.io/token/{address}",
+    tx: "https://etherscan.io/tx/{txHash}",
+  },
+  // rinkeby
+  "4": {
+    site: "Etherscan",
+    user: "https://rinkeby.etherscan.io/token/{tokenAddress}?a={address}",
+    contract: "https://rinkeby.etherscan.io/address/{address}",
+    token: "https://rinkeby.etherscan.io/token/{address}",
+    tx: "https://rinkeby.etherscan.io/tx/{txHash}",
+  },
+  // kovan
+  "42": {
+    site: "Etherscan",
+    user: "https://kovan.etherscan.io/token/{tokenAddress}?a={address}",
+    contract: "https://kovan.etherscan.io/address/{address}",
+    token: "https://kovan.etherscan.io/token/{address}",
+    tx: "https://kovan.etherscan.io/tx/{txHash}",
+  },
+  // xDAI
+  "100": {
+    site: "Blockscout",
+    user: "https://blockscout.com/xdai/mainnet/address/{address}/tokens",
+    contract:
+      "https://blockscout.com/xdai/mainnet/address/{address}/transactions",
+    token:
+      "https://blockscout.com/xdai/mainnet/tokens/{address}/token-transfers",
+    tx: "https://blockscout.com/xdai/mainnet/tx/{txHash}/token-transfers",
+  },
+  // Matic
+  "137": {
+    site: "Blockscout",
+    user: "https://explorer-mainnet.maticvigil.com/address/{address}/tokens",
+    contract:
+      "https://explorer-mainnet.maticvigil.com/address/{address}/transactions",
+    token:
+      "https://explorer-mainnet.maticvigil.com/tokens/{address}/token-transfers",
+    tx:
+      "https://explorer-mainnet.maticvigil.com/tx/{txHash}/internal-transactions",
+  },
+};
+
 // TODO enable switch network, url regard to address type
 const EtherscanLink: React.FC<EtherscanLinkProps> = ({
   type,
@@ -37,24 +85,23 @@ const EtherscanLink: React.FC<EtherscanLinkProps> = ({
   additionalTokenAddress,
   small = false,
 }) => {
-  const network: string = process.env?.REACT_APP_NETWORK ?? "mainnet";
-  const baseUrl =
-    network === "mainnet"
-      ? "https://etherscan.io/"
-      : `https://${network}.etherscan.io/`;
+  const network: string = process.env?.REACT_APP_CHAIN_ID ?? "1";
+  const URL = URLs[network];
 
   const link = useMemo(() => {
     switch (type) {
       case "user":
-        return `${baseUrl}token/${additionalTokenAddress}?a=${addressOrTxHash}`;
+        return URL.user
+          .replace("{address}", addressOrTxHash)
+          .replace("{tokenAddress}", additionalTokenAddress ?? "");
       case "contract":
-        return `${baseUrl}address/${addressOrTxHash}`;
+        return URL.contract.replace("{address}", addressOrTxHash);
       case "token":
-        return `${baseUrl}token/${addressOrTxHash}`;
+        return URL.token.replace("{address}", addressOrTxHash);
       case "tx":
-        return `${baseUrl}tx/${addressOrTxHash}`;
+        return URL.tx.replace("{txHash}", addressOrTxHash);
     }
-  }, [baseUrl, addressOrTxHash, additionalTokenAddress]);
+  }, [URL, addressOrTxHash, additionalTokenAddress]);
 
   if (addressOrTxHash === "") {
     return null;
@@ -63,7 +110,7 @@ const EtherscanLink: React.FC<EtherscanLinkProps> = ({
   return (
     <Typography align="center" style={{ fontSize: small ? "14px" : "1rem" }}>
       <Link href={link} target="_blank">
-        View on Etherscan&nbsp;&nbsp;
+        View on {URL.site}&nbsp;&nbsp;
         <FontAwesomeIcon
           icon={faExternalLinkAlt}
           size={small ? "sm" : undefined}

@@ -16,10 +16,11 @@
  */
 
 import { Box, Button, Modal, Paper, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { injected } from "../../../utils/connectors";
 import WalletDialog from "../../molecules/WalletDialog";
+import Link from "@material-ui/core/Link";
 
 function ellipseAddress(address = "", width = 5): string {
   return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -27,10 +28,36 @@ function ellipseAddress(address = "", width = 5): string {
 
 const WalletButton: React.FC = () => {
   const supportChainId = Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "0");
-  const { account, active, error, activate } = useWeb3React();
+  const { account, active, chainId, error, activate } = useWeb3React();
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
   const [open, setOpen] = useState(false);
   const [network, setNetwork] = useState("");
+
+  const appURL = useMemo(() => {
+    if (error === undefined) {
+      return undefined;
+    }
+    const match = error.toString().match(/\d+/);
+    if (match === null) {
+      return undefined;
+    }
+    console.debug(match);
+    const chainId = Number.parseInt(match[0]);
+    switch (chainId) {
+      case 1:
+        return "https://app.iroiro.social";
+      case 4:
+        return "https://rinkeby.iroiro.social";
+      case 42:
+        return "https://kovan.iroiro.social";
+      case 100:
+        return "https://xdai.iroiro.social";
+      case 137:
+        return "https://matic.iroiro.social";
+      default:
+        return undefined;
+    }
+  }, [error]);
 
   useEffect(() => {
     const { ethereum } = window;
@@ -80,6 +107,12 @@ const WalletButton: React.FC = () => {
     if (supportChainId === 42) {
       setNetwork("Kovan test");
     }
+    if (supportChainId === 100) {
+      setNetwork("xDAI");
+    }
+    if (supportChainId === 137) {
+      setNetwork("Matic");
+    }
   }, [supportChainId]);
 
   const handleClickOpen = () => {
@@ -125,6 +158,14 @@ const WalletButton: React.FC = () => {
                   To access Ioriro, please switch to the {network} network.
                 </Typography>
               </Box>
+              {appURL !== undefined && (
+                <Box mt={2}>
+                  <Typography>
+                    Or you can access an{" "}
+                    <Link href={appURL}>app for selected network</Link>.
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Paper>
         </Modal>

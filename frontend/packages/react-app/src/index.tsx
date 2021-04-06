@@ -30,7 +30,7 @@ import {
 import muiTheme from "../src/theme/mui-theme";
 import { SnackbarProvider } from "notistack";
 
-const getLibrary = (provider: any): Web3Provider => {
+export const getLibrary = (provider: any): Web3Provider => {
   const library = new Web3Provider(provider);
   library.pollingInterval = 10000;
   return library;

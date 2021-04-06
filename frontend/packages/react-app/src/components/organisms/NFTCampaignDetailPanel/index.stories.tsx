@@ -18,20 +18,18 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import WalletNFTCampaignDetailPanel, {
-  WalletNFTCampaignDetailPanelProps,
-} from "./index";
+import NFTCampaignDetailPanel, { NFTCampaignDetailPanelProps } from "./index";
 import { campaign, tokenInformationState } from "../../../utils/mockData";
 import { TokenProvider } from "../../../context/token";
 import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
 import { initialState } from "../../../reducers/campaignDetail";
 
 export default {
-  title: "Organisms/WalletNFTCampaignDetailPanel",
-  component: WalletNFTCampaignDetailPanel,
+  title: "Organisms/NFTCampaignDetailPanel",
+  component: NFTCampaignDetailPanel,
 } as Meta;
 
-const Template: Story<WalletNFTCampaignDetailPanelProps> = (args) => (
+const Template: Story<NFTCampaignDetailPanelProps> = (args) => (
   <BrowserRouter>
     <TokenProvider
       initialValue={{
@@ -42,7 +40,7 @@ const Template: Story<WalletNFTCampaignDetailPanelProps> = (args) => (
       }}
       reducer={tokenReducer}
     >
-      <WalletNFTCampaignDetailPanel {...args} />
+      <NFTCampaignDetailPanel {...args} />
     </TokenProvider>
   </BrowserRouter>
 );
@@ -68,7 +66,6 @@ IsOnlyView.args = {
   state: {
     ...initialState,
     ...Default.args.state,
-    isOnlyView: true,
   },
 };
 

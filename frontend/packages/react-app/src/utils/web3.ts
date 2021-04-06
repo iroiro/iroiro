@@ -30,6 +30,7 @@ import {
 } from "../types/factories/UUIDDistributor__factory";
 import { WalletDistributor__factory as WalletDistributor } from "../types/factories/WalletDistributor__factory";
 import { ContractTransaction } from "@ethersproject/contracts";
+import { Network } from "@ethersproject/networks";
 // @ts-ignore
 import { addresses } from "@project/contracts";
 import { MERKLE_PROOF_API } from "../utils/const";
@@ -51,7 +52,7 @@ export const getTokenInfo = async (
   let provider: Provider | Signer;
 
   if (!library) {
-    provider = getDefaultProvider(process.env?.REACT_APP_NETWORK ?? "mainnet");
+    provider = getDefaultProvider(process.env.REACT_APP_RPC_URL);
   } else {
     provider = library.getSigner();
   }

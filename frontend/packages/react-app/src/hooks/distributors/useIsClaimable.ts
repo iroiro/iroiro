@@ -35,11 +35,13 @@ export const useIsClaimable = (
   hashedUUID: string
 ): {
   isClaimable: boolean;
+  isProofPresent: boolean;
   claimableAmount: string;
   loading: boolean;
   error: any;
 } => {
   const [isClaimable, setIsClaimable] = useState<boolean>(false);
+  const [isProofPresent, setIsProofPresent] = useState<boolean>(false);
   const [claimableAmount, setClaimableAmount] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any | undefined>();
@@ -89,6 +91,7 @@ export const useIsClaimable = (
         campaignId,
         claim.index
       );
+      setIsProofPresent(true);
       setIsClaimable(!isClaimed);
       setClaimableAmount(claim.amount);
     };
@@ -135,6 +138,7 @@ export const useIsClaimable = (
         campaignId,
         claim.index
       );
+      setIsProofPresent(true);
       setIsClaimable(!isClaimed);
       setClaimableAmount(claim.amount);
     };
@@ -181,6 +185,7 @@ export const useIsClaimable = (
         campaignId,
         claim.index
       );
+      setIsProofPresent(true);
       setIsClaimable(!isClaimed);
       setClaimableAmount(claim.amount);
     };
@@ -226,6 +231,7 @@ export const useIsClaimable = (
         campaignId,
         claim.index
       );
+      setIsProofPresent(true);
       setIsClaimable(!isClaimed);
       setClaimableAmount(claim.amount);
     };
@@ -245,5 +251,6 @@ export const useIsClaimable = (
         break;
     }
   }, [library, campaignId]);
-  return { isClaimable, claimableAmount, loading, error };
+
+  return { isClaimable, isProofPresent, claimableAmount, loading, error };
 };
