@@ -93,6 +93,7 @@ const CampaignDetailCreatorPage: React.FC<
     getCampaign({
       variables: {
         id: `${distributorAddress.toLowerCase()}-${campaignId}`,
+        account: null,
       },
     });
   }, [getCampaign, campaignId]);
