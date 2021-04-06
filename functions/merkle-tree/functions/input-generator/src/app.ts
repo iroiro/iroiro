@@ -20,7 +20,7 @@ import { isAddress } from "web3-utils";
 import * as FormData from "form-data";
 import * as stream from "stream";
 import axios, { AxiosRequestConfig } from "axios";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import {
   BalanceMapOldFormat,
   StringBalanceMapOldFormat,
@@ -49,10 +49,10 @@ exports.lambdaHandler = async (event: APIGatewayProxyEvent) => {
 
   // TODO treat string amount
   // @ts-ignore
-  const amount: number = event["amount"];
+  const amount: string = event?.["amount"] ?? "";
 
-  // get amount from both of number or string
-  if (!amount || amount < 0) {
+  const amountBN = BigNumber.from(amount);
+  if (amount === "0" || amountBN.isNegative()) {
     throw Error(`amount is invalid. passed: ${amount}`);
   }
 

@@ -42,7 +42,7 @@ describe("Tests Input Generator", function () {
     it("Verifies response", async () => {
       event = {
         cid: addressTargetsCid,
-        amount: 100,
+        amount: "64",
       };
       const result = await app.lambdaHandler(event, context);
       console.debug("result: ", result);
@@ -50,7 +50,7 @@ describe("Tests Input Generator", function () {
       expect(result).to.be.an("object");
       expect(result.cid).to.be.an("string");
       expect(result.cid).to.equal(
-        "QmV9ZNxdwamcxx9CuhBpwZCTSLXgwFths5GRRdBDubi3gB"
+        "QmZdgUT5UPRzhyguZkQjWpn6MHh1JkeCUk9cFprkp5vCZD"
       );
       expect(result.type).to.be.an("string");
       expect(result.type).to.equal("address");
@@ -66,13 +66,13 @@ describe("Tests Input Generator", function () {
           assert.fail();
         } catch (err) {
           expect(err.message).to.be.equals(
-            "amount is invalid. passed: undefined"
+            'invalid BigNumber string (argument="value", value="", code=INVALID_ARGUMENT, version=bignumber/5.0.13)'
           );
         }
 
         event = {
           cid: addressTargetsCid,
-          amount: 0,
+          amount: "0",
         };
         try {
           await app.lambdaHandler(event, context);
@@ -85,7 +85,7 @@ describe("Tests Input Generator", function () {
       it("throws error if targets contains non address value", async () => {
         event = {
           cid: invalidAddressTargetsCid,
-          amount: 100,
+          amount: "64",
         };
         try {
           await app.lambdaHandler(event, context);
@@ -101,7 +101,7 @@ describe("Tests Input Generator", function () {
     it("Verifies response", async () => {
       event = {
         cid: keccak256TargetsCid,
-        amount: 100,
+        amount: "64",
       };
       const result = await app.lambdaHandler(event, context);
       console.debug("result: ", result);
@@ -109,7 +109,7 @@ describe("Tests Input Generator", function () {
       expect(result).to.be.an("object");
       expect(result.cid).to.be.an("string");
       expect(result.cid).to.equal(
-        "QmbE1NKLTsSvNAeECC5KnXxG8nFmaP5XAoY67GbDZHb56W"
+        "QmRpWx9MWpFgJugfZww1uWTaK6tJymmzeuWEcBsBkcijvV"
       );
       expect(result.type).to.be.an("string");
       expect(result.type).to.equal("keccak256");
@@ -118,7 +118,7 @@ describe("Tests Input Generator", function () {
     it("1000 targets", async () => {
       event = {
         cid: thousandKeccak256TargetsCid,
-        amount: 100,
+        amount: "64",
       };
       const result = await app.lambdaHandler(event, context);
       console.debug("result: ", result);
@@ -126,7 +126,7 @@ describe("Tests Input Generator", function () {
       expect(result).to.be.an("object");
       expect(result.cid).to.be.an("string");
       expect(result.cid).to.equal(
-        "QmNrsPQwKqvTxCw6DQoXb9Sr1PMwvEiCaCKQ1G7sWFHpy2"
+        "QmWVa4BKdeLaSezTosWzRQJmuhy9Na18LiDxRVj2K1WTKQ"
       );
       expect(result.type).to.be.an("string");
       expect(result.type).to.equal("keccak256");
@@ -142,13 +142,13 @@ describe("Tests Input Generator", function () {
           assert.fail();
         } catch (err) {
           expect(err.message).to.be.equals(
-            "amount is invalid. passed: undefined"
+            'invalid BigNumber string (argument="value", value="", code=INVALID_ARGUMENT, version=bignumber/5.0.13)'
           );
         }
 
         event = {
           cid: keccak256TargetsCid,
-          amount: 0,
+          amount: "0",
         };
         try {
           await app.lambdaHandler(event, context);
@@ -161,7 +161,7 @@ describe("Tests Input Generator", function () {
       it("throws error if targets contains non hashed value", async () => {
         event = {
           cid: invalidKeccakTargetsCid,
-          amount: 100,
+          amount: "64",
         };
         try {
           await app.lambdaHandler(event, context);
@@ -176,7 +176,7 @@ describe("Tests Input Generator", function () {
   it("throws error if type is not address or undefined", async () => {
     event = {
       cid: invalidFormatCid,
-      amount: 100,
+      amount: "64",
     };
     try {
       await app.lambdaHandler(event, context);
@@ -189,7 +189,7 @@ describe("Tests Input Generator", function () {
   it("throws error if target quantity exceeds 2001", async () => {
     event = {
       cid: twoThousandsOneKeccak256TargetsCid,
-      amount: 10000,
+      amount: "2710",
     };
     try {
       await app.lambdaHandler(event, context);

@@ -8,3 +8,13 @@ s3_prefix = "merkle-tree"
 region = "ap-northeast-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
+
+[alpha]
+[alpha.deploy]
+[alpha.deploy.parameters]
+stack_name = "iroiro-merkle-tree-alpha"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1gkyvr7vvv54i"
+s3_prefix = "iroiro-merkle-tree-alpha"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
