@@ -181,9 +181,10 @@ const CreateWalletNFTCampaignPage: React.FC<CreateWalletNFTCampaignPageProps> = 
 
   const makeMerkleProof = useCallback(
     async (allowance, recipientsCid, account) => {
+      const allowanceHex = BigNumber.from(allowance).toHexString().substr(2);
       /*eslint-disable no-useless-escape*/
       const data = JSON.stringify({
-        input: `{\"cid\": \"${recipientsCid}\",\"amount\": ${allowance.toString()}}`,
+        input: `{\"cid\": \"${recipientsCid}\",\"amount\": \"${allowanceHex}\"}`,
         name: `${account}-${Date.now()}`,
         stateMachineArn: MERKLE_ROOT_EXECUTION_ARN,
       });
