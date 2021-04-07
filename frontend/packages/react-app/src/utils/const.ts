@@ -18,7 +18,7 @@
 export const IPFS_PINNING_API =
   "https://rf0xlqny1b.execute-api.ap-northeast-1.amazonaws.com/Prod/pinning/pinByHash";
 export const MERKLE_ROOT_EXECUTION_ARN =
-  "arn:aws:states:ap-northeast-1:179855544942:stateMachine:MerkleTreeStateMachine-u91rcI6fnEBJ";
+  "arn:aws:states:ap-northeast-1:179855544942:stateMachine:MerkleTreeStateMachine-u2m7i9up1Q5Y";
 export const MERKLE_ROOT_API_START =
   "https://qonk7ycnn8.execute-api.ap-northeast-1.amazonaws.com/alpha/start-execution";
 export const MERKLE_ROOT_API_DESCRIBE =

@@ -28,7 +28,7 @@ let event: any, context: APIGatewayEventRequestContext;
 describe("Tests Generator", function () {
   it("Verifies response for address", async () => {
     event = {
-      cid: "QmV9ZNxdwamcxx9CuhBpwZCTSLXgwFths5GRRdBDubi3gB",
+      cid: "QmZdgUT5UPRzhyguZkQjWpn6MHh1JkeCUk9cFprkp5vCZD",
       type: "address",
     };
     const result = await app.lambdaHandler(event, context);
@@ -45,7 +45,7 @@ describe("Tests Generator", function () {
 
   it("Verifies response for keccak256", async () => {
     event = {
-      cid: "QmbE1NKLTsSvNAeECC5KnXxG8nFmaP5XAoY67GbDZHb56W",
+      cid: "QmRpWx9MWpFgJugfZww1uWTaK6tJymmzeuWEcBsBkcijvV",
       type: "keccak256",
     };
     const result = await app.lambdaHandler(event, context);
@@ -62,7 +62,7 @@ describe("Tests Generator", function () {
 
   it("1000 targets", async () => {
     event = {
-      cid: "QmbE1NKLTsSvNAeECC5KnXxG8nFmaP5XAoY67GbDZHb56W",
+      cid: "QmWVa4BKdeLaSezTosWzRQJmuhy9Na18LiDxRVj2K1WTKQ",
       type: "keccak256",
     };
     const result = await app.lambdaHandler(event, context);
@@ -73,7 +73,7 @@ describe("Tests Generator", function () {
     expect(result.bucket).to.equal(process.env.MERKLE_TREE_BUCKET);
     expect(result.key).to.be.an("string");
     expect(result.key).to.equal(
-      "0xa86722d7ef8b3198c8f0a8936de30591dd9a328370f3155adf3bccea34c607da.json"
+      "0x6e6b088eb2c4169102eaf7fc399bcbbe49d7d222d899d7e2d3149837c06c7c82.json"
     );
   });
 

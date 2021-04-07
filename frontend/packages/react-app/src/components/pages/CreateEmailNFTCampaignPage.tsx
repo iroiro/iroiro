@@ -40,6 +40,7 @@ import {
 } from "../../utils/const";
 import { emailInitialState, emailReducer } from "../../reducers/email";
 import CreateEmailNFTCampaignPageTemplate from "../templates/CreateEmailNFTCampaignPageTemaplate";
+import { BigNumber } from "ethers";
 
 const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
 const ipfs = IpfsHttpClient(infura);
@@ -186,9 +187,10 @@ const CreateEmailNFTCampaignPage: React.FC<CreateEmailNFTCampaignPageProps> = ({
 
   const makeMerkleProof = useCallback(
     async (allowance, recipientsCid, account) => {
+      const allowanceHex = BigNumber.from(allowance).toHexString().substr(2);
       /*eslint-disable no-useless-escape*/
       const data = JSON.stringify({
-        input: `{\"cid\": \"${recipientsCid}\",\"amount\": ${allowance.toString()}}`,
+        input: `{\"cid\": \"${recipientsCid}\",\"amount\": \"${allowanceHex}\"}`,
         name: `${account}-${Date.now()}`,
         stateMachineArn: MERKLE_ROOT_EXECUTION_ARN,
       });
