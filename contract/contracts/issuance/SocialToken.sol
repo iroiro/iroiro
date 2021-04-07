@@ -12,8 +12,8 @@ contract SocialToken is ERC20Burnable {
     constructor(
         string memory name,
         string memory symbol,
-        address factory
+        address to
     ) public ERC20(name, symbol) {
-        _mint(factory, SocialTokenConstants.totalSupply);
+        _mint(to, SocialTokenConstants.totalSupply);
     }
 }
