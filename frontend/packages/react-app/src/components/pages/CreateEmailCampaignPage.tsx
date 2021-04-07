@@ -280,11 +280,11 @@ const CreateEmailCampaignPage: React.FC<CreateEmailCampaignPageProps> = ({
     async (allowance, targetNum, recipientsCid, account) => {
       const BNAllowance = BigNumber.from(allowance);
       const BNTargetsNum = BigNumber.from(targetNum);
-      const amount = BNAllowance.div(BNTargetsNum).toString();
+      const amount = BNAllowance.div(BNTargetsNum).toHexString().substr(2);
 
       /*eslint-disable no-useless-escape*/
       const data = JSON.stringify({
-        input: `{\"cid\": \"${recipientsCid}\",\"amount\": ${amount}}`,
+        input: `{\"cid\": \"${recipientsCid}\",\"amount\": \"${amount}\"}`,
         name: `${account}-${Date.now()}`,
         stateMachineArn: MERKLE_ROOT_EXECUTION_ARN,
       });

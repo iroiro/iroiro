@@ -4,7 +4,7 @@
     "States": {
         "Generate Input": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-InputGeneratorFunction-QHN6LA3GV43G",
+            "Resource": "${InputGeneratorFunctionArn}",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -19,7 +19,7 @@
         },
         "Generate": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-GeneratorFunction-1X9XNEPNVHDIG",
+            "Resource": "${GeneratorFunctionArn}",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -34,7 +34,7 @@
         },
         "Upload": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-UploaderFunction-1E2TG0GVVNPTE",
+            "Resource": "${UploaderFunctionArn}",
             "Retry": [
                 {
                     "ErrorEquals": [
@@ -49,7 +49,7 @@
         },
         "Split": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:ap-northeast-1:179855544942:function:merkle-tree-SplitterFunction-W2D0UXB1EQBX",
+            "Resource": "${SplitterFunctionArn}",
             "Retry": [
                 {
                     "ErrorEquals": [
