@@ -18,7 +18,7 @@
 import { expect } from "chai";
 import { constants, ContractFactory, Signer } from "ethers";
 import { ethers } from "hardhat";
-import { SocialToken } from "../types/SocialToken";
+import { SocialToken } from "../../types/SocialToken";
 
 describe("SocialToken", () => {
   let owner: Signer, alice: Signer, bob: Signer;

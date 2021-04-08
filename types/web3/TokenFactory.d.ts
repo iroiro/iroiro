@@ -24,12 +24,8 @@ interface EventOptions {
 export type CreateToken = ContractEventLog<{
   token: string;
   creator: string;
-  name: string;
-  symbol: string;
   0: string;
   1: string;
-  2: string;
-  3: string;
 }>;
 export type OwnershipTransferred = ContractEventLog<{
   previousOwner: string;
@@ -64,6 +60,8 @@ export interface TokenFactory extends BaseContract {
     updateCreatorFund(
       newCreatorFund: string
     ): NonPayableTransactionObject<void>;
+
+    updateTreasuryVester(): NonPayableTransactionObject<void>;
 
     createToken(
       name: string,

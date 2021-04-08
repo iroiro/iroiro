@@ -27,6 +27,7 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
     "renounceOwnership()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "updateCreatorFund(address)": FunctionFragment;
+    "updateTreasuryVester()": FunctionFragment;
     "createToken(string,string,uint16)": FunctionFragment;
     "createExclusiveToken(address,string,string,uint16,uint16)": FunctionFragment;
   };
@@ -43,6 +44,10 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "updateCreatorFund",
     values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateTreasuryVester",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "createToken",
@@ -67,6 +72,10 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "updateTreasuryVester",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "createToken",
     data: BytesLike
   ): Result;
@@ -76,7 +85,7 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
-    "CreateToken(address,address,string,string)": EventFragment;
+    "CreateToken(address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
@@ -174,6 +183,12 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    updateTreasuryVester(overrides?: Overrides): Promise<ContractTransaction>;
+
+    "updateTreasuryVester()"(
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     createToken(
       name: string,
       symbol: string,
@@ -252,6 +267,10 @@ export class TokenFactory extends Contract {
     newCreatorFund: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
+
+  updateTreasuryVester(overrides?: Overrides): Promise<ContractTransaction>;
+
+  "updateTreasuryVester()"(overrides?: Overrides): Promise<ContractTransaction>;
 
   createToken(
     name: string,
@@ -332,6 +351,10 @@ export class TokenFactory extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    updateTreasuryVester(overrides?: CallOverrides): Promise<void>;
+
+    "updateTreasuryVester()"(overrides?: CallOverrides): Promise<void>;
+
     createToken(
       name: string,
       symbol: string,
@@ -368,13 +391,8 @@ export class TokenFactory extends Contract {
   filters: {
     CreateToken(
       token: string | null,
-      creator: string | null,
-      name: null,
-      symbol: null
-    ): TypedEventFilter<
-      [string, string, string, string],
-      { token: string; creator: string; name: string; symbol: string }
-    >;
+      creator: string | null
+    ): TypedEventFilter<[string, string], { token: string; creator: string }>;
 
     OwnershipTransferred(
       previousOwner: string | null,
@@ -431,6 +449,10 @@ export class TokenFactory extends Contract {
       newCreatorFund: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    updateTreasuryVester(overrides?: Overrides): Promise<BigNumber>;
+
+    "updateTreasuryVester()"(overrides?: Overrides): Promise<BigNumber>;
 
     createToken(
       name: string,
@@ -509,6 +531,12 @@ export class TokenFactory extends Contract {
 
     "updateCreatorFund(address)"(
       newCreatorFund: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    updateTreasuryVester(overrides?: Overrides): Promise<PopulatedTransaction>;
+
+    "updateTreasuryVester()"(
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 

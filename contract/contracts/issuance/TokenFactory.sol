@@ -28,17 +28,34 @@ import "../issuance/TreasuryVester.sol";
 contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     using SafeMath for uint256;
 
-    address creatorFund;
-    address treasuryVester;
+    address private operator;
+    address private donatee;
+    address private creatorFund;
+    address private treasuryVester;
 
+    // TODO emit event
     // TODO consider owner should be changed initially
-    constructor(address _creatorFund, address _treasuryVester) {
+    constructor(
+        address _operator,
+        address _donatee,
+        address _creatorFund,
+        address _treasuryVester
+    ) {
+        operator = _operator;
+        donatee = _donatee;
         creatorFund = _creatorFund;
         treasuryVester = _treasuryVester;
     }
 
+    // TODO emit event
     function updateCreatorFund(address newCreatorFund) public onlyOwner {
         creatorFund = newCreatorFund;
+    }
+
+    // TODO emit event
+    // TODO consider treasury vester management (here or frontend)
+    function updateTreasuryVester() public {
+
     }
 
     function createToken(
@@ -49,6 +66,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         createActualToken(msg.sender, name, symbol, 0, donationRatio);
     }
 
+    // TODO Add variable years
     function createExclusiveToken(
         address creator,
         string memory name,
@@ -70,15 +88,13 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
 
         emit CreateToken(
             address(token),
-            creator,
-            name,
-            symbol
+            creator
         );
 
         transferToken(msg.sender, address(token), operationRatio, donationRatio);
         TreasuryVester(treasuryVester).addVesting(
-            creator,
             address(token),
+            creator,
             block.timestamp
         );
     }
@@ -102,7 +118,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         );
         if (operationRatio > 0) {
             token.transfer(
-                creator,
+                operator,
                 SocialTokenConstants.totalSupply.mul(operationRatio).div(10000)
             );
         }
@@ -116,7 +132,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         if (donationRatio > 0) {
             // TODO use safe math
             token.transfer(
-                owner(),
+                donatee,
                 SocialTokenConstants.totalSupply.mul(donationRatio / 2).div(10000)
             );
             token.transfer(

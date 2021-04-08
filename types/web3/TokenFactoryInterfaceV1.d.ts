@@ -24,12 +24,8 @@ interface EventOptions {
 export type CreateToken = ContractEventLog<{
   token: string;
   creator: string;
-  name: string;
-  symbol: string;
   0: string;
   1: string;
-  2: string;
-  3: string;
 }>;
 
 export interface TokenFactoryInterfaceV1 extends BaseContract {

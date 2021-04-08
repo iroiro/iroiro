@@ -32,9 +32,9 @@ interface TreasuryVesterInterface extends ethers.utils.Interface {
     "tokensVestingStart(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "vestingTokens(address)": FunctionFragment;
-    "remainingAmount(address)": FunctionFragment;
     "addVesting(address,address,uint256)": FunctionFragment;
     "redeem(address)": FunctionFragment;
+    "remainingAmount(address)": FunctionFragment;
     "redeemableAmountOf(address)": FunctionFragment;
   };
 
@@ -72,14 +72,14 @@ interface TreasuryVesterInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "remainingAmount",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "addVesting",
     values: [string, string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "redeem", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "remainingAmount",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "redeemableAmountOf",
     values: [string]
@@ -118,12 +118,12 @@ interface TreasuryVesterInterface extends ethers.utils.Interface {
     functionFragment: "vestingTokens",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "addVesting", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "remainingAmount",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "addVesting", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "redeemableAmountOf",
     data: BytesLike
@@ -270,16 +270,6 @@ export class TreasuryVester extends Contract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    remainingAmount(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    "remainingAmount(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     addVesting(
       token: string,
       recipient: string,
@@ -300,6 +290,16 @@ export class TreasuryVester extends Contract {
       token: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    remainingAmount(
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "remainingAmount(address)"(
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     redeemableAmountOf(
       token: string,
@@ -396,13 +396,6 @@ export class TreasuryVester extends Contract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  remainingAmount(token: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  "remainingAmount(address)"(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   addVesting(
     token: string,
     recipient: string,
@@ -423,6 +416,13 @@ export class TreasuryVester extends Contract {
     token: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
+
+  remainingAmount(token: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  "remainingAmount(address)"(
+    token: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   redeemableAmountOf(
     token: string,
@@ -525,16 +525,6 @@ export class TreasuryVester extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    remainingAmount(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "remainingAmount(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     addVesting(
       token: string,
       recipient: string,
@@ -552,6 +542,16 @@ export class TreasuryVester extends Contract {
     redeem(token: string, overrides?: CallOverrides): Promise<void>;
 
     "redeem(address)"(token: string, overrides?: CallOverrides): Promise<void>;
+
+    remainingAmount(
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "remainingAmount(address)"(
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     redeemableAmountOf(
       token: string,
@@ -668,16 +668,6 @@ export class TreasuryVester extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    remainingAmount(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "remainingAmount(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     addVesting(
       token: string,
       recipient: string,
@@ -695,6 +685,16 @@ export class TreasuryVester extends Contract {
     redeem(token: string, overrides?: Overrides): Promise<BigNumber>;
 
     "redeem(address)"(token: string, overrides?: Overrides): Promise<BigNumber>;
+
+    remainingAmount(
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "remainingAmount(address)"(
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     redeemableAmountOf(
       token: string,
@@ -804,16 +804,6 @@ export class TreasuryVester extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    remainingAmount(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "remainingAmount(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     addVesting(
       token: string,
       recipient: string,
@@ -833,6 +823,16 @@ export class TreasuryVester extends Contract {
     "redeem(address)"(
       token: string,
       overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    remainingAmount(
+      token: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "remainingAmount(address)"(
+      token: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     redeemableAmountOf(

@@ -20,9 +20,7 @@ pragma solidity =0.7.6;
 interface TokenFactoryInterfaceV1 {
     event CreateToken (
         address indexed token,
-        address indexed creator,
-        string name,
-        string symbol
+        address indexed creator
     );
 
     function createToken(

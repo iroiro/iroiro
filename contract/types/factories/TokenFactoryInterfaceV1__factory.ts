@@ -36,18 +36,6 @@ const _abi = [
         name: "creator",
         type: "address",
       },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "symbol",
-        type: "string",
-      },
     ],
     name: "CreateToken",
     type: "event",

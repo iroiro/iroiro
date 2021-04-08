@@ -46,7 +46,7 @@ interface TokenFactoryInterfaceV1Interface extends ethers.utils.Interface {
   ): Result;
 
   events: {
-    "CreateToken(address,address,string,string)": EventFragment;
+    "CreateToken(address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CreateToken"): EventFragment;
@@ -198,13 +198,8 @@ export class TokenFactoryInterfaceV1 extends Contract {
   filters: {
     CreateToken(
       token: string | null,
-      creator: string | null,
-      name: null,
-      symbol: null
-    ): TypedEventFilter<
-      [string, string, string, string],
-      { token: string; creator: string; name: string; symbol: string }
-    >;
+      creator: string | null
+    ): TypedEventFilter<[string, string], { token: string; creator: string }>;
   };
 
   estimateGas: {
