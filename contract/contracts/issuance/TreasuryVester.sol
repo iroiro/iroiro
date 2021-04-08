@@ -18,6 +18,7 @@
 pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 import "../interfaces/TreasuryVesterInterfaceV1.sol";
 import "../issuance/SocialToken.sol";
 

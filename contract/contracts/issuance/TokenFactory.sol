@@ -19,11 +19,11 @@ pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/proxy/Clones.sol";
 import "../interfaces/TokenFactoryInterfaceV1.sol";
 import "../issuance/SocialToken.sol";
 import "../issuance/TreasuryVester.sol";
 
-// TODO add Clonable ERC20
 contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     using SafeMath for uint256;
 
@@ -31,6 +31,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     address private donatee;
     address private creatorFund;
     address private treasuryVester;
+    address private socialTokenImplementation;
 
     constructor(
         address _operator,
@@ -42,6 +43,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         updateDonatee(_donatee);
         updateCreatorFund(_creatorFund);
         updateTreasuryVester(_treasuryVester);
+
+        socialTokenImplementation = address(new SocialToken());
     }
 
     function updateOperator(address newOperator) public override onlyOwner {
@@ -91,7 +94,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         uint256 donationRatio,
         uint256 vestingYears
     ) private {
-        SocialToken token = new SocialToken(name, symbol, address(this));
+        address token = Clones.clone(socialTokenImplementation);
+        SocialToken(token).initialize(name, symbol, address(this));
 
         emit CreateToken(
             address(token),

@@ -30,16 +30,20 @@ describe("SocialToken", () => {
       "SocialToken"
     );
     [owner, alice, bob] = await ethers.getSigners();
-    socialToken = (await SocialToken.deploy(
+    socialToken = (await SocialToken.deploy()) as SocialToken;
+    await socialToken.initialize(
       "SocialToken",
       "SCL",
       await owner.getAddress()
-    )) as SocialToken;
-    aliceToken = (await SocialToken.deploy(
-      "AliceToken",
-      "ALC",
-      await alice.getAddress()
-    )) as SocialToken;
+    );
+    aliceToken = (await SocialToken.deploy()) as SocialToken;
+    await aliceToken.initialize("AliceToken", "ALC", await alice.getAddress());
+  });
+
+  it("cant initialize again", async () => {
+    await expect(
+      socialToken.initialize("SocialToken", "SCL", await owner.getAddress())
+    ).to.be.revertedWith("Initializable: contract is already initialized");
   });
 
   it("has a name", async () => {

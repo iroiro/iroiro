@@ -132,6 +132,12 @@ export interface SocialToken extends BaseContract {
       recipient: string,
       amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
+
+    initialize(
+      name: string,
+      symbol: string,
+      to: string
+    ): NonPayableTransactionObject<void>;
   };
   events: {
     Approval(cb?: Callback<Approval>): EventEmitter;
