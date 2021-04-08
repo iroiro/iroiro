@@ -60,7 +60,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         emit UpdateCreatorFund(newCreatorFund);
     }
 
-    function updateTreasuryVester(address newTreasuryVester) public override onlyOwner{
+    function updateTreasuryVester(address newTreasuryVester) public override onlyOwner {
         treasuryVester = newTreasuryVester;
         emit UpdateTreasuryVester(newTreasuryVester);
     }
@@ -68,7 +68,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     function createToken(
         string memory name,
         string memory symbol,
-        uint16 donationRatio // percentage with decimal 2
+        uint256 donationRatio // percentage with decimal 2
     ) external override {
         createActualToken(msg.sender, name, symbol, 0, donationRatio);
     }
@@ -78,8 +78,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         address creator,
         string memory name,
         string memory symbol,
-        uint16 donationRatio,
-        uint16 operationRatio
+        uint256 donationRatio,
+        uint256 operationRatio
     ) external override {
         createActualToken(creator, name, symbol, operationRatio, donationRatio);
     }
@@ -88,8 +88,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         address creator,
         string memory name,
         string memory symbol,
-        uint16 operationRatio,
-        uint16 donationRatio
+        uint256 operationRatio,
+        uint256 donationRatio
     ) private {
         SocialToken token = new SocialToken(name, symbol, address(this));
 
@@ -109,12 +109,12 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     function transferToken(
         address creator,
         address _token,
-        uint16 operationRatio,
-        uint16 donationRatio
+        uint256 operationRatio,
+        uint256 donationRatio
     ) internal {
         // transfer to token creator(for operation)
         // TODO add safe math
-        uint16 distributionRatio = 2000 - operationRatio;
+        uint256 distributionRatio = uint256(2000).sub(operationRatio);
 
         SocialToken token = SocialToken(_token);
 
@@ -131,7 +131,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         }
 
         // transfer to treasury vester
-        uint16 vestingRatio = 8000 - donationRatio;
+        uint256 vestingRatio = uint256(8000).sub(donationRatio);
         token.transfer(
             treasuryVester,
             SocialTokenConstants.totalSupply.mul(vestingRatio).div(10000)
@@ -140,11 +140,11 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             // TODO use safe math
             token.transfer(
                 donatee,
-                SocialTokenConstants.totalSupply.mul(donationRatio / 2).div(10000)
+                SocialTokenConstants.totalSupply.mul(donationRatio.div(2)).div(10000)
             );
             token.transfer(
                 creatorFund,
-                SocialTokenConstants.totalSupply.mul(donationRatio / 2).div(10000)
+                SocialTokenConstants.totalSupply.mul(donationRatio.div(2)).div(10000)
             );
         }
     }

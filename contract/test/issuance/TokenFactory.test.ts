@@ -301,7 +301,7 @@ describe("TokenFactory", () => {
       it("create a new token with exceeded donation ratio", async () => {
         await expect(
           factory.createToken("SocialToken", "SCL", 8001)
-        ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
+        ).to.be.revertedWith("SafeMath: subtraction overflow");
       });
     });
   });
@@ -665,7 +665,7 @@ describe("TokenFactory", () => {
               8001,
               0
             )
-        ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
+        ).to.be.revertedWith("SafeMath: subtraction overflow");
       });
 
       it("create a new token with exceeded operation ratio", async () => {
@@ -679,7 +679,7 @@ describe("TokenFactory", () => {
               0,
               2001
             )
-        ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
+        ).to.be.revertedWith("SafeMath: subtraction overflow");
       });
     });
   });

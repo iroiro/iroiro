@@ -39,14 +39,14 @@ interface TokenFactoryInterfaceV1 {
     function createToken(
         string memory name,
         string memory symbol,
-        uint16 donationRatio
+        uint256 donationRatio
     ) external;
 
     function createExclusiveToken(
         address creator,
         string memory name,
         string memory symbol,
-        uint16 donationRatio,
-        uint16 operationRatio
+        uint256 donationRatio,
+        uint256 operationRatio
     ) external;
 }

@@ -30,8 +30,8 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
     "updateDonatee(address)": FunctionFragment;
     "updateCreatorFund(address)": FunctionFragment;
     "updateTreasuryVester(address)": FunctionFragment;
-    "createToken(string,string,uint16)": FunctionFragment;
-    "createExclusiveToken(address,string,string,uint16,uint16)": FunctionFragment;
+    "createToken(string,string,uint256)": FunctionFragment;
+    "createExclusiveToken(address,string,string,uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -246,7 +246,7 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createToken(string,string,uint16)"(
+    "createToken(string,string,uint256)"(
       name: string,
       symbol: string,
       donationRatio: BigNumberish,
@@ -262,7 +262,7 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createExclusiveToken(address,string,string,uint16,uint16)"(
+    "createExclusiveToken(address,string,string,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
@@ -355,7 +355,7 @@ export class TokenFactory extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createToken(string,string,uint16)"(
+  "createToken(string,string,uint256)"(
     name: string,
     symbol: string,
     donationRatio: BigNumberish,
@@ -371,7 +371,7 @@ export class TokenFactory extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createExclusiveToken(address,string,string,uint16,uint16)"(
+  "createExclusiveToken(address,string,string,uint256,uint256)"(
     creator: string,
     name: string,
     symbol: string,
@@ -461,7 +461,7 @@ export class TokenFactory extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createToken(string,string,uint16)"(
+    "createToken(string,string,uint256)"(
       name: string,
       symbol: string,
       donationRatio: BigNumberish,
@@ -477,7 +477,7 @@ export class TokenFactory extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createExclusiveToken(address,string,string,uint16,uint16)"(
+    "createExclusiveToken(address,string,string,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
@@ -602,7 +602,7 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createToken(string,string,uint16)"(
+    "createToken(string,string,uint256)"(
       name: string,
       symbol: string,
       donationRatio: BigNumberish,
@@ -618,7 +618,7 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createExclusiveToken(address,string,string,uint16,uint16)"(
+    "createExclusiveToken(address,string,string,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
@@ -712,7 +712,7 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createToken(string,string,uint16)"(
+    "createToken(string,string,uint256)"(
       name: string,
       symbol: string,
       donationRatio: BigNumberish,
@@ -728,7 +728,7 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createExclusiveToken(address,string,string,uint16,uint16)"(
+    "createExclusiveToken(address,string,string,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
