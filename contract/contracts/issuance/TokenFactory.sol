@@ -91,7 +91,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             creator
         );
 
-        transferToken(msg.sender, address(token), operationRatio, donationRatio);
+        transferToken(creator, address(token), operationRatio, donationRatio);
         TreasuryVester(treasuryVester).addVesting(
             address(token),
             creator,
