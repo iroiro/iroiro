@@ -107,14 +107,40 @@ describe("Vesting", () => {
       );
     });
 
-    it("register account as recipient", async () => {
+    it("register start time", async () => {
+      const now = (await provider.getBlock("latest")).timestamp;
       await vester.addVesting(
         socialToken.address,
         await alice.getAddress(),
-        (await provider.getBlock("latest")).timestamp
+        now
       );
-      expect(await vester.tokensRecipient(socialToken.address)).to.equal(
-        await alice.getAddress()
+      expect(await vester.tokensVestingStart(socialToken.address)).to.equal(
+        now.toString()
+      );
+    });
+
+    it("register end time", async () => {
+      const now = (await provider.getBlock("latest")).timestamp;
+      await vester.addVesting(
+        socialToken.address,
+        await alice.getAddress(),
+        now
+      );
+      const end = now + 60 * 60 * 24 * 365 * 3;
+      expect(await vester.tokensVestingEnd(socialToken.address)).to.equal(
+        end.toString()
+      );
+    });
+
+    it("register update time", async () => {
+      const now = (await provider.getBlock("latest")).timestamp;
+      await vester.addVesting(
+        socialToken.address,
+        await alice.getAddress(),
+        now
+      );
+      expect(await vester.tokensLastUpdate(socialToken.address)).to.equal(
+        now.toString()
       );
     });
   });
@@ -162,6 +188,25 @@ describe("Vesting", () => {
         await socialToken.balanceOf(recipient)
       ).toString();
       expect(recipientBalance).to.equal("5000000105699306612548621");
+    });
+
+    it("update last update", async () => {
+      const now = (await provider.getBlock("latest")).timestamp;
+      await vester.addVesting(
+        socialToken.address,
+        await alice.getAddress(),
+        now
+      );
+      const threeYearsLater = now + 60 * 60 * 24 * 365 * 3;
+      await mineBlock(provider, now + (threeYearsLater - now) / 2);
+      const minedTime = (await provider.getBlock("latest")).timestamp;
+      console.debug("Passed time: ", minedTime - now);
+      await vester.redeem(socialToken.address);
+      const updatedTime = (await provider.getBlock("latest")).timestamp;
+
+      expect(
+        (await vester.tokensLastUpdate(socialToken.address)).toString()
+      ).to.equal(updatedTime.toString());
     });
 
     it("redeem all token", async () => {
