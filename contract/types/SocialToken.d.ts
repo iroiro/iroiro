@@ -36,6 +36,7 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "initialize(string,string,address)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -75,6 +76,10 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     values: [string, string, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values: [string, string, string]
+  ): string;
 
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
@@ -101,6 +106,7 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
@@ -351,6 +357,20 @@ export class SocialToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    initialize(
+      name: string,
+      symbol: string,
+      to: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "initialize(string,string,address)"(
+      name: string,
+      symbol: string,
+      to: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
 
   /**
@@ -550,6 +570,20 @@ export class SocialToken extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  initialize(
+    name: string,
+    symbol: string,
+    to: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "initialize(string,string,address)"(
+    name: string,
+    symbol: string,
+    to: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     /**
      * See {IERC20-allowance}.
@@ -744,6 +778,20 @@ export class SocialToken extends Contract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    initialize(
+      name: string,
+      symbol: string,
+      to: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "initialize(string,string,address)"(
+      name: string,
+      symbol: string,
+      to: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -960,6 +1008,20 @@ export class SocialToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    initialize(
+      name: string,
+      symbol: string,
+      to: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "initialize(string,string,address)"(
+      name: string,
+      symbol: string,
+      to: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1160,6 +1222,20 @@ export class SocialToken extends Contract {
       sender: string,
       recipient: string,
       amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    initialize(
+      name: string,
+      symbol: string,
+      to: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "initialize(string,string,address)"(
+      name: string,
+      symbol: string,
+      to: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

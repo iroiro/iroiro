@@ -28,16 +28,14 @@ describe("Vesting", () => {
       "TreasuryVester"
     );
     [owner, alice, bob] = await ethers.getSigners();
-    socialToken = (await SocialToken.deploy(
+    socialToken = (await SocialToken.deploy()) as SocialToken;
+    await socialToken.initialize(
       "SocialToken",
       "SCL",
       await owner.getAddress()
-    )) as SocialToken;
-    unusedToken = (await SocialToken.deploy(
-      "UnusedToken",
-      "UN",
-      await owner.getAddress()
-    )) as SocialToken;
+    );
+    unusedToken = (await SocialToken.deploy()) as SocialToken;
+    await unusedToken.initialize("UnusedToken", "UN", await owner.getAddress());
 
     vester = (await Vester.deploy()) as TreasuryVester;
     await socialToken.transfer(vester.address, await socialToken.totalSupply());
