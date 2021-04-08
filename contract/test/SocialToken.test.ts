@@ -16,29 +16,30 @@
  */
 
 import { expect } from "chai";
-import { constants, Contract, ContractFactory, Signer } from "ethers";
+import { constants, ContractFactory, Signer } from "ethers";
 import { ethers } from "hardhat";
+import { SocialToken } from "../types/SocialToken";
 
 describe("SocialToken", () => {
   let owner: Signer, alice: Signer, bob: Signer;
-  let socialToken: Contract;
-  let aliceToken: Contract;
+  let socialToken: SocialToken;
+  let aliceToken: SocialToken;
 
   beforeEach(async () => {
     const SocialToken: ContractFactory = await ethers.getContractFactory(
       "SocialToken"
     );
     [owner, alice, bob] = await ethers.getSigners();
-    socialToken = await SocialToken.deploy(
+    socialToken = (await SocialToken.deploy(
       "SocialToken",
       "SCL",
       await owner.getAddress()
-    );
-    aliceToken = await SocialToken.deploy(
+    )) as SocialToken;
+    aliceToken = (await SocialToken.deploy(
       "AliceToken",
       "ALC",
       await alice.getAddress()
-    );
+    )) as SocialToken;
   });
 
   it("has a name", async () => {

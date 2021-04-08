@@ -31,11 +31,6 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     mapping(address => uint256) public tokensVestingEnd;
     mapping(address => uint256) public tokensLastUpdate;
 
-    function remainingAmount(address token) public override view returns (uint256) {
-        SocialToken socialToken = SocialToken(token);
-        return socialToken.balanceOf(address(this));
-    }
-
     // TODO check gas fees for token transfer between transfer beforehand or approve and transfer
     function addVesting(
         address token,
@@ -59,6 +54,12 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
         tokensLastUpdate[token] = block.timestamp;
 
         socialToken.transfer(tokensRecipient[token], amount);
+    }
+
+    // TODO update name as remainingAmount"Of"
+    function remainingAmount(address token) public override view returns (uint256) {
+        SocialToken socialToken = SocialToken(token);
+        return socialToken.balanceOf(address(this));
     }
 
     function redeemableAmountOf(address token) public override view returns (uint256){
