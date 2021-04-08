@@ -71,7 +71,7 @@ export interface TreasuryVester extends BaseContract {
 
     redeem(token: string): NonPayableTransactionObject<void>;
 
-    remainingAmount(token: string): NonPayableTransactionObject<string>;
+    remainingAmountOf(token: string): NonPayableTransactionObject<string>;
 
     redeemableAmountOf(token: string): NonPayableTransactionObject<string>;
   };

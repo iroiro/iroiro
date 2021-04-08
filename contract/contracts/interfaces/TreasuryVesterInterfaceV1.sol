@@ -24,7 +24,7 @@ interface TreasuryVesterInterfaceV1 {
         uint256 vestingStart
     ) external;
 
-    function remainingAmount(address token) external view returns(uint256);
+    function remainingAmountOf(address token) external view returns(uint256);
 
     function redeemableAmountOf(address token) external view returns(uint256);
 

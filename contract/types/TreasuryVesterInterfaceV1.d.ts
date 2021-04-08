@@ -24,7 +24,7 @@ import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 interface TreasuryVesterInterfaceV1Interface extends ethers.utils.Interface {
   functions: {
     "addVesting(address,address,uint256)": FunctionFragment;
-    "remainingAmount(address)": FunctionFragment;
+    "remainingAmountOf(address)": FunctionFragment;
     "redeemableAmountOf(address)": FunctionFragment;
     "redeem(address)": FunctionFragment;
   };
@@ -34,7 +34,7 @@ interface TreasuryVesterInterfaceV1Interface extends ethers.utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "remainingAmount",
+    functionFragment: "remainingAmountOf",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -45,7 +45,7 @@ interface TreasuryVesterInterfaceV1Interface extends ethers.utils.Interface {
 
   decodeFunctionResult(functionFragment: "addVesting", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "remainingAmount",
+    functionFragment: "remainingAmountOf",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -115,12 +115,12 @@ export class TreasuryVesterInterfaceV1 extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    remainingAmount(
+    remainingAmountOf(
       token: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    "remainingAmount(address)"(
+    "remainingAmountOf(address)"(
       token: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -157,9 +157,12 @@ export class TreasuryVesterInterfaceV1 extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  remainingAmount(token: string, overrides?: CallOverrides): Promise<BigNumber>;
+  remainingAmountOf(
+    token: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
-  "remainingAmount(address)"(
+  "remainingAmountOf(address)"(
     token: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
@@ -196,12 +199,12 @@ export class TreasuryVesterInterfaceV1 extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    remainingAmount(
+    remainingAmountOf(
       token: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "remainingAmount(address)"(
+    "remainingAmountOf(address)"(
       token: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -238,12 +241,12 @@ export class TreasuryVesterInterfaceV1 extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    remainingAmount(
+    remainingAmountOf(
       token: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "remainingAmount(address)"(
+    "remainingAmountOf(address)"(
       token: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -278,12 +281,12 @@ export class TreasuryVesterInterfaceV1 extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    remainingAmount(
+    remainingAmountOf(
       token: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "remainingAmount(address)"(
+    "remainingAmountOf(address)"(
       token: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

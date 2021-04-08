@@ -52,7 +52,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "remainingAmount",
+    name: "remainingAmountOf",
     outputs: [
       {
         internalType: "uint256",

@@ -39,7 +39,7 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     ) external override onlyOwner {
         require(!vestingTokens[token], "Token is already registered");
         vestingTokens[token] = true;
-        tokensVestingAmount[token] = remainingAmount(token);
+        tokensVestingAmount[token] = remainingAmountOf(token);
         tokensRecipient[token] = recipient;
         tokensVestingStart[token] = vestingStart;
         tokensVestingEnd[token] = vestingStart.add(1095 days); // 3 * 365 days
@@ -56,8 +56,7 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
         socialToken.transfer(tokensRecipient[token], amount);
     }
 
-    // TODO update name as remainingAmount"Of"
-    function remainingAmount(address token) public override view returns (uint256) {
+    function remainingAmountOf(address token) public override view returns (uint256) {
         SocialToken socialToken = SocialToken(token);
         return socialToken.balanceOf(address(this));
     }

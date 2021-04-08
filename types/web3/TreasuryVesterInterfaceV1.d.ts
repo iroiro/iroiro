@@ -35,7 +35,7 @@ export interface TreasuryVesterInterfaceV1 extends BaseContract {
       vestingStart: number | string | BN
     ): NonPayableTransactionObject<void>;
 
-    remainingAmount(token: string): NonPayableTransactionObject<string>;
+    remainingAmountOf(token: string): NonPayableTransactionObject<string>;
 
     redeemableAmountOf(token: string): NonPayableTransactionObject<string>;
 

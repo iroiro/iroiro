@@ -192,7 +192,7 @@ describe("Vesting", () => {
   describe("remainingAmount", () => {
     it("returns zero when token is not registered", async () => {
       expect(
-        (await vester.remainingAmount(unusedToken.address)).toString()
+        (await vester.remainingAmountOf(unusedToken.address)).toString()
       ).to.equal("0");
     });
 
@@ -208,7 +208,7 @@ describe("Vesting", () => {
       await vester.redeem(socialToken.address);
 
       const remainingAmount = (
-        await vester.remainingAmount(socialToken.address)
+        await vester.remainingAmountOf(socialToken.address)
       ).toString();
       expect(remainingAmount).to.equal("9999999788601386774902757");
     });
@@ -227,7 +227,7 @@ describe("Vesting", () => {
       await vester.redeem(socialToken.address);
 
       const remainingAmount = (
-        await vester.remainingAmount(socialToken.address)
+        await vester.remainingAmountOf(socialToken.address)
       ).toString();
       expect(remainingAmount).to.equal("4999999894300693387451379");
     });
@@ -246,7 +246,7 @@ describe("Vesting", () => {
       await vester.redeem(socialToken.address);
 
       const remainingAmount = (
-        await vester.remainingAmount(socialToken.address)
+        await vester.remainingAmountOf(socialToken.address)
       ).toString();
       expect(remainingAmount).to.equal("0");
     });
