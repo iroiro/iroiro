@@ -23,7 +23,6 @@ import "../interfaces/TokenFactoryInterfaceV1.sol";
 import "../issuance/SocialToken.sol";
 import "../issuance/TreasuryVester.sol";
 
-// TODO add description about percentage
 // TODO add Clonable ERC20
 contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     using SafeMath for uint256;
@@ -112,13 +111,10 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         uint256 operationRatio,
         uint256 donationRatio
     ) internal {
-        // transfer to token creator(for operation)
-        // TODO add safe math
         uint256 distributionRatio = uint256(2000).sub(operationRatio);
 
         SocialToken token = SocialToken(_token);
 
-        // TODO check gas for casting
         token.transfer(
             creator,
             SocialTokenConstants.totalSupply.mul(distributionRatio).div(10000)
@@ -130,14 +126,12 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             );
         }
 
-        // transfer to treasury vester
         uint256 vestingRatio = uint256(8000).sub(donationRatio);
         token.transfer(
             treasuryVester,
             SocialTokenConstants.totalSupply.mul(vestingRatio).div(10000)
         );
         if (donationRatio > 0) {
-            // TODO use safe math
             token.transfer(
                 donatee,
                 SocialTokenConstants.totalSupply.mul(donationRatio.div(2)).div(10000)
