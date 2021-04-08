@@ -18,10 +18,23 @@
 pragma solidity =0.7.6;
 
 interface TokenFactoryInterfaceV1 {
+    event UpdateOperator(address operator);
+    event UpdateDonatee(address donatee);
+    event UpdateCreatorFund(address creatorFund);
+    event UpdateTreasuryVester(address treasuryVester);
+
     event CreateToken (
         address indexed token,
         address indexed creator
     );
+
+    function updateOperator(address newOperator) external;
+
+    function updateDonatee(address newDonatee) external;
+
+    function updateCreatorFund(address newCreatorFund) external;
+
+    function updateTreasuryVester(address treasuryVester) external;
 
     function createToken(
         string memory name,

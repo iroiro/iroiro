@@ -26,8 +26,10 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "updateOperator(address)": FunctionFragment;
+    "updateDonatee(address)": FunctionFragment;
     "updateCreatorFund(address)": FunctionFragment;
-    "updateTreasuryVester()": FunctionFragment;
+    "updateTreasuryVester(address)": FunctionFragment;
     "createToken(string,string,uint16)": FunctionFragment;
     "createExclusiveToken(address,string,string,uint16,uint16)": FunctionFragment;
   };
@@ -42,12 +44,20 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateOperator",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateDonatee",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "updateCreatorFund",
     values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "updateTreasuryVester",
-    values?: undefined
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "createToken",
@@ -65,6 +75,14 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateOperator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateDonatee",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -87,10 +105,18 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
   events: {
     "CreateToken(address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
+    "UpdateCreatorFund(address)": EventFragment;
+    "UpdateDonatee(address)": EventFragment;
+    "UpdateOperator(address)": EventFragment;
+    "UpdateTreasuryVester(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CreateToken"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdateCreatorFund"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdateDonatee"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdateOperator"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdateTreasuryVester"): EventFragment;
 }
 
 export class TokenFactory extends Contract {
@@ -173,6 +199,26 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    updateOperator(
+      newOperator: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "updateOperator(address)"(
+      newOperator: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    updateDonatee(
+      newDonatee: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "updateDonatee(address)"(
+      newDonatee: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     updateCreatorFund(
       newCreatorFund: string,
       overrides?: Overrides
@@ -183,9 +229,13 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    updateTreasuryVester(overrides?: Overrides): Promise<ContractTransaction>;
+    updateTreasuryVester(
+      newTreasuryVester: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
-    "updateTreasuryVester()"(
+    "updateTreasuryVester(address)"(
+      newTreasuryVester: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -258,6 +308,26 @@ export class TokenFactory extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  updateOperator(
+    newOperator: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "updateOperator(address)"(
+    newOperator: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  updateDonatee(
+    newDonatee: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "updateDonatee(address)"(
+    newDonatee: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   updateCreatorFund(
     newCreatorFund: string,
     overrides?: Overrides
@@ -268,9 +338,15 @@ export class TokenFactory extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  updateTreasuryVester(overrides?: Overrides): Promise<ContractTransaction>;
+  updateTreasuryVester(
+    newTreasuryVester: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  "updateTreasuryVester()"(overrides?: Overrides): Promise<ContractTransaction>;
+  "updateTreasuryVester(address)"(
+    newTreasuryVester: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   createToken(
     name: string,
@@ -341,6 +417,23 @@ export class TokenFactory extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    updateOperator(
+      newOperator: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "updateOperator(address)"(
+      newOperator: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateDonatee(newDonatee: string, overrides?: CallOverrides): Promise<void>;
+
+    "updateDonatee(address)"(
+      newDonatee: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     updateCreatorFund(
       newCreatorFund: string,
       overrides?: CallOverrides
@@ -351,9 +444,15 @@ export class TokenFactory extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    updateTreasuryVester(overrides?: CallOverrides): Promise<void>;
+    updateTreasuryVester(
+      newTreasuryVester: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    "updateTreasuryVester()"(overrides?: CallOverrides): Promise<void>;
+    "updateTreasuryVester(address)"(
+      newTreasuryVester: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     createToken(
       name: string,
@@ -401,6 +500,22 @@ export class TokenFactory extends Contract {
       [string, string],
       { previousOwner: string; newOwner: string }
     >;
+
+    UpdateCreatorFund(
+      creatorFund: null
+    ): TypedEventFilter<[string], { creatorFund: string }>;
+
+    UpdateDonatee(
+      donatee: null
+    ): TypedEventFilter<[string], { donatee: string }>;
+
+    UpdateOperator(
+      operator: null
+    ): TypedEventFilter<[string], { operator: string }>;
+
+    UpdateTreasuryVester(
+      treasuryVester: null
+    ): TypedEventFilter<[string], { treasuryVester: string }>;
   };
 
   estimateGas: {
@@ -440,6 +555,26 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
+    updateOperator(
+      newOperator: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "updateOperator(address)"(
+      newOperator: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    updateDonatee(
+      newDonatee: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "updateDonatee(address)"(
+      newDonatee: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
     updateCreatorFund(
       newCreatorFund: string,
       overrides?: Overrides
@@ -450,9 +585,15 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    updateTreasuryVester(overrides?: Overrides): Promise<BigNumber>;
+    updateTreasuryVester(
+      newTreasuryVester: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
-    "updateTreasuryVester()"(overrides?: Overrides): Promise<BigNumber>;
+    "updateTreasuryVester(address)"(
+      newTreasuryVester: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
     createToken(
       name: string,
@@ -524,6 +665,26 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
+    updateOperator(
+      newOperator: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "updateOperator(address)"(
+      newOperator: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    updateDonatee(
+      newDonatee: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "updateDonatee(address)"(
+      newDonatee: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
     updateCreatorFund(
       newCreatorFund: string,
       overrides?: Overrides
@@ -534,9 +695,13 @@ export class TokenFactory extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    updateTreasuryVester(overrides?: Overrides): Promise<PopulatedTransaction>;
+    updateTreasuryVester(
+      newTreasuryVester: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
 
-    "updateTreasuryVester()"(
+    "updateTreasuryVester(address)"(
+      newTreasuryVester: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 

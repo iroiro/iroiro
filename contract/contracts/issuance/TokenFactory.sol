@@ -33,29 +33,36 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     address private creatorFund;
     address private treasuryVester;
 
-    // TODO emit event
-    // TODO consider owner should be changed initially
     constructor(
         address _operator,
         address _donatee,
         address _creatorFund,
         address _treasuryVester
     ) {
-        operator = _operator;
-        donatee = _donatee;
-        creatorFund = _creatorFund;
-        treasuryVester = _treasuryVester;
+        updateOperator(_operator);
+        updateDonatee(_donatee);
+        updateCreatorFund(_creatorFund);
+        updateTreasuryVester(_treasuryVester);
     }
 
-    // TODO emit event
-    function updateCreatorFund(address newCreatorFund) public onlyOwner {
+    function updateOperator(address newOperator) public override onlyOwner {
+        operator = newOperator;
+        emit UpdateOperator(newOperator);
+    }
+
+    function updateDonatee(address newDonatee) public override onlyOwner {
+        donatee = newDonatee;
+        emit UpdateDonatee(newDonatee);
+    }
+
+    function updateCreatorFund(address newCreatorFund) public override onlyOwner {
         creatorFund = newCreatorFund;
+        emit UpdateCreatorFund(newCreatorFund);
     }
 
-    // TODO emit event
-    // TODO consider treasury vester management (here or frontend)
-    function updateTreasuryVester() public {
-
+    function updateTreasuryVester(address newTreasuryVester) public override onlyOwner{
+        treasuryVester = newTreasuryVester;
+        emit UpdateTreasuryVester(newTreasuryVester);
     }
 
     function createToken(

@@ -27,6 +27,22 @@ export type CreateToken = ContractEventLog<{
   0: string;
   1: string;
 }>;
+export type UpdateCreatorFund = ContractEventLog<{
+  creatorFund: string;
+  0: string;
+}>;
+export type UpdateDonatee = ContractEventLog<{
+  donatee: string;
+  0: string;
+}>;
+export type UpdateOperator = ContractEventLog<{
+  operator: string;
+  0: string;
+}>;
+export type UpdateTreasuryVester = ContractEventLog<{
+  treasuryVester: string;
+  0: string;
+}>;
 
 export interface TokenFactoryInterfaceV1 extends BaseContract {
   constructor(
@@ -36,6 +52,18 @@ export interface TokenFactoryInterfaceV1 extends BaseContract {
   ): TokenFactoryInterfaceV1;
   clone(): TokenFactoryInterfaceV1;
   methods: {
+    updateOperator(newOperator: string): NonPayableTransactionObject<void>;
+
+    updateDonatee(newDonatee: string): NonPayableTransactionObject<void>;
+
+    updateCreatorFund(
+      newCreatorFund: string
+    ): NonPayableTransactionObject<void>;
+
+    updateTreasuryVester(
+      treasuryVester: string
+    ): NonPayableTransactionObject<void>;
+
     createToken(
       name: string,
       symbol: string,
@@ -57,6 +85,30 @@ export interface TokenFactoryInterfaceV1 extends BaseContract {
       cb?: Callback<CreateToken>
     ): EventEmitter;
 
+    UpdateCreatorFund(cb?: Callback<UpdateCreatorFund>): EventEmitter;
+    UpdateCreatorFund(
+      options?: EventOptions,
+      cb?: Callback<UpdateCreatorFund>
+    ): EventEmitter;
+
+    UpdateDonatee(cb?: Callback<UpdateDonatee>): EventEmitter;
+    UpdateDonatee(
+      options?: EventOptions,
+      cb?: Callback<UpdateDonatee>
+    ): EventEmitter;
+
+    UpdateOperator(cb?: Callback<UpdateOperator>): EventEmitter;
+    UpdateOperator(
+      options?: EventOptions,
+      cb?: Callback<UpdateOperator>
+    ): EventEmitter;
+
+    UpdateTreasuryVester(cb?: Callback<UpdateTreasuryVester>): EventEmitter;
+    UpdateTreasuryVester(
+      options?: EventOptions,
+      cb?: Callback<UpdateTreasuryVester>
+    ): EventEmitter;
+
     allEvents(options?: EventOptions, cb?: Callback<EventLog>): EventEmitter;
   };
 
@@ -65,5 +117,33 @@ export interface TokenFactoryInterfaceV1 extends BaseContract {
     event: "CreateToken",
     options: EventOptions,
     cb: Callback<CreateToken>
+  ): void;
+
+  once(event: "UpdateCreatorFund", cb: Callback<UpdateCreatorFund>): void;
+  once(
+    event: "UpdateCreatorFund",
+    options: EventOptions,
+    cb: Callback<UpdateCreatorFund>
+  ): void;
+
+  once(event: "UpdateDonatee", cb: Callback<UpdateDonatee>): void;
+  once(
+    event: "UpdateDonatee",
+    options: EventOptions,
+    cb: Callback<UpdateDonatee>
+  ): void;
+
+  once(event: "UpdateOperator", cb: Callback<UpdateOperator>): void;
+  once(
+    event: "UpdateOperator",
+    options: EventOptions,
+    cb: Callback<UpdateOperator>
+  ): void;
+
+  once(event: "UpdateTreasuryVester", cb: Callback<UpdateTreasuryVester>): void;
+  once(
+    event: "UpdateTreasuryVester",
+    options: EventOptions,
+    cb: Callback<UpdateTreasuryVester>
   ): void;
 }

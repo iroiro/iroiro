@@ -41,6 +41,110 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "creatorFund",
+        type: "address",
+      },
+    ],
+    name: "UpdateCreatorFund",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "donatee",
+        type: "address",
+      },
+    ],
+    name: "UpdateDonatee",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+    ],
+    name: "UpdateOperator",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "treasuryVester",
+        type: "address",
+      },
+    ],
+    name: "UpdateTreasuryVester",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOperator",
+        type: "address",
+      },
+    ],
+    name: "updateOperator",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newDonatee",
+        type: "address",
+      },
+    ],
+    name: "updateDonatee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newCreatorFund",
+        type: "address",
+      },
+    ],
+    name: "updateCreatorFund",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "treasuryVester",
+        type: "address",
+      },
+    ],
+    name: "updateTreasuryVester",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "string",
