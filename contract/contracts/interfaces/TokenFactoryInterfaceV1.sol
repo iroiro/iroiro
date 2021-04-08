@@ -47,6 +47,7 @@ interface TokenFactoryInterfaceV1 {
         string memory name,
         string memory symbol,
         uint256 donationRatio,
-        uint256 operationRatio
+        uint256 operationRatio,
+        uint256 vestingYears
     ) external;
 }

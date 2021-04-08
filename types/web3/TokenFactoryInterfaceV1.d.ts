@@ -75,7 +75,8 @@ export interface TokenFactoryInterfaceV1 extends BaseContract {
       name: string,
       symbol: string,
       donationRatio: number | string | BN,
-      operationRatio: number | string | BN
+      operationRatio: number | string | BN,
+      vestingYears: number | string | BN
     ): NonPayableTransactionObject<void>;
   };
   events: {

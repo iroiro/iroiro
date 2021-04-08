@@ -31,7 +31,7 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
     "updateCreatorFund(address)": FunctionFragment;
     "updateTreasuryVester(address)": FunctionFragment;
     "createToken(string,string,uint256)": FunctionFragment;
-    "createExclusiveToken(address,string,string,uint256,uint256)": FunctionFragment;
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -65,7 +65,7 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createExclusiveToken",
-    values: [string, string, string, BigNumberish, BigNumberish]
+    values: [string, string, string, BigNumberish, BigNumberish, BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
@@ -259,15 +259,17 @@ export class TokenFactory extends Contract {
       symbol: string,
       donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createExclusiveToken(address,string,string,uint256,uint256)"(
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
       donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
   };
@@ -368,15 +370,17 @@ export class TokenFactory extends Contract {
     symbol: string,
     donationRatio: BigNumberish,
     operationRatio: BigNumberish,
+    vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createExclusiveToken(address,string,string,uint256,uint256)"(
+  "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
     creator: string,
     name: string,
     symbol: string,
     donationRatio: BigNumberish,
     operationRatio: BigNumberish,
+    vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -474,15 +478,17 @@ export class TokenFactory extends Contract {
       symbol: string,
       donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createExclusiveToken(address,string,string,uint256,uint256)"(
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
       donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -615,15 +621,17 @@ export class TokenFactory extends Contract {
       symbol: string,
       donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createExclusiveToken(address,string,string,uint256,uint256)"(
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
       donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
   };
@@ -725,15 +733,17 @@ export class TokenFactory extends Contract {
       symbol: string,
       donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createExclusiveToken(address,string,string,uint256,uint256)"(
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
       donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

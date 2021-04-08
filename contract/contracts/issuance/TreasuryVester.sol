@@ -31,18 +31,18 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     mapping(address => uint256) public tokensVestingEnd;
     mapping(address => uint256) public tokensLastUpdate;
 
-    // TODO check gas fees for token transfer between transfer beforehand or approve and transfer
     function addVesting(
         address token,
         address recipient,
-        uint256 vestingStart
+        uint256 vestingStart,
+        uint256 vestingYears
     ) external override onlyOwner {
         require(!vestingTokens[token], "Token is already registered");
         vestingTokens[token] = true;
         tokensVestingAmount[token] = remainingAmountOf(token);
         tokensRecipient[token] = recipient;
         tokensVestingStart[token] = vestingStart;
-        tokensVestingEnd[token] = vestingStart.add(1095 days); // 3 * 365 days
+        tokensVestingEnd[token] = vestingStart.add(vestingYears.mul(365 days));
         tokensLastUpdate[token] = vestingStart;
     }
 
@@ -68,8 +68,8 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
             amount = socialToken.balanceOf(address(this));
         } else {
             amount = tokensVestingAmount[token]
-            .mul(block.timestamp - tokensLastUpdate[token])
-            .div(tokensVestingEnd[token] - tokensVestingStart[token]);
+            .mul(block.timestamp.sub(tokensLastUpdate[token]))
+            .div(tokensVestingEnd[token].sub(tokensVestingStart[token]));
         }
 
         return amount;

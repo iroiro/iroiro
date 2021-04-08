@@ -316,7 +316,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             0,
-            0
+            0,
+            3
           );
       });
 
@@ -328,7 +329,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             500,
-            0
+            0,
+            3
           );
       });
 
@@ -340,7 +342,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             0,
-            500
+            500,
+            3
           );
       });
 
@@ -352,7 +355,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             500,
-            500
+            500,
+            3
           );
       });
 
@@ -364,7 +368,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             8000,
-            0
+            0,
+            3
           );
       });
 
@@ -376,7 +381,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             0,
-            2000
+            2000,
+            3
           );
       });
 
@@ -388,7 +394,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             8000,
-            2000
+            2000,
+            3
           );
       });
 
@@ -400,7 +407,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             0,
-            0
+            0,
+            3
           );
         const {
           token,
@@ -419,7 +427,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              0
+              0,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -441,7 +450,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              0
+              0,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -459,7 +469,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              500
+              500,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -481,7 +492,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              0
+              0,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -501,7 +513,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              0
+              0,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -522,7 +535,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               500,
-              0
+              0,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -554,7 +568,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              500
+              500,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -572,7 +587,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              500
+              500,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -590,7 +606,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               500,
-              0
+              0,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -610,7 +627,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               500,
-              0
+              0,
+              3
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -632,7 +650,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              0
+              0,
+              5
             )
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
@@ -646,7 +665,7 @@ describe("TokenFactory", () => {
           await vester.tokensVestingStart(tokenAddress)
         ).toNumber();
         const end = (await vester.tokensVestingEnd(tokenAddress)).toNumber();
-        expect(end).to.equal(start + 3 * 365 * 24 * 60 * 60);
+        expect(end).to.equal(start + 5 * 365 * 24 * 60 * 60);
         expect(
           (await vester.tokensLastUpdate(tokenAddress)).toNumber()
         ).to.equal(start);
@@ -663,7 +682,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               8001,
-              0
+              0,
+              3
             )
         ).to.be.revertedWith("SafeMath: subtraction overflow");
       });
@@ -677,7 +697,8 @@ describe("TokenFactory", () => {
               "SocialToken",
               "SCL",
               0,
-              2001
+              2001,
+              3
             )
         ).to.be.revertedWith("SafeMath: subtraction overflow");
       });

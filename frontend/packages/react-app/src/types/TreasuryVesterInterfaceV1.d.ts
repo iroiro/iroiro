@@ -23,7 +23,7 @@ import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
 interface TreasuryVesterInterfaceV1Interface extends ethers.utils.Interface {
   functions: {
-    "addVesting(address,address,uint256)": FunctionFragment;
+    "addVesting(address,address,uint256,uint256)": FunctionFragment;
     "remainingAmountOf(address)": FunctionFragment;
     "redeemableAmountOf(address)": FunctionFragment;
     "redeem(address)": FunctionFragment;
@@ -31,7 +31,7 @@ interface TreasuryVesterInterfaceV1Interface extends ethers.utils.Interface {
 
   encodeFunctionData(
     functionFragment: "addVesting",
-    values: [string, string, BigNumberish]
+    values: [string, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "remainingAmountOf",
@@ -105,13 +105,15 @@ export class TreasuryVesterInterfaceV1 extends Contract {
       token: string,
       recipient: string,
       vestingStart: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "addVesting(address,address,uint256)"(
+    "addVesting(address,address,uint256,uint256)"(
       token: string,
       recipient: string,
       vestingStart: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -147,13 +149,15 @@ export class TreasuryVesterInterfaceV1 extends Contract {
     token: string,
     recipient: string,
     vestingStart: BigNumberish,
+    vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "addVesting(address,address,uint256)"(
+  "addVesting(address,address,uint256,uint256)"(
     token: string,
     recipient: string,
     vestingStart: BigNumberish,
+    vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -189,13 +193,15 @@ export class TreasuryVesterInterfaceV1 extends Contract {
       token: string,
       recipient: string,
       vestingStart: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "addVesting(address,address,uint256)"(
+    "addVesting(address,address,uint256,uint256)"(
       token: string,
       recipient: string,
       vestingStart: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -231,13 +237,15 @@ export class TreasuryVesterInterfaceV1 extends Contract {
       token: string,
       recipient: string,
       vestingStart: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "addVesting(address,address,uint256)"(
+    "addVesting(address,address,uint256,uint256)"(
       token: string,
       recipient: string,
       vestingStart: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -271,13 +279,15 @@ export class TreasuryVesterInterfaceV1 extends Contract {
       token: string,
       recipient: string,
       vestingStart: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "addVesting(address,address,uint256)"(
+    "addVesting(address,address,uint256,uint256)"(
       token: string,
       recipient: string,
       vestingStart: BigNumberish,
+      vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 

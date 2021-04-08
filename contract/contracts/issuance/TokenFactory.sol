@@ -69,18 +69,18 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         string memory symbol,
         uint256 donationRatio // percentage with decimal 2
     ) external override {
-        createActualToken(msg.sender, name, symbol, 0, donationRatio);
+        createActualToken(msg.sender, name, symbol, 0, donationRatio, 3);
     }
 
-    // TODO Add variable years
     function createExclusiveToken(
         address creator,
         string memory name,
         string memory symbol,
         uint256 donationRatio,
-        uint256 operationRatio
+        uint256 operationRatio,
+        uint256 vestingYears
     ) external override {
-        createActualToken(creator, name, symbol, operationRatio, donationRatio);
+        createActualToken(creator, name, symbol, operationRatio, donationRatio, vestingYears);
     }
 
     function createActualToken(
@@ -88,7 +88,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         string memory name,
         string memory symbol,
         uint256 operationRatio,
-        uint256 donationRatio
+        uint256 donationRatio,
+        uint256 vestingYears
     ) private {
         SocialToken token = new SocialToken(name, symbol, address(this));
 
@@ -101,7 +102,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         TreasuryVester(treasuryVester).addVesting(
             address(token),
             creator,
-            block.timestamp
+            block.timestamp,
+            vestingYears
         );
     }
 

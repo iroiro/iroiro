@@ -194,6 +194,11 @@ const _abi = [
         name: "operationRatio",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "vestingYears",
+        type: "uint256",
+      },
     ],
     name: "createExclusiveToken",
     outputs: [],

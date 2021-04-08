@@ -38,6 +38,11 @@ const _abi = [
         name: "vestingStart",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "vestingYears",
+        type: "uint256",
+      },
     ],
     name: "addVesting",
     outputs: [],

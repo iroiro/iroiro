@@ -21,12 +21,13 @@ interface TreasuryVesterInterfaceV1 {
     function addVesting(
         address token,
         address recipient,
-        uint256 vestingStart
+        uint256 vestingStart,
+        uint256 vestingYears
     ) external;
 
-    function remainingAmountOf(address token) external view returns(uint256);
+    function remainingAmountOf(address token) external view returns (uint256);
 
-    function redeemableAmountOf(address token) external view returns(uint256);
+    function redeemableAmountOf(address token) external view returns (uint256);
 
     function redeem(address token) external;
 }

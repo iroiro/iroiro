@@ -66,7 +66,8 @@ export interface TreasuryVester extends BaseContract {
     addVesting(
       token: string,
       recipient: string,
-      vestingStart: number | string | BN
+      vestingStart: number | string | BN,
+      vestingYears: number | string | BN
     ): NonPayableTransactionObject<void>;
 
     redeem(token: string): NonPayableTransactionObject<void>;
