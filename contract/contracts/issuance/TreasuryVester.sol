@@ -38,6 +38,8 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
         uint256 vestingStart,
         uint256 vestingYears
     ) external override onlyOwner {
+        require(vestingYears > 0, "Vesting years should be positive");
+
         require(!vestingTokens[token], "Token is already registered");
         vestingTokens[token] = true;
         tokensVestingAmount[token] = remainingAmountOf(token);

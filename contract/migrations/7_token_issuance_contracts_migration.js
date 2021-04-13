@@ -15,7 +15,6 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-const web3 = require("web3");
 const TreasuryVester = artifacts.require("TreasuryVester");
 const TokenFactory = artifacts.require("TokenFactory");
 
