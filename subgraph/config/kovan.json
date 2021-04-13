@@ -8,8 +8,8 @@
   "blockNumberUuidDistributorDeployed": "23874859",
   "uuidNftDistributorAddress": "0x49f5C75184948dADa55e3Dc4cb354ea0775e0dbF",
   "blockNumberUuidNftDistributorDeployed": "24091485",
-  "tokenFactoryAddress": "0xA1746E033ca203e2E00dc0f27a15c9ec25503a6F",
-  "blockNumberTokenFactoryDistributorDeployed": "24236771",
-  "treasuryVesterAddress": "0xE0077C072d70C64A361E19D1d66202E5B1A85E21",
-  "blockNumberTreasuryVesterDistributorDeployed": "24236769"
+  "tokenFactoryAddress": "0xed2dB0A172aA7ed704a759d7345DF6c0470A4e7A",
+  "blockNumberTokenFactoryDistributorDeployed": "24236889",
+  "treasuryVesterAddress": "0x246C5EB11A5C873120F0DB4ad2727dAc10c53B59",
+  "blockNumberTreasuryVesterDistributorDeployed": "24236886"
 }
