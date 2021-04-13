@@ -168,6 +168,19 @@ describe("Vesting", () => {
         );
       });
     });
+
+    describe("0 years", () => {
+      it("failed to add vesting", async () => {
+        await expect(
+          vester.addVesting(
+            socialToken.address,
+            await alice.getAddress(),
+            (await provider.getBlock("latest")).timestamp,
+            0
+          )
+        ).to.be.revertedWith("Vesting years should be positive");
+      });
+    });
   });
 
   describe("redeem", () => {
