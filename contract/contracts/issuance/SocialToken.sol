@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity =0.7.6;
 
-import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20BurnableUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/proxy/Initializable.sol";
 
 library SocialTokenConstants {
     uint256 public constant totalSupply = 10000000 ether;
@@ -11,9 +12,28 @@ library SocialTokenConstants {
     uint256 public constant vestingRatio = 8000;
 }
 
-// TODO use non-upgradeable
-contract SocialToken is Initializable, ERC20BurnableUpgradeable {
+contract SocialToken is Initializable, ERC20Burnable {
     using SafeMath for uint256;
+
+    string private _name;
+    string private _symbol;
+    constructor() ERC20("", "") {}
+
+    function name() public override view virtual returns (string memory) {
+        return _name;
+    }
+
+    function symbol() public override view virtual returns (string memory) {
+        return _symbol;
+    }
+
+    function _setName(string memory name) private {
+        _name = name;
+    }
+
+    function _setSymbol(string memory symbol) private {
+        _symbol = symbol;
+    }
 
     function initialize(
         string memory name,
@@ -26,9 +46,11 @@ contract SocialToken is Initializable, ERC20BurnableUpgradeable {
         uint256 operationRatio,
         uint256 donationRatio
     ) public initializer {
-        __ERC20_init(name, symbol);
+        _setName(name);
+        _setSymbol(symbol);
 
         uint256 distributionRatio = SocialTokenConstants.distributionRatio.sub(operationRatio);
+
         _mint(
             creator,
             SocialTokenConstants.totalSupply
