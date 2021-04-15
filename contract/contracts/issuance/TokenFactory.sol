@@ -27,7 +27,6 @@ import "../issuance/TreasuryVester.sol";
 contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     using SafeMath for uint256;
 
-    // TODO check gas fees between public and private
     address private operator;
     address private donatee;
     address private creatorFund;
