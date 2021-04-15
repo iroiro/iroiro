@@ -102,7 +102,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         TreasuryVester(treasuryVester).addVesting(
             token,
             creator,
-            // TODO remove timestamp arg
+        // TODO remove timestamp arg
             block.timestamp,
             vestingYears
         );
@@ -119,35 +119,45 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         uint256 operationRatio,
         uint256 donationRatio
     ) internal {
-        uint256 distributionRatio = uint256(2000).sub(operationRatio);
+        uint256 distributionRatio = SocialTokenConstants.distributionRatio.sub(operationRatio);
 
         SocialToken token = SocialToken(_token);
 
         token.transfer(
             creator,
-            SocialTokenConstants.totalSupply.mul(distributionRatio).div(10000)
+            SocialTokenConstants.totalSupply
+            .mul(distributionRatio)
+            .div(SocialTokenConstants.hundredPercent)
         );
         // TODO check gas fees is if statement is not present
         if (operationRatio > 0) {
             token.transfer(
                 operator,
-                SocialTokenConstants.totalSupply.mul(operationRatio).div(10000)
+                SocialTokenConstants.totalSupply
+                .mul(operationRatio)
+                .div(SocialTokenConstants.hundredPercent)
             );
         }
 
-        uint256 vestingRatio = uint256(8000).sub(donationRatio);
+        uint256 vestingRatio = SocialTokenConstants.vestingRatio.sub(donationRatio);
         token.transfer(
             treasuryVester,
-            SocialTokenConstants.totalSupply.mul(vestingRatio).div(10000)
+            SocialTokenConstants.totalSupply
+            .mul(vestingRatio)
+            .div(SocialTokenConstants.hundredPercent)
         );
         if (donationRatio > 0) {
             token.transfer(
                 donatee,
-                SocialTokenConstants.totalSupply.mul(donationRatio.div(2)).div(10000)
+                SocialTokenConstants.totalSupply
+                .mul(donationRatio.div(2))
+                .div(SocialTokenConstants.hundredPercent)
             );
             token.transfer(
                 creatorFund,
-                SocialTokenConstants.totalSupply.mul(donationRatio.div(2)).div(10000)
+                SocialTokenConstants.totalSupply
+                .mul(donationRatio.div(2))
+                .div(SocialTokenConstants.hundredPercent)
             );
         }
     }

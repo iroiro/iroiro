@@ -3,10 +3,11 @@ pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20BurnableUpgradeable.sol";
 
-// TODO update name
 library SocialTokenConstants {
     uint256 public constant totalSupply = 10000000 ether;
-    // TODO add percentages for distribution
+    uint256 public constant hundredPercent = 10000;
+    uint256 public constant distributionRatio = 2000;
+    uint256 public constant vestingRatio = 8000;
 }
 
 // TODO use non-upgradeable
