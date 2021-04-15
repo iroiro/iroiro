@@ -19,8 +19,9 @@ pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/TreasuryVesterInterfaceV1.sol";
-import "../issuance/SocialToken.sol";
+import "./SocialToken.sol";
 
 // TODO check gas cost if contract is clonable
 contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
@@ -53,8 +54,7 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     function redeem(address token) external override {
         require(vestingTokens[token], "Token is not registered");
 
-        // TODO check gas fees with IERC20 instead of SocialToken(implementation)
-        SocialToken socialToken = SocialToken(token);
+        IERC20 socialToken = IERC20(token);
         uint256 amount = redeemableAmountOf(token);
         tokensLastUpdate[token] = block.timestamp;
 
@@ -62,14 +62,14 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     }
 
     function remainingAmountOf(address token) public override view returns (uint256) {
-        SocialToken socialToken = SocialToken(token);
+        IERC20 socialToken = IERC20(token);
         return socialToken.balanceOf(address(this));
     }
 
     function redeemableAmountOf(address token) public override view returns (uint256){
         uint256 amount;
         if (block.timestamp >= tokensVestingEnd[token]) {
-            SocialToken socialToken = SocialToken(token);
+            IERC20 socialToken = IERC20(token);
             amount = socialToken.balanceOf(address(this));
         } else {
             amount = tokensVestingAmount[token]
