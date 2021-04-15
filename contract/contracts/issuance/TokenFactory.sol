@@ -109,8 +109,6 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         TreasuryVester(treasuryVester).addVesting(
             token,
             creator,
-        // TODO remove timestamp arg
-            block.timestamp,
             vestingYears
         );
 

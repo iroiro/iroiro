@@ -21,25 +21,26 @@ interface EventOptions {
   topics?: string[];
 }
 
-export interface TreasuryVesterInterfaceV1 extends BaseContract {
+export interface SingleTreasuryVesterInterfaceV1 extends BaseContract {
   constructor(
     jsonInterface: any[],
     address?: string,
     options?: ContractOptions
-  ): TreasuryVesterInterfaceV1;
-  clone(): TreasuryVesterInterfaceV1;
+  ): SingleTreasuryVesterInterfaceV1;
+  clone(): SingleTreasuryVesterInterfaceV1;
   methods: {
-    addVesting(
+    initialize(
       token: string,
       recipient: string,
+      vestingStart: number | string | BN,
       vestingYears: number | string | BN
     ): NonPayableTransactionObject<void>;
 
-    remainingAmountOf(token: string): NonPayableTransactionObject<string>;
+    remainingAmount(): NonPayableTransactionObject<string>;
 
-    redeemableAmountOf(token: string): NonPayableTransactionObject<string>;
+    redeemableAmount(): NonPayableTransactionObject<string>;
 
-    redeem(token: string): NonPayableTransactionObject<void>;
+    redeem(): NonPayableTransactionObject<void>;
   };
   events: {
     allEvents(options?: EventOptions, cb?: Callback<EventLog>): EventEmitter;

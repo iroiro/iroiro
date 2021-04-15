@@ -21,7 +21,6 @@ interface TreasuryVesterInterfaceV1 {
     function addVesting(
         address token,
         address recipient,
-        uint256 vestingStart,
         uint256 vestingYears
     ) external;
 

@@ -31,11 +31,11 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "name()": FunctionFragment;
-    "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "name()": FunctionFragment;
+    "symbol()": FunctionFragment;
     "initialize(string,string,address,address,address,address,address,uint256,uint256)": FunctionFragment;
   };
 
@@ -62,8 +62,6 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     functionFragment: "increaseAllowance",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -76,6 +74,8 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     values: [string, string, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [
@@ -105,8 +105,6 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     functionFragment: "increaseAllowance",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -116,6 +114,8 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
 
   events: {
@@ -301,26 +301,6 @@ export class SocialToken extends Contract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Returns the name of the token.
-     */
-    name(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * Returns the name of the token.
-     */
-    "name()"(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    symbol(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    "symbol()"(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
      * See {IERC20-totalSupply}.
      */
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -367,6 +347,26 @@ export class SocialToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    /**
+     * Returns the name of the token.
+     */
+    name(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Returns the name of the token.
+     */
+    "name()"(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    symbol(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    "symbol()"(overrides?: CallOverrides): Promise<[string]>;
 
     initialize(
       name: string,
@@ -525,26 +525,6 @@ export class SocialToken extends Contract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Returns the name of the token.
-   */
-  name(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * Returns the name of the token.
-   */
-  "name()"(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * Returns the symbol of the token, usually a shorter version of the name.
-   */
-  symbol(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * Returns the symbol of the token, usually a shorter version of the name.
-   */
-  "symbol()"(overrides?: CallOverrides): Promise<string>;
-
-  /**
    * See {IERC20-totalSupply}.
    */
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
@@ -591,6 +571,26 @@ export class SocialToken extends Contract {
     amount: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
+
+  /**
+   * Returns the name of the token.
+   */
+  name(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Returns the name of the token.
+   */
+  "name()"(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Returns the symbol of the token, usually a shorter version of the name.
+   */
+  symbol(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Returns the symbol of the token, usually a shorter version of the name.
+   */
+  "symbol()"(overrides?: CallOverrides): Promise<string>;
 
   initialize(
     name: string,
@@ -746,26 +746,6 @@ export class SocialToken extends Contract {
     ): Promise<boolean>;
 
     /**
-     * Returns the name of the token.
-     */
-    name(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * Returns the name of the token.
-     */
-    "name()"(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    symbol(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    "symbol()"(overrides?: CallOverrides): Promise<string>;
-
-    /**
      * See {IERC20-totalSupply}.
      */
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
@@ -812,6 +792,26 @@ export class SocialToken extends Contract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    /**
+     * Returns the name of the token.
+     */
+    name(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Returns the name of the token.
+     */
+    "name()"(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    symbol(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    "symbol()"(overrides?: CallOverrides): Promise<string>;
 
     initialize(
       name: string,
@@ -988,26 +988,6 @@ export class SocialToken extends Contract {
     ): Promise<BigNumber>;
 
     /**
-     * Returns the name of the token.
-     */
-    name(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * Returns the name of the token.
-     */
-    "name()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    symbol(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    "symbol()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
      * See {IERC20-totalSupply}.
      */
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1054,6 +1034,26 @@ export class SocialToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    /**
+     * Returns the name of the token.
+     */
+    name(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Returns the name of the token.
+     */
+    "name()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    symbol(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    "symbol()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
       name: string,
@@ -1216,26 +1216,6 @@ export class SocialToken extends Contract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Returns the name of the token.
-     */
-    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * Returns the name of the token.
-     */
-    "name()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    "symbol()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
      * See {IERC20-totalSupply}.
      */
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1282,6 +1262,26 @@ export class SocialToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
+
+    /**
+     * Returns the name of the token.
+     */
+    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Returns the name of the token.
+     */
+    "name()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    "symbol()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       name: string,

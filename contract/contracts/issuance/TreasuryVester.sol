@@ -22,7 +22,6 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/TreasuryVesterInterfaceV1.sol";
 
-// TODO check gas cost if contract is clonable
 contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     using SafeMath for uint256;
 
@@ -36,7 +35,6 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     function addVesting(
         address token,
         address recipient,
-        uint256 vestingStart,
         uint256 vestingYears
     ) external override onlyOwner {
         require(vestingYears > 0, "Vesting years should be positive");
@@ -45,9 +43,9 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
         vestingTokens[token] = true;
         tokensVestingAmount[token] = remainingAmountOf(token);
         tokensRecipient[token] = recipient;
-        tokensVestingStart[token] = vestingStart;
-        tokensVestingEnd[token] = vestingStart.add(vestingYears.mul(365 days));
-        tokensLastUpdate[token] = vestingStart;
+        tokensVestingStart[token] = block.timestamp;
+        tokensVestingEnd[token] = block.timestamp.add(vestingYears.mul(365 days));
+        tokensLastUpdate[token] = block.timestamp;
     }
 
     function redeem(address token) external override {
