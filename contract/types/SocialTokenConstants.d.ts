@@ -22,16 +22,43 @@ import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
 interface SocialTokenConstantsInterface extends ethers.utils.Interface {
   functions: {
+    "distributionRatio()": FunctionFragment;
+    "hundredPercent()": FunctionFragment;
     "totalSupply()": FunctionFragment;
+    "vestingRatio()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "distributionRatio",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hundredPercent",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "vestingRatio",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(
+    functionFragment: "distributionRatio",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "hundredPercent",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "totalSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "vestingRatio",
     data: BytesLike
   ): Result;
 
@@ -82,32 +109,96 @@ export class SocialTokenConstants extends Contract {
   interface: SocialTokenConstantsInterface;
 
   functions: {
+    distributionRatio(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "distributionRatio()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    hundredPercent(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "hundredPercent()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     "totalSupply()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    vestingRatio(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "vestingRatio()"(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
+
+  distributionRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "distributionRatio()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  hundredPercent(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "hundredPercent()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+  vestingRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "vestingRatio()"(overrides?: CallOverrides): Promise<BigNumber>;
+
   callStatic: {
+    distributionRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "distributionRatio()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    hundredPercent(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "hundredPercent()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    vestingRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "vestingRatio()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {};
 
   estimateGas: {
+    distributionRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "distributionRatio()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    hundredPercent(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "hundredPercent()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    vestingRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "vestingRatio()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    distributionRatio(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "distributionRatio()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    hundredPercent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "hundredPercent()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "totalSupply()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    vestingRatio(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "vestingRatio()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -29,7 +29,13 @@ export interface SocialTokenConstants extends BaseContract {
   ): SocialTokenConstants;
   clone(): SocialTokenConstants;
   methods: {
+    distributionRatio(): NonPayableTransactionObject<string>;
+
+    hundredPercent(): NonPayableTransactionObject<string>;
+
     totalSupply(): NonPayableTransactionObject<string>;
+
+    vestingRatio(): NonPayableTransactionObject<string>;
   };
   events: {
     allEvents(options?: EventOptions, cb?: Callback<EventLog>): EventEmitter;

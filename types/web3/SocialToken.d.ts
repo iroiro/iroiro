@@ -136,7 +136,13 @@ export interface SocialToken extends BaseContract {
     initialize(
       name: string,
       symbol: string,
-      to: string
+      creator: string,
+      operator: string,
+      donatee: string,
+      treasuryVester: string,
+      creatorFund: string,
+      operationRatio: number | string | BN,
+      donationRatio: number | string | BN
     ): NonPayableTransactionObject<void>;
   };
   events: {

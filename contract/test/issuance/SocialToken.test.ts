@@ -22,6 +22,11 @@ import { SocialToken } from "../../types/SocialToken";
 
 describe("SocialToken", () => {
   let owner: Signer, alice: Signer, bob: Signer;
+  let creator: Signer;
+  let operator: Signer;
+  let donatee: Signer;
+  let treasuryVester: Signer;
+  let creatorFund: Signer;
   let socialToken: SocialToken;
   let aliceToken: SocialToken;
 
@@ -29,20 +34,55 @@ describe("SocialToken", () => {
     const SocialToken: ContractFactory = await ethers.getContractFactory(
       "SocialToken"
     );
-    [owner, alice, bob] = await ethers.getSigners();
+    [
+      owner,
+      alice,
+      bob,
+      creator,
+      operator,
+      donatee,
+      treasuryVester,
+      creatorFund,
+    ] = await ethers.getSigners();
     socialToken = (await SocialToken.deploy()) as SocialToken;
     await socialToken.initialize(
       "SocialToken",
       "SCL",
-      await owner.getAddress()
+      await creator.getAddress(),
+      await operator.getAddress(),
+      await donatee.getAddress(),
+      await treasuryVester.getAddress(),
+      await creatorFund.getAddress(),
+      500,
+      500
     );
     aliceToken = (await SocialToken.deploy()) as SocialToken;
-    await aliceToken.initialize("AliceToken", "ALC", await alice.getAddress());
+    await aliceToken.initialize(
+      "AliceToken",
+      "ALC",
+      await creator.getAddress(),
+      await operator.getAddress(),
+      await donatee.getAddress(),
+      await treasuryVester.getAddress(),
+      await creatorFund.getAddress(),
+      500,
+      500
+    );
   });
 
   it("cant initialize again", async () => {
     await expect(
-      socialToken.initialize("SocialToken", "SCL", await owner.getAddress())
+      socialToken.initialize(
+        "SocialToken",
+        "SCL",
+        await creator.getAddress(),
+        await operator.getAddress(),
+        await donatee.getAddress(),
+        await treasuryVester.getAddress(),
+        await creatorFund.getAddress(),
+        500,
+        500
+      )
     ).to.be.revertedWith("Initializable: contract is already initialized");
   });
 
@@ -68,14 +108,27 @@ describe("SocialToken", () => {
   it("transferred a token to address", async () => {
     expect(
       (await socialToken.balanceOf(await owner.getAddress())).toString()
-    ).to.equal(constants.WeiPerEther.mul("10000000"));
+    ).to.equal(constants.WeiPerEther.mul("0"));
     expect(
-      (await aliceToken.balanceOf(await alice.getAddress())).toString()
-    ).to.equal(constants.WeiPerEther.mul("10000000"));
+      (await socialToken.balanceOf(await creator.getAddress())).toString()
+    ).to.equal(constants.WeiPerEther.mul("1500000"));
+    expect(
+      (await socialToken.balanceOf(await operator.getAddress())).toString()
+    ).to.equal(constants.WeiPerEther.mul("500000"));
+    expect(
+      (await socialToken.balanceOf(await donatee.getAddress())).toString()
+    ).to.equal(constants.WeiPerEther.mul("250000"));
+    expect(
+      (
+        await socialToken.balanceOf(await treasuryVester.getAddress())
+      ).toString()
+    ).to.equal(constants.WeiPerEther.mul("7500000"));
+    expect(
+      (await socialToken.balanceOf(await creatorFund.getAddress())).toString()
+    ).to.equal(constants.WeiPerEther.mul("250000"));
   });
 
   it("set decimals given as argument", async () => {
     expect((await socialToken.decimals()).toString()).to.equal("18");
-    expect((await aliceToken.decimals()).toString()).to.equal("18");
   });
 });
