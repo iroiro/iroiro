@@ -187,7 +187,13 @@ describe("Vesting", () => {
     describe("3 years", () => {
       it("throw an error when token is not registered", async () => {
         await expect(vester.redeem(unusedToken.address)).to.be.revertedWith(
-          "Token is not registered"
+          "ERC20: transfer to the zero address"
+        );
+      });
+
+      it("throw an error when token is passed as zero address", async () => {
+        await expect(vester.redeem(constants.AddressZero)).to.be.revertedWith(
+          "function call to a non-contract account"
         );
       });
 

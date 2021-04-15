@@ -51,9 +51,6 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     }
 
     function redeem(address token) external override {
-        // TODO check is not necessary?
-        require(vestingTokens[token], "Token is not registered");
-
         IERC20 socialToken = IERC20(token);
         uint256 amount = redeemableAmountOf(token);
         tokensLastUpdate[token] = block.timestamp;
