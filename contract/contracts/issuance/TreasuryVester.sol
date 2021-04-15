@@ -22,6 +22,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "../interfaces/TreasuryVesterInterfaceV1.sol";
 import "../issuance/SocialToken.sol";
 
+// TODO check gas cost if contract is clonable
 contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     using SafeMath for uint256;
 
@@ -52,6 +53,7 @@ contract TreasuryVester is TreasuryVesterInterfaceV1, Ownable {
     function redeem(address token) external override {
         require(vestingTokens[token], "Token is not registered");
 
+        // TODO check gas fees with IERC20 instead of SocialToken(implementation)
         SocialToken socialToken = SocialToken(token);
         uint256 amount = redeemableAmountOf(token);
         tokensLastUpdate[token] = block.timestamp;

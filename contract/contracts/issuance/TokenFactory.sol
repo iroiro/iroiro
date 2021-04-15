@@ -27,6 +27,7 @@ import "../issuance/TreasuryVester.sol";
 contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     using SafeMath for uint256;
 
+    // TODO check gas fees between public and private
     address private operator;
     address private donatee;
     address private creatorFund;
@@ -97,17 +98,18 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         address token = Clones.clone(socialTokenImplementation);
         SocialToken(token).initialize(name, symbol, address(this));
 
-        emit CreateToken(
-            address(token),
-            creator
-        );
-
-        transferToken(creator, address(token), operationRatio, donationRatio);
+        transferToken(creator, token, operationRatio, donationRatio);
         TreasuryVester(treasuryVester).addVesting(
-            address(token),
+            token,
             creator,
+            // TODO remove timestamp arg
             block.timestamp,
             vestingYears
+        );
+
+        emit CreateToken(
+            token,
+            creator
         );
     }
 
@@ -125,6 +127,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             creator,
             SocialTokenConstants.totalSupply.mul(distributionRatio).div(10000)
         );
+        // TODO check gas fees is if statement is not present
         if (operationRatio > 0) {
             token.transfer(
                 operator,
