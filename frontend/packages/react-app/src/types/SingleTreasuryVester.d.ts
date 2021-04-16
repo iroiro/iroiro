@@ -21,111 +21,75 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface TreasuryVesterInterface extends ethers.utils.Interface {
+interface SingleTreasuryVesterInterface extends ethers.utils.Interface {
   functions: {
+    "amount()": FunctionFragment;
+    "endAt()": FunctionFragment;
     "owner()": FunctionFragment;
+    "recipient()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "tokensLastUpdate(address)": FunctionFragment;
-    "tokensRecipient(address)": FunctionFragment;
-    "tokensVestingAmount(address)": FunctionFragment;
-    "tokensVestingEnd(address)": FunctionFragment;
-    "tokensVestingStart(address)": FunctionFragment;
+    "startedAt()": FunctionFragment;
+    "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "vestingTokens(address)": FunctionFragment;
-    "addVesting(address,address,uint256)": FunctionFragment;
-    "redeem(address)": FunctionFragment;
-    "remainingAmountOf(address)": FunctionFragment;
-    "redeemableAmountOf(address)": FunctionFragment;
+    "updatedAt()": FunctionFragment;
+    "initialize(address,address,uint256,uint256)": FunctionFragment;
+    "redeem()": FunctionFragment;
+    "remainingAmount()": FunctionFragment;
+    "redeemableAmount()": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "amount", values?: undefined): string;
+  encodeFunctionData(functionFragment: "endAt", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(functionFragment: "recipient", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "tokensLastUpdate",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokensRecipient",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokensVestingAmount",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokensVestingEnd",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokensVestingStart",
-    values: [string]
-  ): string;
+  encodeFunctionData(functionFragment: "startedAt", values?: undefined): string;
+  encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(functionFragment: "updatedAt", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "vestingTokens",
-    values: [string]
+    functionFragment: "initialize",
+    values: [string, string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "redeem", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "remainingAmount",
+    values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "addVesting",
-    values: [string, string, BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "redeem", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "remainingAmountOf",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "redeemableAmountOf",
-    values: [string]
+    functionFragment: "redeemableAmount",
+    values?: undefined
   ): string;
 
+  decodeFunctionResult(functionFragment: "amount", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "endAt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "recipient", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensLastUpdate",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensRecipient",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensVestingAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensVestingEnd",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensVestingStart",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "startedAt", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "vestingTokens",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "addVesting", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "updatedAt", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "remainingAmountOf",
+    functionFragment: "remainingAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "redeemableAmountOf",
+    functionFragment: "redeemableAmount",
     data: BytesLike
   ): Result;
 
@@ -136,7 +100,7 @@ interface TreasuryVesterInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
 
-export class TreasuryVester extends Contract {
+export class SingleTreasuryVester extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -177,9 +141,17 @@ export class TreasuryVester extends Contract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: TreasuryVesterInterface;
+  interface: SingleTreasuryVesterInterface;
 
   functions: {
+    amount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "amount()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    endAt(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "endAt()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     /**
      * Returns the address of the current owner.
      */
@@ -189,6 +161,10 @@ export class TreasuryVester extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<[string]>;
+
+    recipient(overrides?: CallOverrides): Promise<[string]>;
+
+    "recipient()"(overrides?: CallOverrides): Promise<[string]>;
 
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
@@ -200,52 +176,13 @@ export class TreasuryVester extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-    tokensLastUpdate(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    startedAt(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "tokensLastUpdate(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    "startedAt()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    tokensRecipient(arg0: string, overrides?: CallOverrides): Promise<[string]>;
+    token(overrides?: CallOverrides): Promise<[string]>;
 
-    "tokensRecipient(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    tokensVestingAmount(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    "tokensVestingAmount(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    tokensVestingEnd(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    "tokensVestingEnd(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    tokensVestingStart(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    "tokensVestingStart(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    "token()"(overrides?: CallOverrides): Promise<[string]>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -263,54 +200,46 @@ export class TreasuryVester extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    vestingTokens(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+    updatedAt(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "vestingTokens(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    "updatedAt()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    addVesting(
-      token: string,
-      recipient: string,
+    initialize(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "addVesting(address,address,uint256)"(
-      token: string,
-      recipient: string,
+    "initialize(address,address,uint256,uint256)"(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    redeem(token: string, overrides?: Overrides): Promise<ContractTransaction>;
+    redeem(overrides?: Overrides): Promise<ContractTransaction>;
 
-    "redeem(address)"(
-      token: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
+    "redeem()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-    remainingAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    remainingAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "remainingAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    "remainingAmount()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    redeemableAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    redeemableAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "redeemableAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    "redeemableAmount()"(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
+
+  amount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "amount()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  endAt(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "endAt()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   /**
    * Returns the address of the current owner.
@@ -322,6 +251,10 @@ export class TreasuryVester extends Contract {
    */
   "owner()"(overrides?: CallOverrides): Promise<string>;
 
+  recipient(overrides?: CallOverrides): Promise<string>;
+
+  "recipient()"(overrides?: CallOverrides): Promise<string>;
+
   /**
    * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
    */
@@ -332,46 +265,13 @@ export class TreasuryVester extends Contract {
    */
   "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-  tokensLastUpdate(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+  startedAt(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "tokensLastUpdate(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "startedAt()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  tokensRecipient(arg0: string, overrides?: CallOverrides): Promise<string>;
+  token(overrides?: CallOverrides): Promise<string>;
 
-  "tokensRecipient(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  tokensVestingAmount(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  "tokensVestingAmount(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  tokensVestingEnd(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  "tokensVestingEnd(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  tokensVestingStart(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  "tokensVestingStart(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "token()"(overrides?: CallOverrides): Promise<string>;
 
   /**
    * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -389,55 +289,47 @@ export class TreasuryVester extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  vestingTokens(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  updatedAt(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "vestingTokens(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  "updatedAt()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  addVesting(
-    token: string,
-    recipient: string,
+  initialize(
+    vestingToken: string,
+    vestingRecipient: string,
+    vestingStart: BigNumberish,
     vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "addVesting(address,address,uint256)"(
-    token: string,
-    recipient: string,
+  "initialize(address,address,uint256,uint256)"(
+    vestingToken: string,
+    vestingRecipient: string,
+    vestingStart: BigNumberish,
     vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  redeem(token: string, overrides?: Overrides): Promise<ContractTransaction>;
+  redeem(overrides?: Overrides): Promise<ContractTransaction>;
 
-  "redeem(address)"(
-    token: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
+  "redeem()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-  remainingAmountOf(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  remainingAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "remainingAmountOf(address)"(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "remainingAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  redeemableAmountOf(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  redeemableAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "redeemableAmountOf(address)"(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "redeemableAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
+    amount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "amount()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    endAt(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "endAt()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     /**
      * Returns the address of the current owner.
      */
@@ -447,6 +339,10 @@ export class TreasuryVester extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<string>;
+
+    recipient(overrides?: CallOverrides): Promise<string>;
+
+    "recipient()"(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
@@ -458,52 +354,13 @@ export class TreasuryVester extends Contract {
      */
     "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
 
-    tokensLastUpdate(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    startedAt(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "tokensLastUpdate(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "startedAt()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokensRecipient(arg0: string, overrides?: CallOverrides): Promise<string>;
+    token(overrides?: CallOverrides): Promise<string>;
 
-    "tokensRecipient(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    tokensVestingAmount(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokensVestingAmount(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokensVestingEnd(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokensVestingEnd(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokensVestingStart(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokensVestingStart(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "token()"(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -521,50 +378,37 @@ export class TreasuryVester extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    vestingTokens(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    updatedAt(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "vestingTokens(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    "updatedAt()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    addVesting(
-      token: string,
-      recipient: string,
+    initialize(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "addVesting(address,address,uint256)"(
-      token: string,
-      recipient: string,
+    "initialize(address,address,uint256,uint256)"(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    redeem(token: string, overrides?: CallOverrides): Promise<void>;
+    redeem(overrides?: CallOverrides): Promise<void>;
 
-    "redeem(address)"(token: string, overrides?: CallOverrides): Promise<void>;
+    "redeem()"(overrides?: CallOverrides): Promise<void>;
 
-    remainingAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    remainingAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "remainingAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "remainingAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redeemableAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    redeemableAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "redeemableAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "redeemableAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {
@@ -578,6 +422,14 @@ export class TreasuryVester extends Contract {
   };
 
   estimateGas: {
+    amount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "amount()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    endAt(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "endAt()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     /**
      * Returns the address of the current owner.
      */
@@ -587,6 +439,10 @@ export class TreasuryVester extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    recipient(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "recipient()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
@@ -598,55 +454,13 @@ export class TreasuryVester extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<BigNumber>;
 
-    tokensLastUpdate(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    startedAt(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "tokensLastUpdate(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "startedAt()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokensRecipient(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    token(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "tokensRecipient(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokensVestingAmount(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokensVestingAmount(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokensVestingEnd(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokensVestingEnd(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokensVestingStart(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokensVestingStart(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "token()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -664,53 +478,48 @@ export class TreasuryVester extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    vestingTokens(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    updatedAt(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "vestingTokens(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "updatedAt()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    addVesting(
-      token: string,
-      recipient: string,
+    initialize(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "addVesting(address,address,uint256)"(
-      token: string,
-      recipient: string,
+    "initialize(address,address,uint256,uint256)"(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    redeem(token: string, overrides?: Overrides): Promise<BigNumber>;
+    redeem(overrides?: Overrides): Promise<BigNumber>;
 
-    "redeem(address)"(token: string, overrides?: Overrides): Promise<BigNumber>;
+    "redeem()"(overrides?: Overrides): Promise<BigNumber>;
 
-    remainingAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    remainingAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "remainingAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "remainingAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redeemableAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    redeemableAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "redeemableAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "redeemableAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    amount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "amount()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    endAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "endAt()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     /**
      * Returns the address of the current owner.
      */
@@ -720,6 +529,10 @@ export class TreasuryVester extends Contract {
      * Returns the address of the current owner.
      */
     "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    recipient(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "recipient()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
@@ -731,55 +544,13 @@ export class TreasuryVester extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<PopulatedTransaction>;
 
-    tokensLastUpdate(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    startedAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "tokensLastUpdate(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    "startedAt()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    tokensRecipient(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "tokensRecipient(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    tokensVestingAmount(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "tokensVestingAmount(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    tokensVestingEnd(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "tokensVestingEnd(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    tokensVestingStart(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "tokensVestingStart(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    "token()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -797,54 +568,39 @@ export class TreasuryVester extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    vestingTokens(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    updatedAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "vestingTokens(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    "updatedAt()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    addVesting(
-      token: string,
-      recipient: string,
+    initialize(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "addVesting(address,address,uint256)"(
-      token: string,
-      recipient: string,
+    "initialize(address,address,uint256,uint256)"(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    redeem(token: string, overrides?: Overrides): Promise<PopulatedTransaction>;
+    redeem(overrides?: Overrides): Promise<PopulatedTransaction>;
 
-    "redeem(address)"(
-      token: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
+    "redeem()"(overrides?: Overrides): Promise<PopulatedTransaction>;
 
-    remainingAmountOf(
-      token: string,
+    remainingAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "remainingAmount()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "remainingAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    redeemableAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    redeemableAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "redeemableAmountOf(address)"(
-      token: string,
+    "redeemableAmount()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

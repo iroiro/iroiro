@@ -28,52 +28,53 @@ export type OwnershipTransferred = ContractEventLog<{
   1: string;
 }>;
 
-export interface TreasuryVester extends BaseContract {
+export interface SingleTreasuryVester extends BaseContract {
   constructor(
     jsonInterface: any[],
     address?: string,
     options?: ContractOptions
-  ): TreasuryVester;
-  clone(): TreasuryVester;
+  ): SingleTreasuryVester;
+  clone(): SingleTreasuryVester;
   methods: {
+    amount(): NonPayableTransactionObject<string>;
+
+    endAt(): NonPayableTransactionObject<string>;
+
     /**
      * Returns the address of the current owner.
      */
     owner(): NonPayableTransactionObject<string>;
+
+    recipient(): NonPayableTransactionObject<string>;
 
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
      */
     renounceOwnership(): NonPayableTransactionObject<void>;
 
-    tokensLastUpdate(arg0: string): NonPayableTransactionObject<string>;
+    startedAt(): NonPayableTransactionObject<string>;
 
-    tokensRecipient(arg0: string): NonPayableTransactionObject<string>;
-
-    tokensVestingAmount(arg0: string): NonPayableTransactionObject<string>;
-
-    tokensVestingEnd(arg0: string): NonPayableTransactionObject<string>;
-
-    tokensVestingStart(arg0: string): NonPayableTransactionObject<string>;
+    token(): NonPayableTransactionObject<string>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
      */
     transferOwnership(newOwner: string): NonPayableTransactionObject<void>;
 
-    vestingTokens(arg0: string): NonPayableTransactionObject<boolean>;
+    updatedAt(): NonPayableTransactionObject<string>;
 
-    addVesting(
-      token: string,
-      recipient: string,
+    initialize(
+      vestingToken: string,
+      vestingRecipient: string,
+      vestingStart: number | string | BN,
       vestingYears: number | string | BN
     ): NonPayableTransactionObject<void>;
 
-    redeem(token: string): NonPayableTransactionObject<void>;
+    redeem(): NonPayableTransactionObject<void>;
 
-    remainingAmountOf(token: string): NonPayableTransactionObject<string>;
+    remainingAmount(): NonPayableTransactionObject<string>;
 
-    redeemableAmountOf(token: string): NonPayableTransactionObject<string>;
+    redeemableAmount(): NonPayableTransactionObject<string>;
   };
   events: {
     OwnershipTransferred(cb?: Callback<OwnershipTransferred>): EventEmitter;

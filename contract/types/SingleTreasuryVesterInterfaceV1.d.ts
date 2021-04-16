@@ -21,35 +21,36 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface TreasuryVesterInterfaceV1Interface extends ethers.utils.Interface {
+interface SingleTreasuryVesterInterfaceV1Interface
+  extends ethers.utils.Interface {
   functions: {
-    "addVesting(address,address,uint256)": FunctionFragment;
-    "remainingAmountOf(address)": FunctionFragment;
-    "redeemableAmountOf(address)": FunctionFragment;
-    "redeem(address)": FunctionFragment;
+    "initialize(address,address,uint256,uint256)": FunctionFragment;
+    "remainingAmount()": FunctionFragment;
+    "redeemableAmount()": FunctionFragment;
+    "redeem()": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "addVesting",
-    values: [string, string, BigNumberish]
+    functionFragment: "initialize",
+    values: [string, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "remainingAmountOf",
-    values: [string]
+    functionFragment: "remainingAmount",
+    values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "redeemableAmountOf",
-    values: [string]
+    functionFragment: "redeemableAmount",
+    values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "redeem", values: [string]): string;
+  encodeFunctionData(functionFragment: "redeem", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "addVesting", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "remainingAmountOf",
+    functionFragment: "remainingAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "redeemableAmountOf",
+    functionFragment: "redeemableAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
@@ -57,7 +58,7 @@ interface TreasuryVesterInterfaceV1Interface extends ethers.utils.Interface {
   events: {};
 }
 
-export class TreasuryVesterInterfaceV1 extends Contract {
+export class SingleTreasuryVesterInterfaceV1 extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -98,214 +99,159 @@ export class TreasuryVesterInterfaceV1 extends Contract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: TreasuryVesterInterfaceV1Interface;
+  interface: SingleTreasuryVesterInterfaceV1Interface;
 
   functions: {
-    addVesting(
+    initialize(
       token: string,
       recipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "addVesting(address,address,uint256)"(
+    "initialize(address,address,uint256,uint256)"(
       token: string,
       recipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    remainingAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    remainingAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "remainingAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    "remainingAmount()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    redeemableAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    redeemableAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "redeemableAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    "redeemableAmount()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    redeem(token: string, overrides?: Overrides): Promise<ContractTransaction>;
+    redeem(overrides?: Overrides): Promise<ContractTransaction>;
 
-    "redeem(address)"(
-      token: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
+    "redeem()"(overrides?: Overrides): Promise<ContractTransaction>;
   };
 
-  addVesting(
+  initialize(
     token: string,
     recipient: string,
+    vestingStart: BigNumberish,
     vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "addVesting(address,address,uint256)"(
+  "initialize(address,address,uint256,uint256)"(
     token: string,
     recipient: string,
+    vestingStart: BigNumberish,
     vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  remainingAmountOf(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  remainingAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "remainingAmountOf(address)"(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "remainingAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  redeemableAmountOf(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  redeemableAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "redeemableAmountOf(address)"(
-    token: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "redeemableAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  redeem(token: string, overrides?: Overrides): Promise<ContractTransaction>;
+  redeem(overrides?: Overrides): Promise<ContractTransaction>;
 
-  "redeem(address)"(
-    token: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
+  "redeem()"(overrides?: Overrides): Promise<ContractTransaction>;
 
   callStatic: {
-    addVesting(
+    initialize(
       token: string,
       recipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "addVesting(address,address,uint256)"(
+    "initialize(address,address,uint256,uint256)"(
       token: string,
       recipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    remainingAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    remainingAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "remainingAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "remainingAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redeemableAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    redeemableAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "redeemableAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "redeemableAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redeem(token: string, overrides?: CallOverrides): Promise<void>;
+    redeem(overrides?: CallOverrides): Promise<void>;
 
-    "redeem(address)"(token: string, overrides?: CallOverrides): Promise<void>;
+    "redeem()"(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {};
 
   estimateGas: {
-    addVesting(
+    initialize(
       token: string,
       recipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "addVesting(address,address,uint256)"(
+    "initialize(address,address,uint256,uint256)"(
       token: string,
       recipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    remainingAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    remainingAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "remainingAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "remainingAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redeemableAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    redeemableAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "redeemableAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "redeemableAmount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redeem(token: string, overrides?: Overrides): Promise<BigNumber>;
+    redeem(overrides?: Overrides): Promise<BigNumber>;
 
-    "redeem(address)"(token: string, overrides?: Overrides): Promise<BigNumber>;
+    "redeem()"(overrides?: Overrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    addVesting(
+    initialize(
       token: string,
       recipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "addVesting(address,address,uint256)"(
+    "initialize(address,address,uint256,uint256)"(
       token: string,
       recipient: string,
+      vestingStart: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    remainingAmountOf(
-      token: string,
+    remainingAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "remainingAmount()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "remainingAmountOf(address)"(
-      token: string,
+    redeemableAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "redeemableAmount()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    redeemableAmountOf(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    redeem(overrides?: Overrides): Promise<PopulatedTransaction>;
 
-    "redeemableAmountOf(address)"(
-      token: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    redeem(token: string, overrides?: Overrides): Promise<PopulatedTransaction>;
-
-    "redeem(address)"(
-      token: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
+    "redeem()"(overrides?: Overrides): Promise<PopulatedTransaction>;
   };
 }

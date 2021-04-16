@@ -95,57 +95,27 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         uint256 vestingYears
     ) private {
         address token = Clones.clone(socialTokenImplementation);
-        SocialToken(token).initialize(name, symbol, address(this));
-
-        emit CreateToken(
-            address(token),
-            creator
-        );
-
-        transferToken(creator, address(token), operationRatio, donationRatio);
-        TreasuryVester(treasuryVester).addVesting(
-            address(token),
+        SocialToken(token).initialize(
+            name,
+            symbol,
             creator,
-            block.timestamp,
+            operator,
+            donatee,
+            treasuryVester,
+            creatorFund,
+            operationRatio,
+            donationRatio);
+
+        TreasuryVester(treasuryVester).addVesting(
+            token,
+            creator,
             vestingYears
         );
-    }
 
-    function transferToken(
-        address creator,
-        address _token,
-        uint256 operationRatio,
-        uint256 donationRatio
-    ) internal {
-        uint256 distributionRatio = uint256(2000).sub(operationRatio);
-
-        SocialToken token = SocialToken(_token);
-
-        token.transfer(
-            creator,
-            SocialTokenConstants.totalSupply.mul(distributionRatio).div(10000)
+        emit CreateToken(
+            token,
+            creator
         );
-        if (operationRatio > 0) {
-            token.transfer(
-                operator,
-                SocialTokenConstants.totalSupply.mul(operationRatio).div(10000)
-            );
-        }
-
-        uint256 vestingRatio = uint256(8000).sub(donationRatio);
-        token.transfer(
-            treasuryVester,
-            SocialTokenConstants.totalSupply.mul(vestingRatio).div(10000)
-        );
-        if (donationRatio > 0) {
-            token.transfer(
-                donatee,
-                SocialTokenConstants.totalSupply.mul(donationRatio.div(2)).div(10000)
-            );
-            token.transfer(
-                creatorFund,
-                SocialTokenConstants.totalSupply.mul(donationRatio.div(2)).div(10000)
-            );
-        }
     }
 }
+

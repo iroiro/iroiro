@@ -10,6 +10,8 @@ export type { MerkleDistributorManager } from "./MerkleDistributorManager";
 export type { Migrations } from "./Migrations";
 export type { NFTDistributorInterfaceV1 } from "./NFTDistributorInterfaceV1";
 export type { Ownable } from "./Ownable";
+export type { SingleTreasuryVester } from "./SingleTreasuryVester";
+export type { SingleTreasuryVesterInterfaceV1 } from "./SingleTreasuryVesterInterfaceV1";
 export type { SocialToken } from "./SocialToken";
 export type { SocialTokenConstants } from "./SocialTokenConstants";
 export type { StringMerkleDistributorManager } from "./StringMerkleDistributorManager";
@@ -32,6 +34,8 @@ export { MerkleDistributorManager__factory } from "./factories/MerkleDistributor
 export { Migrations__factory } from "./factories/Migrations__factory";
 export { NFTDistributorInterfaceV1__factory } from "./factories/NFTDistributorInterfaceV1__factory";
 export { Ownable__factory } from "./factories/Ownable__factory";
+export { SingleTreasuryVester__factory } from "./factories/SingleTreasuryVester__factory";
+export { SingleTreasuryVesterInterfaceV1__factory } from "./factories/SingleTreasuryVesterInterfaceV1__factory";
 export { SocialToken__factory } from "./factories/SocialToken__factory";
 export { SocialTokenConstants__factory } from "./factories/SocialTokenConstants__factory";
 export { StringMerkleDistributorManager__factory } from "./factories/StringMerkleDistributorManager__factory";

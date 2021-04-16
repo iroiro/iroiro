@@ -5,18 +5,18 @@
 import { Contract, Signer } from "ethers";
 import { Provider } from "@ethersproject/providers";
 
-import type { TreasuryVesterInterfaceV1 } from "../TreasuryVesterInterfaceV1";
+import type { SingleTreasuryVesterInterfaceV1 } from "../SingleTreasuryVesterInterfaceV1";
 
-export class TreasuryVesterInterfaceV1__factory {
+export class SingleTreasuryVesterInterfaceV1__factory {
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): TreasuryVesterInterfaceV1 {
+  ): SingleTreasuryVesterInterfaceV1 {
     return new Contract(
       address,
       _abi,
       signerOrProvider
-    ) as TreasuryVesterInterfaceV1;
+    ) as SingleTreasuryVesterInterfaceV1;
   }
 }
 
@@ -35,24 +35,23 @@ const _abi = [
       },
       {
         internalType: "uint256",
+        name: "vestingStart",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
         name: "vestingYears",
         type: "uint256",
       },
     ],
-    name: "addVesting",
+    name: "initialize",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-    ],
-    name: "remainingAmountOf",
+    inputs: [],
+    name: "remainingAmount",
     outputs: [
       {
         internalType: "uint256",
@@ -64,14 +63,8 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-    ],
-    name: "redeemableAmountOf",
+    inputs: [],
+    name: "redeemableAmount",
     outputs: [
       {
         internalType: "uint256",
@@ -83,13 +76,7 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-    ],
+    inputs: [],
     name: "redeem",
     outputs: [],
     stateMutability: "nonpayable",
