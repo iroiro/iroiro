@@ -72,7 +72,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         string memory symbol,
         uint256 donationRatio // percentage with decimal 2
     ) external override {
-        createActualToken(msg.sender, name, symbol, 0, donationRatio, 3);
+        createActualToken(msg.sender, name, symbol, 0, donationRatio, 3, true);
     }
 
     function createExclusiveToken(
@@ -83,7 +83,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         uint256 operationRatio,
         uint256 vestingYears
     ) external override {
-        createActualToken(creator, name, symbol, operationRatio, donationRatio, vestingYears);
+        createActualToken(creator, name, symbol, operationRatio, donationRatio, vestingYears, false);
     }
 
     function createActualToken(
@@ -92,7 +92,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         string memory symbol,
         uint256 operationRatio,
         uint256 donationRatio,
-        uint256 vestingYears
+        uint256 vestingYears,
+        bool splitDonation
     ) private {
         address token = Clones.clone(socialTokenImplementation);
         SocialToken(token).initialize(
@@ -104,7 +105,9 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             treasuryVester,
             creatorFund,
             operationRatio,
-            donationRatio);
+            donationRatio,
+            splitDonation
+        );
 
         TreasuryVester(treasuryVester).addVesting(
             token,

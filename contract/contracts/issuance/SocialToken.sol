@@ -16,7 +16,9 @@ contract SocialToken is Initializable, ERC20Burnable {
     using SafeMath for uint256;
 
     string private _name;
+
     string private _symbol;
+
     constructor() ERC20("", "") {}
 
     function name() public override view virtual returns (string memory) {
@@ -36,7 +38,8 @@ contract SocialToken is Initializable, ERC20Burnable {
         address treasuryVester,
         address creatorFund,
         uint256 operationRatio,
-        uint256 donationRatio
+        uint256 donationRatio,
+        bool splitDonation
     ) public initializer {
         _name = name;
         _symbol = symbol;
@@ -49,6 +52,7 @@ contract SocialToken is Initializable, ERC20Burnable {
             .mul(distributionRatio)
             .div(SocialTokenConstants.hundredPercent)
         );
+        // TODO check gas fees is if statement is not present
         if (operationRatio > 0) {
             _mint(
                 operator,
@@ -65,7 +69,11 @@ contract SocialToken is Initializable, ERC20Burnable {
             .mul(vestingRatio)
             .div(SocialTokenConstants.hundredPercent)
         );
-        if (donationRatio > 0) {
+
+        if (donationRatio == 0) {
+            return;
+        }
+        if (splitDonation) {
             _mint(
                 donatee,
                 SocialTokenConstants.totalSupply
@@ -76,6 +84,13 @@ contract SocialToken is Initializable, ERC20Burnable {
                 creatorFund,
                 SocialTokenConstants.totalSupply
                 .mul(donationRatio.div(2))
+                .div(SocialTokenConstants.hundredPercent)
+            );
+        } else {
+            _mint(
+                donatee,
+                SocialTokenConstants.totalSupply
+                .mul(donationRatio)
                 .div(SocialTokenConstants.hundredPercent)
             );
         }

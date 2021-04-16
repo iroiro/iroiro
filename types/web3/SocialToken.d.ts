@@ -102,6 +102,16 @@ export interface SocialToken extends BaseContract {
     ): NonPayableTransactionObject<boolean>;
 
     /**
+     * Returns the name of the token.
+     */
+    name(): NonPayableTransactionObject<string>;
+
+    /**
+     * Returns the symbol of the token, usually a shorter version of the name.
+     */
+    symbol(): NonPayableTransactionObject<string>;
+
+    /**
      * See {IERC20-totalSupply}.
      */
     totalSupply(): NonPayableTransactionObject<string>;
@@ -123,16 +133,6 @@ export interface SocialToken extends BaseContract {
       amount: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
-    /**
-     * Returns the name of the token.
-     */
-    name(): NonPayableTransactionObject<string>;
-
-    /**
-     * Returns the symbol of the token, usually a shorter version of the name.
-     */
-    symbol(): NonPayableTransactionObject<string>;
-
     initialize(
       name: string,
       symbol: string,
@@ -142,7 +142,8 @@ export interface SocialToken extends BaseContract {
       treasuryVester: string,
       creatorFund: string,
       operationRatio: number | string | BN,
-      donationRatio: number | string | BN
+      donationRatio: number | string | BN,
+      splitDonation: boolean
     ): NonPayableTransactionObject<void>;
   };
   events: {

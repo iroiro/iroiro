@@ -526,7 +526,7 @@ describe("TokenFactory", () => {
         ).to.equal("0");
       });
 
-      it("send 5 % of token to donatees and creatorFund if donation ratio is assigned", async () => {
+      it("send 5 % of token to donatees and no token to creatorFund if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
           await factory
             .connect(operator)
@@ -543,13 +543,11 @@ describe("TokenFactory", () => {
         const donateeReceived = await token.balanceOf(
           await donatee.getAddress()
         );
-        expect(ethers.utils.formatEther(donateeReceived)).to.equal("250000.0");
+        expect(ethers.utils.formatEther(donateeReceived)).to.equal("500000.0");
         const creatorFundReceived = await token.balanceOf(
           await creatorFund.getAddress()
         );
-        expect(ethers.utils.formatEther(creatorFundReceived)).to.equal(
-          "250000.0"
-        );
+        expect(ethers.utils.formatEther(creatorFundReceived)).to.equal("0.0");
         expect(
           donateeReceived
             .add(creatorFundReceived)

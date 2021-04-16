@@ -51,7 +51,8 @@ describe("Vesting", () => {
       vester.address,
       await creatorFund.getAddress(),
       0,
-      0
+      0,
+      false
     );
     unusedToken = (await SocialToken.deploy()) as SocialToken;
     await unusedToken.initialize(
@@ -63,7 +64,8 @@ describe("Vesting", () => {
       vester.address,
       await creatorFund.getAddress(),
       0,
-      0
+      0,
+      true
     );
     simpleToken = (await ERC20.deploy("Simple", "SMP")) as SocialToken;
     expect(
