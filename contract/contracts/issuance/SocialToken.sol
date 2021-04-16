@@ -52,7 +52,6 @@ contract SocialToken is Initializable, ERC20Burnable {
             .mul(distributionRatio)
             .div(SocialTokenConstants.hundredPercent)
         );
-        // TODO check gas fees is if statement is not present
         if (operationRatio > 0) {
             _mint(
                 operator,
