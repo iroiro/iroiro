@@ -27,14 +27,6 @@ contract SocialToken is Initializable, ERC20Burnable {
         return _symbol;
     }
 
-    function _setName(string memory name) private {
-        _name = name;
-    }
-
-    function _setSymbol(string memory symbol) private {
-        _symbol = symbol;
-    }
-
     function initialize(
         string memory name,
         string memory symbol,
@@ -46,8 +38,8 @@ contract SocialToken is Initializable, ERC20Burnable {
         uint256 operationRatio,
         uint256 donationRatio
     ) public initializer {
-        _setName(name);
-        _setSymbol(symbol);
+        _name = name;
+        _symbol = symbol;
 
         uint256 distributionRatio = SocialTokenConstants.distributionRatio.sub(operationRatio);
 
