@@ -158,7 +158,12 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "donationRatio",
+        name: "donateeRatio",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "creatorFundRatio",
         type: "uint256",
       },
     ],
@@ -186,12 +191,17 @@ const _abi = [
       },
       {
         internalType: "uint256",
+        name: "operationRatio",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
         name: "donationRatio",
         type: "uint256",
       },
       {
         internalType: "uint256",
-        name: "operationRatio",
+        name: "creatorFundRatio",
         type: "uint256",
       },
       {

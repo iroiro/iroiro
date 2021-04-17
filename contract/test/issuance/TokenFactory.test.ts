@@ -128,21 +128,21 @@ describe("TokenFactory", () => {
   describe("createToken", () => {
     describe("success case", () => {
       it("success with zero donation ratio", async () => {
-        await factory.createToken("SocialToken", "SCL", 0);
+        await factory.createToken("SocialToken", "SCL", 0, 0);
       });
 
       it("success with normal donation ratio", async () => {
-        await factory.createToken("SocialToken", "SCL", 500);
+        await factory.createToken("SocialToken", "SCL", 250, 250);
       });
 
       it("success with max donation ratio", async () => {
-        await factory.createToken("SocialToken", "SCL", 8000);
+        await factory.createToken("SocialToken", "SCL", 4000, 4000);
       });
 
       it("emit event", async () => {
         const tx = await factory
           .connect(creator)
-          .createToken("SocialToken", "SCL", 0);
+          .createToken("SocialToken", "SCL", 0, 0);
         const {
           token,
           creator: creatorAddress,
@@ -152,7 +152,7 @@ describe("TokenFactory", () => {
       });
 
       it("create token", async () => {
-        const tx = await factory.createToken("SocialToken", "SCL", 0);
+        const tx = await factory.createToken("SocialToken", "SCL", 0, 0);
         const {
           token: tokenAddress1,
         } = await getTokenAndCreatorFromTransaction(tx);
@@ -166,7 +166,7 @@ describe("TokenFactory", () => {
         const {
           token: tokenAddress2,
         } = await getTokenAndCreatorFromTransaction(
-          await factory.createToken("AnotherToken", "ANT", 0)
+          await factory.createToken("AnotherToken", "ANT", 0, 0)
         );
         const token2 = SocialToken.attach(tokenAddress2) as SocialToken;
         expect(await token2.name()).to.equal("AnotherToken");
@@ -178,7 +178,7 @@ describe("TokenFactory", () => {
 
       it("send 20% of token to msg.sender", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 0)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 0, 0)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const creatorReceived = await token.balanceOf(
@@ -192,7 +192,7 @@ describe("TokenFactory", () => {
 
       it("send no token to operator", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 0)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 0, 0)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         expect(await token.balanceOf(await operator.getAddress())).to.equal(
@@ -202,7 +202,7 @@ describe("TokenFactory", () => {
 
       it("send 80% of token to treasury vester", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 0)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 0, 0)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const vesterReceived = await token.balanceOf(vester.address);
@@ -214,7 +214,7 @@ describe("TokenFactory", () => {
 
       it("send no token to donatees and creatorFund if donation ratio is not assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 0)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 0, 0)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         expect(
@@ -227,7 +227,9 @@ describe("TokenFactory", () => {
 
       it("send 5 % of token to donatees and creatorFund if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory
+            .connect(creator)
+            .createToken("SocialToken", "SCL", 250, 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const donateeReceived = await token.balanceOf(
@@ -251,7 +253,9 @@ describe("TokenFactory", () => {
 
       it("vesting token is decreased if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory
+            .connect(creator)
+            .createToken("SocialToken", "SCL", 250, 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const vesterReceived = await token.balanceOf(vester.address);
@@ -263,7 +267,9 @@ describe("TokenFactory", () => {
 
       it("token amount creator received is not affected if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory
+            .connect(creator)
+            .createToken("SocialToken", "SCL", 250, 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const creatorReceived = await token.balanceOf(
@@ -277,7 +283,9 @@ describe("TokenFactory", () => {
 
       it("vesting is added", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("CreatorToken", "CRE", 0)
+          await factory
+            .connect(creator)
+            .createToken("CreatorToken", "CRE", 0, 0)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         expect(
@@ -298,9 +306,17 @@ describe("TokenFactory", () => {
     });
 
     describe("failed case", () => {
-      it("create a new token with exceeded donation ratio", async () => {
+      it("create a new token with exceeded donatee ratio", async () => {
         await expect(
-          factory.createToken("SocialToken", "SCL", 8001)
+          factory.createToken("SocialToken", "SCL", 4001, 4000)
+        ).to.be.revertedWith("SafeMath: subtraction overflow");
+      });
+    });
+
+    describe("failed case", () => {
+      it("create a new token with exceeded creator fund ratio", async () => {
+        await expect(
+          factory.createToken("SocialToken", "SCL", 4000, 4001)
         ).to.be.revertedWith("SafeMath: subtraction overflow");
       });
     });
@@ -317,6 +333,7 @@ describe("TokenFactory", () => {
             "SCL",
             0,
             0,
+            0,
             3
           );
       });
@@ -328,8 +345,9 @@ describe("TokenFactory", () => {
             await creator.getAddress(),
             "SocialToken",
             "SCL",
-            500,
             0,
+            250,
+            250,
             3
           );
       });
@@ -341,8 +359,9 @@ describe("TokenFactory", () => {
             await creator.getAddress(),
             "SocialToken",
             "SCL",
-            0,
             500,
+            0,
+            0,
             3
           );
       });
@@ -355,7 +374,8 @@ describe("TokenFactory", () => {
             "SocialToken",
             "SCL",
             500,
-            500,
+            250,
+            250,
             3
           );
       });
@@ -367,8 +387,9 @@ describe("TokenFactory", () => {
             await creator.getAddress(),
             "SocialToken",
             "SCL",
-            8000,
             0,
+            4000,
+            4000,
             3
           );
       });
@@ -380,8 +401,9 @@ describe("TokenFactory", () => {
             await creator.getAddress(),
             "SocialToken",
             "SCL",
-            0,
             2000,
+            0,
+            0,
             3
           );
       });
@@ -393,8 +415,9 @@ describe("TokenFactory", () => {
             await creator.getAddress(),
             "SocialToken",
             "SCL",
-            8000,
             2000,
+            4000,
+            4000,
             3
           );
       });
@@ -406,6 +429,7 @@ describe("TokenFactory", () => {
             await creator.getAddress(),
             "SocialToken",
             "SCL",
+            0,
             0,
             0,
             3
@@ -426,6 +450,7 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
+              0,
               0,
               0,
               3
@@ -451,6 +476,7 @@ describe("TokenFactory", () => {
               "SCL",
               0,
               0,
+              0,
               3
             )
         );
@@ -468,8 +494,9 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
-              0,
               500,
+              0,
+              0,
               3
             )
         );
@@ -493,6 +520,7 @@ describe("TokenFactory", () => {
               "SCL",
               0,
               0,
+              0,
               3
             )
         );
@@ -512,6 +540,7 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
+              0,
               0,
               0,
               3
@@ -534,6 +563,7 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
+              0,
               500,
               0,
               3
@@ -565,8 +595,9 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
-              0,
               500,
+              0,
+              0,
               3
             )
         );
@@ -584,8 +615,9 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
-              0,
               500,
+              0,
+              0,
               3
             )
         );
@@ -603,8 +635,9 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
-              500,
               0,
+              250,
+              250,
               3
             )
         );
@@ -624,8 +657,9 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
-              500,
               0,
+              250,
+              250,
               3
             )
         );
@@ -647,6 +681,7 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
+              0,
               0,
               0,
               5
@@ -679,8 +714,25 @@ describe("TokenFactory", () => {
               await creator.getAddress(),
               "SocialToken",
               "SCL",
-              8001,
               0,
+              4001,
+              4000,
+              3
+            )
+        ).to.be.revertedWith("SafeMath: subtraction overflow");
+      });
+
+      it("create a new token with exceeded donation ratio 2", async () => {
+        await expect(
+          factory
+            .connect(operator)
+            .createExclusiveToken(
+              await creator.getAddress(),
+              "SocialToken",
+              "SCL",
+              0,
+              4000,
+              4001,
               3
             )
         ).to.be.revertedWith("SafeMath: subtraction overflow");
@@ -690,12 +742,14 @@ describe("TokenFactory", () => {
         await expect(
           factory
             .connect(operator)
+
             .createExclusiveToken(
               await creator.getAddress(),
               "SocialToken",
               "SCL",
-              0,
               2001,
+              0,
+              0,
               3
             )
         ).to.be.revertedWith("SafeMath: subtraction overflow");

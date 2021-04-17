@@ -39,15 +39,18 @@ interface TokenFactoryInterfaceV1 {
     function createToken(
         string memory name,
         string memory symbol,
-        uint256 donationRatio
+        uint256 donateeRatio,
+        uint256 creatorFundRatio
     ) external;
 
     function createExclusiveToken(
         address creator,
         string memory name,
         string memory symbol,
-        uint256 donationRatio,
         uint256 operationRatio,
+        uint256 donationRatio,
+        uint256 creatorFundRatio,
         uint256 vestingYears
     ) external;
 }
+
