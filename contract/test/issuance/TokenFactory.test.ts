@@ -251,6 +251,32 @@ describe("TokenFactory", () => {
         ).to.equal(5);
       });
 
+      it("send 5 % of token to donatees and creatorFund if donation ratio is assigned", async () => {
+        const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
+          await factory
+            .connect(creator)
+            .createToken("SocialToken", "SCL", 300, 200)
+        );
+        const token = SocialToken.attach(tokenAddress) as SocialToken;
+        const donateeReceived = await token.balanceOf(
+          await donatee.getAddress()
+        );
+        expect(ethers.utils.formatEther(donateeReceived)).to.equal("300000.0");
+        const creatorFundReceived = await token.balanceOf(
+          await creatorFund.getAddress()
+        );
+        expect(ethers.utils.formatEther(creatorFundReceived)).to.equal(
+          "200000.0"
+        );
+        expect(
+          donateeReceived
+            .add(creatorFundReceived)
+            .mul(100)
+            .div(totalSupply)
+            .toNumber()
+        ).to.equal(5);
+      });
+
       it("vesting token is decreased if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
           await factory
@@ -578,6 +604,40 @@ describe("TokenFactory", () => {
           await creatorFund.getAddress()
         );
         expect(ethers.utils.formatEther(creatorFundReceived)).to.equal("0.0");
+        expect(
+          donateeReceived
+            .add(creatorFundReceived)
+            .mul(100)
+            .div(totalSupply)
+            .toNumber()
+        ).to.equal(5);
+      });
+
+      it("send 5 % of token to creator fund and no token to donatee if only creator fund ratio is assigned", async () => {
+        const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
+          await factory
+            .connect(operator)
+            .createExclusiveToken(
+              await creator.getAddress(),
+              "SocialToken",
+              "SCL",
+              0,
+              0,
+              500,
+              3
+            )
+        );
+        const token = SocialToken.attach(tokenAddress) as SocialToken;
+        const donateeReceived = await token.balanceOf(
+          await donatee.getAddress()
+        );
+        expect(ethers.utils.formatEther(donateeReceived)).to.equal("0.0");
+        const creatorFundReceived = await token.balanceOf(
+          await creatorFund.getAddress()
+        );
+        expect(ethers.utils.formatEther(creatorFundReceived)).to.equal(
+          "500000.0"
+        );
         expect(
           donateeReceived
             .add(creatorFundReceived)
