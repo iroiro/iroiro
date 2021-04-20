@@ -9,6 +9,7 @@
     "solhint": "solhint ./contracts/**/*.sol",
     "lint": "yarn solhint",
     "coverage": "npx hardhat coverage",
+    "create-exclusive-token": "npx hardhat create-exclusive-token",
     "migrate:local": "npx hardhat run --network localhost scripts/deploy.js",
     "migrate:rinkeby": "npx truffle migrate --reset --network rinkeby",
     "migrate:kovan": "npx truffle migrate --reset --network kovan",
