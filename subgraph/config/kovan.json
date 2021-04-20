@@ -7,5 +7,13 @@
   "uuidDistributorAddress": "0x4DAFcf19A5DEF888e5D64A9577bcF883e3e9d405",
   "blockNumberUuidDistributorDeployed": "23874859",
   "uuidNftDistributorAddress": "0x49f5C75184948dADa55e3Dc4cb354ea0775e0dbF",
-  "blockNumberUuidNftDistributorDeployed": "24091485"
+  "blockNumberUuidNftDistributorDeployed": "24091485",
+  "tokenFactory": {
+    "address": "0xBEF96aEE8b086B79885A33faEBD9aF49D1Ed420a",
+    "startBlock": "24349813"
+  },
+  "treasuryVester": {
+    "address": "0x22998E56f4C8c7C7c9c035a5f8F2aD37D48AEd47",
+    "startBlock": "24349809"
+  }
 }

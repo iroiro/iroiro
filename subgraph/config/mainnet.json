@@ -7,5 +7,13 @@
   "uuidDistributorAddress": "0xfa35371B5d5CC2a196358Bb9943e62E904478f86",
   "blockNumberUuidDistributorDeployed": "12041461",
   "uuidNftDistributorAddress": "0x1807201aE03F634fBDB7898B4fFFF83d6DCB312E",
-  "blockNumberUuidNftDistributorDeployed": "12134246"
+  "blockNumberUuidNftDistributorDeployed": "12134246",
+  "tokenFactory": {
+    "address": "",
+    "startBlock": ""
+  },
+  "treasuryVester": {
+    "address": "",
+    "startBlock": ""
+  }
 }
