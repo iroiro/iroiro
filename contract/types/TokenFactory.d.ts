@@ -275,6 +275,7 @@ export class TokenFactory extends Contract {
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
      * @param operationRatio percentage with decimal 2
+     * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
@@ -291,6 +292,7 @@ export class TokenFactory extends Contract {
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
      * @param operationRatio percentage with decimal 2
+     * @param vestingYears percentage with decimal 0
      */
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
@@ -408,6 +410,7 @@ export class TokenFactory extends Contract {
    * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
    * @param donateeRatio percentage with decimal 2
    * @param operationRatio percentage with decimal 2
+   * @param vestingYears percentage with decimal 0
    */
   createExclusiveToken(
     creator: string,
@@ -424,6 +427,7 @@ export class TokenFactory extends Contract {
    * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
    * @param donateeRatio percentage with decimal 2
    * @param operationRatio percentage with decimal 2
+   * @param vestingYears percentage with decimal 0
    */
   "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
     creator: string,
@@ -538,6 +542,7 @@ export class TokenFactory extends Contract {
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
      * @param operationRatio percentage with decimal 2
+     * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
@@ -554,6 +559,7 @@ export class TokenFactory extends Contract {
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
      * @param operationRatio percentage with decimal 2
+     * @param vestingYears percentage with decimal 0
      */
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
@@ -703,6 +709,7 @@ export class TokenFactory extends Contract {
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
      * @param operationRatio percentage with decimal 2
+     * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
@@ -719,6 +726,7 @@ export class TokenFactory extends Contract {
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
      * @param operationRatio percentage with decimal 2
+     * @param vestingYears percentage with decimal 0
      */
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
@@ -837,6 +845,7 @@ export class TokenFactory extends Contract {
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
      * @param operationRatio percentage with decimal 2
+     * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
@@ -853,6 +862,7 @@ export class TokenFactory extends Contract {
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
      * @param operationRatio percentage with decimal 2
+     * @param vestingYears percentage with decimal 0
      */
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
