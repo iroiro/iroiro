@@ -67,15 +67,17 @@ export interface TokenFactoryInterfaceV1 extends BaseContract {
     createToken(
       name: string,
       symbol: string,
-      donationRatio: number | string | BN
+      donateeRatio: number | string | BN,
+      creatorFundRatio: number | string | BN
     ): NonPayableTransactionObject<void>;
 
     createExclusiveToken(
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: number | string | BN,
       operationRatio: number | string | BN,
+      donationRatio: number | string | BN,
+      creatorFundRatio: number | string | BN,
       vestingYears: number | string | BN
     ): NonPayableTransactionObject<void>;
   };

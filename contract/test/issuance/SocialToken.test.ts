@@ -54,7 +54,8 @@ describe("SocialToken", () => {
       await treasuryVester.getAddress(),
       await creatorFund.getAddress(),
       500,
-      500
+      250,
+      250
     );
     aliceToken = (await SocialToken.deploy()) as SocialToken;
     await aliceToken.initialize(
@@ -66,7 +67,8 @@ describe("SocialToken", () => {
       await treasuryVester.getAddress(),
       await creatorFund.getAddress(),
       500,
-      500
+      250,
+      250
     );
   });
 
@@ -81,7 +83,8 @@ describe("SocialToken", () => {
         await treasuryVester.getAddress(),
         await creatorFund.getAddress(),
         500,
-        500
+        250,
+        250
       )
     ).to.be.revertedWith("Initializable: contract is already initialized");
   });

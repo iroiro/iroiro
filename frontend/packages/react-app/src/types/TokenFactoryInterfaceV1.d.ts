@@ -27,8 +27,8 @@ interface TokenFactoryInterfaceV1Interface extends ethers.utils.Interface {
     "updateDonatee(address)": FunctionFragment;
     "updateCreatorFund(address)": FunctionFragment;
     "updateTreasuryVester(address)": FunctionFragment;
-    "createToken(string,string,uint256)": FunctionFragment;
-    "createExclusiveToken(address,string,string,uint256,uint256,uint256)": FunctionFragment;
+    "createToken(string,string,uint256,uint256)": FunctionFragment;
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -49,11 +49,19 @@ interface TokenFactoryInterfaceV1Interface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createToken",
-    values: [string, string, BigNumberish]
+    values: [string, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "createExclusiveToken",
-    values: [string, string, string, BigNumberish, BigNumberish, BigNumberish]
+    values: [
+      string,
+      string,
+      string,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
+    ]
   ): string;
 
   decodeFunctionResult(
@@ -183,14 +191,16 @@ export class TokenFactoryInterfaceV1 extends Contract {
     createToken(
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createToken(string,string,uint256)"(
+    "createToken(string,string,uint256,uint256)"(
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -198,18 +208,20 @@ export class TokenFactoryInterfaceV1 extends Contract {
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      donationRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      donationRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
@@ -258,14 +270,16 @@ export class TokenFactoryInterfaceV1 extends Contract {
   createToken(
     name: string,
     symbol: string,
-    donationRatio: BigNumberish,
+    donateeRatio: BigNumberish,
+    creatorFundRatio: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createToken(string,string,uint256)"(
+  "createToken(string,string,uint256,uint256)"(
     name: string,
     symbol: string,
-    donationRatio: BigNumberish,
+    donateeRatio: BigNumberish,
+    creatorFundRatio: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -273,18 +287,20 @@ export class TokenFactoryInterfaceV1 extends Contract {
     creator: string,
     name: string,
     symbol: string,
-    donationRatio: BigNumberish,
     operationRatio: BigNumberish,
+    donationRatio: BigNumberish,
+    creatorFundRatio: BigNumberish,
     vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
+  "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
     creator: string,
     name: string,
     symbol: string,
-    donationRatio: BigNumberish,
     operationRatio: BigNumberish,
+    donationRatio: BigNumberish,
+    creatorFundRatio: BigNumberish,
     vestingYears: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
@@ -330,14 +346,16 @@ export class TokenFactoryInterfaceV1 extends Contract {
     createToken(
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createToken(string,string,uint256)"(
+    "createToken(string,string,uint256,uint256)"(
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -345,18 +363,20 @@ export class TokenFactoryInterfaceV1 extends Contract {
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      donationRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      donationRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -429,14 +449,16 @@ export class TokenFactoryInterfaceV1 extends Contract {
     createToken(
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createToken(string,string,uint256)"(
+    "createToken(string,string,uint256,uint256)"(
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -444,18 +466,20 @@ export class TokenFactoryInterfaceV1 extends Contract {
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      donationRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      donationRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
@@ -505,14 +529,16 @@ export class TokenFactoryInterfaceV1 extends Contract {
     createToken(
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createToken(string,string,uint256)"(
+    "createToken(string,string,uint256,uint256)"(
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -520,18 +546,20 @@ export class TokenFactoryInterfaceV1 extends Contract {
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      donationRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createExclusiveToken(address,string,string,uint256,uint256,uint256)"(
+    "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
-      donationRatio: BigNumberish,
       operationRatio: BigNumberish,
+      donationRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;

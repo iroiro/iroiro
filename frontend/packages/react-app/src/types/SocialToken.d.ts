@@ -36,7 +36,7 @@ interface SocialTokenInterface extends ethers.utils.Interface {
     "transferFrom(address,address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "symbol()": FunctionFragment;
-    "initialize(string,string,address,address,address,address,address,uint256,uint256)": FunctionFragment;
+    "initialize(string,string,address,address,address,address,address,uint256,uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -86,6 +86,7 @@ interface SocialTokenInterface extends ethers.utils.Interface {
       string,
       string,
       string,
+      BigNumberish,
       BigNumberish,
       BigNumberish
     ]
@@ -369,28 +370,30 @@ export class SocialToken extends Contract {
     "symbol()"(overrides?: CallOverrides): Promise<[string]>;
 
     initialize(
-      name: string,
-      symbol: string,
+      tokenName: string,
+      tokenSymbol: string,
       creator: string,
       operator: string,
       donatee: string,
       treasuryVester: string,
       creatorFund: string,
       operationRatio: BigNumberish,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "initialize(string,string,address,address,address,address,address,uint256,uint256)"(
-      name: string,
-      symbol: string,
+    "initialize(string,string,address,address,address,address,address,uint256,uint256,uint256)"(
+      tokenName: string,
+      tokenSymbol: string,
       creator: string,
       operator: string,
       donatee: string,
       treasuryVester: string,
       creatorFund: string,
       operationRatio: BigNumberish,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
   };
@@ -593,28 +596,30 @@ export class SocialToken extends Contract {
   "symbol()"(overrides?: CallOverrides): Promise<string>;
 
   initialize(
-    name: string,
-    symbol: string,
+    tokenName: string,
+    tokenSymbol: string,
     creator: string,
     operator: string,
     donatee: string,
     treasuryVester: string,
     creatorFund: string,
     operationRatio: BigNumberish,
-    donationRatio: BigNumberish,
+    donateeRatio: BigNumberish,
+    creatorFundRatio: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "initialize(string,string,address,address,address,address,address,uint256,uint256)"(
-    name: string,
-    symbol: string,
+  "initialize(string,string,address,address,address,address,address,uint256,uint256,uint256)"(
+    tokenName: string,
+    tokenSymbol: string,
     creator: string,
     operator: string,
     donatee: string,
     treasuryVester: string,
     creatorFund: string,
     operationRatio: BigNumberish,
-    donationRatio: BigNumberish,
+    donateeRatio: BigNumberish,
+    creatorFundRatio: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -814,28 +819,30 @@ export class SocialToken extends Contract {
     "symbol()"(overrides?: CallOverrides): Promise<string>;
 
     initialize(
-      name: string,
-      symbol: string,
+      tokenName: string,
+      tokenSymbol: string,
       creator: string,
       operator: string,
       donatee: string,
       treasuryVester: string,
       creatorFund: string,
       operationRatio: BigNumberish,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "initialize(string,string,address,address,address,address,address,uint256,uint256)"(
-      name: string,
-      symbol: string,
+    "initialize(string,string,address,address,address,address,address,uint256,uint256,uint256)"(
+      tokenName: string,
+      tokenSymbol: string,
       creator: string,
       operator: string,
       donatee: string,
       treasuryVester: string,
       creatorFund: string,
       operationRatio: BigNumberish,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -1056,28 +1063,30 @@ export class SocialToken extends Contract {
     "symbol()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
-      name: string,
-      symbol: string,
+      tokenName: string,
+      tokenSymbol: string,
       creator: string,
       operator: string,
       donatee: string,
       treasuryVester: string,
       creatorFund: string,
       operationRatio: BigNumberish,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "initialize(string,string,address,address,address,address,address,uint256,uint256)"(
-      name: string,
-      symbol: string,
+    "initialize(string,string,address,address,address,address,address,uint256,uint256,uint256)"(
+      tokenName: string,
+      tokenSymbol: string,
       creator: string,
       operator: string,
       donatee: string,
       treasuryVester: string,
       creatorFund: string,
       operationRatio: BigNumberish,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
   };
@@ -1284,28 +1293,30 @@ export class SocialToken extends Contract {
     "symbol()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
-      name: string,
-      symbol: string,
+      tokenName: string,
+      tokenSymbol: string,
       creator: string,
       operator: string,
       donatee: string,
       treasuryVester: string,
       creatorFund: string,
       operationRatio: BigNumberish,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "initialize(string,string,address,address,address,address,address,uint256,uint256)"(
-      name: string,
-      symbol: string,
+    "initialize(string,string,address,address,address,address,address,uint256,uint256,uint256)"(
+      tokenName: string,
+      tokenSymbol: string,
       creator: string,
       operator: string,
       donatee: string,
       treasuryVester: string,
       creatorFund: string,
       operationRatio: BigNumberish,
-      donationRatio: BigNumberish,
+      donateeRatio: BigNumberish,
+      creatorFundRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

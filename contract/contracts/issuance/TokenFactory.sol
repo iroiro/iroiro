@@ -67,23 +67,53 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         emit UpdateTreasuryVester(newTreasuryVester);
     }
 
+    /**
+      * @param donateeRatio percentage with decimal 2
+      * @param creatorFundRatio percentage with decimal 2
+      *        Pass a percent multiplied by 100. e.g. 10% => 1000
+      */
     function createToken(
         string memory name,
         string memory symbol,
-        uint256 donationRatio // percentage with decimal 2
+        uint256 donateeRatio,
+        uint256 creatorFundRatio // percentage with decimal 2
     ) external override {
-        createActualToken(msg.sender, name, symbol, 0, donationRatio, 3);
+        createActualToken(
+            msg.sender,
+            name,
+            symbol,
+            0,
+            donateeRatio,
+            creatorFundRatio,
+            3
+        );
     }
 
+    /**
+      * @param operationRatio percentage with decimal 2
+      * @param donateeRatio percentage with decimal 2
+      * @param creatorFundRatio percentage with decimal 2
+      *        Pass a percent multiplied by 100. e.g. 10% => 1000
+      * @param vestingYears percentage with decimal 0
+      */
     function createExclusiveToken(
         address creator,
         string memory name,
         string memory symbol,
-        uint256 donationRatio,
         uint256 operationRatio,
+        uint256 donateeRatio,
+        uint256 creatorFundRatio,
         uint256 vestingYears
     ) external override {
-        createActualToken(creator, name, symbol, operationRatio, donationRatio, vestingYears);
+        createActualToken(
+            creator,
+            name,
+            symbol,
+            operationRatio,
+            donateeRatio,
+            creatorFundRatio,
+            vestingYears)
+        ;
     }
 
     function createActualToken(
@@ -91,7 +121,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         string memory name,
         string memory symbol,
         uint256 operationRatio,
-        uint256 donationRatio,
+        uint256 donateeRatio,
+        uint256 creatorFundRatio,
         uint256 vestingYears
     ) private {
         address token = Clones.clone(socialTokenImplementation);
@@ -104,7 +135,9 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             treasuryVester,
             creatorFund,
             operationRatio,
-            donationRatio);
+            donateeRatio,
+            creatorFundRatio
+        );
 
         TreasuryVester(treasuryVester).addVesting(
             token,
@@ -118,4 +151,3 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         );
     }
 }
-

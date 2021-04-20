@@ -51,6 +51,7 @@ describe("Vesting", () => {
       vester.address,
       await creatorFund.getAddress(),
       0,
+      0,
       0
     );
     unusedToken = (await SocialToken.deploy()) as SocialToken;
@@ -62,6 +63,7 @@ describe("Vesting", () => {
       await donatee.getAddress(),
       vester.address,
       await creatorFund.getAddress(),
+      0,
       0,
       0
     );
