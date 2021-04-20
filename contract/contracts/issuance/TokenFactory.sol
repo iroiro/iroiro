@@ -94,6 +94,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
       * @param donateeRatio percentage with decimal 2
       * @param creatorFundRatio percentage with decimal 2
       *        Pass a percent multiplied by 100. e.g. 10% => 1000
+      * @param vestingYears percentage with decimal 0
       */
     function createExclusiveToken(
         address creator,
