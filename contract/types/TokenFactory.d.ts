@@ -30,7 +30,7 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
     "updateDonatee(address)": FunctionFragment;
     "updateCreatorFund(address)": FunctionFragment;
     "updateTreasuryVester(address)": FunctionFragment;
-    "createToken(string,string,uint256,uint256)": FunctionFragment;
+    "createToken(string,string,uint256)": FunctionFragment;
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)": FunctionFragment;
   };
 
@@ -61,7 +61,7 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createToken",
-    values: [string, string, BigNumberish, BigNumberish]
+    values: [string, string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "createExclusiveToken",
@@ -248,40 +248,36 @@ export class TokenFactory extends Contract {
     ): Promise<ContractTransaction>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
     createToken(
       name: string,
       symbol: string,
-      donateeRatio: BigNumberish,
-      creatorFundRatio: BigNumberish,
+      donationRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
-    "createToken(string,string,uint256,uint256)"(
+    "createToken(string,string,uint256)"(
       name: string,
       symbol: string,
-      donateeRatio: BigNumberish,
-      creatorFundRatio: BigNumberish,
+      donationRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: BigNumberish,
+      operatorRatio: BigNumberish,
       donateeRatio: BigNumberish,
       creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
@@ -291,14 +287,14 @@ export class TokenFactory extends Contract {
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: BigNumberish,
+      operatorRatio: BigNumberish,
       donateeRatio: BigNumberish,
       creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
@@ -383,40 +379,36 @@ export class TokenFactory extends Contract {
   ): Promise<ContractTransaction>;
 
   /**
-   * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-   * @param donateeRatio percentage with decimal 2
+   * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
    */
   createToken(
     name: string,
     symbol: string,
-    donateeRatio: BigNumberish,
-    creatorFundRatio: BigNumberish,
+    donationRatio: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   /**
-   * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-   * @param donateeRatio percentage with decimal 2
+   * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
    */
-  "createToken(string,string,uint256,uint256)"(
+  "createToken(string,string,uint256)"(
     name: string,
     symbol: string,
-    donateeRatio: BigNumberish,
-    creatorFundRatio: BigNumberish,
+    donationRatio: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   /**
    * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
    * @param donateeRatio percentage with decimal 2
-   * @param operationRatio percentage with decimal 2
+   * @param operatorRatio percentage with decimal 2
    * @param vestingYears percentage with decimal 0
    */
   createExclusiveToken(
     creator: string,
     name: string,
     symbol: string,
-    operationRatio: BigNumberish,
+    operatorRatio: BigNumberish,
     donateeRatio: BigNumberish,
     creatorFundRatio: BigNumberish,
     vestingYears: BigNumberish,
@@ -426,14 +418,14 @@ export class TokenFactory extends Contract {
   /**
    * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
    * @param donateeRatio percentage with decimal 2
-   * @param operationRatio percentage with decimal 2
+   * @param operatorRatio percentage with decimal 2
    * @param vestingYears percentage with decimal 0
    */
   "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
     creator: string,
     name: string,
     symbol: string,
-    operationRatio: BigNumberish,
+    operatorRatio: BigNumberish,
     donateeRatio: BigNumberish,
     creatorFundRatio: BigNumberish,
     vestingYears: BigNumberish,
@@ -515,40 +507,36 @@ export class TokenFactory extends Contract {
     ): Promise<void>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
     createToken(
       name: string,
       symbol: string,
-      donateeRatio: BigNumberish,
-      creatorFundRatio: BigNumberish,
+      donationRatio: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
-    "createToken(string,string,uint256,uint256)"(
+    "createToken(string,string,uint256)"(
       name: string,
       symbol: string,
-      donateeRatio: BigNumberish,
-      creatorFundRatio: BigNumberish,
+      donationRatio: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: BigNumberish,
+      operatorRatio: BigNumberish,
       donateeRatio: BigNumberish,
       creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
@@ -558,14 +546,14 @@ export class TokenFactory extends Contract {
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: BigNumberish,
+      operatorRatio: BigNumberish,
       donateeRatio: BigNumberish,
       creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
@@ -682,40 +670,36 @@ export class TokenFactory extends Contract {
     ): Promise<BigNumber>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
     createToken(
       name: string,
       symbol: string,
-      donateeRatio: BigNumberish,
-      creatorFundRatio: BigNumberish,
+      donationRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
-    "createToken(string,string,uint256,uint256)"(
+    "createToken(string,string,uint256)"(
       name: string,
       symbol: string,
-      donateeRatio: BigNumberish,
-      creatorFundRatio: BigNumberish,
+      donationRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: BigNumberish,
+      operatorRatio: BigNumberish,
       donateeRatio: BigNumberish,
       creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
@@ -725,14 +709,14 @@ export class TokenFactory extends Contract {
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: BigNumberish,
+      operatorRatio: BigNumberish,
       donateeRatio: BigNumberish,
       creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
@@ -818,40 +802,36 @@ export class TokenFactory extends Contract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
     createToken(
       name: string,
       symbol: string,
-      donateeRatio: BigNumberish,
-      creatorFundRatio: BigNumberish,
+      donationRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
-    "createToken(string,string,uint256,uint256)"(
+    "createToken(string,string,uint256)"(
       name: string,
       symbol: string,
-      donateeRatio: BigNumberish,
-      creatorFundRatio: BigNumberish,
+      donationRatio: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: BigNumberish,
+      operatorRatio: BigNumberish,
       donateeRatio: BigNumberish,
       creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,
@@ -861,14 +841,14 @@ export class TokenFactory extends Contract {
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     "createExclusiveToken(address,string,string,uint256,uint256,uint256,uint256)"(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: BigNumberish,
+      operatorRatio: BigNumberish,
       donateeRatio: BigNumberish,
       creatorFundRatio: BigNumberish,
       vestingYears: BigNumberish,

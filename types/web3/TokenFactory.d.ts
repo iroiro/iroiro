@@ -86,27 +86,25 @@ export interface TokenFactory extends BaseContract {
     ): NonPayableTransactionObject<void>;
 
     /**
-     * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
-     * @param donateeRatio percentage with decimal 2
+     * @param donationRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      */
     createToken(
       name: string,
       symbol: string,
-      donateeRatio: number | string | BN,
-      creatorFundRatio: number | string | BN
+      donationRatio: number | string | BN
     ): NonPayableTransactionObject<void>;
 
     /**
      * @param creatorFundRatio percentage with decimal 2        Pass a percent multiplied by 100. e.g. 10% => 1000
      * @param donateeRatio percentage with decimal 2
-     * @param operationRatio percentage with decimal 2
+     * @param operatorRatio percentage with decimal 2
      * @param vestingYears percentage with decimal 0
      */
     createExclusiveToken(
       creator: string,
       name: string,
       symbol: string,
-      operationRatio: number | string | BN,
+      operatorRatio: number | string | BN,
       donateeRatio: number | string | BN,
       creatorFundRatio: number | string | BN,
       vestingYears: number | string | BN
