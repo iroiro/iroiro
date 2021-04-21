@@ -68,29 +68,27 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     }
 
     /**
-      * @param donateeRatio percentage with decimal 2
-      * @param creatorFundRatio percentage with decimal 2
+      * @param donationRatio percentage with decimal 2
       *        Pass a percent multiplied by 100. e.g. 10% => 1000
       */
     function createToken(
         string memory name,
         string memory symbol,
-        uint256 donateeRatio,
-        uint256 creatorFundRatio // percentage with decimal 2
+        uint256 donationRatio
     ) external override {
         createActualToken(
             msg.sender,
             name,
             symbol,
             0,
-            donateeRatio,
-            creatorFundRatio,
+            donationRatio.div(2),
+            donationRatio.div(2),
             3
         );
     }
 
     /**
-      * @param operationRatio percentage with decimal 2
+      * @param operatorRatio percentage with decimal 2
       * @param donateeRatio percentage with decimal 2
       * @param creatorFundRatio percentage with decimal 2
       *        Pass a percent multiplied by 100. e.g. 10% => 1000
@@ -100,7 +98,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         address creator,
         string memory name,
         string memory symbol,
-        uint256 operationRatio,
+        uint256 operatorRatio,
         uint256 donateeRatio,
         uint256 creatorFundRatio,
         uint256 vestingYears
@@ -109,18 +107,18 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             creator,
             name,
             symbol,
-            operationRatio,
+            operatorRatio,
             donateeRatio,
             creatorFundRatio,
-            vestingYears)
-        ;
+            vestingYears
+        );
     }
 
     function createActualToken(
         address creator,
         string memory name,
         string memory symbol,
-        uint256 operationRatio,
+        uint256 operatorRatio,
         uint256 donateeRatio,
         uint256 creatorFundRatio,
         uint256 vestingYears
@@ -134,7 +132,7 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             donatee,
             treasuryVester,
             creatorFund,
-            operationRatio,
+            operatorRatio,
             donateeRatio,
             creatorFundRatio
         );

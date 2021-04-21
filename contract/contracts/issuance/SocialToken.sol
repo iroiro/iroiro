@@ -87,15 +87,11 @@ contract SocialToken is Initializable, ERC20Burnable {
                 .div(SocialTokenConstants.hundredPercent)
             );
         }
-        if (creatorFundRatio != 0) {
+        if (SocialTokenConstants.totalSupply > totalSupply()) {
             _mint(
                 creatorFund,
-                SocialTokenConstants.totalSupply
-                .mul(creatorFundRatio)
-                .div(SocialTokenConstants.hundredPercent)
+                SocialTokenConstants.totalSupply - totalSupply()
             );
         }
-
-        require(totalSupply() == SocialTokenConstants.totalSupply, "Total supply is not matched.");
     }
 }
