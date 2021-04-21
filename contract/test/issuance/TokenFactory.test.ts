@@ -8,7 +8,7 @@ import { ethers } from "hardhat";
 import { SocialToken, TokenFactory, TreasuryVester } from "../../types";
 import { assert, expect } from "chai";
 
-const getTokenAndCreatorFromTransaction = async (
+export const getTokenAndCreatorFromTransaction = async (
   tx: ContractTransaction
 ): Promise<{
   token: string;
@@ -159,6 +159,7 @@ describe("TokenFactory", () => {
         const token1 = SocialToken.attach(tokenAddress1) as SocialToken;
         expect(await token1.name()).to.equal("SocialToken");
         expect(await token1.symbol()).to.equal("SCL");
+        expect(await token1.decimals()).to.equal(18);
         expect((await token1.totalSupply()).toString()).to.equal(
           totalSupply.toString()
         );
@@ -171,6 +172,7 @@ describe("TokenFactory", () => {
         const token2 = SocialToken.attach(tokenAddress2) as SocialToken;
         expect(await token2.name()).to.equal("AnotherToken");
         expect(await token2.symbol()).to.equal("ANT");
+        expect(await token2.decimals()).to.equal(18);
         expect((await token2.totalSupply()).toString()).to.equal(
           totalSupply.toString()
         );

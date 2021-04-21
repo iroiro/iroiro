@@ -19,6 +19,8 @@ contract SocialToken is Initializable, ERC20Burnable {
 
     string private _symbol;
 
+    uint8 private _decimals;
+
     constructor() ERC20("", "") {}
 
     function name() public override view virtual returns (string memory) {
@@ -27,6 +29,10 @@ contract SocialToken is Initializable, ERC20Burnable {
 
     function symbol() public override view virtual returns (string memory) {
         return _symbol;
+    }
+
+    function decimals() public override view virtual returns (uint8) {
+        return _decimals;
     }
 
     function initialize(
@@ -43,6 +49,7 @@ contract SocialToken is Initializable, ERC20Burnable {
     ) public initializer {
         _name = tokenName;
         _symbol = tokenSymbol;
+        _decimals = 18;
 
         uint256 distributionRatio = SocialTokenConstants.distributionRatio.sub(operationRatio);
 

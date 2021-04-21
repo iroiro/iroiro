@@ -99,6 +99,11 @@ describe("SocialToken", () => {
     expect(await aliceToken.symbol()).to.equal("ALC");
   });
 
+  it("decimal is 18", async () => {
+    expect(await socialToken.decimals()).to.equal(18);
+    expect(await aliceToken.decimals()).to.equal(18);
+  });
+
   it("mints a token", async () => {
     expect((await socialToken.totalSupply()).toString()).to.equal(
       constants.WeiPerEther.mul("10000000")
