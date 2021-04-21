@@ -49,6 +49,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
+    "@devprotocol/protocol": "^3.0.10",
     "@iroiro/merkle-distributor": "1.4.2",
     "@openzeppelin/contracts": "^3.4.1",
     "@openzeppelin/contracts-upgradeable": "^3.4.0",
