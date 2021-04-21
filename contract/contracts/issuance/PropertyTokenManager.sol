@@ -21,6 +21,7 @@ pragma solidity =0.7.6;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@devprotocol/protocol/contracts/interface/IAddressConfig.sol";
 import "@devprotocol/protocol/contracts/interface/IWithdraw.sol";
 import "../interfaces/PropertyTokenManagerInterface.sol";
@@ -29,7 +30,7 @@ import "./SocialToken.sol";
 contract PropertyTokenManager is PropertyTokenManagerInterface, Ownable {
     using SafeMath for uint256;
 
-    mapping(address => address) communityTokenToPropertyTokenMap;
+    mapping(address => address) public communityTokenToPropertyTokenMap;
 
     function depositPropertyToken(
         address _communityToken,
@@ -51,11 +52,12 @@ contract PropertyTokenManager is PropertyTokenManagerInterface, Ownable {
         uint256 _communityTokenAmount
     ) external override {
         IERC20 propertyToken = IERC20(address(communityTokenToPropertyTokenMap[_communityToken]));
-        IERC20 communityToken = IERC20(_communityToken);
+        ERC20Burnable communityToken = ERC20Burnable(_communityToken);
 
-        communityToken.transferFrom(msg.sender, address(this), _communityTokenAmount);
+        uint256 propertyTokenAmount = _communityTokenAmount.div(10);
+        // amount * tenth of token / total supply
 
-        uint256 propertyTokenAmount = _communityTokenAmount.div(10); // amount * tenth of token / total supply
+        communityToken.burnFrom(msg.sender, _communityTokenAmount);
         propertyToken.transfer(msg.sender, propertyTokenAmount);
     }
 
