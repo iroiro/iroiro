@@ -55,7 +55,6 @@ contract PropertyTokenManager is PropertyTokenManagerInterface, Ownable {
 
         communityToken.transferFrom(msg.sender, address(this), _communityTokenAmount);
 
-        // TODO test calculation is correct
         uint256 propertyTokenAmount = _communityTokenAmount.div(10); // amount * tenth of token / total supply
         propertyToken.transfer(msg.sender, propertyTokenAmount);
     }
