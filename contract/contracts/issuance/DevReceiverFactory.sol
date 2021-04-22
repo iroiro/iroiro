@@ -19,6 +19,7 @@
 pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
+import "@devprotocol/protocol/contracts/interface/IProperty.sol";
 import "./DevReceiver.sol";
 
 contract DevReceiverFactory {
@@ -37,6 +38,10 @@ contract DevReceiverFactory {
     ) external {
         address newDevReceiver = Clones.clone(devReceiverImplementation);
         DevReceiver(newDevReceiver).initialize(communityToken, propertyToken, msg.sender);
+        require(
+            msg.sender == IProperty(propertyToken).author(),
+            "Only property author is able to create Dev Receiver"
+        );
 
         emit CreateDevReceiver(
             msg.sender,
