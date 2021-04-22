@@ -24,7 +24,6 @@ import "@openzeppelin/contracts/proxy/Initializable.sol";
 
 library SocialTokenConstants {
     uint256 public constant totalSupply = 10000000 ether;
-    uint256 public constant oneTenthOfToken = 1000000 ether;
     uint256 public constant hundredPercent = 10000;
     uint256 public constant distributionRatio = 2000;
     uint256 public constant vestingRatio = 8000;
