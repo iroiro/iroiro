@@ -18,10 +18,31 @@
 
 pragma solidity =0.7.6;
 
-interface PropertyTokenManagerInterface {
-    function depositPropertyToken(address _communityToken, address _propertyToken) external;
+import "@openzeppelin/contracts/proxy/Clones.sol";
+import "./DevReceiver.sol";
 
-    function convert(address _communityToken, uint256 _amount) external;
+contract DevReceiverFactory {
+    event CreateDevReceiver(
+        address indexed creator,
+        address indexed communityToken,
+        address indexed propertyToken,
+        address devReceiver
+    );
 
-    function rescue(address _erc20, address _target) external;
+    address private devReceiverImplementation;
+
+    function createDevReceiver(
+        address communityToken,
+        address propertyToken
+    ) external {
+        address newDevReceiver = Clones.clone(devReceiverImplementation);
+        DevReceiver(newDevReceiver).initialize(communityToken, propertyToken, msg.sender);
+
+        emit CreateDevReceiver(
+            msg.sender,
+            communityToken,
+            propertyToken,
+            newDevReceiver
+        );
+    }
 }
