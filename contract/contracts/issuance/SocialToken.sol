@@ -1,4 +1,21 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: GPL-3.0
+/*
+ *     Copyright (C) 2021 TART K.K.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
+
 pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
@@ -43,7 +60,7 @@ contract SocialToken is Initializable, ERC20Burnable {
         address donatee,
         address treasuryVester,
         address creatorFund,
-        uint256 operationRatio,
+        uint256 operatorRatio,
         uint256 donateeRatio,
         uint256 creatorFundRatio
     ) public initializer {
@@ -51,7 +68,7 @@ contract SocialToken is Initializable, ERC20Burnable {
         _symbol = tokenSymbol;
         _decimals = 18;
 
-        if (operationRatio == 0) {
+        if (operatorRatio == 0) {
             _mint(
                 creator,
                 SocialTokenConstants.totalSupply
@@ -62,13 +79,13 @@ contract SocialToken is Initializable, ERC20Burnable {
             _mint(
                 creator,
                 SocialTokenConstants.totalSupply
-                .mul(SocialTokenConstants.distributionRatio.sub(operationRatio))
+                .mul(SocialTokenConstants.distributionRatio.sub(operatorRatio))
                 .div(SocialTokenConstants.hundredPercent)
             );
             _mint(
                 operator,
                 SocialTokenConstants.totalSupply
-                .mul(operationRatio)
+                .mul(operatorRatio)
                 .div(SocialTokenConstants.hundredPercent)
             );
         }

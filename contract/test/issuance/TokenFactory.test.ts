@@ -69,62 +69,6 @@ describe("TokenFactory", () => {
     await vester.transferOwnership(factory.address);
   });
 
-  describe("constructor", () => {
-    it("emit operator event", async () => {
-      const events = await factory.queryFilter(
-        factory.filters.UpdateOperator(null)
-      );
-      const updateEvent = events.find(
-        (event) => event.event === "UpdateOperator"
-      );
-      if (updateEvent === undefined || updateEvent.args === undefined) {
-        assert.fail();
-      }
-      expect(updateEvent.args.operator).to.equal(await operator.getAddress());
-    });
-
-    it("emit donatee event", async () => {
-      const events = await factory.queryFilter(
-        factory.filters.UpdateDonatee(null)
-      );
-      const updateEvent = events.find(
-        (event) => event.event === "UpdateDonatee"
-      );
-      if (updateEvent === undefined || updateEvent.args === undefined) {
-        assert.fail();
-      }
-      expect(updateEvent.args.donatee).to.equal(await donatee.getAddress());
-    });
-
-    it("emit creator fund event", async () => {
-      const events = await factory.queryFilter(
-        factory.filters.UpdateCreatorFund(null)
-      );
-      const updateEvent = events.find(
-        (event) => event.event === "UpdateCreatorFund"
-      );
-      if (updateEvent === undefined || updateEvent.args === undefined) {
-        assert.fail();
-      }
-      expect(updateEvent.args.creatorFund).to.equal(
-        await creatorFund.getAddress()
-      );
-    });
-
-    it("emit treasury vester event", async () => {
-      const events = await factory.queryFilter(
-        factory.filters.UpdateTreasuryVester(null)
-      );
-      const updateEvent = events.find(
-        (event) => event.event === "UpdateTreasuryVester"
-      );
-      if (updateEvent === undefined || updateEvent.args === undefined) {
-        assert.fail();
-      }
-      expect(updateEvent.args.treasuryVester).to.equal(vester.address);
-    });
-  });
-
   describe("createToken", () => {
     describe("success case", () => {
       it("success with zero donation ratio", async () => {
@@ -132,11 +76,11 @@ describe("TokenFactory", () => {
       });
 
       it("success with normal donation ratio", async () => {
-        await factory.createToken("SocialToken", "SCL", 500);
+        await factory.createToken("SocialToken", "SCL", 250);
       });
 
       it("success with max donation ratio", async () => {
-        await factory.createToken("SocialToken", "SCL", 8000);
+        await factory.createToken("SocialToken", "SCL", 4000);
       });
 
       it("emit event", async () => {
@@ -229,7 +173,7 @@ describe("TokenFactory", () => {
 
       it("send 5 % of token to donatees and creatorFund if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const donateeReceived = await token.balanceOf(
@@ -253,7 +197,7 @@ describe("TokenFactory", () => {
 
       it("send 5 % of token to donatees and creatorFund if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const donateeReceived = await token.balanceOf(
@@ -277,7 +221,7 @@ describe("TokenFactory", () => {
 
       it("vesting token is decreased if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const vesterReceived = await token.balanceOf(vester.address);
@@ -289,7 +233,7 @@ describe("TokenFactory", () => {
 
       it("token amount creator received is not affected if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const creatorReceived = await token.balanceOf(
@@ -326,7 +270,7 @@ describe("TokenFactory", () => {
     describe("failed case", () => {
       it("create a new token with exceeded donatee ratio", async () => {
         await expect(
-          factory.createToken("SocialToken", "SCL", 8002)
+          factory.createToken("SocialToken", "SCL", 4001)
         ).to.be.revertedWith("SafeMath: subtraction overflow");
       });
     });

@@ -18,15 +18,12 @@
 pragma solidity =0.7.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
 import "../interfaces/TokenFactoryInterfaceV1.sol";
 import "../issuance/SocialToken.sol";
 import "../issuance/TreasuryVester.sol";
 
 contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
-    using SafeMath for uint256;
-
     address private operator;
     address private donatee;
     address private creatorFund;
@@ -39,10 +36,10 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         address _creatorFund,
         address _treasuryVester
     ) {
-        updateOperator(_operator);
-        updateDonatee(_donatee);
-        updateCreatorFund(_creatorFund);
-        updateTreasuryVester(_treasuryVester);
+        operator = _operator;
+        donatee = _donatee;
+        creatorFund = _creatorFund;
+        treasuryVester = _treasuryVester;
 
         socialTokenImplementation = address(new SocialToken());
     }
@@ -70,6 +67,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
     /**
       * @param donationRatio percentage with decimal 2
       *        Pass a percent multiplied by 100. e.g. 10% => 1000
+      *        When you provide value such as 1000,
+      *        donatee and creator fund will receive 10% of token respectively.
       */
     function createToken(
         string memory name,
@@ -81,8 +80,8 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
             name,
             symbol,
             0,
-            donationRatio.div(2),
-            donationRatio.div(2),
+            donationRatio,
+            donationRatio,
             3
         );
     }
