@@ -60,7 +60,7 @@ contract SocialToken is Initializable, ERC20Burnable {
         address donatee,
         address treasuryVester,
         address creatorFund,
-        uint256 operationRatio,
+        uint256 operatorRatio,
         uint256 donateeRatio,
         uint256 creatorFundRatio
     ) public initializer {
@@ -68,7 +68,7 @@ contract SocialToken is Initializable, ERC20Burnable {
         _symbol = tokenSymbol;
         _decimals = 18;
 
-        if (operationRatio == 0) {
+        if (operatorRatio == 0) {
             _mint(
                 creator,
                 SocialTokenConstants.totalSupply
@@ -79,13 +79,13 @@ contract SocialToken is Initializable, ERC20Burnable {
             _mint(
                 creator,
                 SocialTokenConstants.totalSupply
-                .mul(SocialTokenConstants.distributionRatio.sub(operationRatio))
+                .mul(SocialTokenConstants.distributionRatio.sub(operatorRatio))
                 .div(SocialTokenConstants.hundredPercent)
             );
             _mint(
                 operator,
                 SocialTokenConstants.totalSupply
-                .mul(operationRatio)
+                .mul(operatorRatio)
                 .div(SocialTokenConstants.hundredPercent)
             );
         }
