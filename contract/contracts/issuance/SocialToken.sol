@@ -51,15 +51,20 @@ contract SocialToken is Initializable, ERC20Burnable {
         _symbol = tokenSymbol;
         _decimals = 18;
 
-        uint256 distributionRatio = SocialTokenConstants.distributionRatio.sub(operationRatio);
-
-        _mint(
-            creator,
-            SocialTokenConstants.totalSupply
-            .mul(distributionRatio)
-            .div(SocialTokenConstants.hundredPercent)
-        );
-        if (operationRatio > 0) {
+        if (operationRatio == 0) {
+            _mint(
+                creator,
+                SocialTokenConstants.totalSupply
+                .mul(SocialTokenConstants.distributionRatio)
+                .div(SocialTokenConstants.hundredPercent)
+            );
+        } else {
+            _mint(
+                creator,
+                SocialTokenConstants.totalSupply
+                .mul(SocialTokenConstants.distributionRatio.sub(operationRatio))
+                .div(SocialTokenConstants.hundredPercent)
+            );
             _mint(
                 operator,
                 SocialTokenConstants.totalSupply
@@ -68,28 +73,25 @@ contract SocialToken is Initializable, ERC20Burnable {
             );
         }
 
-        uint256 vestingRatio = SocialTokenConstants.vestingRatio
-        .sub(donateeRatio)
-        .sub(creatorFundRatio);
-
         _mint(
             treasuryVester,
             SocialTokenConstants.totalSupply
-            .mul(vestingRatio)
+            .mul(SocialTokenConstants.vestingRatio.sub(donateeRatio).sub(creatorFundRatio))
             .div(SocialTokenConstants.hundredPercent)
         );
-
-        _mint(
-            donatee,
-            SocialTokenConstants.totalSupply
-            .mul(donateeRatio)
-            .div(SocialTokenConstants.hundredPercent)
-        );
-        _mint(
-            creatorFund,
-            SocialTokenConstants.totalSupply
-            .mul(creatorFundRatio)
-            .div(SocialTokenConstants.hundredPercent)
-        );
+        if (donateeRatio != 0) {
+            _mint(
+                donatee,
+                SocialTokenConstants.totalSupply
+                .mul(donateeRatio)
+                .div(SocialTokenConstants.hundredPercent)
+            );
+        }
+        if (SocialTokenConstants.totalSupply > totalSupply()) {
+            _mint(
+                creatorFund,
+                SocialTokenConstants.totalSupply - totalSupply()
+            );
+        }
     }
 }
