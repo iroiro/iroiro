@@ -76,11 +76,11 @@ describe("TokenFactory", () => {
       });
 
       it("success with normal donation ratio", async () => {
-        await factory.createToken("SocialToken", "SCL", 500);
+        await factory.createToken("SocialToken", "SCL", 250);
       });
 
       it("success with max donation ratio", async () => {
-        await factory.createToken("SocialToken", "SCL", 8000);
+        await factory.createToken("SocialToken", "SCL", 4000);
       });
 
       it("emit event", async () => {
@@ -173,7 +173,7 @@ describe("TokenFactory", () => {
 
       it("send 5 % of token to donatees and creatorFund if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const donateeReceived = await token.balanceOf(
@@ -197,7 +197,7 @@ describe("TokenFactory", () => {
 
       it("send 5 % of token to donatees and creatorFund if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const donateeReceived = await token.balanceOf(
@@ -221,7 +221,7 @@ describe("TokenFactory", () => {
 
       it("vesting token is decreased if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const vesterReceived = await token.balanceOf(vester.address);
@@ -233,7 +233,7 @@ describe("TokenFactory", () => {
 
       it("token amount creator received is not affected if donation ratio is assigned", async () => {
         const { token: tokenAddress } = await getTokenAndCreatorFromTransaction(
-          await factory.connect(creator).createToken("SocialToken", "SCL", 500)
+          await factory.connect(creator).createToken("SocialToken", "SCL", 250)
         );
         const token = SocialToken.attach(tokenAddress) as SocialToken;
         const creatorReceived = await token.balanceOf(
@@ -270,7 +270,7 @@ describe("TokenFactory", () => {
     describe("failed case", () => {
       it("create a new token with exceeded donatee ratio", async () => {
         await expect(
-          factory.createToken("SocialToken", "SCL", 8002)
+          factory.createToken("SocialToken", "SCL", 4001)
         ).to.be.revertedWith("SafeMath: subtraction overflow");
       });
     });
