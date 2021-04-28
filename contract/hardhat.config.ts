@@ -68,6 +68,10 @@ task("create-exclusive-token", "Prints an account's balance")
 const config: HardhatUserConfig = {
   solidity: "0.7.6",
   networks: {
+    mainnet: {
+      url: `https://mainnet.infura.io/v3/${projectId}`,
+      accounts: [privateKey ?? ""],
+    },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${projectId}`,
       accounts: [privateKey ?? ""],
