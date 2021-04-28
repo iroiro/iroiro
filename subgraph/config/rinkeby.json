@@ -9,11 +9,11 @@
   "uuidNftDistributorAddress": "0x907B024D3E2493c224d4dCe7a3Bb578A46c5af7C",
   "blockNumberUuidNftDistributorDeployed": "8318676",
   "tokenFactory": {
-    "address": "0x909a5692E04668b9e8cF58bb691294ddd06cd6c9",
-    "startBlock": "8445161"
+    "address": "0x30b9d65347b14A8d3425edf2B9bC0c77ed303809",
+    "startBlock": "8490709"
   },
   "treasuryVester": {
-    "address": "0xF5eD1765C6334CA0FC8C84e1E1ADbd4eEEcc16d2",
-    "startBlock": "8445160"
+    "address": "0x7573A88fa8D6f0C89d9D52d847Ed156848Bd4271",
+    "startBlock": "8490708"
   }
 }
