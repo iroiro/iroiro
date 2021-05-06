@@ -82,7 +82,7 @@ export const AppFooter = () => {
                 }}
               >
                 <img
-                  src="/Medium-Symbol-White-RGB@2x.png"
+                  src="Medium-Symbol-White-RGB@2x.png"
                   alt="Medium icon"
                   style={{ width: 24 }}
                 />
