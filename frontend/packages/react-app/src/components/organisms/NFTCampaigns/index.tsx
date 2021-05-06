@@ -31,7 +31,7 @@ export interface NFTCampaignsProps {
 
 export const getImageURLFromIPFSHash = (image: string): string => {
   return image.startsWith("ipfs://")
-    ? `https://gateway.pinata.cloud/ipfs/${image.split("ipfs://")[1]}`
+    ? `https://cloudflare-ipfs.com/ipfs/${image.split("ipfs://")[1]}`
     : "";
 };
 
