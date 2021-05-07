@@ -18,6 +18,8 @@ We are working on developing protocols that can leverage Social Token with the g
 
 ## How to develop
 
+Alpha environment is [here(Kovan testnet)](https://kovan.iroiro.social/).
+
 ### Contract 
 
 1. Set environment variables on `contracts/`. 
