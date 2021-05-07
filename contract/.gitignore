@@ -34,3 +34,5 @@ coverage/
 
 artifacts/
 cache/
+
+types/
