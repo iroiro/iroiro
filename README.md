@@ -28,8 +28,8 @@ We are working on developing protocols that can leverage Social Token with the g
 
 1. To generate contract types, run `yarn` on `contracts/`.
    When command finished, `types/` is generated on a frontend src.
-1. Create `.env` file from `.env.example` file on `frontend/packages/react-app/`, and set environment variables. 
-   See `contracts/` to check deployed contract addresses.
+1. Create `.env` file from `.env.example` file on `frontend/packages/react-app/`, and set environment variables(Currently only `REACT_APP_RPC_URL` is necessary).
+   See [subgraph config](https://github.com/iroiro/iroiro/tree/develop/subgraph/config) to check deployed contract addresses.
 1. Run `yarn && yarn react-app:start` on `frontend/`, then frontend app starts. 
 
 ## Other
