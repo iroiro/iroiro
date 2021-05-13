@@ -36,3 +36,5 @@ artifacts/
 cache/
 
 types/
+
+bin/

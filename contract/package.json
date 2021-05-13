@@ -36,11 +36,12 @@
     "@types/chai": "^4.2.15",
     "@types/mocha": "^8.2.1",
     "@types/node": "^14.14.32",
+    "bignumber.js": "^9.0.1",
     "chai": "^4.3.3",
     "dotenv": "^8.2.0",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.0.31",
-    "hardhat": "^2.1.0",
+    "hardhat": "^2.2.1",
     "hardhat-gas-reporter": "^1.0.4",
     "solidity-coverage": "^0.7.15",
     "truffle": "^5.2.2",
@@ -49,6 +50,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
+    "@devprotocol/protocol": "^3.0.10",
     "@iroiro/merkle-distributor": "1.4.2",
     "@openzeppelin/contracts": "^3.4.1",
     "@openzeppelin/contracts-upgradeable": "^3.4.0",
