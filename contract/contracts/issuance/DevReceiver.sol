@@ -32,9 +32,7 @@ contract DevReceiver is DevReceiverInterface, Initializable {
     address private constant devToken = 0x5cAf454Ba92e6F2c929DF14667Ee360eD9fD5b26;
 
     address private __propertyAuthor;
-
     address private __communityToken;
-
     address private __propertyToken;
 
     function initialize(
@@ -47,11 +45,11 @@ contract DevReceiver is DevReceiverInterface, Initializable {
         __propertyAuthor = _propertyAuthor;
     }
 
-    function communityToken() public override view returns (address) {
+    function communityToken() external override view returns (address) {
         return __communityToken;
     }
 
-    function propertyToken() public override view returns (address) {
+    function propertyToken() external override view returns (address) {
         return __propertyToken;
     }
 
@@ -112,4 +110,3 @@ contract DevReceiver is DevReceiverInterface, Initializable {
         return _withdraw.calculateWithdrawableAmount(__propertyToken, address(this));
     }
 }
-

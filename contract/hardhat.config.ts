@@ -69,6 +69,7 @@ const config: HardhatUserConfig = {
   solidity: "0.7.6",
   networks: {
     hardhat: {
+      gasPrice: 1,
       forking: {
         url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
         blockNumber: Number.parseInt(process.env?.FORK_BLOCKNUMBER ?? "0"),

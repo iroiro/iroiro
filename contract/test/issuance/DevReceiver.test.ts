@@ -16,11 +16,12 @@
  */
 
 import { expect } from "chai";
-import { ContractFactory, Signer } from "ethers";
+import { BigNumber as EthersBigNumber, ContractFactory, Signer } from "ethers";
 import { ethers, network } from "hardhat";
 import { DevReceiver, ERC20BurnableMock, ERC20Mock } from "../../types";
 import * as dotenv from "dotenv";
 import { Network } from "hardhat/types";
+import BigNumber from "bignumber.js";
 dotenv.config();
 
 const increaseDevReward = async (network: Network) => {
@@ -30,8 +31,14 @@ const increaseDevReward = async (network: Network) => {
   });
 };
 
+const getRoundedGwei = (amount: EthersBigNumber) => {
+  return new BigNumber(ethers.utils.formatUnits(amount, "gwei"))
+    .integerValue(BigNumber.ROUND_DOWN)
+    .toFixed();
+};
+
 describe("DevReceiver", function () {
-  let author: Signer, alice: Signer, bob: Signer;
+  let author: Signer, alice: Signer, owner: Signer, bob: Signer, carol: Signer;
   let receiver: DevReceiver;
   let communityToken: ERC20BurnableMock;
   let propertyToken: ERC20Mock;
@@ -121,21 +128,21 @@ describe("DevReceiver", function () {
       const amount = await receiver
         .connect(author)
         .withdrawableAmount(ethers.utils.parseEther("1000000"));
-      expect(amount.toString()).to.equals("6855207692364");
+      expect(getRoundedGwei(amount)).to.equals("6855");
     });
 
     it("returns positive value if account has 20% of community token", async () => {
       const amount = await receiver
         .connect(author)
         .withdrawableAmount(ethers.utils.parseEther("2000000"));
-      expect(amount.toString()).to.equals("13710415384729");
+      expect(getRoundedGwei(amount)).to.equals("13710");
     });
 
     it("returns positive value if account has 100% of community token", async () => {
       const amount = await receiver
         .connect(author)
         .withdrawableAmount(ethers.utils.parseEther("10000000"));
-      expect(amount.toString()).to.equals("68552076924055");
+      expect(getRoundedGwei(amount)).to.equals("68552");
     });
   });
 
@@ -153,8 +160,8 @@ describe("DevReceiver", function () {
         await communityToken.balanceOf(await author.getAddress())
       );
       expect(
-        (await devToken.balanceOf(await author.getAddress())).toString()
-      ).to.be.equals("205656230771346");
+        getRoundedGwei(await devToken.balanceOf(await author.getAddress()))
+      ).to.be.equals("205656");
     });
 
     it("community token is burnt", async () => {
@@ -217,8 +224,8 @@ describe("DevReceiver", function () {
         await communityToken.balanceOf(await author.getAddress())
       );
       expect(
-        (await devToken.balanceOf(await author.getAddress())).toString()
-      ).to.be.equals("891177000024995");
+        getRoundedGwei(await devToken.balanceOf(await author.getAddress()))
+      ).to.be.equals("891177");
     });
   });
 
@@ -245,12 +252,12 @@ describe("DevReceiver", function () {
 
     it("withdraw DEV reward before transfer and then transfer to msg.sender", async () => {
       expect(
-        (await devToken.balanceOf(await author.getAddress())).toString()
-      ).to.equals("891177000024995");
+        getRoundedGwei(await devToken.balanceOf(await author.getAddress()))
+      ).to.equals("891177");
       await receiver.connect(author).rescue(devTokenAddress);
       expect(
-        (await devToken.balanceOf(await author.getAddress())).toString()
-      ).to.equals("959729076951915");
+        getRoundedGwei(await devToken.balanceOf(await author.getAddress()))
+      ).to.equals("959729");
     });
 
     it("withdraw is skipped and gas is saved before transfer if there is no DEV reward", async () => {
