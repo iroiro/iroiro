@@ -35,8 +35,10 @@ describe("TokenFactory", () => {
     creator: Signer,
     donatee: Signer,
     operator: Signer,
-    creatorFund: Signer;
+    creatorFund: Signer,
+    alice: Signer;
   let vester: TreasuryVester;
+  let nextVester: TreasuryVester;
   let factory: TokenFactory;
   let SocialToken: ContractFactory;
 
@@ -56,9 +58,11 @@ describe("TokenFactory", () => {
       donatee,
       operator,
       creatorFund,
+      alice,
     ] = await ethers.getSigners();
 
     vester = (await Vester.deploy()) as TreasuryVester;
+    nextVester = (await Vester.deploy()) as TreasuryVester;
     factory = (await TokenFactory.deploy(
       await operator.getAddress(),
       await donatee.getAddress(),
@@ -67,61 +71,150 @@ describe("TokenFactory", () => {
     )) as TokenFactory;
 
     await vester.transferOwnership(factory.address);
+    await nextVester.transferOwnership(factory.address);
   });
 
-  describe("constructor", () => {
+  describe("updateOperator", () => {
+    it("send token to new operator", async () => {
+      await factory.updateOperator(await alice.getAddress());
+      const tx = await factory
+        .connect(operator)
+        .createExclusiveToken(
+          await creator.getAddress(),
+          "SocialToken",
+          "SCL",
+          2000,
+          0,
+          0,
+          3
+        );
+      const { token } = await getTokenAndCreatorFromTransaction(tx);
+      const socialToken = SocialToken.attach(token) as SocialToken;
+      expect(
+        ethers.utils.formatEther(
+          await socialToken.balanceOf(await alice.getAddress())
+        )
+      ).to.equal("2000000.0");
+    });
+
     it("emit operator event", async () => {
-      const events = await factory.queryFilter(
-        factory.filters.UpdateOperator(null)
-      );
-      const updateEvent = events.find(
+      const tx = await factory.updateOperator(await alice.getAddress());
+      const receipt = await tx.wait();
+      const updateEvent = receipt.events?.find(
         (event) => event.event === "UpdateOperator"
       );
       if (updateEvent === undefined || updateEvent.args === undefined) {
         assert.fail();
       }
-      expect(updateEvent.args.operator).to.equal(await operator.getAddress());
+      expect(updateEvent.args.operator).to.equal(await alice.getAddress());
+    });
+  });
+
+  describe("updateDonatee", () => {
+    it("send token to new donatee", async () => {
+      await factory.updateDonatee(await alice.getAddress());
+      const tx = await factory
+        .connect(operator)
+        .createExclusiveToken(
+          await creator.getAddress(),
+          "SocialToken",
+          "SCL",
+          0,
+          2000,
+          0,
+          3
+        );
+      const { token } = await getTokenAndCreatorFromTransaction(tx);
+      const socialToken = SocialToken.attach(token) as SocialToken;
+      expect(
+        ethers.utils.formatEther(
+          await socialToken.balanceOf(await alice.getAddress())
+        )
+      ).to.equal("2000000.0");
     });
 
     it("emit donatee event", async () => {
-      const events = await factory.queryFilter(
-        factory.filters.UpdateDonatee(null)
-      );
-      const updateEvent = events.find(
+      const tx = await factory.updateDonatee(await alice.getAddress());
+      const receipt = await tx.wait();
+      const updateEvent = receipt.events?.find(
         (event) => event.event === "UpdateDonatee"
       );
       if (updateEvent === undefined || updateEvent.args === undefined) {
         assert.fail();
       }
-      expect(updateEvent.args.donatee).to.equal(await donatee.getAddress());
+      expect(updateEvent.args.donatee).to.equal(await alice.getAddress());
+    });
+  });
+
+  describe("updateCreatorFund", () => {
+    it("send token to new creator fund", async () => {
+      await factory.updateCreatorFund(await alice.getAddress());
+      const tx = await factory
+        .connect(operator)
+        .createExclusiveToken(
+          await creator.getAddress(),
+          "SocialToken",
+          "SCL",
+          0,
+          0,
+          2000,
+          3
+        );
+      const { token } = await getTokenAndCreatorFromTransaction(tx);
+      const socialToken = SocialToken.attach(token) as SocialToken;
+      expect(
+        ethers.utils.formatEther(
+          await socialToken.balanceOf(await alice.getAddress())
+        )
+      ).to.equal("2000000.0");
     });
 
     it("emit creator fund event", async () => {
-      const events = await factory.queryFilter(
-        factory.filters.UpdateCreatorFund(null)
-      );
-      const updateEvent = events.find(
+      const tx = await factory.updateCreatorFund(await alice.getAddress());
+      const receipt = await tx.wait();
+      const updateEvent = receipt.events?.find(
         (event) => event.event === "UpdateCreatorFund"
       );
       if (updateEvent === undefined || updateEvent.args === undefined) {
         assert.fail();
       }
-      expect(updateEvent.args.creatorFund).to.equal(
-        await creatorFund.getAddress()
-      );
+      expect(updateEvent.args.creatorFund).to.equal(await alice.getAddress());
+    });
+  });
+
+  describe("updateTreasuryVester", () => {
+    it("send token to new treasury vester", async () => {
+      await factory.updateTreasuryVester(nextVester.address);
+      const tx = await factory
+        .connect(operator)
+        .createExclusiveToken(
+          await creator.getAddress(),
+          "SocialToken",
+          "SCL",
+          0,
+          0,
+          0,
+          3
+        );
+      const { token } = await getTokenAndCreatorFromTransaction(tx);
+      const socialToken = SocialToken.attach(token) as SocialToken;
+      expect(
+        ethers.utils.formatEther(
+          await socialToken.balanceOf(nextVester.address)
+        )
+      ).to.equal("8000000.0");
     });
 
     it("emit treasury vester event", async () => {
-      const events = await factory.queryFilter(
-        factory.filters.UpdateTreasuryVester(null)
-      );
-      const updateEvent = events.find(
+      const tx = await factory.updateTreasuryVester(nextVester.address);
+      const receipt = await tx.wait();
+      const updateEvent = receipt.events?.find(
         (event) => event.event === "UpdateTreasuryVester"
       );
       if (updateEvent === undefined || updateEvent.args === undefined) {
         assert.fail();
       }
-      expect(updateEvent.args.treasuryVester).to.equal(vester.address);
+      expect(updateEvent.args.treasuryVester).to.equal(nextVester.address);
     });
   });
 
