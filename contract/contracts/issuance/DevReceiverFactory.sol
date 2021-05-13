@@ -32,16 +32,20 @@ contract DevReceiverFactory {
 
     address private devReceiverImplementation;
 
+    constructor() {
+        devReceiverImplementation = address(new DevReceiver());
+    }
+
     function createDevReceiver(
         address communityToken,
         address propertyToken
     ) external {
-        address newDevReceiver = Clones.clone(devReceiverImplementation);
-        DevReceiver(newDevReceiver).initialize(communityToken, propertyToken, msg.sender);
         require(
             msg.sender == IProperty(propertyToken).author(),
             "Only property author is able to create Dev Receiver"
         );
+        address newDevReceiver = Clones.clone(devReceiverImplementation);
+        DevReceiver(newDevReceiver).initialize(communityToken, propertyToken, msg.sender);
 
         emit CreateDevReceiver(
             msg.sender,
