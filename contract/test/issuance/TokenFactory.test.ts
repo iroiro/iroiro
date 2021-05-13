@@ -69,6 +69,62 @@ describe("TokenFactory", () => {
     await vester.transferOwnership(factory.address);
   });
 
+  describe("constructor", () => {
+    it("emit operator event", async () => {
+      const events = await factory.queryFilter(
+        factory.filters.UpdateOperator(null)
+      );
+      const updateEvent = events.find(
+        (event) => event.event === "UpdateOperator"
+      );
+      if (updateEvent === undefined || updateEvent.args === undefined) {
+        assert.fail();
+      }
+      expect(updateEvent.args.operator).to.equal(await operator.getAddress());
+    });
+
+    it("emit donatee event", async () => {
+      const events = await factory.queryFilter(
+        factory.filters.UpdateDonatee(null)
+      );
+      const updateEvent = events.find(
+        (event) => event.event === "UpdateDonatee"
+      );
+      if (updateEvent === undefined || updateEvent.args === undefined) {
+        assert.fail();
+      }
+      expect(updateEvent.args.donatee).to.equal(await donatee.getAddress());
+    });
+
+    it("emit creator fund event", async () => {
+      const events = await factory.queryFilter(
+        factory.filters.UpdateCreatorFund(null)
+      );
+      const updateEvent = events.find(
+        (event) => event.event === "UpdateCreatorFund"
+      );
+      if (updateEvent === undefined || updateEvent.args === undefined) {
+        assert.fail();
+      }
+      expect(updateEvent.args.creatorFund).to.equal(
+        await creatorFund.getAddress()
+      );
+    });
+
+    it("emit treasury vester event", async () => {
+      const events = await factory.queryFilter(
+        factory.filters.UpdateTreasuryVester(null)
+      );
+      const updateEvent = events.find(
+        (event) => event.event === "UpdateTreasuryVester"
+      );
+      if (updateEvent === undefined || updateEvent.args === undefined) {
+        assert.fail();
+      }
+      expect(updateEvent.args.treasuryVester).to.equal(vester.address);
+    });
+  });
+
   describe("createToken", () => {
     describe("success case", () => {
       it("success with zero donation ratio", async () => {

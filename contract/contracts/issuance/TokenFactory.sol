@@ -36,10 +36,10 @@ contract TokenFactory is TokenFactoryInterfaceV1, Ownable {
         address _creatorFund,
         address _treasuryVester
     ) {
-        operator = _operator;
-        donatee = _donatee;
-        creatorFund = _creatorFund;
-        treasuryVester = _treasuryVester;
+        updateOperator(_operator);
+        updateDonatee(_donatee);
+        updateCreatorFund(_creatorFund);
+        updateTreasuryVester(_treasuryVester);
 
         socialTokenImplementation = address(new SocialToken());
     }
