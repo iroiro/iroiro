@@ -29,6 +29,7 @@ contract DevReceiver is DevReceiverInterface, Initializable {
     using SafeMath for uint256;
 
     address private constant addressConfig = 0x1D415aa39D647834786EB9B5a333A50e9935b796;
+    address private constant devToken = 0x5cAf454Ba92e6F2c929DF14667Ee360eD9fD5b26;
 
     address private __propertyAuthor;
 
@@ -54,11 +55,6 @@ contract DevReceiver is DevReceiverInterface, Initializable {
         return __propertyToken;
     }
 
-    function getWithdrawableAmount() internal view returns (uint256) {
-        IWithdraw _withdraw = IWithdraw(IAddressConfig(addressConfig).withdraw());
-        return _withdraw.calculateWithdrawableAmount(__propertyToken, address(this));
-    }
-
     function withdrawableAmount(
         uint256 amountToBurn
     ) external override view returns (uint256) {
@@ -75,15 +71,10 @@ contract DevReceiver is DevReceiverInterface, Initializable {
     }
 
     function withdraw(uint256 amountToBurn) external override {
-        uint256 _amount = getWithdrawableAmount();
-
-        if (_amount > 0) {
-            address _withdraw = IAddressConfig(addressConfig).withdraw();
-            IWithdraw(_withdraw).withdraw(addressConfig);
-        }
+        withdrawDev();
 
         ERC20Burnable dev = ERC20Burnable(IAddressConfig(addressConfig).token());
-        uint256 totalAmount = dev.balanceOf(address(this)).add(_amount);
+        uint256 totalAmount = dev.balanceOf(address(this));
         ERC20Burnable _communityToken = ERC20Burnable(__communityToken);
 
         dev.transfer(
@@ -92,15 +83,33 @@ contract DevReceiver is DevReceiverInterface, Initializable {
         );
         _communityToken.burnFrom(
             msg.sender,
-            totalAmount.mul(amountToBurn).div(_communityToken.totalSupply())
+            amountToBurn
         );
     }
 
     function rescue(address _erc20) external override {
         require(msg.sender == __propertyAuthor, "Only property author is able to rescue token");
 
+        if (_erc20 == devToken) {
+            withdrawDev();
+        }
+
         uint256 balance = ERC20Burnable(_erc20).balanceOf(address(this));
         ERC20Burnable(_erc20).transfer(msg.sender, balance);
+    }
+
+    function withdrawDev() internal {
+        uint256 _amount = getWithdrawableAmount();
+
+        if (_amount > 0) {
+            address _withdraw = IAddressConfig(addressConfig).withdraw();
+            IWithdraw(_withdraw).withdraw(__propertyToken);
+        }
+    }
+
+    function getWithdrawableAmount() internal view returns (uint256) {
+        IWithdraw _withdraw = IWithdraw(IAddressConfig(addressConfig).withdraw());
+        return _withdraw.calculateWithdrawableAmount(__propertyToken, address(this));
     }
 }
 
