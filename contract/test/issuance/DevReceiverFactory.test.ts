@@ -44,18 +44,6 @@ describe("DevReceiverFactory", function () {
 
   beforeEach(async () => {
     await network.provider.request({
-      method: "hardhat_reset",
-      params: [
-        {
-          forking: {
-            jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
-            blockNumber: Number.parseInt(process.env?.FORK_BLOCKNUMBER ?? "0"),
-          },
-        },
-      ],
-    });
-
-    await network.provider.request({
       method: "hardhat_impersonateAccount",
       params: ["0x0972b8f4ddea155f5cef515a33cfadbc77476d34"],
     });
@@ -119,10 +107,7 @@ describe("DevReceiverFactory", function () {
   it("is not able to create receiver by non-author user even user has property token", async () => {
     await propertyToken
       .connect(author)
-      .transfer(
-        await alice.getAddress(),
-        await propertyToken.balanceOf(await author.getAddress())
-      );
+      .transfer(await alice.getAddress(), ethers.utils.parseEther("10"));
     await expect(
       factory
         .connect(alice)
@@ -183,10 +168,9 @@ describe("DevReceiverFactory", function () {
     receiver = DevReceiverFactory.attach(
       receipt.events?.[0]?.args?.devReceiver
     ) as DevReceiver;
-    await propertyToken.transfer(
-      receiver.address,
-      await propertyToken.balanceOf(await author.getAddress())
-    );
+    await propertyToken
+      .connect(author)
+      .transfer(receiver.address, ethers.utils.parseEther("10"));
     await receiver.connect(author).rescue(propertyToken.address);
     await receiver.connect(author).rescue(devTokenAddress);
   });

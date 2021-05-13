@@ -44,18 +44,6 @@ describe("DevReceiver", function () {
 
   beforeEach(async () => {
     await network.provider.request({
-      method: "hardhat_reset",
-      params: [
-        {
-          forking: {
-            jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
-            blockNumber: Number.parseInt(process.env?.FORK_BLOCKNUMBER ?? "0"),
-          },
-        },
-      ],
-    });
-
-    await network.provider.request({
       method: "hardhat_impersonateAccount",
       params: ["0x0972b8f4ddea155f5cef515a33cfadbc77476d34"],
     });
@@ -95,10 +83,20 @@ describe("DevReceiver", function () {
     propertyToken = (await ERC20MockFactory.attach(
       propertyTokenAddress
     )) as ERC20Mock;
-    const tenPercentOfPropertyToken = ethers.utils.parseEther("1000000");
     await propertyToken
       .connect(author)
-      .transfer(receiver.address, tenPercentOfPropertyToken);
+      .transfer(receiver.address, ethers.utils.parseEther("1000000"));
+  });
+
+  afterEach(async () => {
+    const propertyBalance = await propertyToken.balanceOf(receiver.address);
+    if (!propertyBalance.isZero()) {
+      await receiver.rescue(propertyToken.address);
+    }
+    const devBalance = await devToken.balanceOf(receiver.address);
+    if (!devBalance.isZero()) {
+      await receiver.rescue(devTokenAddress);
+    }
   });
 
   it("returns a community token address", async () => {
@@ -137,7 +135,7 @@ describe("DevReceiver", function () {
       const amount = await receiver
         .connect(author)
         .withdrawableAmount(ethers.utils.parseEther("10000000"));
-      expect(amount.toString()).to.equals("68552076923645");
+      expect(amount.toString()).to.equals("68552076924055");
     });
   });
 
@@ -220,7 +218,7 @@ describe("DevReceiver", function () {
       );
       expect(
         (await devToken.balanceOf(await author.getAddress())).toString()
-      ).to.be.equals("274208307694991");
+      ).to.be.equals("891177000024995");
     });
   });
 
@@ -248,11 +246,11 @@ describe("DevReceiver", function () {
     it("withdraw DEV reward before transfer and then transfer to msg.sender", async () => {
       expect(
         (await devToken.balanceOf(await author.getAddress())).toString()
-      ).to.equals("0");
+      ).to.equals("891177000024995");
       await receiver.connect(author).rescue(devTokenAddress);
       expect(
         (await devToken.balanceOf(await author.getAddress())).toString()
-      ).to.equals("68552076923645");
+      ).to.equals("959729076951915");
     });
 
     it("withdraw is skipped and gas is saved before transfer if there is no DEV reward", async () => {
