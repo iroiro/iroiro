@@ -68,6 +68,12 @@ task("create-exclusive-token", "Prints an account's balance")
 const config: HardhatUserConfig = {
   solidity: "0.7.6",
   networks: {
+    hardhat: {
+      forking: {
+        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        blockNumber: Number.parseInt(process.env?.FORK_BLOCKNUMBER ?? "0"),
+      },
+    },
     mainnet: {
       url: `https://mainnet.infura.io/v3/${projectId}`,
       accounts: [privateKey ?? ""],
