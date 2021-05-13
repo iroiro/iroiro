@@ -18,7 +18,12 @@
 import { expect } from "chai";
 import { BigNumber as EthersBigNumber, ContractFactory, Signer } from "ethers";
 import { ethers, network } from "hardhat";
-import { DevReceiver, ERC20BurnableMock, ERC20Mock } from "../../types";
+import {
+  DevReceiver,
+  ERC20BurnableMock,
+  ERC20Mock,
+  PropertyMock__factory,
+} from "../../types";
 import * as dotenv from "dotenv";
 import { Network } from "hardhat/types";
 import BigNumber from "bignumber.js";
@@ -81,11 +86,7 @@ describe("DevReceiver", function () {
     receiver = (await DevReceiverFactory.connect(
       author
     ).deploy()) as DevReceiver;
-    await receiver.initialize(
-      communityToken.address,
-      propertyTokenAddress,
-      await author.getAddress()
-    );
+    await receiver.initialize(communityToken.address, propertyTokenAddress);
 
     propertyToken = (await ERC20MockFactory.attach(
       propertyTokenAddress
@@ -264,6 +265,32 @@ describe("DevReceiver", function () {
       await receiver.rescue(propertyTokenAddress);
       await receiver.withdraw(0);
       await receiver.connect(author).rescue(devTokenAddress);
+    });
+
+    it("is able to rescue by author if previous author deposited token to contract", async () => {
+      const Property = await ethers.getContractFactory("PropertyMock");
+      const property = Property.attach(propertyTokenAddress);
+      expect(await property.author()).to.equals(await author.getAddress());
+      await property.connect(author).changeAuthor(await alice.getAddress());
+      expect(await property.author()).to.equals(await alice.getAddress());
+      await receiver.connect(alice).rescue(propertyTokenAddress);
+      await receiver.connect(alice).rescue(devTokenAddress);
+      await property.connect(alice).changeAuthor(await author.getAddress());
+    });
+
+    it("throws an error if previous author tryed to rescue token", async () => {
+      const Property = await ethers.getContractFactory("PropertyMock");
+      const property = Property.attach(propertyTokenAddress);
+      expect(await property.author()).to.equals(await author.getAddress());
+      await property.connect(author).changeAuthor(await alice.getAddress());
+      expect(await property.author()).to.equals(await alice.getAddress());
+      await expect(
+        receiver.connect(author).rescue(propertyTokenAddress)
+      ).to.be.revertedWith("Only property author is able to rescue token");
+      await expect(
+        receiver.connect(author).rescue(devTokenAddress)
+      ).to.be.revertedWith("Only property author is able to rescue token");
+      await property.connect(alice).changeAuthor(await author.getAddress());
     });
   });
 });

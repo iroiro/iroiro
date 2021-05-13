@@ -22,6 +22,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@openzeppelin/contracts/proxy/Initializable.sol";
 import "@devprotocol/protocol/contracts/interface/IAddressConfig.sol";
+import "@devprotocol/protocol/contracts/interface/IProperty.sol";
 import "@devprotocol/protocol/contracts/interface/IWithdraw.sol";
 import "../interfaces/DevReceiverInterface.sol";
 
@@ -31,18 +32,15 @@ contract DevReceiver is DevReceiverInterface, Initializable {
     address private constant addressConfig = 0x1D415aa39D647834786EB9B5a333A50e9935b796;
     address private constant devToken = 0x5cAf454Ba92e6F2c929DF14667Ee360eD9fD5b26;
 
-    address private __propertyAuthor;
     address private __communityToken;
     address private __propertyToken;
 
     function initialize(
         address _communityToken,
-        address _propertyToken,
-        address _propertyAuthor
+        address _propertyToken
     ) external initializer {
         __communityToken = _communityToken;
         __propertyToken = _propertyToken;
-        __propertyAuthor = _propertyAuthor;
     }
 
     function communityToken() external override view returns (address) {
@@ -74,26 +72,28 @@ contract DevReceiver is DevReceiverInterface, Initializable {
         ERC20Burnable dev = ERC20Burnable(IAddressConfig(addressConfig).token());
         uint256 totalAmount = dev.balanceOf(address(this));
         ERC20Burnable _communityToken = ERC20Burnable(__communityToken);
+        uint256 communityTokenTotalSupply = _communityToken.totalSupply();
 
-        dev.transfer(
-            msg.sender,
-            totalAmount.mul(amountToBurn).div(_communityToken.totalSupply())
-        );
         _communityToken.burnFrom(
             msg.sender,
             amountToBurn
         );
+        dev.transfer(
+            msg.sender,
+            totalAmount.mul(amountToBurn).div(communityTokenTotalSupply)
+        );
     }
 
     function rescue(address _erc20) external override {
-        require(msg.sender == __propertyAuthor, "Only property author is able to rescue token");
+        address propertyAuthor = IProperty(__propertyToken).author();
+        require(msg.sender == propertyAuthor, "Only property author is able to rescue token");
 
         if (_erc20 == devToken) {
             withdrawDev();
         }
 
         uint256 balance = ERC20Burnable(_erc20).balanceOf(address(this));
-        ERC20Burnable(_erc20).transfer(msg.sender, balance);
+        ERC20Burnable(_erc20).transfer(propertyAuthor, balance);
     }
 
     function withdrawDev() internal {

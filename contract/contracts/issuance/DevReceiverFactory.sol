@@ -45,7 +45,7 @@ contract DevReceiverFactory {
             "Only property author is able to create Dev Receiver"
         );
         address newDevReceiver = Clones.clone(devReceiverImplementation);
-        DevReceiver(newDevReceiver).initialize(communityToken, propertyToken, msg.sender);
+        DevReceiver(newDevReceiver).initialize(communityToken, propertyToken);
 
         emit CreateDevReceiver(
             msg.sender,
