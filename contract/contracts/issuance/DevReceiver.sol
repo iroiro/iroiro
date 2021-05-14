@@ -21,12 +21,13 @@ pragma solidity =0.7.6;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@openzeppelin/contracts/proxy/Initializable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@devprotocol/protocol/contracts/interface/IAddressConfig.sol";
 import "@devprotocol/protocol/contracts/interface/IProperty.sol";
 import "@devprotocol/protocol/contracts/interface/IWithdraw.sol";
 import "../interfaces/DevReceiverInterface.sol";
 
-contract DevReceiver is DevReceiverInterface, Initializable {
+contract DevReceiver is DevReceiverInterface, Initializable, ReentrancyGuard {
     using SafeMath for uint256;
 
     address private constant addressConfig = 0x1D415aa39D647834786EB9B5a333A50e9935b796;
@@ -84,7 +85,7 @@ contract DevReceiver is DevReceiverInterface, Initializable {
         );
     }
 
-    function rescue(address _erc20) external override {
+    function rescue(address _erc20) external override nonReentrant {
         address propertyAuthor = IProperty(__propertyToken).author();
         require(msg.sender == propertyAuthor, "Only property author is able to rescue token");
 
