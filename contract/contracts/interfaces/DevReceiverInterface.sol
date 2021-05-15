@@ -19,13 +19,19 @@
 pragma solidity =0.7.6;
 
 interface DevReceiverInterface {
-    function communityToken() external returns(address);
+    function communityToken() external view returns(address);
 
-    function propertyToken() external returns(address);
+    function propertyToken() external view returns(address);
 
-    function withdrawableAmount(uint256 amountToBurn) external returns(uint256);
+    function maxWithdrawableAmount(uint256 amountToBurn) external view returns(uint256);
+
+    function actualWithdrawableAmount(uint256 amountToBurn) external view returns(uint256);
 
     function withdraw(uint256 amountToBurn) external;
+
+    function chargeReward() external;
+    
+    function chargeableReward() external view returns (uint256);
 
     function rescue(address _erc20) external;
 }
