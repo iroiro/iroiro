@@ -4491,10 +4491,10 @@
     squarelink "^1.1.4"
     tiny-invariant "^1.0.6"
 
-"@web3-react/torus-connector@^6.1.7":
-  version "6.1.7"
-  resolved "https://registry.yarnpkg.com/@web3-react/torus-connector/-/torus-connector-6.1.7.tgz#5ce7829a5669efdaa2e39abe2989a490b87dad1a"
-  integrity sha512-zuirHlkcUuwkAyhCz1zBHbxiQ3627Zvw/MJyXGFVX5BSr9ywulFzEi2f+DOyDMMBZAxtSPs3VHB4xMTetUCkOg==
+"@web3-react/torus-connector@^6.1.9":
+  version "6.1.9"
+  resolved "https://registry.yarnpkg.com/@web3-react/torus-connector/-/torus-connector-6.1.9.tgz#5a3b7c262b145c293c74a56f457ee932930e6da8"
+  integrity sha512-HOEGbs1XMWncUs/KKBf+8OQaWHxlI3vXRMpXU7UJF404WvawgklEK5yljmFBA0YjwFUwanx0uL36HRYgijVfwA==
   dependencies:
     "@toruslabs/torus-embed" "^1.8.0"
     "@web3-react/abstract-connector" "^6.0.7"

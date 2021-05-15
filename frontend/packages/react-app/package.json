@@ -52,7 +52,7 @@
     "@web3-react/network-connector": "^6.1.3",
     "@web3-react/portis-connector": "^6.1.6",
     "@web3-react/squarelink-connector": "^6.1.6",
-    "@web3-react/torus-connector": "^6.1.7",
+    "@web3-react/torus-connector": "^6.1.9",
     "@web3-react/trezor-connector": "^6.1.6",
     "@web3-react/walletconnect-connector": "^6.1.6",
     "@web3-react/walletlink-connector": "^6.1.6",
