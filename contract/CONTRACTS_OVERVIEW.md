@@ -1,5 +1,7 @@
 ## DevReceiver 
 
+![EzZpOZ0UYAMoVBO](https://user-images.githubusercontent.com/12506798/118351729-8c64ba00-b598-11eb-8a41-4d3514c23a48.jpeg)
+
 [DevReceiver](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/DevReceiver.sol) は [Dev Protocol](https://devprotocol.xyz/) における [Property](https://github.com/dev-protocol/protocol/blob/main/docs/WHITEPAPER.JA.md#property) に対するRewardを、iroiroの [TokenFactory](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/TokenFactory.sol) などで作成されるCommunity Token保有者に対して分配を行うコントラクトです。
 
 1. DevReceiverは [DevReceiverFactory](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/DevReceiverFactory.sol) によって動的にデプロイすることができます。デプロイの際は$DEVにおけるProperty Tokenと、対応するCommunity Tokenのペアを指定する必要があります。
