@@ -21,17 +21,15 @@ pragma solidity =0.7.6;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@openzeppelin/contracts/proxy/Initializable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@devprotocol/protocol/contracts/interface/IAddressConfig.sol";
 import "@devprotocol/protocol/contracts/interface/IProperty.sol";
 import "@devprotocol/protocol/contracts/interface/IWithdraw.sol";
 import "../interfaces/DevReceiverInterface.sol";
 
-contract DevReceiver is DevReceiverInterface, Initializable, ReentrancyGuard {
+contract DevReceiver is DevReceiverInterface, Initializable {
     using SafeMath for uint256;
 
     address private constant addressConfig = 0x1D415aa39D647834786EB9B5a333A50e9935b796;
-    address private constant devToken = 0x5cAf454Ba92e6F2c929DF14667Ee360eD9fD5b26;
 
     address private __communityToken;
     address private __propertyToken;
@@ -135,7 +133,7 @@ contract DevReceiver is DevReceiverInterface, Initializable, ReentrancyGuard {
      * Withdraw property token and remaining DEV by author. 
      * @param _erc20 A token address which author want to rescue. 
      */
-    function rescue(address _erc20) external override nonReentrant {
+    function rescue(address _erc20) external override {
         address propertyAuthor = IProperty(__propertyToken).author();
         require(msg.sender == propertyAuthor, "Only property author is able to rescue token");
 
