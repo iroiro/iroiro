@@ -57,10 +57,10 @@ contract DevReceiver is DevReceiverInterface, Initializable {
     function maxWithdrawableAmount(
         uint256 amountToBurn
     ) external override view returns (uint256) {
-        uint256 _amount = chargeableReward();
-        ERC20Burnable dev = ERC20Burnable(IAddressConfig(addressConfig).token());
         return calculateAmountToWithdraw(
-            dev.balanceOf(address(this)).add(_amount),
+            ERC20Burnable(IAddressConfig(addressConfig).token())
+            .balanceOf(address(this))
+            .add(chargeableReward()),
             amountToBurn
         );
     }
@@ -72,9 +72,8 @@ contract DevReceiver is DevReceiverInterface, Initializable {
     function actualWithdrawableAmount(
         uint256 amountToBurn
     ) external override view returns (uint256) {
-        ERC20Burnable dev = ERC20Burnable(IAddressConfig(addressConfig).token());
         return calculateAmountToWithdraw(
-            dev.balanceOf(address(this)),
+            ERC20Burnable(IAddressConfig(addressConfig).token()).balanceOf(address(this)),
             amountToBurn
         );
     }
@@ -85,39 +84,36 @@ contract DevReceiver is DevReceiverInterface, Initializable {
      */
     function withdraw(uint256 amountToBurn) external override {
         ERC20Burnable dev = ERC20Burnable(IAddressConfig(addressConfig).token());
-        ERC20Burnable _communityToken = ERC20Burnable(__communityToken);
         uint256 amountToWithdraw = calculateAmountToWithdraw(
             dev.balanceOf(address(this)),
             amountToBurn
         );
 
-        _communityToken.burnFrom(msg.sender, amountToBurn);
+        ERC20Burnable(__communityToken).burnFrom(msg.sender, amountToBurn);
         dev.transfer(msg.sender, amountToWithdraw);
     }
-    
+
     /**
      * Calculate withdrawable amount
      * @param totalAmount Total amount of DEV 
      * @param amountToBurn Community token amount to burn to withdraw DEV reward
-     */ 
+     */
     function calculateAmountToWithdraw(
-        uint256 totalAmount, 
+        uint256 totalAmount,
         uint amountToBurn
-    ) internal view returns(uint256 allocation) { 
-        ERC20Burnable _communityToken = ERC20Burnable(__communityToken);
-
+    ) internal view returns(uint256 allocation) {
         return totalAmount
         .mul(amountToBurn)
-        .div(_communityToken.totalSupply());
-    } 
-    
+        .div(ERC20Burnable(__communityToken).totalSupply());
+    }
+
     /**
      * Withdraw DEV reward from Withdraw contract of Dev Protocol. 
      * See also: https://github.com/dev-protocol/protocol/blob/8bae6d7df5dd724874f8ad6ccf120efbf98d859d/contracts/src/withdraw/Withdraw.sol#L34-L92
      */
     function chargeReward() external override {
-        address _withdraw = IAddressConfig(addressConfig).withdraw();
-        IWithdraw(_withdraw).withdraw(__propertyToken);
+        IWithdraw(IAddressConfig(addressConfig).withdraw())
+        .withdraw(__propertyToken);
     }
 
     /**
@@ -125,8 +121,8 @@ contract DevReceiver is DevReceiverInterface, Initializable {
      * See also https://github.com/dev-protocol/protocol/blob/8bae6d7df5dd724874f8ad6ccf120efbf98d859d/contracts/src/withdraw/Withdraw.sol#L210-L220
      */
     function chargeableReward() public view override returns (uint256) {
-        IWithdraw _withdraw = IWithdraw(IAddressConfig(addressConfig).withdraw());
-        return _withdraw.calculateWithdrawableAmount(__propertyToken, address(this));
+        return IWithdraw(IAddressConfig(addressConfig).withdraw())
+        .calculateWithdrawableAmount(__propertyToken, address(this));
     }
 
     /**
@@ -138,7 +134,7 @@ contract DevReceiver is DevReceiverInterface, Initializable {
         require(msg.sender == propertyAuthor, "Only property author is able to rescue token");
 
         ERC20Burnable(_erc20).transfer(
-            propertyAuthor, 
+            propertyAuthor,
             ERC20Burnable(_erc20).balanceOf(address(this))
         );
     }
