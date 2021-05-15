@@ -25,6 +25,14 @@ const POLLING_INTERVAL = 12000;
 const chainId = Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "1");
 const isSupported = [1, 4, 42].includes(chainId);
 
+type NetworkName = "mainnet" | "rinkeby" | "kovan";
+
+const chainIdToNetwork: { [network: number]: NetworkName } = {
+  1: "mainnet",
+  4: "rinkeby",
+  42: "kovan",
+};
+
 export const injected = new InjectedConnector({
   supportedChainIds: [chainId],
 });
@@ -50,4 +58,9 @@ export const portis = isSupported
     })
   : undefined;
 
-export const torus = new TorusConnector({ chainId: chainId });
+export const torus = isSupported
+  ? new TorusConnector({
+      chainId: chainId,
+      initOptions: { network: { host: chainIdToNetwork[chainId] } },
+    })
+  : undefined;

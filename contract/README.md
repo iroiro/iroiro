@@ -15,3 +15,19 @@ The naming convention of the contract is as follows:
 ## Contract Addresses 
 
 See: https://github.com/iroiro/iroiro/tree/develop/subgraph/config 
+
+## Create Token with TokenFactory 
+
+Run `npx hardhat help create-exclusive-token` for more detail. 
+
+``` 
+$ yarn create-exclusive-token --network [network] \
+ --factory-address [factory address] \
+ --creator-address [creator/your address] \
+ --name [name] \
+ --symbol [symbol] \
+ --creator-fund-ratio [percentage with decimal 2 such as 500] \
+ --donatee-ratio [percentage with decimal 2 such as 500] \
+ --operation-ratio [percentage with decimal 2 such as 500] \
+ --vesting-years [years with decimal 0 such as 3]
+```

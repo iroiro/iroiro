@@ -34,3 +34,7 @@ coverage/
 
 artifacts/
 cache/
+
+types/
+
+bin/

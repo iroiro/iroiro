@@ -15,3 +15,5 @@ env.json
 
 contract/coverage.json
 subgraph/subgraph.yaml
+
+types/
