@@ -58,7 +58,6 @@ export const portis = isSupported
     })
   : undefined;
 
-console.debug(chainId, { network: chainIdToNetwork[chainId] });
 export const torus = isSupported
   ? new TorusConnector({
       chainId: chainId,
