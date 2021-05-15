@@ -38,6 +38,7 @@ import {
   walletconnect,
   fortmatic,
   portis,
+  torus,
 } from "../../../utils/connectors";
 
 enum ConnectorNames {
@@ -45,6 +46,7 @@ enum ConnectorNames {
   WalletConnect = "WalletConnect",
   Fortmatic = "Fortmatic",
   Portis = "Portis",
+  Torus = "Torus",
 }
 
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
@@ -52,6 +54,7 @@ const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.Fortmatic]: fortmatic,
   [ConnectorNames.Portis]: portis,
+  [ConnectorNames.Torus]: torus,
 };
 
 export interface WalletDialogProps {
