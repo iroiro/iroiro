@@ -6,7 +6,7 @@ TokenIssuanceとは、任意のSocialToken(CommunityToken)を作成可能なIroi
 この際にユーザーはトークンの名称、シンボル、Iroiro運営及びIroiroアプリへのトークンの配布率を引数で指定して、任意のトークンを発行することができます。
 トークンが発行されると、デフォルトの場合下記の割合でトークンが各アドレスに対して送付されます。
 - トークン発行者: 20%
-  これはトークン発行者が保有するものではく、 https://app.iroiro.social などを利用したコミュニティへの配布を行ったり、Uniswapなどでの流動性提供に用いられることを想定しています。
+  これはトークン発行者が保有するものではく、 [Iroiro](https://app.iroiro.social) などを利用したコミュニティへの配布を行ったり、Uniswapなどでの流動性提供に用いられることを想定しています。
 - [TreasuryVester](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/TreasuryVester.sol): 80%
   (寄付率が指定された場合減少します)。トークン発行者が将来的に受け取ることができるトークンはTreasuryVesterへ送られ、3年間ロックされます。引き出せるトークン量は時間の経過に応じて線形的に増加し、自由なタイミングでアンロックされたトークンを引き出すことができます。
 - Iroiro運営及びIroiroアプリ:
@@ -21,7 +21,7 @@ At this time, the user can issue any token by specifying the token name, symbol,
 When a token is issued, the default percentage of tokens will be sent to each address as follows
 
 - Token issuer: 20%
-  This will not be held by the token issuer, but will be distributed to the community via https://app.iroiro.social, or used to provide liquidity via Uniswap.
+  This will not be held by the token issuer, but will be distributed to the community via [Iroiro](https://app.iroiro.social), or used to provide liquidity via Uniswap.
 - [TreasuryVester](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/TreasuryVester.sol): 
   80% (will be reduced if donation rate is specified). Tokens that the token issuer can receive in the future will be sent to TreasuryVester and locked for 3 years. The amount of tokens that can be withdrawn increases linearly with time, and the unlocked tokens can be withdrawn at any time.
 - Iroiro Operator and Iroiro App:
