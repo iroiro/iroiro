@@ -33,7 +33,7 @@ When a token is issued, the default percentage of tokens will be sent to each ad
 ![EzZpOZ0UYAMoVBO](https://user-images.githubusercontent.com/12506798/118351729-8c64ba00-b598-11eb-8a41-4d3514c23a48.jpeg)
 
 [DevReceiver](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/DevReceiver.sol) は [Dev Protocol](https://devprotocol.xyz/) における [Property](https://github.com/dev-protocol/protocol/blob/main/docs/WHITEPAPER.JA.md#property) に対するRewardを、iroiroの [TokenFactory](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/TokenFactory.sol) などで作成されるCommunity Token保有者に対して分配を行うコントラクトです。
-(図中で示している [CryptoVizor](https://twitter.com/CryptoVizorNFT) はiroiroチームが別個に開発しているアプリケーションであり、CryptoVizorは [stakes.social](https://stakes.social/0x3059bD281418179A83cAE3771b0dD6C47807EA3a) でPropertyとして登録されています。）
+(図解は [CryptoVizor](https://twitter.com/CryptoVizorNFT) を利用した例です。CryptoVizorはiroiroチームが別個に開発しているアプリケーションであり、CryptoVizorは [stakes.social](https://stakes.social/0x3059bD281418179A83cAE3771b0dD6C47807EA3a) でPropertyとして登録されています。）
 
 1. DevReceiverは [DevReceiverFactory](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/DevReceiverFactory.sol) によって動的にデプロイすることができます。デプロイの際は$DEVにおけるProperty Tokenと、対応するCommunity Tokenのペアを指定する必要があります。
 1. DevReceiverのデプロイ後、Propertyの作成者はProperty Tokenの一部（10%など）をDevReceiverに対してデポジットを実施します。DevReceiverコントラクトは保有するProperty Tokenの割合に応じて、[ブロックごとに引き出せる報酬が増加していきます](https://github.com/dev-protocol/protocol/blob/main/docs/WHITEPAPER.JA.md#withdraw-2) 。
@@ -42,7 +42,7 @@ When a token is issued, the default percentage of tokens will be sent to each ad
 1. コミュニティトークンの全量がburnされ、DevReceiverがProperty Tokenを保有する必要性がなくなった場合などは、Propertyの作成者はDevReceiverが保有するProperty TokenやDEV tokenなどのERC20トークンを自由に引き出すことができます。
 
 [DevReceiver](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/DevReceiver.sol) is a contract that distributes Reward for [Property](https://github.com/dev-protocol/protocol/blob/main/docs/WHITEPAPER.JA.md#property) in [Dev Protocol](https://devprotocol.xyz/) to Community Token holders created by [TokenFactory](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/TokenFactory.sol) in iroiro.
-([CryptoVizor](https://twitter.com/CryptoVizorNFT) shown in the figure is a separate application developed by iroiro team, and CryptoVizor is registered as a Property in [stakes.social](https://stakes.social/0x3059bD281418179A83cAE3771b0dD6C47807EA3a)).
+(The illustration shows an example using [CryptoVizor](https://twitter.com/CryptoVizorNFT). CryptoVizor is a separate application developed by the iroiro team, and CryptoVizor is registered as a Property in [stakes. social](https://stakes.social/0x3059bD281418179A83cAE3771b0dD6C47807EA3a), and CryptoVizor is registered as a Property in [stakes. social](https://stakes.social/0x3059bD281418179A83cAE3771b0dD6C47807EA3a).
 
 1. DevReceiver can be deployed dynamically by [DevReceiverFactory](https://github.com/iroiro/iroiro/blob/develop/contract/contracts/issuance/DevReceiverFactory.sol). When deploying, you need to specify the Property Token in the Dev Protocol and the corresponding Community Token pair.
 1. After the DevReceiver is deployed, the creator of the Property will deposit a portion (e.g. 10%) of the Property Token to the DevReceiver. The DevReceiver contract will [increase the amount of reward that can be withdrawn per block]((https://github.com/dev-protocol/protocol/blob/main/docs/WHITEPAPER.JA.md#withdraw-2)) according to the percentage of Property Token held.
