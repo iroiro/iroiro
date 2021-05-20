@@ -15,5 +15,9 @@
   "treasuryVester": {
     "address": "0xB9904F804E77bd07475AAFd196D77a951bc8b795",
     "startBlock": "12327622"
+  },
+  "devReceiverFactory": {
+    "address": "0x15a404d21e9880fDBc876Bc2DfadA8394E766CB8",
+    "startBlock": "12469368"
   }
 }
