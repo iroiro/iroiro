@@ -5,6 +5,7 @@
   "scripts": {
     "compile": "npx truffle compile",
     "network": "npx truffle network",
+    "verify": "npx truffle run verify",
     "console:local": "npx truffle console --network local",
     "console:mainnet": "npx truffle console --network mainnet",
     "solhint": "solhint ./contracts/**/*.sol",
