@@ -18,6 +18,115 @@
 require("dotenv").config();
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
+const bscNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      process.env.BSC_RPC_URL
+    );
+  },
+  network_id: 56,
+  skipDryRun: true,
+};
+
+const tbscNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      process.env.TBSC_RPC_URL
+    );
+  },
+  network_id: 97,
+  skipDryRun: true,
+};
+
+const maticNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      process.env.MATIC_RPC_URL
+    );
+  },
+  network_id: 137,
+  skipDryRun: true,
+  gas: 4000000,
+  gasPrice: 1000000000, // 1 gwei
+};
+
+const mumbaiNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      process.env.MUMBAI_RPC_URL
+    );
+  },
+  network_id: 80001,
+  skipDryRun: true,
+};
+
+const xdaiNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      process.env.XDAI_RPC_URL
+    );
+  },
+  network_id: 100,
+  skipDryRun: true,
+  gas: 4000000,
+  gasPrice: 1000000000, // 1 gwei
+};
+
+const ropstenNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      `https://ropsten.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
+    );
+  },
+  network_id: "3",
+  skipDryRun: true,
+};
+
+const rinkebyNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
+    );
+  },
+  network_id: "4",
+  skipDryRun: true,
+};
+
+const kovanNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
+    );
+  },
+  network_id: "42",
+  skipDryRun: true,
+};
+
+const mainnetNetwork = {
+  provider: () => {
+    return new HDWalletProvider(
+      process.env.PRIVATE_KEY,
+      `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
+    );
+  },
+  // network_id: "1", // Use for verify contract on etherscan
+  network_id: "*",
+  // ~~Necessary due to https://github.com/trufflesuite/truffle/issues/1971~~
+  // Necessary due to https://github.com/trufflesuite/truffle/issues/3008
+  skipDryRun: true,
+  timeoutBlocks: 500,
+  gas: 4000000,
+  gasPrice: 140000000000, // 140 gwei
+};
+
 module.exports = {
   networks: {
     local: {
@@ -30,100 +139,15 @@ module.exports = {
       port: 7545,
       network_id: "*",
     },
-    bsc: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.PRIVATE_KEY,
-          process.env.BSC_RPC_URL
-        );
-      },
-      network_id: 56,
-      skipDryRun: true,
-    },
-    tbsc: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.PRIVATE_KEY,
-          process.env.TBSC_RPC_URL
-        );
-      },
-      network_id: 97,
-      skipDryRun: true,
-    },
-    matic: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.PRIVATE_KEY,
-          process.env.MATIC_RPC_URL
-        );
-      },
-      network_id: 137,
-      skipDryRun: true,
-      gas: 4000000,
-      gasPrice: 1000000000, // 1 gwei
-    },
-    mumbai: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.PRIVATE_KEY,
-          process.env.MUMBAI_RPC_URL
-        );
-      },
-      network_id: 80001,
-      skipDryRun: true,
-    },
-    xdai: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.PRIVATE_KEY,
-          process.env.XDAI_RPC_URL
-        );
-      },
-      network_id: 100,
-      skipDryRun: true,
-      gas: 4000000,
-      gasPrice: 1000000000, // 1 gwei
-    },
-    rinkeby: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.PRIVATE_KEY,
-          process.env.RPC_URL
-        );
-      },
-      network_id: "4",
-      // ~~Necessary due to https://github.com/trufflesuite/truffle/issues/1971~~
-      // Necessary due to https://github.com/trufflesuite/truffle/issues/3008
-      skipDryRun: true,
-    },
-    kovan: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.PRIVATE_KEY,
-          process.env.RPC_URL
-        );
-      },
-      network_id: "42",
-      // ~~Necessary due to https://github.com/trufflesuite/truffle/issues/1971~~
-      // Necessary due to https://github.com/trufflesuite/truffle/issues/3008
-      skipDryRun: true,
-    },
-    mainnet: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.PRIVATE_KEY,
-          process.env.RPC_URL
-        );
-      },
-      network_id: "*",
-      // network_id: "1", // Use for verify contract on etherscan
-      // ~~Necessary due to https://github.com/trufflesuite/truffle/issues/1971~~
-      // Necessary due to https://github.com/trufflesuite/truffle/issues/3008
-      skipDryRun: true,
-      timeoutBlocks: 500,
-      gas: 4000000,
-      gasPrice: 140000000000, // 140 gwei
-    },
+    bsc: bscNetwork,
+    tbsc: tbscNetwork,
+    matic: maticNetwork,
+    mumbai: mumbaiNetwork,
+    xdai: xdaiNetwork,
+    ropsten: ropstenNetwork,
+    rinkeby: rinkebyNetwork,
+    kovan: kovanNetwork,
+    mainnet: mainnetNetwork,
   },
   compilers: {
     solc: {
