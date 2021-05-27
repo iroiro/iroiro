@@ -18,36 +18,32 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import { DevReceiversTemplate, DevReceiversTemplateProps } from "./index";
-import {
-  devReceiversMock,
-  tokenInformationState,
-} from "../../../utils/mockData";
-import { TokenProvider } from "../../../context/token";
-import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
+import DevReceiverPageTemplate, { DevReceiverPageTemplateProps } from "./index";
+import { ethers } from "ethers";
+import { devReceiverMock } from "../../../utils/mockData";
 
 export default {
-  title: "Templates/DevReceiversTemplate",
-  component: DevReceiversTemplate,
+  title: "Templates/DevReceiverPageTemplate",
+  component: DevReceiverPageTemplate,
 } as Meta;
 
-const Template: Story<DevReceiversTemplateProps> = (args) => (
+const Template: Story<DevReceiverPageTemplateProps> = (args) => (
   <BrowserRouter>
-    <TokenProvider
-      initialValue={{
-        ...initialValue,
-        token: tokenInformationState.token,
-        userAddress: tokenInformationState.userAddress,
-        userBalance: tokenInformationState.userBalance,
-      }}
-      reducer={tokenReducer}
-    >
-      <DevReceiversTemplate {...args} />
-    </TokenProvider>
+    <DevReceiverPageTemplate {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  devReceivers: devReceiversMock,
+  account: ethers.constants.AddressZero,
+  devReceiver: devReceiverMock,
+};
+
+export const Loading = Template.bind({});
+Loading.args = {};
+
+export const Author = Template.bind({});
+Author.args = {
+  account: ethers.constants.AddressZero,
+  devReceiver: devReceiverMock,
 };

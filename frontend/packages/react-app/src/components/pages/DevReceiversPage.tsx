@@ -19,10 +19,10 @@ import * as React from "react";
 import { DevReceiversTemplate } from "../templates/DevReceiversPageTemplate";
 import { useGetDevReceiversQuery } from "../../generated/graphql";
 
-const DevReceiverPage: React.FC = () => {
+const DevReceiversPage: React.FC = () => {
   const { data } = useGetDevReceiversQuery();
 
   return <DevReceiversTemplate devReceivers={data?.devReceivers ?? []} />;
 };
 
-export default DevReceiverPage;
+export default DevReceiversPage;

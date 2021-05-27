@@ -16,22 +16,223 @@
  */
 
 import * as React from "react";
+import { Box, Typography, Paper, Button } from "@material-ui/core";
 import AppFrame from "../../organisms/AppFrame";
-import DevReceivers from "../../organisms/DevReceivers";
+import styled from "styled-components";
+import theme from "../../../theme/mui-theme";
+import Item from "../../molecules/Item";
+import EtherscanLink from "../../atoms/EtherscanLink";
 import { DevReceiver } from "../../../generated/graphql";
+import { BigNumber } from "ethers";
+import { Currency } from "@usedapp/core";
 
-export interface DevReceiversTemplateProps {
-  devReceivers: DevReceiver[];
+export interface DevReceiverPageTemplateProps {
+  readonly account: string | undefined | null;
+  readonly actualWithdrawableAmount: BigNumber | undefined;
+  readonly communityToken: Currency;
+  readonly contractPTBalance: BigNumber | undefined;
+  readonly ctBalance: BigNumber | undefined;
+  readonly ctTotalSupply: BigNumber | undefined;
+  readonly devReceiver: DevReceiver | undefined | null;
+  readonly maxWithdrawableAmount: BigNumber | undefined;
+  readonly propertyToken: Currency;
+  readonly ptBalance: BigNumber | undefined;
+  readonly devToken: Currency;
 }
 
-export const DevReceiversTemplate: React.FC<DevReceiversTemplateProps> = ({
-  devReceivers,
+const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
+  account,
+  actualWithdrawableAmount,
+  communityToken,
+  ctBalance,
+  ctTotalSupply,
+  contractPTBalance,
+  devReceiver,
+  devToken,
+  maxWithdrawableAmount,
+  propertyToken,
+  ptBalance,
 }) => {
+  if (devReceiver === null) {
+    return <p>Loading...</p>;
+  }
+
+  const pair = `${devReceiver?.propertyToken.symbol ?? ""} / ${
+    devReceiver?.communityToken.symbol ?? ""
+  }`;
+  const ptName = `${devReceiver?.propertyToken.name}(${devReceiver?.propertyToken.name})`;
+  const ctName = `${devReceiver?.communityToken.name}(${devReceiver?.communityToken.name})`;
+
   return (
     <>
       <AppFrame>
-        <DevReceivers devReceivers={devReceivers} />
+        <Paper variant="outlined" style={{ border: "none" }}>
+          <TypeWrapper>
+            <Typography variant={"h3"}>Dev Receiver Detail</Typography>
+          </TypeWrapper>
+          <Wrapper>
+            <Box>
+              <Typography variant={"h4"} color="primary">
+                Tokens information
+              </Typography>
+              <Box
+                display="flex"
+                mt={2}
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                <Item title="Token pair" text={pair} />
+              </Box>
+              <Box
+                display="flex"
+                mt={2}
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                <Item title="Property Token" text={ptName} />
+                <Item title="Community Token" text={ctName} />
+              </Box>
+              <Box
+                display="flex"
+                mt={2}
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                <Item
+                  title="Community Token Total Supply"
+                  text={communityToken.format(
+                    ctTotalSupply?.toString() ?? "0",
+                    { suffix: " $" + communityToken.ticker }
+                  )}
+                />
+                <Item
+                  title="Your Community Token Balance"
+                  text={communityToken.format(ctBalance?.toString() ?? "0", {
+                    suffix: " $" + communityToken.ticker,
+                  })}
+                />
+              </Box>
+              <Box
+                display="flex"
+                mt={4}
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                <Typography variant={"h4"} color="primary">
+                  Rewards
+                </Typography>
+              </Box>
+              <Box
+                display="flex"
+                mt={2}
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                <Item
+                  title="Max withdrawable amount"
+                  text={devToken.format(
+                    maxWithdrawableAmount?.toString() ?? "0",
+                    {
+                      suffix: " $" + devToken.ticker,
+                    }
+                  )}
+                />
+                <Item
+                  title="Current withdrawable amount"
+                  text={devToken.format(
+                    actualWithdrawableAmount?.toString() ?? "0",
+                    {
+                      suffix: " $" + devToken.ticker,
+                    }
+                  )}
+                />
+              </Box>
+              <Box
+                display="flex"
+                mt={4}
+                style={{ alignItems: "center", justifyContent: "left" }}
+              >
+                <Button>Charge reward</Button>
+                <Button>Withdraw reward</Button>
+              </Box>
+              {account?.toLowerCase() === devReceiver?.author && (
+                <>
+                  <Box
+                    display="flex"
+                    mt={2}
+                    style={{ alignItems: "center", justifyContent: "left" }}
+                  >
+                    <Typography variant={"h4"} color="primary">
+                      Property Token Management
+                    </Typography>
+                  </Box>
+                  <Box
+                    display="flex"
+                    mt={2}
+                    style={{ alignItems: "center", justifyContent: "left" }}
+                  >
+                    <Item
+                      title="Your Property Token Balance"
+                      text={propertyToken.format(ptBalance?.toString() ?? "0", {
+                        suffix: " $" + propertyToken.ticker,
+                      })}
+                    />
+                    <Item
+                      title="Dev Receiver's Property Token Balance"
+                      text={propertyToken.format(
+                        contractPTBalance?.toString() ?? "0",
+                        {
+                          suffix: " $" + propertyToken.ticker,
+                        }
+                      )}
+                    />
+                  </Box>
+                  <Box
+                    display="flex"
+                    mt={2}
+                    style={{ alignItems: "center", justifyContent: "left" }}
+                  >
+                    <Button>Charge reward</Button>
+                    <Button>Withdraw reward</Button>
+                  </Box>
+                  <Box
+                    display="flex"
+                    mt={2}
+                    style={{ alignItems: "center", justifyContent: "left" }}
+                    overflow="hidden"
+                  >
+                    <Item
+                      title="Contract Address"
+                      text={devReceiver?.id ?? ""}
+                    />
+                  </Box>
+                  <Box
+                    display="flex"
+                    style={{ alignItems: "center", justifyContent: "left" }}
+                  >
+                    <EtherscanLink
+                      type="contract"
+                      addressOrTxHash={devReceiver?.id ?? ""}
+                      small={true}
+                    />
+                  </Box>
+                </>
+              )}
+            </Box>
+          </Wrapper>
+        </Paper>
       </AppFrame>
     </>
   );
 };
+
+const Wrapper = styled.div`
+  padding: 20px 40px 40px;
+  ${theme.breakpoints.down(600)} {
+    padding: 16px;
+  }
+`;
+
+const TypeWrapper = styled.div`
+  padding: 40px 40px 0;
+  ${theme.breakpoints.down(600)} {
+    padding: 16px;
+  }
+`;
+
+export default DevReceiverPageTemplate;
