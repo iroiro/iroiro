@@ -41,4 +41,15 @@ type Claim @entity {
   createdAt: BigInt!
 }
 
-# TODO Add token schema
+type DevReceiver @entity {
+  id: ID!
+  author: String!
+  propertyToken: ERC20!
+  communityToken: ERC20!
+}
+
+type ERC20 @entity {
+  id: ID!
+  name: String
+  symbol: String
+}
