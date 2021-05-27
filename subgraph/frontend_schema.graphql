@@ -72,6 +72,8 @@ type Query {
   campaign(id: ID!): Campaign
   distributors: [Distributor!]!
   claim(id: ID!): Claim
+  devReceivers: [DevReceiver!]!
+  devReceiver(id: ID!): DevReceiver
 }
 
 schema {
