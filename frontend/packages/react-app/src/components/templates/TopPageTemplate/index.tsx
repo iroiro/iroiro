@@ -23,6 +23,7 @@ import SelectTokenModal from "../../organisms/SelectTokenModal";
 import { useState } from "react";
 import AppFrame from "../../organisms/AppFrame";
 import { MenuButtonWrapper } from "../DashboardPageTemplate";
+import { Typography } from "@material-ui/core";
 
 const TopPageTemplate: React.FC = () => {
   const history = useHistory();
@@ -67,6 +68,17 @@ const TopPageTemplate: React.FC = () => {
               description="Check the status of the NFTs you have been distributed and information on the campaign."
               color="user"
               onClick={() => history.push("/explore/nft/campaigns")}
+            />
+          </div>
+        </MenuButtonWrapper>
+        <MenuButtonWrapper>
+          <div style={{ marginBottom: 16 }}>
+            <MenuButton
+              title="DEV RECEIVERS"
+              description="You can earn $DEV rewards by burning community tokens with
+            DevReceiver."
+              color="creator"
+              onClick={() => history.push("/dev-receivers")}
             />
           </div>
         </MenuButtonWrapper>

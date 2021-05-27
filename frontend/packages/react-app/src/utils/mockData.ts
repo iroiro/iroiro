@@ -31,6 +31,8 @@ import { EmailState } from "../reducers/email";
 import { TokenOption } from "../components/atoms/SelectTokenInput";
 import { TokenState } from "../reducers/tokenContext";
 import { CampaignDetailState } from "../reducers/campaignDetail";
+import { DevReceiver } from "../generated/graphql";
+import { ethers } from "ethers";
 
 export const campaignMetadata: CampaignMetadata = {
   name: "A Campaign",
@@ -363,3 +365,22 @@ export const campaignDetailState: CampaignDetailState = {
   dialog: "nothing",
   transactionHash: "",
 };
+
+export const devReceiverMock: DevReceiver = {
+  id: ethers.constants.AddressZero,
+  author: ethers.constants.AddressZero,
+  communityToken: {
+    id: ethers.constants.AddressZero,
+    name: "CryptoVizor Community",
+    symbol: "CSVC",
+  },
+  propertyToken: {
+    id: ethers.constants.AddressZero,
+    name: "CryptoVizor",
+    symbol: "CSV",
+  },
+};
+
+export const devReceiversMock: DevReceiver[] = [...Array(5)].map(
+  () => devReceiverMock
+);
