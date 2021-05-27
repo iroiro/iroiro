@@ -1,0 +1,23 @@
+{
+  "network": "ropsten",
+  "walletDistributorAddress": "0x29F8d72Ab588755b548d54875BC34f8E6BB1F2B2",
+  "blockNumberWalletDistributorDeployed": "10316717",
+  "walletNftDistributorAddress": "0x9C3034e737f0D55734FF3bd1eeC4F6749F997c63",
+  "blockNumberWalletNftDistributorDeployed": "10316725",
+  "uuidDistributorAddress": "0xbb046Aa0FCc3833C4490A37fCB8644eF4CF09fE2",
+  "blockNumberUuidDistributorDeployed": "10316719",
+  "uuidNftDistributorAddress": "0x43D922A226Fc46400Ea7DE3AB83AE0D7C07988F6",
+  "blockNumberUuidNftDistributorDeployed": "10316730",
+  "tokenFactory": {
+    "address": "0x1AE88EA34F207025169330cf6f2A36054a6adA51",
+    "startBlock": "10316787"
+  },
+  "treasuryVester": {
+    "address": "0xE72029B703575510FEee09e7Aa7Fb45381b314bc",
+    "startBlock": "10316786"
+  },
+  "devReceiverFactory": {
+    "address": "0xEf6E9771034FbA9052405e8A3EEaAdE92Ea014a6",
+    "startBlock": "10316790"
+  }
+}
