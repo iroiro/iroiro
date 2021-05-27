@@ -19,23 +19,68 @@ import * as React from "react";
 import { useGetDevReceiverQuery } from "../../generated/graphql";
 import { RouteComponentProps } from "react-router-dom";
 import DevReceiverPageTemplate from "../templates/DevReceiverPageTemplate";
-import { Currency, useEthers, useTokenBalance } from "@usedapp/core";
+import {
+  Currency,
+  useContractFunction,
+  useEthers,
+  useTokenBalance,
+} from "@usedapp/core";
 import { useTotalSupply } from "../../hooks/tokens/useTotalSupply";
 import { useDecimals } from "../../hooks/tokens/useDecimals";
 import { useMaxWithdrawableAmount } from "../../hooks/issuance/devReceiver/useMaxWithdrawableAmount";
 import { useActualWithdrawableAmount } from "../../hooks/issuance/devReceiver/useActualWithdrawableAmount";
+import {
+  DevReceiver,
+  DevReceiver__factory,
+  ERC20,
+  ERC20__factory,
+} from "../../types";
+import { ethers } from "ethers";
+import { useMemo } from "react";
+
+const devTokenAddress =
+  process.env?.REACT_APP_DEV_TOKEN_ADDRESS ??
+  "0x5caf454ba92e6f2c929df14667ee360ed9fd5b26";
 
 const DevReceiversPage: React.FC<
   RouteComponentProps<{
     devReceiverAddress: string;
   }>
 > = (props) => {
+  const devReceiverAddress = props.match.params.devReceiverAddress.toLowerCase();
   const { account } = useEthers();
   const { data } = useGetDevReceiverQuery({
     variables: {
       id: props.match.params.devReceiverAddress.toLowerCase(),
     },
   });
+
+  const propertyTokenContract: ERC20 = useMemo(() => {
+    // TODO remove zero address
+    return new ERC20__factory().attach(
+      data?.devReceiver?.propertyToken.id ?? ethers.constants.AddressZero
+    );
+  }, [data]);
+
+  const { send: transfer, state: transferState } = useContractFunction(
+    propertyTokenContract,
+    "transfer"
+  );
+  const devReceiverContract: DevReceiver = new DevReceiver__factory().attach(
+    devReceiverAddress
+  );
+  const { send: chargeReward, state: chargeRewardState } = useContractFunction(
+    devReceiverContract,
+    "chargeReward"
+  );
+  const { send: withdraw, state: withdrawState } = useContractFunction(
+    devReceiverContract,
+    "withdraw"
+  );
+  const { send: rescue, state: rescueState } = useContractFunction(
+    devReceiverContract,
+    "rescue"
+  );
 
   const accountPTBalance = useTokenBalance(
     data?.devReceiver?.propertyToken.id,
@@ -44,6 +89,10 @@ const DevReceiversPage: React.FC<
   const accountCTBalance = useTokenBalance(
     data?.devReceiver?.communityToken.id,
     account
+  );
+  const contractDevBalance = useTokenBalance(
+    devTokenAddress,
+    data?.devReceiver?.id
   );
   const contractPTBalance = useTokenBalance(
     data?.devReceiver?.propertyToken.id,
@@ -72,30 +121,26 @@ const DevReceiversPage: React.FC<
   );
   const devToken = new Currency("Dev", "DEV", 18);
 
-  console.debug(
-    account,
-    data,
-    accountPTBalance,
-    contractPTBalance,
-    ctTotalSupply,
-    ctDecimals,
-    maxWithdrawableAmount,
-    actualWithdrawableAmount
-  );
-
   return (
     <DevReceiverPageTemplate
       account={account}
       actualWithdrawableAmount={actualWithdrawableAmount}
+      chargeReward={chargeReward}
       communityToken={communityToken}
       ctBalance={accountCTBalance}
       ctTotalSupply={ctTotalSupply}
+      contractDevBalance={contractDevBalance}
       contractPTBalance={contractPTBalance}
       devReceiver={data?.devReceiver}
+      devReceiverAddress={devReceiverAddress}
+      devTokenAddress={devTokenAddress}
       devToken={devToken}
       maxWithdrawableAmount={maxWithdrawableAmount}
       propertyToken={propertyToken}
       ptBalance={accountPTBalance}
+      rescue={rescue}
+      transfer={transfer}
+      withdraw={withdraw}
     />
   );
 };

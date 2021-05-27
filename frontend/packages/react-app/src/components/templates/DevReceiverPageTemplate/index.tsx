@@ -16,7 +16,7 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Paper, Button } from "@material-ui/core";
+import { Box, Typography, Paper, Button, TextField } from "@material-ui/core";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
@@ -29,29 +29,43 @@ import { Currency } from "@usedapp/core";
 export interface DevReceiverPageTemplateProps {
   readonly account: string | undefined | null;
   readonly actualWithdrawableAmount: BigNumber | undefined;
+  readonly chargeReward: (...args: any[]) => Promise<void>;
   readonly communityToken: Currency;
   readonly contractPTBalance: BigNumber | undefined;
+  readonly contractDevBalance: BigNumber | undefined;
   readonly ctBalance: BigNumber | undefined;
   readonly ctTotalSupply: BigNumber | undefined;
   readonly devReceiver: DevReceiver | undefined | null;
+  readonly devReceiverAddress: string;
+  readonly devToken: Currency;
+  readonly devTokenAddress: string;
   readonly maxWithdrawableAmount: BigNumber | undefined;
   readonly propertyToken: Currency;
   readonly ptBalance: BigNumber | undefined;
-  readonly devToken: Currency;
+  readonly rescue: (...args: any[]) => Promise<void>;
+  readonly transfer: (...args: any[]) => Promise<void>;
+  readonly withdraw: (...args: any[]) => Promise<void>;
 }
 
 const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
   account,
   actualWithdrawableAmount,
+  chargeReward,
   communityToken,
   ctBalance,
   ctTotalSupply,
   contractPTBalance,
+  contractDevBalance,
   devReceiver,
+  devReceiverAddress,
+  devTokenAddress,
   devToken,
   maxWithdrawableAmount,
   propertyToken,
   ptBalance,
+  rescue,
+  transfer,
+  withdraw,
 }) => {
   if (devReceiver === null) {
     return <p>Loading...</p>;
@@ -147,14 +161,15 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                 mt={4}
                 style={{ alignItems: "center", justifyContent: "left" }}
               >
-                <Button>Charge reward</Button>
-                <Button>Withdraw reward</Button>
+                <Button onClick={() => chargeReward()}>Charge reward</Button>
+                <TextField label="Amount to burn" />
+                <Button onClick={() => withdraw()}>Withdraw reward</Button>
               </Box>
               {account?.toLowerCase() === devReceiver?.author && (
                 <>
                   <Box
                     display="flex"
-                    mt={2}
+                    mt={4}
                     style={{ alignItems: "center", justifyContent: "left" }}
                   >
                     <Typography variant={"h4"} color="primary">
@@ -187,8 +202,34 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                     mt={2}
                     style={{ alignItems: "center", justifyContent: "left" }}
                   >
-                    <Button>Charge reward</Button>
-                    <Button>Withdraw reward</Button>
+                    <Item
+                      title="Dev Receiver's $DEV Balance"
+                      text={devToken.format(
+                        contractDevBalance?.toString() ?? "0",
+                        {
+                          suffix: " $" + devToken.ticker,
+                        }
+                      )}
+                    />
+                  </Box>
+                  <Box
+                    display="flex"
+                    mt={2}
+                    style={{ alignItems: "center", justifyContent: "left" }}
+                  >
+                    <TextField label="Amount to deposit" />
+                    <Button onClick={() => transfer(devReceiverAddress, 1)}>
+                      Deposit Property Token
+                    </Button>
+                    <TextField label="Amount to withdraw" />
+                    <Button
+                      onClick={() => rescue(devReceiver?.propertyToken.id)}
+                    >
+                      Withdraw Property Token
+                    </Button>
+                    <Button onClick={() => rescue(devTokenAddress)}>
+                      Withdraw $DEV
+                    </Button>
                   </Box>
                   <Box
                     display="flex"
