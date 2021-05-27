@@ -31,6 +31,7 @@ import {
 } from "@material-ui/core/styles";
 import muiTheme from "../src/theme/mui-theme";
 import { SnackbarProvider } from "notistack";
+import { DAppProvider, Config } from "@usedapp/core";
 
 export const getLibrary = (provider: any): Web3Provider => {
   const library = new Web3Provider(provider);
@@ -50,23 +51,33 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const config: Config = {
+  readOnlyChainId: Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "1"),
+  readOnlyUrls: {
+    [Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "1")]:
+      process.env.REACT_APP_RPC_URL ?? "",
+  },
+};
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ApolloProviderObsolete client={clientObsolete}>
       <StylesProvider injectFirst>
         <MuiThemeProvider theme={muiTheme}>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <SnackbarProvider
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              maxSnack={3}
-              autoHideDuration={4000}
-            >
-              <App />
-            </SnackbarProvider>
-          </Web3ReactProvider>
+          <DAppProvider config={config}>
+            <Web3ReactProvider getLibrary={getLibrary}>
+              <SnackbarProvider
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                maxSnack={3}
+                autoHideDuration={4000}
+              >
+                <App />
+              </SnackbarProvider>
+            </Web3ReactProvider>
+          </DAppProvider>
         </MuiThemeProvider>
       </StylesProvider>
     </ApolloProviderObsolete>

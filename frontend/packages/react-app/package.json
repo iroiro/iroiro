@@ -42,6 +42,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/recharts": "^1.8.17",
     "@types/styled-components": "^5.1.4",
+    "@usedapp/core": "^0.3.20",
     "@walletconnect/web3-provider": "^1.2.2",
     "@web3-react/core": "^6.1.1",
     "@web3-react/fortmatic-connector": "^6.1.6",
