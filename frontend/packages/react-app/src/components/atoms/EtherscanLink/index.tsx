@@ -39,6 +39,14 @@ const URLs: { [network: string]: { [type: string]: string } } = {
     token: "https://etherscan.io/token/{address}",
     tx: "https://etherscan.io/tx/{txHash}",
   },
+  // ropsten
+  "3": {
+    site: "Etherscan",
+    user: "https://ropsten.etherscan.io/token/{tokenAddress}?a={address}",
+    contract: "https://ropsten.etherscan.io/address/{address}",
+    token: "https://ropsten.etherscan.io/token/{address}",
+    tx: "https://ropsten.etherscan.io/tx/{txHash}",
+  },
   // rinkeby
   "4": {
     site: "Etherscan",
