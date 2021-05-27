@@ -64,7 +64,7 @@ const DevReceivers: React.FC<DevReceiversProps> = ({ devReceivers }) => {
                   symbolPair={symbolPair}
                   description={tokenInfo}
                   onClickActionArea={() =>
-                    history.push(`/explore/dev-receivers/${devReceiver.id}`)
+                    history.push(`/dev-receivers/${devReceiver.id}`)
                   }
                 />
               </StyledBox>
