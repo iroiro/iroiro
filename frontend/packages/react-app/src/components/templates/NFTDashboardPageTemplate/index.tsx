@@ -38,12 +38,6 @@ const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
   const walletDistributor = distributors.find(
     (distributor) => distributor.type === "wallet-nft"
   );
-  const urlDistributor = distributors.find(
-    (distributor) => distributor.type === "uuid-nft"
-  );
-  const emailDistributor = distributors.find(
-    (distributor) => distributor.type === "email-nft"
-  );
 
   return (
     <>
@@ -64,34 +58,6 @@ const NFTDashboardPageTemplate: React.FC<NFTDashboardPageTemplateProps> = ({
               onClick={() =>
                 history.push(
                   `/dashboard/nft/distributors/${walletDistributor.id}/${walletDistributor.type}`
-                )
-              }
-            />
-          )}
-          {urlDistributor !== undefined && (
-            <MenuButton
-              key={`${urlDistributor.id}-${urlDistributor.type}`}
-              title={urlDistributor.distributorMetadata.name}
-              description={urlDistributor.distributorMetadata.description}
-              color="creator"
-              onClick={() =>
-                history.push(
-                  `/dashboard/nft/distributors/${urlDistributor.id}/${urlDistributor.type}`
-                )
-              }
-            />
-          )}
-        </MenuButtonWrapper>
-        <MenuButtonWrapper>
-          {emailDistributor !== undefined && (
-            <MenuButton
-              key={`${emailDistributor.id}-${emailDistributor.type}`}
-              title={emailDistributor.distributorMetadata.name}
-              description={emailDistributor.distributorMetadata.description}
-              color="creator"
-              onClick={() =>
-                history.push(
-                  `/dashboard/nft/distributors/${emailDistributor.id}/${emailDistributor.type}`
                 )
               }
             />
