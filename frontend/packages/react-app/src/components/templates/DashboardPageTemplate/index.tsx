@@ -42,12 +42,6 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
   const walletDistributor = distributors.find(
     (distributor) => distributor.type === "wallet"
   );
-  const urlDistributor = distributors.find(
-    (distributor) => distributor.type === "uuid"
-  );
-  const emailDistributor = distributors.find(
-    (distributor) => distributor.type === "email"
-  );
 
   return (
     <>
@@ -68,34 +62,6 @@ const DashboardPageTemplate: React.FC<DashboardPageTemplateProps> = ({
               onClick={() =>
                 history.push(
                   `/dashboard/token/distributors/${walletDistributor.id}/${walletDistributor.type}`
-                )
-              }
-            />
-          )}
-          {urlDistributor !== undefined && (
-            <MenuButton
-              key={`${urlDistributor.id}-${urlDistributor.type}`}
-              title={urlDistributor.distributorMetadata.name}
-              description={urlDistributor.distributorMetadata.description}
-              color="creator"
-              onClick={() =>
-                history.push(
-                  `/dashboard/token/distributors/${urlDistributor.id}/${urlDistributor.type}`
-                )
-              }
-            />
-          )}
-        </MenuButtonWrapper>
-        <MenuButtonWrapper>
-          {emailDistributor !== undefined && (
-            <MenuButton
-              key={`${emailDistributor.id}-${emailDistributor.type}`}
-              title={emailDistributor.distributorMetadata.name}
-              description={emailDistributor.distributorMetadata.description}
-              color="creator"
-              onClick={() =>
-                history.push(
-                  `/dashboard/token/distributors/${emailDistributor.id}/${emailDistributor.type}`
                 )
               }
             />
