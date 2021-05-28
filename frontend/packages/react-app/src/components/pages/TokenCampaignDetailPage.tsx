@@ -133,13 +133,20 @@ const TokenCampaignDetailPage: React.FC<
   }, [library, tokenState.token, tokenStateDispatch]);
 
   useEffect(() => {
+    // exclude mainnet url campaign
+    if (
+      distributorAddress.toLowerCase() ===
+      "0xfa35371b5d5cc2a196358bb9943e62e904478f86"
+    ) {
+      return;
+    }
     getCampaign({
       variables: {
         id: `${distributorAddress.toLowerCase()}-${campaignId}`,
         account: null,
       },
     });
-  }, [campaignId, getCampaign]);
+  }, [campaignId, getCampaign, distributorAddress]);
 
   useEffect(() => {
     const f = async () => {
