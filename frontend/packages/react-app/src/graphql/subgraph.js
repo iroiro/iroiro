@@ -80,9 +80,9 @@ export const GET_ACCOUNT_TOKEN = gql`
 
 // TODO add pagination
 export const GET_CAMPAIGNS = gql`
-  query getCampaigns($token: String, $first: Int) {
+  query getCampaigns($token: String, $distributorNot: String, $first: Int) {
     campaigns(
-      where: { token: $token }
+      where: { token: $token, distributor_not: $distributorNot }
       first: $first
       orderBy: createdAt
       orderDirection: desc

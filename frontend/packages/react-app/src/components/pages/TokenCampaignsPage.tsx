@@ -75,6 +75,7 @@ const TokenCampaignsPage: React.FC<
       f();
     }
   }, [library, tokenStateDispatch]);
+
   useEffect(() => {
     if (
       tokenState.userBalance === "" ||
@@ -98,9 +99,12 @@ const TokenCampaignsPage: React.FC<
     getCampaigns({
       variables: {
         token: tokenAddress.toLowerCase(),
+        // exclude mainnet url campaign
+        distributorNot: "0xfa35371b5d5cc2a196358bb9943e62e904478f86",
       },
     });
   }, [tokenAddress, getCampaigns]);
+
   useEffect(() => {
     const f = async () => {
       if (!tokenAddress) {

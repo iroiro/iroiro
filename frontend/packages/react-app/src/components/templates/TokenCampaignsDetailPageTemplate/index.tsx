@@ -48,7 +48,6 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
   const CampaignDetailPanel = useMemo(() => {
     switch (state.distributorType) {
       case "wallet":
-      case "uuid":
         return (
           <WalletCampaignDetailPanel
             active={active}

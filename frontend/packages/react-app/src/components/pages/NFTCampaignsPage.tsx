@@ -40,6 +40,7 @@ const NFTCampaignsPage: React.FC<
     getCampaigns({
       variables: {
         token: null,
+        distributorNot: null,
         first: NFT_DISPLAY_AMOUNT,
       },
     });
