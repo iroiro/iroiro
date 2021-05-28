@@ -116,7 +116,8 @@ const NFTClaimCard: React.FC<NFTClaimCardProps> = ({
               <Button
                 variant="contained"
                 color="primary"
-                disabled={isClaimed}
+                // disabled={isClaimed}
+                disabled={true}
                 onClick={onClickClaim}
               >
                 {isClaimed ? "Claimed" : "Claim"}

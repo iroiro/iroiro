@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0
 /*
  *     Copyright (C) 2021 TART K.K.
  *
@@ -16,22 +15,8 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-pragma solidity =0.7.6;
+const DevReceiverFactory = artifacts.require("DevReceiverFactory");
 
-interface DevReceiverInterface {
-    function communityToken() external view returns(address);
-
-    function propertyToken() external view returns(address);
-
-    function maxWithdrawableAmount(uint256 amountToBurn) external view returns(uint256);
-
-    function actualWithdrawableAmount(uint256 amountToBurn) external view returns(uint256);
-
-    function withdraw(uint256 amountToBurn) external;
-
-    function chargeReward() external;
-    
-    function chargeableReward() external view returns (uint256);
-
-    function rescue(address _erc20) external;
-}
+module.exports = async (deployer) => {
+  deployer.deploy(DevReceiverFactory);
+};

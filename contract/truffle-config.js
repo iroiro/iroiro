@@ -116,6 +116,7 @@ module.exports = {
         );
       },
       network_id: "*",
+      // network_id: "1", // Use for verify contract on etherscan
       // ~~Necessary due to https://github.com/trufflesuite/truffle/issues/1971~~
       // Necessary due to https://github.com/trufflesuite/truffle/issues/3008
       skipDryRun: true,
