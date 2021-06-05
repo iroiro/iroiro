@@ -341,6 +341,7 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                     color="secondary"
                     variant="contained"
                     onClick={() => setOpenDepositPTModal(true)}
+                    disabled={ptBalance === undefined || ptBalance.isZero()}
                   >
                     Deposit Property Token
                   </Button>
@@ -400,26 +401,26 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                     Withdraw $DEV
                   </Button>
                 </Box>
-                <Box
-                  display="flex"
-                  mt={1}
-                  style={{ alignItems: "center", justifyContent: "left" }}
-                  overflow="hidden"
-                >
-                  <Item title="Contract Address" text={devReceiver?.id ?? ""} />
-                </Box>
-                <Box
-                  display="flex"
-                  style={{ alignItems: "center", justifyContent: "left" }}
-                >
-                  <EtherscanLink
-                    type="contract"
-                    addressOrTxHash={devReceiver?.id ?? ""}
-                    small={true}
-                  />
-                </Box>
               </>
             )}
+            <Box
+              display="flex"
+              mt={1}
+              style={{ alignItems: "center", justifyContent: "left" }}
+              overflow="hidden"
+            >
+              <Item title="Contract Address" text={devReceiver?.id ?? ""} />
+            </Box>
+            <Box
+              display="flex"
+              style={{ alignItems: "center", justifyContent: "left" }}
+            >
+              <EtherscanLink
+                type="contract"
+                addressOrTxHash={devReceiver?.id ?? ""}
+                small={true}
+              />
+            </Box>
           </Box>
         </Wrapper>
       </Paper>

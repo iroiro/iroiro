@@ -51,3 +51,8 @@ export const Default = Template.bind({});
 Default.args = {
   devReceivers: devReceiversMock,
 };
+
+export const NotFound = Template.bind({});
+NotFound.args = {
+  devReceivers: [],
+};

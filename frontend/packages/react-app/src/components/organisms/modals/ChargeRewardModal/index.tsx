@@ -28,7 +28,11 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { useSnackbar } from "notistack";
 import EtherscanLink from "../../../atoms/EtherscanLink";
-import { TransactionStatus } from "@usedapp/core";
+import {
+  transactionErrored,
+  TransactionState,
+  TransactionStatus,
+} from "@usedapp/core";
 import theme from "../../../../theme/mui-theme";
 import { BigNumber, ethers } from "ethers";
 
@@ -39,6 +43,26 @@ export interface ChargeRewardModalProps {
   chargeReward: (...args: any[]) => void;
   chargeRewardStatus: TransactionStatus;
 }
+
+export const ProcessingTransactionIndicator = ({
+  transactionState,
+}: {
+  transactionState: TransactionStatus;
+}) => {
+  if (transactionState.status !== "Mining") {
+    return null;
+  }
+
+  return (
+    <Box mt={2} textAlign="center">
+      <CircularProgress color="secondary" />
+      <EtherscanLink
+        type="tx"
+        addressOrTxHash={transactionState.transaction?.hash ?? ""}
+      />
+    </Box>
+  );
+};
 
 const ChargeRewardModal: React.FC<ChargeRewardModalProps> = ({
   chargeableReward,
@@ -93,7 +117,12 @@ const ChargeRewardModal: React.FC<ChargeRewardModalProps> = ({
               {ethers.utils.formatEther(chargeableReward ?? "0")} $DEV
             </Typography>
           </Box>
-          <Box mt={2}>
+          <Box
+            style={{ display: "flex", justifyContent: "space-around" }}
+            mt={2}
+            textAlign="center"
+          >
+            {" "}
             <Button
               disabled={chargeRewardStatus.status === "Mining"}
               color="secondary"
@@ -114,17 +143,9 @@ const ChargeRewardModal: React.FC<ChargeRewardModalProps> = ({
               Close
             </Button>
           </Box>
-          {chargeRewardStatus.status === "Mining" && (
-            <>
-              <Box mt={2}>
-                <CircularProgress color="secondary" />
-              </Box>
-              <EtherscanLink
-                type="tx"
-                addressOrTxHash={chargeRewardStatus.transaction?.hash ?? ""}
-              />
-            </>
-          )}
+          <ProcessingTransactionIndicator
+            transactionState={chargeRewardStatus}
+          />
         </Box>
       </StyledCard>
     </Modal>

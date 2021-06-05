@@ -47,6 +47,12 @@ Default.args = {
   },
 };
 
+export const ZeroValue = Template.bind({});
+ZeroValue.args = {
+  ...Default.args,
+  amountToDeposit: "0.0",
+};
+
 export const ProcessingDeposit = Template.bind({});
 ProcessingDeposit.args = {
   ...Default.args,

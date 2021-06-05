@@ -41,6 +41,6 @@ export const Request = Template.bind({});
 Request.args = {
   state: {
     ...distributorFormState,
-    requestDeployCampaign: true,
+    dialog: "waiting-api",
   },
 };

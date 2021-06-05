@@ -31,6 +31,7 @@ import EtherscanLink from "../../../atoms/EtherscanLink";
 import { Currency, TransactionStatus } from "@usedapp/core";
 import theme from "../../../../theme/mui-theme";
 import { BigNumber, ethers } from "ethers";
+import { ProcessingTransactionIndicator } from "../ChargeRewardModal";
 
 export interface WithdrawPTModalProps {
   contractBalance: BigNumber | undefined;
@@ -57,7 +58,7 @@ const WithdrawPTModal: React.FC<WithdrawPTModalProps> = ({
     if (withdrawStatus.status !== "Success") {
       return;
     }
-    enqueueSnackbar("Successfully withdrawed.", {
+    enqueueSnackbar("Successfully withdrew.", {
       variant: "success",
       action: (
         <div style={{ color: "white" }}>
@@ -90,11 +91,10 @@ const WithdrawPTModal: React.FC<WithdrawPTModalProps> = ({
           <Typography variant="h4">Withdraw Property Token</Typography>
           <Box mt={2}>
             <Typography>You can withdraw ${token.ticker} token.</Typography>
-          </Box>
-          <Box mt={2}>
             <Typography>
-              Please be sure that if you withdraw Property Token, no more
-              rewards are not going to allocated to Community Token holders.
+              Please be sure that if you withdraw Property Token,
+              <br /> no more rewards are not going to allocated to Community
+              Token holders.
             </Typography>
           </Box>
           <Box mt={2}>
@@ -103,7 +103,12 @@ const WithdrawPTModal: React.FC<WithdrawPTModalProps> = ({
               {ethers.utils.formatEther(contractBalance ?? "0")} ${token.ticker}
             </Typography>
           </Box>
-          <Box mt={2}>
+          <Box
+            style={{ display: "flex", justifyContent: "space-around" }}
+            mt={2}
+            textAlign="center"
+          >
+            {" "}
             <Button
               disabled={withdrawStatus.status === "Mining"}
               color="secondary"
@@ -124,17 +129,7 @@ const WithdrawPTModal: React.FC<WithdrawPTModalProps> = ({
               Close
             </Button>
           </Box>
-          {withdrawStatus.status === "Mining" && (
-            <>
-              <Box mt={2}>
-                <CircularProgress color="secondary" />
-              </Box>
-              <EtherscanLink
-                type="tx"
-                addressOrTxHash={withdrawStatus.transaction?.hash ?? ""}
-              />
-            </>
-          )}
+          <ProcessingTransactionIndicator transactionState={withdrawStatus} />
         </Box>
       </StyledCard>
     </Modal>

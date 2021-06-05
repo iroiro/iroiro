@@ -20,7 +20,6 @@ import {
   Box,
   Button,
   Card,
-  CircularProgress,
   Modal,
   TextField,
   Typography,
@@ -32,6 +31,7 @@ import EtherscanLink from "../../../atoms/EtherscanLink";
 import { Currency, TransactionStatus } from "@usedapp/core";
 import theme from "../../../../theme/mui-theme";
 import { BigNumber, ethers } from "ethers";
+import { ProcessingTransactionIndicator } from "../ChargeRewardModal";
 
 export interface WithdrawRewardModalProps {
   amountToBurn: string;
@@ -87,7 +87,7 @@ const WithdrawRewardModal: React.FC<WithdrawRewardModalProps> = ({
     if (withdrawRewardStatus.status !== "Success") {
       return;
     }
-    enqueueSnackbar("Successfully withdrawed.", {
+    enqueueSnackbar("Successfully withdrew.", {
       variant: "success",
       action: (
         <div style={{ color: "white" }}>
@@ -212,28 +212,10 @@ const WithdrawRewardModal: React.FC<WithdrawRewardModalProps> = ({
               Close
             </Button>
           </Box>
-          {approveStatus.status === "Mining" && (
-            <>
-              <Box mt={2}>
-                <CircularProgress color="secondary" />
-              </Box>
-              <EtherscanLink
-                type="tx"
-                addressOrTxHash={approveStatus.transaction?.hash ?? ""}
-              />
-            </>
-          )}
-          {withdrawRewardStatus.status === "Mining" && (
-            <>
-              <Box mt={2}>
-                <CircularProgress color="secondary" />
-              </Box>
-              <EtherscanLink
-                type="tx"
-                addressOrTxHash={withdrawRewardStatus.transaction?.hash ?? ""}
-              />
-            </>
-          )}
+          <ProcessingTransactionIndicator transactionState={approveStatus} />
+          <ProcessingTransactionIndicator
+            transactionState={withdrawRewardStatus}
+          />
         </Box>
       </StyledCard>
     </Modal>

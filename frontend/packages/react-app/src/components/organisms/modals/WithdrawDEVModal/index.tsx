@@ -32,6 +32,7 @@ import { TransactionStatus } from "@usedapp/core";
 import theme from "../../../../theme/mui-theme";
 import { BigNumber, ethers } from "ethers";
 import { devTokenAddress } from "../../../pages/DevReceiverPage";
+import { ProcessingTransactionIndicator } from "../ChargeRewardModal";
 
 export interface WithdrawDEVModalProps {
   contractBalance: BigNumber | undefined;
@@ -88,7 +89,7 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
           <Box mt={2}>
             <Typography>You can withdraw DEV token.</Typography>
             <Typography>
-              Please be sure that if you withdraw DEV token, rewards for
+              Please be sure that if you withdraw DEV token, <br /> rewards for
               Community token holders are lost.
             </Typography>
           </Box>
@@ -98,7 +99,11 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
               {ethers.utils.formatEther(contractBalance ?? "0")} $DEV
             </Typography>
           </Box>
-          <Box mt={2}>
+          <Box
+            style={{ display: "flex", justifyContent: "space-around" }}
+            mt={2}
+            textAlign="center"
+          >
             <Button
               color="secondary"
               variant="contained"
@@ -118,17 +123,7 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
               Close
             </Button>
           </Box>
-          {withdrawStatus.status === "Mining" && (
-            <>
-              <Box mt={2}>
-                <CircularProgress color="secondary" />
-              </Box>
-              <EtherscanLink
-                type="tx"
-                addressOrTxHash={withdrawStatus.transaction?.hash ?? ""}
-              />
-            </>
-          )}
+          <ProcessingTransactionIndicator transactionState={withdrawStatus} />
         </Box>
       </StyledCard>
     </Modal>

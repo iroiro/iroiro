@@ -37,6 +37,9 @@ const Template: Story<DevReceiverPageTemplateProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   account: "0x09177D096e3Fa5823B3b2182677b02b0aA01277C",
+  actualMaxWithdrawableAmount: undefined,
+  amountToBurn: "",
+  amountToDeposit: "",
   devReceiver: devReceiverMock,
   communityToken: new Currency("CryptoVizor Community", "CVZC", 18),
   devToken: new Currency("Dev", "DEV", 18),
@@ -72,6 +75,18 @@ export const Author = Template.bind({});
 Author.args = {
   ...Default.args,
   account: ethers.constants.AddressZero,
+};
+
+export const NonZeroValues = Template.bind({});
+NonZeroValues.args = {
+  ...Default.args,
+  account: ethers.constants.AddressZero,
+  chargeableReward: ethers.utils.parseEther("100"),
+  maxWithdrawableAmount: ethers.utils.parseEther("200"),
+  actualMaxWithdrawableAmount: ethers.utils.parseEther("100"),
+  ptBalance: ethers.utils.parseEther("10000000"),
+  contractPTBalance: ethers.utils.parseEther("10000000"),
+  contractDevBalance: ethers.utils.parseEther("100"),
 };
 
 export const OpenChargeReward = Template.bind({});

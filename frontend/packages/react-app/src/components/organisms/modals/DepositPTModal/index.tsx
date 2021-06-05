@@ -32,6 +32,7 @@ import EtherscanLink from "../../../atoms/EtherscanLink";
 import { Currency, TransactionStatus } from "@usedapp/core";
 import theme from "../../../../theme/mui-theme";
 import { BigNumber, ethers } from "ethers";
+import { ProcessingTransactionIndicator } from "../ChargeRewardModal";
 
 export interface DepositPTModalProps {
   amountToDeposit: string;
@@ -112,7 +113,11 @@ const DepositPTModal: React.FC<DepositPTModalProps> = ({
               }}
             />
           </Box>
-          <Box mt={2}>
+          <Box
+            style={{ display: "flex", justifyContent: "space-around" }}
+            mt={2}
+            textAlign="center"
+          >
             <Button
               disabled={
                 depositPTStatus.status === "Mining" ||
@@ -141,17 +146,7 @@ const DepositPTModal: React.FC<DepositPTModalProps> = ({
               Close
             </Button>
           </Box>
-          {depositPTStatus.status === "Mining" && (
-            <>
-              <Box mt={2}>
-                <CircularProgress color="secondary" />
-              </Box>
-              <EtherscanLink
-                type="tx"
-                addressOrTxHash={depositPTStatus.transaction?.hash ?? ""}
-              />
-            </>
-          )}
+          <ProcessingTransactionIndicator transactionState={depositPTStatus} />
         </Box>
       </StyledCard>
     </Modal>
