@@ -20,6 +20,7 @@
     "@babel/helper-regex": "^7.10.5",
     "@date-io/date-fns": "1.x",
     "@ethersproject/abi": "5.1.2",
+    "@ethersproject/contracts": "5.1.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.13",

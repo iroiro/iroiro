@@ -21,6 +21,7 @@ import { BrowserRouter } from "react-router-dom";
 import DevReceiverPageTemplate, { DevReceiverPageTemplateProps } from "./index";
 import { ethers } from "ethers";
 import { devReceiverMock } from "../../../utils/mockData";
+import { Currency } from "@usedapp/core";
 
 export default {
   title: "Templates/DevReceiverPageTemplate",
@@ -35,15 +36,64 @@ const Template: Story<DevReceiverPageTemplateProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  account: ethers.constants.AddressZero,
+  account: "0x09177D096e3Fa5823B3b2182677b02b0aA01277C",
   devReceiver: devReceiverMock,
+  communityToken: new Currency("CryptoVizor Community", "CVZC", 18),
+  devToken: new Currency("Dev", "DEV", 18),
+  propertyToken: new Currency("CyrptoVizor", "CVZ", 18),
+  approveCTStatus: {
+    status: "None",
+  },
+  chargeRewardStatus: {
+    status: "None",
+  },
+  depositPTStatus: {
+    status: "None",
+  },
+  withdrawRewardStatus: {
+    status: "None",
+  },
+  withdrawPTStatus: {
+    status: "None",
+  },
+  withdrawDEVStatus: {
+    status: "None",
+  },
 };
 
 export const Loading = Template.bind({});
-Loading.args = {};
+Loading.args = {
+  communityToken: new Currency("", "", 0),
+  devToken: new Currency("Dev", "DEV", 0),
+  propertyToken: new Currency("", "", 0),
+};
 
 export const Author = Template.bind({});
 Author.args = {
+  ...Default.args,
   account: ethers.constants.AddressZero,
-  devReceiver: devReceiverMock,
+};
+
+export const OpenChargeReward = Template.bind({});
+OpenChargeReward.args = {
+  ...Author.args,
+  openChargeRewardModal: true,
+};
+
+export const OpenWithdrawReward = Template.bind({});
+OpenWithdrawReward.args = {
+  ...Author.args,
+  openWithdrawRewardModal: true,
+};
+
+export const OpenDepositPTModal = Template.bind({});
+OpenDepositPTModal.args = {
+  ...Author.args,
+  openDepositPTModal: true,
+};
+
+export const OpenWithdrawPTModal = Template.bind({});
+OpenWithdrawPTModal.args = {
+  ...Author.args,
+  openWithdrawPTModal: true,
 };

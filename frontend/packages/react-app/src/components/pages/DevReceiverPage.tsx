@@ -23,22 +23,21 @@ import {
   Currency,
   useContractFunction,
   useEthers,
+  useTokenAllowance,
   useTokenBalance,
 } from "@usedapp/core";
 import { useTotalSupply } from "../../hooks/tokens/useTotalSupply";
 import { useDecimals } from "../../hooks/tokens/useDecimals";
 import { useMaxWithdrawableAmount } from "../../hooks/issuance/devReceiver/useMaxWithdrawableAmount";
 import { useActualWithdrawableAmount } from "../../hooks/issuance/devReceiver/useActualWithdrawableAmount";
-import {
-  DevReceiver,
-  DevReceiver__factory,
-  ERC20,
-  ERC20__factory,
-} from "../../types";
+import { DevReceiver__factory, ERC20, ERC20__factory } from "../../types";
 import { ethers } from "ethers";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+// @ts-ignore
+import { abis } from "@project/contracts";
+import { useChargeableReward } from "../../hooks/issuance/devReceiver/useChargeableReward";
 
-const devTokenAddress =
+export const devTokenAddress =
   process.env?.REACT_APP_DEV_TOKEN_ADDRESS ??
   "0x5caf454ba92e6f2c929df14667ee360ed9fd5b26";
 
@@ -54,6 +53,24 @@ const DevReceiversPage: React.FC<
       id: props.match.params.devReceiverAddress.toLowerCase(),
     },
   });
+  const [openChargeRewardModal, setOpenChargeRewardModal] = useState(false);
+  const [openWithdrawRewardModal, setOpenWithdrawRewardModal] = useState(false);
+  const [openDepositPTModal, setOpenDepositPTModal] = useState(false);
+  const [openWithdrawPTModal, setOpenWithdrawPTModal] = useState(false);
+  const [openWithdrawDEVModal, setOpenWithdrawDEVModal] = useState(false);
+  const [amountToBurn, setAmountToBurn] = useState("0.0");
+  const [amountToDeposit, setAmountToDeposit] = useState("0.0");
+
+  const communityTokenContract: ERC20 = useMemo(() => {
+    // TODO remove zero address
+    return new ERC20__factory().attach(
+      data?.devReceiver?.communityToken.id ?? ethers.constants.AddressZero
+    );
+  }, [data]);
+  const { send: approveCT, state: approveCTState } = useContractFunction(
+    communityTokenContract,
+    "approve"
+  );
 
   const propertyTokenContract: ERC20 = useMemo(() => {
     // TODO remove zero address
@@ -62,21 +79,21 @@ const DevReceiversPage: React.FC<
     );
   }, [data]);
 
-  const { send: transfer, state: transferState } = useContractFunction(
+  const { send: transferPT, state: transferPTState } = useContractFunction(
     propertyTokenContract,
     "transfer"
   );
-  const devReceiverContract: DevReceiver = new DevReceiver__factory().attach(
+  const devReceiverContract = new DevReceiver__factory().attach(
     devReceiverAddress
   );
   const { send: chargeReward, state: chargeRewardState } = useContractFunction(
     devReceiverContract,
     "chargeReward"
   );
-  const { send: withdraw, state: withdrawState } = useContractFunction(
-    devReceiverContract,
-    "withdraw"
-  );
+  const {
+    send: withdrawReward,
+    state: withdrawRewardState,
+  } = useContractFunction(devReceiverContract, "withdraw");
   const { send: rescue, state: rescueState } = useContractFunction(
     devReceiverContract,
     "rescue"
@@ -104,10 +121,7 @@ const DevReceiversPage: React.FC<
     data?.devReceiver?.id,
     accountCTBalance
   );
-  const actualWithdrawableAmount = useActualWithdrawableAmount(
-    data?.devReceiver?.id,
-    accountCTBalance
-  );
+  const chargeableReward = useChargeableReward(data?.devReceiver?.id);
 
   const communityToken = new Currency(
     data?.devReceiver?.communityToken.name ?? "",
@@ -120,27 +134,65 @@ const DevReceiversPage: React.FC<
     18
   );
   const devToken = new Currency("Dev", "DEV", 18);
+  const ctAllowance = useTokenAllowance(
+    communityTokenContract.address,
+    account,
+    devReceiverAddress
+  );
+
+  const actualMaxWithdrawableAmount = useActualWithdrawableAmount(
+    data?.devReceiver?.id,
+    accountCTBalance
+  );
 
   return (
     <DevReceiverPageTemplate
       account={account}
-      actualWithdrawableAmount={actualWithdrawableAmount}
+      actualMaxWithdrawableAmount={actualMaxWithdrawableAmount}
+      approveCT={approveCT}
+      approveCTStatus={approveCTState}
       chargeReward={chargeReward}
+      chargeRewardStatus={chargeRewardState}
+      chargeableReward={chargeableReward}
       communityToken={communityToken}
+      ctAllowance={ctAllowance}
       ctBalance={accountCTBalance}
       ctTotalSupply={ctTotalSupply}
       contractDevBalance={contractDevBalance}
       contractPTBalance={contractPTBalance}
+      depositPT={transferPT}
+      depositPTStatus={transferPTState}
       devReceiver={data?.devReceiver}
       devReceiverAddress={devReceiverAddress}
       devTokenAddress={devTokenAddress}
       devToken={devToken}
       maxWithdrawableAmount={maxWithdrawableAmount}
       propertyToken={propertyToken}
+      propertyTokenAddress={propertyTokenContract.address}
       ptBalance={accountPTBalance}
       rescue={rescue}
-      transfer={transfer}
-      withdraw={withdraw}
+      transfer={transferPT}
+      withdraw={withdrawReward}
+      withdrawReward={withdrawReward}
+      withdrawRewardStatus={withdrawRewardState}
+      withdrawPT={rescue}
+      withdrawPTStatus={rescueState}
+      withdrawDEV={rescue}
+      withdrawDEVStatus={rescueState}
+      amountToBurn={amountToBurn}
+      setAmountToBurn={setAmountToBurn}
+      amountToDeposit={amountToDeposit}
+      setAmountToDeposit={setAmountToDeposit}
+      openChargeRewardModal={openChargeRewardModal}
+      setOpenChargeRewardModal={setOpenChargeRewardModal}
+      openWithdrawRewardModal={openWithdrawRewardModal}
+      setOpenWithdrawRewardModal={setOpenWithdrawRewardModal}
+      openDepositPTModal={openDepositPTModal}
+      setOpenDepositPTModal={setOpenDepositPTModal}
+      openWithdrawPTModal={openWithdrawPTModal}
+      setOpenWithdrawPTModal={setOpenWithdrawPTModal}
+      openWithdrawDEVModal={openWithdrawDEVModal}
+      setOpenWithdrawDEVModal={setOpenWithdrawDEVModal}
     />
   );
 };
