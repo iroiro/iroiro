@@ -19,7 +19,7 @@ import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
 import DevReceiverCard, { DevReceiverCardProps } from "./index";
-import { ethers } from "ethers";
+import { devReceiverMock } from "../../../utils/mockData";
 
 export default {
   title: "Molecules/DevReceiverCard",
@@ -35,5 +35,5 @@ const Template: Story<DevReceiverCardProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   symbolPair: "CSV/CSVC",
-  description: `Property token: ${ethers.constants.AddressZero}, Community token: ${ethers.constants.AddressZero}`,
+  devReceiver: devReceiverMock,
 };

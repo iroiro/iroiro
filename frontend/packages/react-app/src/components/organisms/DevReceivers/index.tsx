@@ -22,7 +22,6 @@ import theme from "../../../theme/mui-theme";
 import { useHistory } from "react-router-dom";
 import { DevReceiver } from "../../../generated/graphql";
 import DevReceiverCard from "../../molecules/DevReceiverCard";
-import { ethers } from "ethers";
 
 export interface DevReceiversProps {
   readonly devReceivers: DevReceiver[];
@@ -48,7 +47,8 @@ const DevReceivers: React.FC<DevReceiversProps> = ({ devReceivers }) => {
   return (
     <Wrapper>
       <Grid container>
-        <Box p={4} textAlign="center">
+        <Box p={4}>
+          <Typography variant="h3">Dev Receivers</Typography>
           <Typography>
             You can earn $DEV rewards by burning community tokens with
             DevReceiver.
@@ -56,13 +56,12 @@ const DevReceivers: React.FC<DevReceiversProps> = ({ devReceivers }) => {
         </Box>
         {devReceivers.map((devReceiver) => {
           const symbolPair = `${devReceiver.propertyToken.symbol}/${devReceiver.communityToken.symbol}`;
-          const tokenInfo = `Property token: ${ethers.constants.AddressZero}, Community token: ${ethers.constants.AddressZero}`;
           return (
             <Grid key={devReceiver.id} item xs={12} sm={4}>
               <StyledBox>
                 <DevReceiverCard
+                  devReceiver={devReceiver}
                   symbolPair={symbolPair}
-                  description={tokenInfo}
                   onClickActionArea={() =>
                     history.push(`/dev-receivers/${devReceiver.id}`)
                   }
@@ -86,7 +85,7 @@ export const Wrapper = styled.div`
 const StyledBox = styled(Box)`
   box-sizing: border-box;
   margin-top: 16px;
-  padding: 0 32px 32px;
+  padding: 0 16px 16px;
   ${theme.breakpoints.down(600)} {
     width: 100%;
     padding: 8px;

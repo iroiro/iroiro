@@ -22,16 +22,18 @@ import {
   Typography,
   CardActionArea,
 } from "@material-ui/core";
+import { DevReceiver } from "../../../generated/graphql";
+import { setLogVerbosity } from "@apollo/client";
 
 export interface DevReceiverCardProps {
+  readonly devReceiver: DevReceiver;
   readonly symbolPair: string;
-  readonly description: string;
   readonly onClickActionArea?: () => void;
 }
 
 const DevReceiverCard: React.FC<DevReceiverCardProps> = ({
+  devReceiver,
   symbolPair,
-  description,
   onClickActionArea,
 }) => {
   return (
@@ -41,8 +43,37 @@ const DevReceiverCard: React.FC<DevReceiverCardProps> = ({
           <Typography gutterBottom variant="h5" component="h2">
             {symbolPair}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {description}
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            noWrap={true}
+          >
+            Property token:
+          </Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            noWrap={true}
+          >
+            {devReceiver.propertyToken.id}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            noWrap={true}
+          >
+            Community token:
+          </Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            noWrap={true}
+          >
+            {devReceiver.communityToken.id}
           </Typography>
         </CardContent>
       </CardActionArea>
