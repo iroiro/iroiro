@@ -28,6 +28,14 @@ export interface EtherscanLinkProps {
   readonly addressOrTxHash: string;
   readonly additionalTokenAddress?: string;
   readonly small?: boolean;
+  readonly textColor?:
+    | "initial"
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "textPrimary"
+    | "textSecondary"
+    | "error";
 }
 
 const URLs: { [network: string]: { [type: string]: string } } = {
@@ -92,6 +100,7 @@ const EtherscanLink: React.FC<EtherscanLinkProps> = ({
   addressOrTxHash,
   additionalTokenAddress,
   small = false,
+  textColor = "primary",
 }) => {
   const network: string = process.env?.REACT_APP_CHAIN_ID ?? "1";
   const URL = URLs[network];
@@ -117,7 +126,7 @@ const EtherscanLink: React.FC<EtherscanLinkProps> = ({
 
   return (
     <Typography align="center" style={{ fontSize: small ? "14px" : "1rem" }}>
-      <Link href={link} target="_blank">
+      <Link color={textColor} href={link} target="_blank">
         View on {URL.site}&nbsp;&nbsp;
         <FontAwesomeIcon
           icon={faExternalLinkAlt}
