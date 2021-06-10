@@ -16,14 +16,7 @@
  */
 
 import * as React from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CircularProgress,
-  Modal,
-  Typography,
-} from "@material-ui/core";
+import { Box, Button, Card, Modal, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useSnackbar } from "notistack";
@@ -88,7 +81,9 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
           <Typography variant="h4">Withdraw DEV Token</Typography>
           <Box mt={2}>
             <Typography>You can withdraw DEV token.</Typography>
-            <Typography>
+          </Box>
+          <Box mt={2}>
+            <Typography color="error">
               Please be sure that if you withdraw DEV token, <br /> rewards for
               Community token holders are lost.
             </Typography>
@@ -105,8 +100,8 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
             textAlign="center"
           >
             <Button
-              color="secondary"
-              variant="contained"
+              color="primary"
+              variant="outlined"
               onClick={() => {
                 withdraw(devTokenAddress);
               }}

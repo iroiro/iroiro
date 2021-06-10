@@ -364,8 +364,8 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                     )}
                   />
                   <Button
-                    color="secondary"
-                    variant="contained"
+                    color="primary"
+                    variant="outlined"
                     onClick={() => setOpenWithdrawPTModal(true)}
                     disabled={
                       contractPTBalance === undefined ||
@@ -394,8 +394,8 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                   />
                   <Button
                     disabled={contractDevBalance?.isZero() ?? true}
-                    color="secondary"
-                    variant="contained"
+                    color="primary"
+                    variant="outlined"
                     onClick={() => setOpenWithdrawDEVModal(true)}
                   >
                     Withdraw $DEV
