@@ -144,8 +144,8 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
   const pair = `${devReceiver?.propertyToken.symbol ?? ""} / ${
     devReceiver?.communityToken.symbol ?? ""
   }`;
-  const ptName = `${devReceiver?.propertyToken.name}(${devReceiver?.propertyToken.name})`;
-  const ctName = `${devReceiver?.communityToken.name}(${devReceiver?.communityToken.name})`;
+  const ptName = `${devReceiver?.propertyToken.name}(${devReceiver?.propertyToken.symbol})`;
+  const ctName = `${devReceiver?.communityToken.name}(${devReceiver?.communityToken.symbol})`;
 
   return (
     <AppFrame>
