@@ -28,11 +28,7 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { useSnackbar } from "notistack";
 import EtherscanLink from "../../../atoms/EtherscanLink";
-import {
-  transactionErrored,
-  TransactionState,
-  TransactionStatus,
-} from "@usedapp/core";
+import { TransactionStatus } from "@usedapp/core";
 import theme from "../../../../theme/mui-theme";
 import { BigNumber, ethers } from "ethers";
 
@@ -122,7 +118,6 @@ const ChargeRewardModal: React.FC<ChargeRewardModalProps> = ({
             mt={2}
             textAlign="center"
           >
-            {" "}
             <Button
               disabled={chargeRewardStatus.status === "Mining"}
               color="secondary"

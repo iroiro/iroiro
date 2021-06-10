@@ -213,12 +213,20 @@ const App: React.FC = () => {
               />
               <Route path="/explore/nft/history" component={NFTHistoryPage} />
               {/* Advanced */}
-              <Route exact path="/dev-receivers" component={DevReceiversPage} />
-              <Route
-                exact
-                path="/dev-receivers/:devReceiverAddress"
-                component={DevReceiverPage}
-              />
+              {["1", "3"].includes(process.env.REACT_APP_CHAIN_ID ?? "1") && (
+                <>
+                  <Route
+                    exact
+                    path="/dev-receivers"
+                    component={DevReceiversPage}
+                  />
+                  <Route
+                    exact
+                    path="/dev-receivers/:devReceiverAddress"
+                    component={DevReceiverPage}
+                  />
+                </>
+              )}
               {/* Not found */}
               <Route component={NotFoundPageTemplate} />
             </Switch>
