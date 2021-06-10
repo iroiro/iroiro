@@ -16,14 +16,7 @@
  */
 
 import * as React from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CircularProgress,
-  Modal,
-  Typography,
-} from "@material-ui/core";
+import { Box, Button, Card, Modal, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useSnackbar } from "notistack";
@@ -91,7 +84,9 @@ const WithdrawPTModal: React.FC<WithdrawPTModalProps> = ({
           <Typography variant="h4">Withdraw Property Token</Typography>
           <Box mt={2}>
             <Typography>You can withdraw ${token.ticker} token.</Typography>
-            <Typography>
+          </Box>
+          <Box mt={2}>
+            <Typography color="error">
               Please be sure that if you withdraw Property Token,
               <br /> no more rewards are not going to allocated to Community
               Token holders.
@@ -111,8 +106,8 @@ const WithdrawPTModal: React.FC<WithdrawPTModalProps> = ({
             {" "}
             <Button
               disabled={withdrawStatus.status === "Mining"}
-              color="secondary"
-              variant="contained"
+              color="primary"
+              variant="outlined"
               onClick={() => {
                 withdraw(propertyTokenAddress);
               }}
