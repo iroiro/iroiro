@@ -18,29 +18,41 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import WaitingProcessDialog, { WaitingProcessDialogProps } from "./index";
-import { distributorFormState } from "../../../utils/mockData";
+import { DevReceiversTemplate, DevReceiversTemplateProps } from "./index";
+import {
+  devReceiversMock,
+  tokenInformationState,
+} from "../../../utils/mockData";
+import { TokenProvider } from "../../../context/token";
+import { initialValue, tokenReducer } from "../../../reducers/tokenContext";
 
 export default {
-  title: "Molecules/WaitingProcessDialog",
-  component: WaitingProcessDialog,
+  title: "Templates/DevReceiversTemplate",
+  component: DevReceiversTemplate,
 } as Meta;
 
-const Template: Story<WaitingProcessDialogProps> = (args) => (
+const Template: Story<DevReceiversTemplateProps> = (args) => (
   <BrowserRouter>
-    <WaitingProcessDialog {...args} />
+    <TokenProvider
+      initialValue={{
+        ...initialValue,
+        token: tokenInformationState.token,
+        userAddress: tokenInformationState.userAddress,
+        userBalance: tokenInformationState.userBalance,
+      }}
+      reducer={tokenReducer}
+    >
+      <DevReceiversTemplate {...args} />
+    </TokenProvider>
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  state: distributorFormState,
+  devReceivers: devReceiversMock,
 };
 
-export const Request = Template.bind({});
-Request.args = {
-  state: {
-    ...distributorFormState,
-    dialog: "waiting-api",
-  },
+export const NotFound = Template.bind({});
+NotFound.args = {
+  devReceivers: [],
 };

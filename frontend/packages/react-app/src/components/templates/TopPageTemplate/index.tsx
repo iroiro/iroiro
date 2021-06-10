@@ -17,12 +17,13 @@
 
 import React from "react";
 import MenuButton from "../../atoms/MenuButton";
-import { useHistory } from "react-router-dom";
+import { Switch, useHistory } from "react-router-dom";
 import { useCallback } from "react";
 import SelectTokenModal from "../../organisms/SelectTokenModal";
 import { useState } from "react";
 import AppFrame from "../../organisms/AppFrame";
 import { MenuButtonWrapper } from "../DashboardPageTemplate";
+import { Typography } from "@material-ui/core";
 
 const TopPageTemplate: React.FC = () => {
   const history = useHistory();
@@ -70,6 +71,19 @@ const TopPageTemplate: React.FC = () => {
             />
           </div>
         </MenuButtonWrapper>
+        {["1", "3"].includes(process.env.REACT_APP_CHAIN_ID ?? "1") && (
+          <MenuButtonWrapper>
+            <div style={{ marginBottom: 16 }}>
+              <MenuButton
+                title="DEV RECEIVERS"
+                description="You can earn $DEV rewards by burning community tokens with
+            DevReceiver."
+                color="creator"
+                onClick={() => history.push("/dev-receivers")}
+              />
+            </div>
+          </MenuButtonWrapper>
+        )}
       </AppFrame>
       <SelectTokenModal
         open={open}

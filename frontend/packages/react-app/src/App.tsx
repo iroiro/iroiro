@@ -41,6 +41,8 @@ import NFTCampaignsPage from "./components/pages/NFTCampaignsPage";
 import NFTCampaignDetailPage from "./components/pages/NFTCampaignDetailPage";
 import NFTHistoryPage from "./components/pages/NFTHistoryPage";
 import OldCampaignDetailCreatorPage from "./components/pages/OldCampaignDetailCreatorPage";
+import DevReceiversPage from "./components/pages/DevReceiversPage";
+import DevReceiverPage from "./components/pages/DevReceiverPage";
 
 const App: React.FC = () => {
   return (
@@ -210,6 +212,22 @@ const App: React.FC = () => {
                 component={OldCampaignDetailCreatorPage}
               />
               <Route path="/explore/nft/history" component={NFTHistoryPage} />
+              {/* Advanced */}
+              {["1", "3"].includes(process.env.REACT_APP_CHAIN_ID ?? "1") && (
+                <>
+                  <Route
+                    exact
+                    path="/dev-receivers"
+                    component={DevReceiversPage}
+                  />
+                  <Route
+                    exact
+                    path="/dev-receivers/:devReceiverAddress"
+                    component={DevReceiverPage}
+                  />
+                </>
+              )}
+              {/* Not found */}
               <Route component={NotFoundPageTemplate} />
             </Switch>
           </TokenProvider>

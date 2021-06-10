@@ -23,12 +23,13 @@ import { TorusConnector } from "@web3-react/torus-connector";
 
 const POLLING_INTERVAL = 12000;
 const chainId = Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "1");
-const isSupported = [1, 4, 42].includes(chainId);
+const isSupported = [1, 3, 4, 42].includes(chainId);
 
-type NetworkName = "mainnet" | "rinkeby" | "kovan";
+type NetworkName = "mainnet" | "ropsten" | "rinkeby" | "kovan";
 
 const chainIdToNetwork: { [network: number]: NetworkName } = {
   1: "mainnet",
+  3: "ropsten",
   4: "rinkeby",
   42: "kovan",
 };
