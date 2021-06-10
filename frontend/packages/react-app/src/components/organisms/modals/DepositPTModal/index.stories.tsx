@@ -47,6 +47,12 @@ Default.args = {
   },
 };
 
+export const InsufficientAmount = Template.bind({});
+InsufficientAmount.args = {
+  ...Default.args,
+  amountToDeposit: "101.0",
+};
+
 export const ZeroValue = Template.bind({});
 ZeroValue.args = {
   ...Default.args,

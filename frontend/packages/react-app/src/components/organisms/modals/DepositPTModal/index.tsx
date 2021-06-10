@@ -59,6 +59,12 @@ const DepositPTModal: React.FC<DepositPTModalProps> = ({
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
+  const isInsufficientBalance = BigNumber.from(
+    amountToDeposit === ""
+      ? "0"
+      : ethers.utils.parseUnits(amountToDeposit, propertyToken.decimals)
+  ).gt(ptBalance ?? BigNumber.from(0));
+
   useEffect(() => {
     if (depositPTStatus.status !== "Success") {
       return;
@@ -105,7 +111,12 @@ const DepositPTModal: React.FC<DepositPTModalProps> = ({
           </Box>
           <Box mt={2}>
             <TextField
-              helperText={`$${propertyToken.ticker} amount to deposit`}
+              error={isInsufficientBalance}
+              helperText={
+                isInsufficientBalance
+                  ? "Insufficient balance"
+                  : `$${propertyToken.ticker} amount to deposit`
+              }
               value={amountToDeposit}
               type="number"
               onChange={(e) => {
@@ -120,6 +131,7 @@ const DepositPTModal: React.FC<DepositPTModalProps> = ({
           >
             <Button
               disabled={
+                isInsufficientBalance ||
                 depositPTStatus.status === "Mining" ||
                 ethers.utils
                   .parseEther(amountToDeposit === "" ? "0" : amountToDeposit)

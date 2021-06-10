@@ -54,6 +54,12 @@ Default.args = {
   },
 };
 
+export const InsufficientAmount = Template.bind({});
+InsufficientAmount.args = {
+  ...Default.args,
+  amountToBurn: "101.0",
+};
+
 export const ProcessingApprove = Template.bind({});
 ProcessingApprove.args = {
   ...Default.args,

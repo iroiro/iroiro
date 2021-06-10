@@ -64,6 +64,12 @@ const WithdrawRewardModal: React.FC<WithdrawRewardModalProps> = ({
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
+  const isInsufficientBalance = BigNumber.from(
+    amountToBurn === ""
+      ? "0"
+      : ethers.utils.parseUnits(amountToBurn, communityToken.decimals)
+  ).gt(ctBalance ?? BigNumber.from(0));
+
   useEffect(() => {
     if (approveStatus.status !== "Success") {
       return;
@@ -125,13 +131,18 @@ const WithdrawRewardModal: React.FC<WithdrawRewardModalProps> = ({
           </Box>
           <Box mt={2}>
             <TextField
+              error={isInsufficientBalance}
               value={amountToBurn}
               type="number"
               inputProps={{ max: "2000", step: "any" }}
               onChange={(e) => {
                 setAmountToBurn(e.target.value);
               }}
-              helperText={`$${communityToken.ticker} amount to burn`}
+              helperText={
+                isInsufficientBalance
+                  ? "Insufficient balance"
+                  : `$${communityToken.ticker} amount to burn`
+              }
             />
             <Button
               color="secondary"
@@ -163,12 +174,17 @@ const WithdrawRewardModal: React.FC<WithdrawRewardModalProps> = ({
                   ethers.utils.parseUnits(amountToBurn, communityToken.decimals)
                 );
               }}
-              disabled={ethers.utils
-                .parseUnits(
-                  amountToBurn === "" ? "0" : amountToBurn,
-                  communityToken.decimals
-                )
-                .isZero()}
+              disabled={
+                isInsufficientBalance ||
+                approveStatus.status === "Mining" ||
+                withdrawRewardStatus.status === "Mining" ||
+                ethers.utils
+                  .parseUnits(
+                    amountToBurn === "" ? "0" : amountToBurn,
+                    communityToken.decimals
+                  )
+                  .isZero()
+              }
             >
               Approve
             </Button>
@@ -185,7 +201,8 @@ const WithdrawRewardModal: React.FC<WithdrawRewardModalProps> = ({
               disabled={
                 ctAllowance === undefined ||
                 ctAllowance.isZero() ||
-                approveStatus.status === "Mining"
+                approveStatus.status === "Mining" ||
+                withdrawRewardStatus.status === "Mining"
               }
               color="secondary"
               variant="contained"
