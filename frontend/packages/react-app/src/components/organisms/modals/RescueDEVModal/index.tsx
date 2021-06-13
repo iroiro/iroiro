@@ -80,11 +80,11 @@ const RescueDEVModal: React.FC<RescueDEVModalProps> = ({
         <Box p={4} mb={3}>
           <Typography variant="h4">Rescue DEV Token</Typography>
           <Box mt={2}>
-            <Typography>You can rescue DEV token.</Typography>
+            <Typography>You can rescue DEV tokens.</Typography>
           </Box>
           <Box mt={2}>
             <Typography color="error">
-              Please be sure that if you rescue DEV token, <br /> rewards for
+              Please be sure that if you rescue DEV tokens, <br /> rewards for
               Community token holders are lost.
             </Typography>
           </Box>

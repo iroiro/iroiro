@@ -83,13 +83,13 @@ const RescuePTModal: React.FC<RescuePTModalProps> = ({
         <Box p={4} mb={3}>
           <Typography variant="h4">Rescue Property Token</Typography>
           <Box mt={2}>
-            <Typography>You can rescue ${token.ticker} token.</Typography>
+            <Typography>You can rescue ${token.ticker} tokens.</Typography>
           </Box>
           <Box mt={2}>
             <Typography color="error">
-              Please be sure that if you rescue Property Token,
-              <br /> no more rewards are not going to allocated to Community
-              Token holders.
+              Please be sure that if you rescue property tokens,
+              <br /> no more rewards are not going to be allocated to community
+              token holders.
             </Typography>
           </Box>
           <Box mt={2}>
