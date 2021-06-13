@@ -18,18 +18,18 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import WithdrawPTModal, { WithdrawPTModalProps } from "./index";
+import RescuePTModal, { RescuePTModalProps } from "./index";
 import { ethers } from "ethers";
 import { Currency } from "@usedapp/core";
 
 export default {
-  title: "Organisms/modals/WithdrawPTModal",
-  component: WithdrawPTModal,
+  title: "Organisms/modals/RescuePTModal",
+  component: RescuePTModal,
 } as Meta;
 
-const Template: Story<WithdrawPTModalProps> = (args) => (
+const Template: Story<RescuePTModalProps> = (args) => (
   <BrowserRouter>
-    <WithdrawPTModal {...args} />
+    <RescuePTModal {...args} />
   </BrowserRouter>
 );
 
@@ -38,18 +38,18 @@ Default.args = {
   contractBalance: ethers.utils.parseEther("10.0"),
   token: new Currency("CryptoVizor Community", "CVZC", 18),
   open: true,
-  withdraw: () => {
+  rescue: () => {
     return;
   },
-  withdrawStatus: {
+  rescueStatus: {
     status: "None",
   },
 };
 
-export const ProcessingWithdraw = Template.bind({});
-ProcessingWithdraw.args = {
+export const ProcessingRescue = Template.bind({});
+ProcessingRescue.args = {
   ...Default.args,
-  withdrawStatus: {
+  rescueStatus: {
     status: "Mining",
     transaction: {
       hash: "0x0",
@@ -63,10 +63,10 @@ ProcessingWithdraw.args = {
   },
 };
 
-export const SuccessWithdraw = Template.bind({});
-SuccessWithdraw.args = {
+export const SuccessRescue = Template.bind({});
+SuccessRescue.args = {
   ...Default.args,
-  withdrawStatus: {
+  rescueStatus: {
     status: "Success",
     transaction: {
       hash: "0x0",

@@ -28,8 +28,8 @@ import { Currency, TransactionStatus } from "@usedapp/core";
 import ChargeRewardModal from "../../organisms/modals/ChargeRewardModal";
 import WithdrawRewardModal from "../../organisms/modals/WithdrawRewardModal";
 import DepositPTModal from "../../organisms/modals/DepositPTModal";
-import WithdrawPTModal from "../../organisms/modals/WithdrawPTModal";
-import WithdrawDEVModal from "../../organisms/modals/WithdrawDEVModal";
+import RescuePTModal from "../../organisms/modals/RescuePTModal";
+import RescueDEVModal from "../../organisms/modals/RescueDEVModal";
 
 export interface DevReceiverPageTemplateProps {
   readonly account: string | undefined | null;
@@ -183,21 +183,21 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
         depositPT={depositPT}
         depositPTStatus={depositPTStatus}
       />
-      <WithdrawPTModal
+      <RescuePTModal
         contractBalance={contractPTBalance}
         token={propertyToken}
         propertyTokenAddress={propertyTokenAddress}
         open={openWithdrawPTModal}
         onCloseModal={() => setOpenWithdrawPTModal(false)}
-        withdraw={withdrawPT}
-        withdrawStatus={withdrawPTStatus}
+        rescue={withdrawPT}
+        rescueStatus={withdrawPTStatus}
       />
-      <WithdrawDEVModal
+      <RescueDEVModal
         contractBalance={contractDevBalance}
         open={openWithdrawDEVModal}
         onCloseModal={() => setOpenWithdrawDEVModal(false)}
-        withdraw={withdrawDEV}
-        withdrawStatus={withdrawDEVStatus}
+        rescue={withdrawDEV}
+        rescueStatus={withdrawDEVStatus}
       />
       <Paper variant="outlined" style={{ border: "none" }}>
         <TypeWrapper>
@@ -373,7 +373,7 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                       contractPTBalance.isZero()
                     }
                   >
-                    Withdraw Property Token
+                    Rescue Property Token
                   </Button>
                 </Box>
                 <Box
@@ -400,7 +400,7 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                     variant="outlined"
                     onClick={() => setOpenWithdrawDEVModal(true)}
                   >
-                    Withdraw $DEV
+                    Rescue $DEV
                   </Button>
                 </Box>
               </>
