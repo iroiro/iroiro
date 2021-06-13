@@ -100,7 +100,7 @@ const DepositPTModal: React.FC<DepositPTModalProps> = ({
         <Box p={4} mb={3}>
           <Typography variant="h4">Deposit Property Token</Typography>
           <Box mt={2}>
-            <Typography>You can deposit Property Token.</Typography>
+            <Typography>You can deposit property tokens.</Typography>
           </Box>
           <Box mt={2}>
             <Typography>

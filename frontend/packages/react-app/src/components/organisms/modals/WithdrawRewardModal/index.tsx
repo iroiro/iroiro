@@ -126,7 +126,7 @@ const WithdrawRewardModal: React.FC<WithdrawRewardModalProps> = ({
           <Typography variant="h4">Withdraw Reward</Typography>
           <Box mt={2}>
             <Typography>
-              You can withdraw reward by burning community token.
+              You can withdraw reward by burning community tokens.
             </Typography>
           </Box>
           <Box mt={2}>
@@ -192,8 +192,8 @@ const WithdrawRewardModal: React.FC<WithdrawRewardModalProps> = ({
           <Box mt={2}>
             <Typography>
               {ctAllowance === undefined || ctAllowance.isZero()
-                ? "You have to approve community token to burn to withdraw reward."
-                : "Now you can withdraw reward."}
+                ? "You have to approve community tokens to burn to withdraw the reward."
+                : "Now you can withdraw the reward."}
             </Typography>
           </Box>
           <Box mt={2}>
