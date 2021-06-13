@@ -35,14 +35,14 @@ const DevReceivers: React.FC<DevReceiversProps> = ({ devReceivers }) => {
       <Wrapper>
         <Grid container>
           <Box p={4}>
-            <Typography variant="h3">Dev Receivers</Typography>
+            <Typography variant="h3">DEV Receivers</Typography>
             <Typography>
               You can earn $DEV rewards by burning community tokens with
               DevReceiver.
             </Typography>
           </Box>
           <Box p={4} textAlign="center">
-            <Typography>No Dev Receivers are created yet.</Typography>
+            <Typography>No DEV Receivers are created yet.</Typography>
           </Box>
         </Grid>
       </Wrapper>
@@ -53,7 +53,7 @@ const DevReceivers: React.FC<DevReceiversProps> = ({ devReceivers }) => {
     <Wrapper>
       <Grid container>
         <Box p={4}>
-          <Typography variant="h3">Dev Receivers</Typography>
+          <Typography variant="h3">DEV Receivers</Typography>
           <Typography>
             You can earn $DEV rewards by burning community tokens with
             DevReceiver.

@@ -129,7 +129,7 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
       <AppFrame>
         <Paper variant="outlined" style={{ border: "none" }}>
           <TypeWrapper>
-            <Typography variant={"h3"}>Dev Receiver Detail</Typography>
+            <Typography variant={"h3"}>DEV Receiver Detail</Typography>
           </TypeWrapper>
           <Wrapper>
             <Box>
@@ -201,7 +201,7 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
       />
       <Paper variant="outlined" style={{ border: "none" }}>
         <TypeWrapper>
-          <Typography variant={"h3"}>Dev Receiver Detail</Typography>
+          <Typography variant={"h3"}>DEV Receiver Detail</Typography>
         </TypeWrapper>
         <Wrapper>
           <Box>
@@ -355,7 +355,7 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                   }}
                 >
                   <Item
-                    title="Dev Receiver's Property Token Balance"
+                    title="DEV Receiver's Property Token Balance"
                     text={propertyToken.format(
                       contractPTBalance?.toString() ?? "0",
                       {
@@ -385,7 +385,7 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
                   }}
                 >
                   <Item
-                    title="Dev Receiver's $DEV Balance"
+                    title="DEV Receiver's $DEV Balance"
                     text={devToken.format(
                       contractDevBalance?.toString() ?? "0",
                       {
