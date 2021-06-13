@@ -110,6 +110,7 @@ dataSources:
           handler: handleTransferSingle
       file: ./src/distributors/uuid-nft-distributor.ts
 
+  {{#devReceiverFactory}}
   - kind: ethereum/contract
     name: DevReceiverFactory
     network: {{network}}
@@ -132,3 +133,4 @@ dataSources:
         - event: CreateDevReceiver(indexed address,indexed address,indexed address,address)
           handler: handleCreateDevReceiver
       file: ./src/issuance/dev-receiver-factory.ts
+  {{/devReceiverFactory}}
