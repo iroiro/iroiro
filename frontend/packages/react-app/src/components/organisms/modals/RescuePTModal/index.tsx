@@ -21,40 +21,43 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { useSnackbar } from "notistack";
 import EtherscanLink from "../../../atoms/EtherscanLink";
-import { TransactionStatus } from "@usedapp/core";
+import { Currency, TransactionStatus } from "@usedapp/core";
 import theme from "../../../../theme/mui-theme";
 import { BigNumber, ethers } from "ethers";
-import { devTokenAddress } from "../../../pages/DevReceiverPage";
 import { ProcessingTransactionIndicator } from "../ChargeRewardModal";
 
-export interface WithdrawDEVModalProps {
+export interface RescuePTModalProps {
   contractBalance: BigNumber | undefined;
+  token: Currency;
+  propertyTokenAddress: string;
   open: boolean;
   onCloseModal: () => void;
-  withdraw: (...args: any[]) => void;
-  withdrawStatus: TransactionStatus;
+  rescue: (...args: any[]) => void;
+  rescueStatus: TransactionStatus;
 }
 
-const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
+const RescuePTModal: React.FC<RescuePTModalProps> = ({
   contractBalance,
+  token,
+  propertyTokenAddress,
   open,
   onCloseModal,
-  withdraw,
-  withdrawStatus,
+  rescue,
+  rescueStatus,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (withdrawStatus.status !== "Success") {
+    if (rescueStatus.status !== "Success") {
       return;
     }
-    enqueueSnackbar("Successfully withdrew.", {
+    enqueueSnackbar("Successfully rescued.", {
       variant: "success",
       action: (
         <div style={{ color: "white" }}>
           <EtherscanLink
             type="tx"
-            addressOrTxHash={withdrawStatus.transaction?.hash ?? ""}
+            addressOrTxHash={rescueStatus.transaction?.hash ?? ""}
             small={true}
             textColor="inherit"
           />
@@ -62,7 +65,7 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
       ),
     });
     onCloseModal();
-  }, [withdrawStatus]);
+  }, [rescueStatus]);
 
   return (
     <Modal
@@ -78,20 +81,21 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
     >
       <StyledCard>
         <Box p={4} mb={3}>
-          <Typography variant="h4">Withdraw DEV Token</Typography>
+          <Typography variant="h4">Rescue Property Token</Typography>
           <Box mt={2}>
-            <Typography>You can withdraw DEV token.</Typography>
+            <Typography>You can rescue ${token.ticker} token.</Typography>
           </Box>
           <Box mt={2}>
             <Typography color="error">
-              Please be sure that if you withdraw DEV token, <br /> rewards for
-              Community token holders are lost.
+              Please be sure that if you rescue Property Token,
+              <br /> no more rewards are not going to allocated to Community
+              Token holders.
             </Typography>
           </Box>
           <Box mt={2}>
             <Typography>
-              Current contracts balance:{" "}
-              {ethers.utils.formatEther(contractBalance ?? "0")} $DEV
+              Current contract balance:
+              {ethers.utils.formatEther(contractBalance ?? "0")} ${token.ticker}
             </Typography>
           </Box>
           <Box
@@ -99,17 +103,19 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
             mt={2}
             textAlign="center"
           >
+            {" "}
             <Button
+              disabled={rescueStatus.status === "Mining"}
               color="primary"
               variant="outlined"
               onClick={() => {
-                withdraw(devTokenAddress);
+                rescue(propertyTokenAddress);
               }}
             >
-              Withdraw
+              Rescue
             </Button>
             <Button
-              disabled={withdrawStatus.status === "Mining"}
+              disabled={rescueStatus.status === "Mining"}
               variant="contained"
               onClick={() => {
                 onCloseModal();
@@ -118,7 +124,7 @@ const WithdrawDEVModal: React.FC<WithdrawDEVModalProps> = ({
               Close
             </Button>
           </Box>
-          <ProcessingTransactionIndicator transactionState={withdrawStatus} />
+          <ProcessingTransactionIndicator transactionState={rescueStatus} />
         </Box>
       </StyledCard>
     </Modal>
@@ -131,4 +137,4 @@ const StyledCard = styled(Card)`
   }
 `;
 
-export default WithdrawDEVModal;
+export default RescuePTModal;
