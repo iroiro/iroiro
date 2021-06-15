@@ -16,7 +16,7 @@
  */
 
 import * as React from "react";
-import { Box, Typography, Paper, Button } from "@material-ui/core";
+import { Box, Typography, Paper, Button, Link } from "@material-ui/core";
 import AppFrame from "../../organisms/AppFrame";
 import styled from "styled-components";
 import theme from "../../../theme/mui-theme";
@@ -202,6 +202,18 @@ const DevReceiverPageTemplate: React.FC<DevReceiverPageTemplateProps> = ({
       <Paper variant="outlined" style={{ border: "none" }}>
         <TypeWrapper>
           <Typography variant={"h3"}>DEV Receiver Detail</Typography>
+          <Box>
+            <Link
+              href="https://medium.com/iroiro-social-token/how-to-manage-and-use-dev-receiver-86647f722d3c"
+              rel="noreferrer"
+              target="_blank"
+              color="secondary"
+              variant="subtitle2"
+              style={{ textDecoration: "underline" }}
+            >
+              How to use DEV Receiver?
+            </Link>
+          </Box>
         </TypeWrapper>
         <Wrapper>
           <Box>
