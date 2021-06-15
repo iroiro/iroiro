@@ -116,8 +116,7 @@ const NFTClaimCard: React.FC<NFTClaimCardProps> = ({
               <Button
                 variant="contained"
                 color="primary"
-                // disabled={isClaimed}
-                disabled={true}
+                disabled={isClaimed || distributorType === "uuid-nft"}
                 onClick={onClickClaim}
               >
                 {isClaimed ? "Claimed" : "Claim"}

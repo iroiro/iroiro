@@ -16,31 +16,22 @@
  */
 
 import * as React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { BrowserRouter } from "react-router-dom";
-import WaitingProcessDialog, { WaitingProcessDialogProps } from "./index";
-import { distributorFormState } from "../../../utils/mockData";
+import AppFrame from "../../organisms/AppFrame";
+import DevReceivers from "../../organisms/DevReceivers";
+import { DevReceiver } from "../../../generated/graphql";
 
-export default {
-  title: "Molecules/WaitingProcessDialog",
-  component: WaitingProcessDialog,
-} as Meta;
+export interface DevReceiversTemplateProps {
+  devReceivers: DevReceiver[];
+}
 
-const Template: Story<WaitingProcessDialogProps> = (args) => (
-  <BrowserRouter>
-    <WaitingProcessDialog {...args} />
-  </BrowserRouter>
-);
-
-export const Default = Template.bind({});
-Default.args = {
-  state: distributorFormState,
-};
-
-export const Request = Template.bind({});
-Request.args = {
-  state: {
-    ...distributorFormState,
-    dialog: "waiting-api",
-  },
+export const DevReceiversTemplate: React.FC<DevReceiversTemplateProps> = ({
+  devReceivers,
+}) => {
+  return (
+    <>
+      <AppFrame>
+        <DevReceivers devReceivers={devReceivers} />
+      </AppFrame>
+    </>
+  );
 };

@@ -43,3 +43,38 @@ query getClaim($id: ID!) {
         amount
     }
 }
+
+query getDevReceivers {
+    devReceivers {
+        id
+        author
+        communityToken {
+            id
+            name
+            symbol
+        }
+        propertyToken {
+            id
+            name
+            symbol
+        }
+    }
+}
+
+query getDevReceiver($id: ID!) {
+    devReceiver(id: $id) {
+        id
+        author
+        communityToken {
+            id
+            name
+            symbol
+        }
+        propertyToken {
+            id
+            name
+            symbol
+        }
+    }
+}
+

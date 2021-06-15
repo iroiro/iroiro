@@ -18,29 +18,22 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import WaitingProcessDialog, { WaitingProcessDialogProps } from "./index";
-import { distributorFormState } from "../../../utils/mockData";
+import DevReceiverCard, { DevReceiverCardProps } from "./index";
+import { devReceiverMock } from "../../../utils/mockData";
 
 export default {
-  title: "Molecules/WaitingProcessDialog",
-  component: WaitingProcessDialog,
+  title: "Molecules/DevReceiverCard",
+  component: DevReceiverCard,
 } as Meta;
 
-const Template: Story<WaitingProcessDialogProps> = (args) => (
+const Template: Story<DevReceiverCardProps> = (args) => (
   <BrowserRouter>
-    <WaitingProcessDialog {...args} />
+    <DevReceiverCard {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  state: distributorFormState,
-};
-
-export const Request = Template.bind({});
-Request.args = {
-  state: {
-    ...distributorFormState,
-    dialog: "waiting-api",
-  },
+  symbolPair: "CSV/CSVC",
+  devReceiver: devReceiverMock,
 };

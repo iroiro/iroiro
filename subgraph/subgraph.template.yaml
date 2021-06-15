@@ -109,3 +109,28 @@ dataSources:
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
       file: ./src/distributors/uuid-nft-distributor.ts
+
+  {{#devReceiverFactory}}
+  - kind: ethereum/contract
+    name: DevReceiverFactory
+    network: {{network}}
+    source:
+      address: "{{devReceiverFactory.address}}"
+      abi: DevReceiverFactory
+      startBlock: {{devReceiverFactory.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - DevReceiver
+      abis:
+        - name: DevReceiverFactory
+          file: ../contract/build/contracts/DevReceiverFactory.json
+        - name: ERC20
+          file: ../contract/build/contracts/ERC20.json
+      eventHandlers:
+        - event: CreateDevReceiver(indexed address,indexed address,indexed address,address)
+          handler: handleCreateDevReceiver
+      file: ./src/issuance/dev-receiver-factory.ts
+  {{/devReceiverFactory}}

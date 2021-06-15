@@ -18,29 +18,26 @@
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { BrowserRouter } from "react-router-dom";
-import WaitingProcessDialog, { WaitingProcessDialogProps } from "./index";
-import { distributorFormState } from "../../../utils/mockData";
+import DevReceivers, { DevReceiversProps } from "./index";
+import { devReceiversMock } from "../../../utils/mockData";
 
 export default {
-  title: "Molecules/WaitingProcessDialog",
-  component: WaitingProcessDialog,
+  title: "Organisms/DevReceivers",
+  component: DevReceivers,
 } as Meta;
 
-const Template: Story<WaitingProcessDialogProps> = (args) => (
+const Template: Story<DevReceiversProps> = (args) => (
   <BrowserRouter>
-    <WaitingProcessDialog {...args} />
+    <DevReceivers {...args} />
   </BrowserRouter>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  state: distributorFormState,
+  devReceivers: devReceiversMock,
 };
 
-export const Request = Template.bind({});
-Request.args = {
-  state: {
-    ...distributorFormState,
-    dialog: "waiting-api",
-  },
+export const NoReceivers = Template.bind({});
+NoReceivers.args = {
+  devReceivers: [],
 };

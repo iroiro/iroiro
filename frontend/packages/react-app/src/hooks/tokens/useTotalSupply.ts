@@ -15,26 +15,22 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import devReceiverABI from "./abis/DevReceiver.json";
-import erc20Abi from "./abis/erc20.json";
-import ownableAbi from "./abis/ownable.json";
-import tokenFactoryAbi from "./abis/TokenFactory.json";
-import fanTokenAbi from "./abis/FanToken.json";
-import stakingAbi from "./abis/Staking.json";
-import vestingAbi from "./abis/Vesting.json";
-import audiusAbi from "./abis/Audius.json";
-import audiusDistributorAbi from "./abis/AudiusDistributor.json";
+import { Falsy } from "@usedapp/core/dist/esm/src/model/types";
+import { ERC20Interface, useContractCall } from "@usedapp/core";
+import { BigNumber } from "ethers";
 
-const abis = {
-  devReceiver: devReceiverABI,
-  erc20: erc20Abi,
-  ownable: ownableAbi,
-  tokenFactory: tokenFactoryAbi,
-  fanToken: fanTokenAbi,
-  staking: stakingAbi,
-  vesting: vestingAbi,
-  audius: audiusAbi,
-  audiusDistributor: audiusDistributorAbi,
-};
+export function useTotalSupply(
+  tokenAddress: string | Falsy
+): BigNumber | undefined {
+  const [totalSupply] =
+    useContractCall(
+      tokenAddress && {
+        abi: ERC20Interface,
+        address: tokenAddress,
+        method: "totalSupply",
+        args: [],
+      }
+    ) ?? [];
 
-export default abis;
+  return totalSupply;
+}

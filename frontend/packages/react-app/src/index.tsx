@@ -17,8 +17,10 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "@apollo/react-hooks";
+// TODO Replace apollo client
+import ApolloClientObsolete from "apollo-boost";
+import { ApolloProvider as ApolloProviderObsolete } from "@apollo/react-hooks";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import "./index.css";
 import App from "./App";
 import { Web3ReactProvider } from "@web3-react/core";
@@ -29,6 +31,7 @@ import {
 } from "@material-ui/core/styles";
 import muiTheme from "../src/theme/mui-theme";
 import { SnackbarProvider } from "notistack";
+import { DAppProvider, Config } from "@usedapp/core";
 
 export const getLibrary = (provider: any): Web3Provider => {
   const library = new Web3Provider(provider);
@@ -38,29 +41,46 @@ export const getLibrary = (provider: any): Web3Provider => {
 
 // You should replace this url with your own and put it into a .env file
 // See all subgraphs: https://thegraph.com/explorer/
-const client = new ApolloClient({
+const clientObsolete = new ApolloClientObsolete({
   // TODO Update url to iroiro
   uri: process.env.REACT_APP_SUBGRAPH,
 });
 
+const client = new ApolloClient({
+  uri: process.env.REACT_APP_SUBGRAPH ?? "",
+  cache: new InMemoryCache(),
+});
+
+const config: Config = {
+  readOnlyChainId: Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "1"),
+  readOnlyUrls: {
+    [Number.parseInt(process.env.REACT_APP_CHAIN_ID ?? "1")]:
+      process.env.REACT_APP_RPC_URL ?? "",
+  },
+};
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <StylesProvider injectFirst>
-      <MuiThemeProvider theme={muiTheme}>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <SnackbarProvider
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center",
-            }}
-            maxSnack={3}
-            autoHideDuration={4000}
-          >
-            <App />
-          </SnackbarProvider>
-        </Web3ReactProvider>
-      </MuiThemeProvider>
-    </StylesProvider>
+    <ApolloProviderObsolete client={clientObsolete}>
+      <StylesProvider injectFirst>
+        <MuiThemeProvider theme={muiTheme}>
+          <DAppProvider config={config}>
+            <Web3ReactProvider getLibrary={getLibrary}>
+              <SnackbarProvider
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                maxSnack={3}
+                autoHideDuration={4000}
+              >
+                <App />
+              </SnackbarProvider>
+            </Web3ReactProvider>
+          </DAppProvider>
+        </MuiThemeProvider>
+      </StylesProvider>
+    </ApolloProviderObsolete>
   </ApolloProvider>,
   document.getElementById("root")
 );

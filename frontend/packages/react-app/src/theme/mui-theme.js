@@ -37,6 +37,11 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiButton: {
+      root: {
+        transition: "color .01s",
+      },
+    },
     MuiStepConnector: {
       lineVertical: {
         minHeight: 10,

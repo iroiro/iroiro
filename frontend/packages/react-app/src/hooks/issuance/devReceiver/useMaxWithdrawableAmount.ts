@@ -15,26 +15,25 @@
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-import devReceiverABI from "./abis/DevReceiver.json";
-import erc20Abi from "./abis/erc20.json";
-import ownableAbi from "./abis/ownable.json";
-import tokenFactoryAbi from "./abis/TokenFactory.json";
-import fanTokenAbi from "./abis/FanToken.json";
-import stakingAbi from "./abis/Staking.json";
-import vestingAbi from "./abis/Vesting.json";
-import audiusAbi from "./abis/Audius.json";
-import audiusDistributorAbi from "./abis/AudiusDistributor.json";
+import { Falsy } from "@usedapp/core/dist/esm/src/model/types";
+import { useContractCall } from "@usedapp/core";
+import { BigNumber } from "ethers";
+import { DevReceiver__factory } from "../../../types";
 
-const abis = {
-  devReceiver: devReceiverABI,
-  erc20: erc20Abi,
-  ownable: ownableAbi,
-  tokenFactory: tokenFactoryAbi,
-  fanToken: fanTokenAbi,
-  staking: stakingAbi,
-  vesting: vestingAbi,
-  audius: audiusAbi,
-  audiusDistributor: audiusDistributorAbi,
-};
+export function useMaxWithdrawableAmount(
+  devReceiverAddress: string | Falsy,
+  amountToBurn: BigNumber | Falsy
+): BigNumber | undefined {
+  const [amount] =
+    useContractCall(
+      devReceiverAddress &&
+        amountToBurn && {
+          abi: new DevReceiver__factory().attach(devReceiverAddress).interface,
+          address: devReceiverAddress,
+          method: "maxWithdrawableAmount",
+          args: [amountToBurn],
+        }
+    ) ?? [];
 
-export default abis;
+  return amount;
+}

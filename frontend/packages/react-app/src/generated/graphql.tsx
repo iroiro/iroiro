@@ -66,11 +66,26 @@ export type Creator = {
   campaigns: Array<Campaign>;
 };
 
+export type DevReceiver = {
+  __typename?: 'DevReceiver';
+  id: Scalars['ID'];
+  author: Scalars['String'];
+  propertyToken: Erc20;
+  communityToken: Erc20;
+};
+
 export type Distributor = {
   __typename?: 'Distributor';
   id: Scalars['ID'];
   distributorInfoCid?: Maybe<Scalars['String']>;
   campaigns: Array<Campaign>;
+};
+
+export type Erc20 = {
+  __typename?: 'ERC20';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  symbol?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -81,6 +96,8 @@ export type Query = {
   campaign?: Maybe<Campaign>;
   distributors: Array<Distributor>;
   claim?: Maybe<Claim>;
+  devReceivers: Array<DevReceiver>;
+  devReceiver?: Maybe<DevReceiver>;
 };
 
 
@@ -105,6 +122,11 @@ export type QueryCampaignArgs = {
 
 
 export type QueryClaimArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryDevReceiverArgs = {
   id: Scalars['ID'];
 };
 
@@ -262,6 +284,93 @@ export function useGetClaimLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetClaimQueryHookResult = ReturnType<typeof useGetClaimQuery>;
 export type GetClaimLazyQueryHookResult = ReturnType<typeof useGetClaimLazyQuery>;
 export type GetClaimQueryResult = Apollo.QueryResult<GetClaimQuery, GetClaimQueryVariables>;
+export const GetDevReceiversDocument = gql`
+    query getDevReceivers {
+  devReceivers {
+    id
+    author
+    communityToken {
+      id
+      name
+      symbol
+    }
+    propertyToken {
+      id
+      name
+      symbol
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetDevReceiversQuery__
+ *
+ * To run a query within a React component, call `useGetDevReceiversQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDevReceiversQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDevReceiversQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetDevReceiversQuery(baseOptions?: Apollo.QueryHookOptions<GetDevReceiversQuery, GetDevReceiversQueryVariables>) {
+        return Apollo.useQuery<GetDevReceiversQuery, GetDevReceiversQueryVariables>(GetDevReceiversDocument, baseOptions);
+      }
+export function useGetDevReceiversLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDevReceiversQuery, GetDevReceiversQueryVariables>) {
+          return Apollo.useLazyQuery<GetDevReceiversQuery, GetDevReceiversQueryVariables>(GetDevReceiversDocument, baseOptions);
+        }
+export type GetDevReceiversQueryHookResult = ReturnType<typeof useGetDevReceiversQuery>;
+export type GetDevReceiversLazyQueryHookResult = ReturnType<typeof useGetDevReceiversLazyQuery>;
+export type GetDevReceiversQueryResult = Apollo.QueryResult<GetDevReceiversQuery, GetDevReceiversQueryVariables>;
+export const GetDevReceiverDocument = gql`
+    query getDevReceiver($id: ID!) {
+  devReceiver(id: $id) {
+    id
+    author
+    communityToken {
+      id
+      name
+      symbol
+    }
+    propertyToken {
+      id
+      name
+      symbol
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetDevReceiverQuery__
+ *
+ * To run a query within a React component, call `useGetDevReceiverQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDevReceiverQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDevReceiverQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetDevReceiverQuery(baseOptions: Apollo.QueryHookOptions<GetDevReceiverQuery, GetDevReceiverQueryVariables>) {
+        return Apollo.useQuery<GetDevReceiverQuery, GetDevReceiverQueryVariables>(GetDevReceiverDocument, baseOptions);
+      }
+export function useGetDevReceiverLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDevReceiverQuery, GetDevReceiverQueryVariables>) {
+          return Apollo.useLazyQuery<GetDevReceiverQuery, GetDevReceiverQueryVariables>(GetDevReceiverDocument, baseOptions);
+        }
+export type GetDevReceiverQueryHookResult = ReturnType<typeof useGetDevReceiverQuery>;
+export type GetDevReceiverLazyQueryHookResult = ReturnType<typeof useGetDevReceiverLazyQuery>;
+export type GetDevReceiverQueryResult = Apollo.QueryResult<GetDevReceiverQuery, GetDevReceiverQueryVariables>;
 export type GetCampaignsQueryVariables = Exact<{
   where: CampaignsCondition;
 }>;
@@ -326,6 +435,44 @@ export type GetClaimQuery = (
     ), campaign: (
       { __typename?: 'Campaign' }
       & Pick<Campaign, 'id'>
+    ) }
+  )> }
+);
+
+export type GetDevReceiversQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDevReceiversQuery = (
+  { __typename?: 'Query' }
+  & { devReceivers: Array<(
+    { __typename?: 'DevReceiver' }
+    & Pick<DevReceiver, 'id' | 'author'>
+    & { communityToken: (
+      { __typename?: 'ERC20' }
+      & Pick<Erc20, 'id' | 'name' | 'symbol'>
+    ), propertyToken: (
+      { __typename?: 'ERC20' }
+      & Pick<Erc20, 'id' | 'name' | 'symbol'>
+    ) }
+  )> }
+);
+
+export type GetDevReceiverQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetDevReceiverQuery = (
+  { __typename?: 'Query' }
+  & { devReceiver?: Maybe<(
+    { __typename?: 'DevReceiver' }
+    & Pick<DevReceiver, 'id' | 'author'>
+    & { communityToken: (
+      { __typename?: 'ERC20' }
+      & Pick<Erc20, 'id' | 'name' | 'symbol'>
+    ), propertyToken: (
+      { __typename?: 'ERC20' }
+      & Pick<Erc20, 'id' | 'name' | 'symbol'>
     ) }
   )> }
 );
