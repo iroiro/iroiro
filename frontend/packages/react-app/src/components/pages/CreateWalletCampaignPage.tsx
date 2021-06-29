@@ -37,8 +37,6 @@ import {
   merkltreeInitialState,
 } from "../../reducers/merkletree";
 import { WalletList } from "../../interfaces";
-
-import IpfsHttpClient from "ipfs-http-client";
 import useAxios from "axios-hooks";
 import {
   IPFS_PINNING_API,
@@ -49,8 +47,12 @@ import {
 import { BigNumber } from "ethers";
 import { isAddress } from "ethers/lib/utils";
 
-const infura = { host: "ipfs.infura.io", port: 5001, protocol: "https" };
-const ipfs = IpfsHttpClient(infura);
+// TODO temporarily. use API instead
+import pinataClient from "@pinata/sdk";
+const pinata = pinataClient(
+  process.env.REACT_APP_PINATA_API_KEY ?? "",
+  process.env.REACT_APP_PINATA_API_SECRET ?? ""
+);
 
 interface CreateWalletCampaignPageProps {
   readonly props: RouteComponentProps;
@@ -191,7 +193,11 @@ const CreateWalletCampaignPage: React.FC<CreateWalletCampaignPageProps> = ({
 
   const uploadJsonIpfs = useCallback(
     async (data, type) => {
-      const { path } = await ipfs.add(JSON.stringify(data));
+      const { IpfsHash: path } = await pinata
+        .pinJSONToIPFS(data)
+        .then((response) => {
+          return response;
+        });
       await postPinning({ data: { hashToPin: path } });
       if (type === "campaignInfoCid") {
         setCampaignInfoCid(path);
