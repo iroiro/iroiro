@@ -66,7 +66,7 @@ export const NFTCampaignsDetailTemplate: React.FC<NFTCampaignsDetailTemplateProp
         <Typography>Campaign not found.</Typography>
       </div>
     );
-  }, [state]);
+  }, [state, active, state, dispatch]);
 
   return (
     <>
