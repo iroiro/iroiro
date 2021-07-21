@@ -25,14 +25,14 @@ import {
   WalletDistributor__factory,
   WalletNFTDistributor__factory,
 } from "../../types";
-import { BigNumber } from "ethers";
 
 export const useIsClaimable = (
   library: Web3Provider | undefined,
   campaignId: string,
   distributorAddress: string,
   distributorType: string,
-  hashedUUID: string
+  hashedUUID: string,
+  merkleTreeCid: string
 ): {
   isClaimable: boolean;
   isProofPresent: boolean;
@@ -49,7 +49,12 @@ export const useIsClaimable = (
   useEffect(() => {
     // TODO merge each check state
     const checkWalletState = async () => {
-      if (!library || distributorAddress === "" || campaignId === "") {
+      if (
+        !library ||
+        distributorAddress === "" ||
+        campaignId === "" ||
+        merkleTreeCid === ""
+      ) {
         setError("Invalid arguments.");
         return;
       }
@@ -61,24 +66,6 @@ export const useIsClaimable = (
         distributorAddress,
         signer
       );
-      const events = await distributor.queryFilter(
-        distributor.filters.CreateCampaign(
-          BigNumber.from(campaignId),
-          null,
-          null,
-          null,
-          null
-        )
-      );
-      const event = events.find(
-        (event) => event.args.distributionId.toString() === campaignId
-      );
-      if (event === undefined) {
-        setError("Event not found.");
-        setLoading(false);
-        return;
-      }
-      const merkleTreeCid = event.args.merkleTreeCid;
       const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddress}.json`;
       const response = await fetch(url);
       const claim = (await response.json()) as StringClaim;
@@ -97,7 +84,12 @@ export const useIsClaimable = (
     };
 
     const checkWalletNFTState = async () => {
-      if (!library || distributorAddress === "" || campaignId === "") {
+      if (
+        !library ||
+        distributorAddress === "" ||
+        campaignId === "" ||
+        merkleTreeCid === ""
+      ) {
         setError("Invalid arguments.");
         return;
       }
@@ -109,23 +101,6 @@ export const useIsClaimable = (
         distributorAddress,
         signer
       );
-      const events = await distributor.queryFilter(
-        distributor.filters.CreateCampaign(
-          BigNumber.from(campaignId),
-          null,
-          null,
-          null
-        )
-      );
-      const event = events.find(
-        (event) => event.args.treeId.toString() === campaignId
-      );
-      if (event === undefined) {
-        setError("Event not found.");
-        setLoading(false);
-        return;
-      }
-      const merkleTreeCid = event.args.merkleTreeCid;
       const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${walletAddress}.json`;
       const response = await fetch(url);
       const claim = (await response.json()) as StringClaim;
@@ -144,7 +119,12 @@ export const useIsClaimable = (
     };
 
     const checkUUIDState = async () => {
-      if (!library || campaignId === "" || hashedUUID === undefined) {
+      if (
+        !library ||
+        campaignId === "" ||
+        hashedUUID === undefined ||
+        merkleTreeCid === ""
+      ) {
         setError("Invalid arguments.");
         return;
       }
@@ -155,24 +135,6 @@ export const useIsClaimable = (
         distributorAddress,
         signer
       );
-      const events = await distributor.queryFilter(
-        distributor.filters.CreateCampaign(
-          BigNumber.from(campaignId),
-          null,
-          null,
-          null,
-          null
-        )
-      );
-      const event = events.find(
-        (event) => event.args.distributionId.toString() === campaignId
-      );
-      if (event === undefined) {
-        setError("Event not found.");
-        setLoading(false);
-        return;
-      }
-      const merkleTreeCid = event.args.merkleTreeCid;
       const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`;
       const response = await fetch(url);
       const claim = (await response.json()) as StringClaim;
@@ -191,7 +153,12 @@ export const useIsClaimable = (
     };
 
     const checkUUIDNFTState = async () => {
-      if (!library || campaignId === "" || hashedUUID === undefined) {
+      if (
+        !library ||
+        campaignId === "" ||
+        hashedUUID === undefined ||
+        merkleTreeCid === undefined
+      ) {
         setError("Invalid arguments.");
         return;
       }
@@ -202,23 +169,6 @@ export const useIsClaimable = (
         distributorAddress,
         signer
       );
-      const events = await distributor.queryFilter(
-        distributor.filters.CreateCampaign(
-          BigNumber.from(campaignId),
-          null,
-          null,
-          null
-        )
-      );
-      const event = events.find(
-        (event) => event.args.treeId.toString() === campaignId
-      );
-      if (event === undefined) {
-        setError("Event not found.");
-        setLoading(false);
-        return;
-      }
-      const merkleTreeCid = event.args.merkleTreeCid;
       const url = `${MERKLE_PROOF_API}/${merkleTreeCid}/${hashedUUID}.json`;
       const response = await fetch(url);
       const claim = (await response.json()) as StringClaim;
@@ -250,7 +200,7 @@ export const useIsClaimable = (
         checkUUIDNFTState();
         break;
     }
-  }, [library, campaignId]);
+  }, [library, campaignId, merkleTreeCid]);
 
   return { isClaimable, isProofPresent, claimableAmount, loading, error };
 };

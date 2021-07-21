@@ -61,7 +61,8 @@ const NFTCampaignDetailPage: React.FC<
     state?.campaignId ?? "",
     distributorAddress,
     state?.distributorType,
-    hashedUUID
+    hashedUUID,
+    state.campaign?.merkleTreeCid ?? ""
   );
 
   const [getClaim, { data: getClaimData }] = useLazyQuery<{ claim: Claim }>(
