@@ -70,7 +70,7 @@ export const TokenCampaignsDetailTemplate: React.FC<TokenCampaignsDetailTemplate
         <Typography>Campaign not found.</Typography>
       </div>
     );
-  }, [state]);
+  }, [state, active, claimAmount, dispatch]);
 
   return (
     <>

@@ -1,10 +1,12 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
+import "@nomiclabs/hardhat-etherscan";
 import "solidity-coverage";
 import "hardhat-gas-reporter";
 import { TokenFactory } from "./types";
 import * as dotenv from "dotenv";
 import { assert } from "chai";
+
 dotenv.config();
 
 const projectId = process.env.INFURA_PROJECT_ID;
@@ -76,6 +78,7 @@ const config: HardhatUserConfig = {
       },
     },
     mainnet: {
+      gasPrice: 15000000000, // 15 gwei
       url: `https://mainnet.infura.io/v3/${projectId}`,
       accounts: [privateKey ?? ""],
     },
@@ -91,6 +94,9 @@ const config: HardhatUserConfig = {
       "ERC20",
       "ERC20Mock",
     ],
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
 };
 
