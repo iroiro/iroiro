@@ -89,7 +89,7 @@ export function handleTransferSingle(event: TransferSingle): void {
   }
 
   let accountId = event.params.to.toHexString();
-  let distributorId = event.transaction.to.toHexString();
+  let distributorId = event.address.toHexString();
   let distributionId = event.params.id;
   let campaignId = distributorId.concat("-").concat(distributionId.toString());
   let claimId = campaignId.concat("-").concat(accountId);
