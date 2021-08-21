@@ -83,7 +83,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
 
 export function handleClaimed(event: ClaimedEvent): void {
   let accountId = event.params.account.toHexString();
-  let distributorId = event.transaction.to.toHexString();
+  let distributorId = event.address.toHexString();
   let distributionId = event.params.distributionId;
   let campaignId = distributorId.concat("-").concat(distributionId.toString());
   let claimId = campaignId.concat("-").concat(accountId);
