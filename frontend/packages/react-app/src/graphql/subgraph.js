@@ -227,7 +227,9 @@ export const GET_CLAIM = gql`
 
 export const GET_TOKEN_LIST = gql`
   {
-    campaigns(where: { token_not: null }) {
+    campaigns(
+      where: { token_not: "0xa2dfdeac7b4456b0a44f36f6111218688d9b1c7a" }
+    ) {
       token
     }
   }

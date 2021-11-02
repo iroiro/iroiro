@@ -96,6 +96,12 @@ const TokenCampaignsPage: React.FC<
   }, [library, tokenState.token, tokenStateDispatch]);
 
   useEffect(() => {
+    if (
+      tokenAddress.toLowerCase() ===
+      "0xa2dfdeac7b4456b0a44f36f6111218688d9b1c7a"
+    ) {
+      return;
+    }
     getCampaigns({
       variables: {
         token: tokenAddress.toLowerCase(),
