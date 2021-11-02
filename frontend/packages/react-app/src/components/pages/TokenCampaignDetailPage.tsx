@@ -137,7 +137,9 @@ const TokenCampaignDetailPage: React.FC<
     // exclude mainnet url campaign
     if (
       distributorAddress.toLowerCase() ===
-      "0xfa35371b5d5cc2a196358bb9943e62e904478f86"
+        "0xfa35371b5d5cc2a196358bb9943e62e904478f86" ||
+      tokenAddress.toLowerCase() ===
+        "0xa2dfdeac7b4456b0a44f36f6111218688d9b1c7a"
     ) {
       return;
     }
@@ -147,7 +149,7 @@ const TokenCampaignDetailPage: React.FC<
         account: null,
       },
     });
-  }, [campaignId, getCampaign, distributorAddress]);
+  }, [campaignId, getCampaign, distributorAddress, tokenAddress]);
 
   useEffect(() => {
     const f = async () => {
